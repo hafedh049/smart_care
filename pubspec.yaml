@@ -1,0 +1,47 @@
+name: health_care
+description: this application will help patients to consult any near or available doctor, analyze their state, etc...
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  fluttertoast: ^8.2.1
+  http: ^0.13.5
+  badges: ^3.0.2
+  url_launcher: ^6.1.10
+  flutter_animate: ^4.1.0
+  font_awesome_flutter: ^10.4.0
+  flutter_map: ^3.1.0
+  latlong2: ^0.8.1
+  google_fonts: ^4.0.3
+  simple_circular_progress_bar: ^1.0.2
+  lottie: ^2.2.0
+  fl_chart: ^0.61.0
+  page_transition: ^2.0.9
+  firebase_auth: ^4.2.2
+  firebase_core: ^2.7.0
+  cloud_firestore: ^4.4.3
+  firebase_storage: ^11.0.14
+  translator: ^0.1.7
+  flutter_native_splash: ^2.2.18
+  otp_text_field: ^1.1.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/
