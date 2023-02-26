@@ -32,6 +32,8 @@ dependencies:
   translator: ^0.1.7
   flutter_native_splash: ^2.2.18
   otp_text_field: ^1.1.3
+  image_picker: ^0.8.6+3
+  image_cropper: ^3.0.1
 
 dev_dependencies:
   flutter_test:
