@@ -159,7 +159,7 @@ class CustomTextField extends StatelessWidget {
                 obscureText: obscured ? !obscure : false,
                 keyboardType: type,
                 decoration: InputDecoration(
-                  labelText: snapshot.hasData ? snapshot.data!.text : "",
+                  labelText: snapshot.hasData ? snapshot.data!.text : hint,
                   labelStyle: GoogleFonts.abel(
                     color: blue,
                     fontSize: 16,
@@ -234,7 +234,7 @@ class Translate extends StatelessWidget {
       future: translateTo(text, to: to),
       builder: (BuildContext context, AsyncSnapshot<Translation> snapshot) {
         return Text(
-          snapshot.hasData ? snapshot.data!.text : "",
+          snapshot.hasData ? snapshot.data!.text : text,
           style: GoogleFonts.abel(
             color: color,
             fontSize: fontSize,

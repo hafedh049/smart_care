@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:health_care/otp/opt_phase_2.dart';
-import 'package:health_care/stuff/functions.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:otp_text_field/otp_field.dart';
+import 'package:otp_text_field/otp_field_style.dart';
+import 'package:otp_text_field/style.dart';
+import 'package:sms_advanced/sms_advanced.dart';
+
 import '../stuff/classes.dart';
 import '../stuff/globals.dart';
 
-class OTPView extends StatefulWidget {
-  const OTPView({super.key});
+class OTP extends StatefulWidget {
+  const OTP({super.key});
 
   @override
-  State<OTPView> createState() => _OTPViewState();
+  State<OTP> createState() => _OTPState();
 }
 
-class _OTPViewState extends State<OTPView> {
-  final TextEditingController _phoneController = TextEditingController();
+class _OTPState extends State<OTP> {
+  final OtpFieldController _otpFieldController = OtpFieldController();
   @override
-  void dispose() {
-    _phoneController.dispose();
-    super.dispose();
+  void initState() {
+    receiver.onSmsReceived!.listen((SmsMessage msg) => _otpFieldController.set(msg.body!.split('')));
+    Future.delayed(3.seconds, () {
+      _otpFieldController.set("12345".split(''));
+    });
+    super.initState();
   }
 
   @override
@@ -27,10 +34,10 @@ class _OTPViewState extends State<OTPView> {
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) setS) {
         return Scaffold(
-          key: otp1ScaffoldKey,
+          key: otp2ScaffoldKey,
           drawer: HealthDrawer(
             func: () {
-              otp1ScaffoldKey.currentState!.closeDrawer();
+              otp2ScaffoldKey.currentState!.closeDrawer();
               setS(() {});
             },
           ),
@@ -46,17 +53,39 @@ class _OTPViewState extends State<OTPView> {
                   Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                   Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
                   const SizedBox(height: 10),
-                  Translate(text: "OTP Recovery", color: blue, fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 2.seconds),
-                  Translate(text: "First Phase.", fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 2.seconds),
-                  Translate(text: "Please enter your phone number to send OTP code.", fontSize: 16, to: language).animate().fadeIn(duration: 2.seconds),
+                  Translate(text: "Wait For", color: blue, fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 2.seconds),
+                  Translate(text: "SMS Notification.", fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 2.seconds),
+                  Translate(text: "The pin fields will automatically be filled when sms is intercepted.", fontSize: 16, to: language).animate().fadeIn(duration: 2.seconds),
                   const SizedBox(height: 40),
-                  CustomTextField(controller: _phoneController, hint: "Phone Number", to: language, prefix: FontAwesomeIcons.phone, type: TextInputType.phone),
+                  IgnorePointer(
+                    ignoring: true,
+                    child: OTPTextField(
+                      length: 5,
+                      outlineBorderRadius: 5,
+                      controller: _otpFieldController,
+                      width: MediaQuery.of(context).size.width,
+                      fieldWidth: 40,
+                      keyboardType: TextInputType.number,
+                      style: GoogleFonts.abel(fontSize: 17),
+                      textFieldAlignment: MainAxisAlignment.spaceAround,
+                      fieldStyle: FieldStyle.box,
+                      onChanged: (String pin) {},
+                      onCompleted: (String pin) {},
+                      otpFieldStyle: OtpFieldStyle(
+                        backgroundColor: darkBlue,
+                        borderColor: white,
+                        disabledBorderColor: Colors.white.withOpacity(.5),
+                        enabledBorderColor: white,
+                        errorBorderColor: Colors.red,
+                        focusBorderColor: blue,
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 30),
                   Center(
                     child: GestureDetector(
                       onTap: () async {
                         //await sendSms("23566502", "TEST");
-                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OTP()));
                       },
                       child: Container(
                         height: 40,
@@ -67,7 +96,7 @@ class _OTPViewState extends State<OTPView> {
                           child: Row(
                             children: <Widget>[
                               const Spacer(),
-                              Translate(text: "Continue", fontSize: 20, fontWeight: FontWeight.bold, to: language),
+                              Translate(text: "Sign-In", fontSize: 20, fontWeight: FontWeight.bold, to: language),
                               const Spacer(),
                               CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
                             ],
@@ -76,7 +105,7 @@ class _OTPViewState extends State<OTPView> {
                       ),
                     ),
                   ),
-                  LottieBuilder.asset("assets/phase_1.json"),
+                  Center(child: LottieBuilder.asset("assets/shield.json")),
                 ],
               ),
             ),

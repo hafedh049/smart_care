@@ -31,3 +31,10 @@ void showToast(String content) {
 void playNote(String note) {
   player.open(Audio("assets/$note.mp3"));
 }
+
+Future<void> sendSms(String toNumber, String messageBody) async {
+  await twilio.sendSMS(
+    toNumber: toNumber,
+    messageBody: messageBody,
+  );
+}

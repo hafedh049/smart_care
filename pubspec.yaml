@@ -35,6 +35,8 @@ dependencies:
   image_picker: ^0.8.6+3
   image_cropper: ^3.0.1
   assets_audio_player: ^3.0.6
+  twilio_flutter: ^0.0.9
+  sms_advanced: ^1.0.1
 
 dev_dependencies:
   flutter_test:
