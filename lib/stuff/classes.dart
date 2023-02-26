@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:health_care/otp/otp_phase_1.dart';
 import 'package:health_care/stuff/functions.dart';
 import 'dart:math' as math;
 
@@ -130,12 +131,14 @@ class _PhoneAuthState extends State<PhoneAuth> {
 
 // ignore: must_be_immutable
 class CustomTextField extends StatelessWidget {
-  CustomTextField({super.key, required this.controller, required this.hint, this.obscured = false, this.to = "en"});
+  CustomTextField({super.key, this.type = TextInputType.text, required this.controller, required this.hint, required this.prefix, this.obscured = false, this.to = "en"});
   final bool obscured;
   final TextEditingController controller;
   final String hint;
   bool obscure = false;
   final String to;
+  final IconData prefix;
+  final TextInputType type;
 
   @override
   Widget build(BuildContext context) {
@@ -154,12 +157,17 @@ class CustomTextField extends StatelessWidget {
                 cursorRadius: const Radius.circular(15),
                 cursorWidth: 1,
                 obscureText: obscured ? !obscure : false,
+                keyboardType: type,
                 decoration: InputDecoration(
                   labelText: snapshot.hasData ? snapshot.data!.text : "",
                   labelStyle: GoogleFonts.abel(
                     color: blue,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                  ),
+                  prefix: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Icon(prefix, size: 15, color: blue),
                   ),
                   suffixIcon: obscured ? IconButton(splashColor: blue.withOpacity(.3), highlightColor: blue.withOpacity(.3), focusColor: blue.withOpacity(.3), onPressed: () => _(() => obscure = !obscure), icon: Icon(!obscure ? Icons.visibility_off : Icons.visibility, size: 15)) : null,
                   enabledBorder: OutlineInputBorder(
@@ -203,7 +211,9 @@ class OTPAuth extends StatelessWidget {
       radius: 20,
       backgroundColor: Colors.grey,
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const OTPView()));
+        },
         child: const Center(child: Icon(FontAwesomeIcons.digitalOcean, size: 15)),
       ),
     );

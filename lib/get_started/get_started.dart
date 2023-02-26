@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -34,8 +33,8 @@ class GetStarted extends StatelessWidget {
                 Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                 Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue.withOpacity(.5)), const SizedBox(width: 30)]),
                 const SizedBox(height: 30),
-                Translate(text: "Virtual", color: blue, fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 2.seconds),
-                Translate(text: "Ecosystem", fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 2.seconds),
+                Translate(text: language == "en" ? "Virtual" : "Ecosystem", color: blue, fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 2.seconds),
+                Translate(text: language == "en" ? "Ecosystem" : "Virtual", fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 2.seconds),
                 Translate(text: "Specialized healthcare, on a single tech platform, simplifying access to anyone, anywhere.", fontSize: 16, to: language).animate().fadeIn(duration: 2.seconds),
                 Center(
                   child: Stack(

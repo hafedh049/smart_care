@@ -72,9 +72,9 @@ class _SignInState extends State<SignIn> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  CustomTextField(controller: _emailController, hint: "E-mail", to: language),
+                  CustomTextField(controller: _emailController, hint: "E-mail", to: language, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
                   const SizedBox(height: 10),
-                  CustomTextField(controller: _passwordController, hint: "Password", obscured: true, to: language),
+                  CustomTextField(controller: _passwordController, hint: "Password", obscured: true, to: language, prefix: FontAwesomeIcons.lock),
                   const SizedBox(height: 60),
                   Center(
                     child: GestureDetector(

@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
 
@@ -27,3 +28,6 @@ final GlobalKey<ScaffoldState> getStartedScaffoldKey = GlobalKey<ScaffoldState>(
 final GlobalKey<ScaffoldState> signInScaffoldKey = GlobalKey<ScaffoldState>();
 final GlobalKey<ScaffoldState> signUpScaffoldKey = GlobalKey<ScaffoldState>();
 final GlobalKey<ScaffoldState> recoveryScaffoldKey = GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> otp1ScaffoldKey = GlobalKey<ScaffoldState>();
+
+final AssetsAudioPlayer player = AssetsAudioPlayer.newPlayer();
