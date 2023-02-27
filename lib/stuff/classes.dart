@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_care/otp/otp_phase_1.dart';
@@ -6,7 +7,6 @@ import 'package:health_care/stuff/functions.dart';
 import 'dart:math' as math;
 
 import 'package:health_care/stuff/globals.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:lottie/lottie.dart';
 import 'package:translator/translator.dart';
 
@@ -28,95 +28,6 @@ class HalfCirclePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(HalfCirclePainter oldDelegate) => false;
-}
-
-class PhoneAuth extends StatefulWidget {
-  const PhoneAuth({super.key});
-
-  @override
-  State<PhoneAuth> createState() => _PhoneAuthState();
-}
-
-class _PhoneAuthState extends State<PhoneAuth> {
-  final TextEditingController _phoneController = TextEditingController();
-  final FocusNode _phoneNode = FocusNode();
-
-  @override
-  void dispose() {
-    _phoneController.dispose();
-    _phoneNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      width: 60,
-      color: darkBlue,
-      child: Center(
-        child: CircleAvatar(
-          radius: 20,
-          backgroundColor: blue,
-          child: GestureDetector(
-            onTap: () {
-              showDialog(
-                useSafeArea: true,
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  actions: [
-                    GestureDetector(child: Container(height: 40, width: 40, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue.withOpacity(.2)), child: const Center(child: Icon(FontAwesomeIcons.chevronRight, size: 20)))),
-                  ],
-                  content: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text("Phone Authentification", style: GoogleFonts.abel(fontSize: 20, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 20),
-                        InternationalPhoneNumberInput(
-                          initialValue: PhoneNumber(isoCode: "TN", dialCode: "+216"),
-                          searchBoxDecoration: InputDecoration(
-                            labelText: language == 'en' ? 'Country' : 'Pays',
-                            labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
-                            prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.flag, size: 15, color: blue)),
-                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                          ),
-                          autoValidateMode: AutovalidateMode.always,
-                          focusNode: _phoneNode,
-                          cursorColor: blue,
-                          errorMessage: language == 'en' ? 'Not a valid number' : 'Not a valid number',
-                          inputBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                          onInputChanged: (PhoneNumber value) {},
-                          textStyle: GoogleFonts.abel(fontSize: 16),
-                          spaceBetweenSelectorAndTextField: 0,
-                          textFieldController: _phoneController,
-                          selectorTextStyle: GoogleFonts.abel(fontSize: 16),
-                          selectorButtonOnErrorPadding: 0,
-                          onInputValidated: (bool value) => value ? _phoneNode.unfocus() : null,
-                          selectorConfig: const SelectorConfig(leadingPadding: 8.0, selectorType: PhoneInputSelectorType.BOTTOM_SHEET, trailingSpace: false, useEmoji: true, setSelectorButtonAsPrefixIcon: true),
-                          inputDecoration: InputDecoration(
-                            labelText: language == 'en' ? 'Phone Number' : 'Numéro Du Téléphone',
-                            labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
-                            prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.phone, size: 15, color: blue)),
-                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-            child: const Center(child: Icon(FontAwesomeIcons.phone, size: 15)),
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 // ignore: must_be_immutable
@@ -173,12 +84,13 @@ class GoogleAuth extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 60,
-        width: 60,
-        color: darkBlue,
-        child: Center(
-          child: CircleAvatar(radius: 20, backgroundColor: Colors.red, child: GestureDetector(onTap: () {}, child: const Center(child: Icon(FontAwesomeIcons.google, size: 15)))),
-        ));
+      height: 60,
+      width: 60,
+      color: darkBlue,
+      child: Center(
+        child: CircleAvatar(radius: 20, backgroundColor: Colors.red, child: GestureDetector(onTap: () {}, child: const Center(child: Icon(FontAwesomeIcons.google, size: 15)))),
+      ),
+    );
   }
 }
 
@@ -194,12 +106,12 @@ class OTPAuth extends StatelessWidget {
       child: Center(
         child: CircleAvatar(
           radius: 20,
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.green,
           child: GestureDetector(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => const OTPView()));
             },
-            child: const Center(child: Icon(FontAwesomeIcons.digitalOcean, size: 15)),
+            child: const Center(child: Icon(FontAwesomeIcons.phone, size: 15)),
           ),
         ),
       ),
@@ -226,9 +138,15 @@ class Translate extends StatelessWidget {
   }
 }
 
-class HealthDrawer extends StatelessWidget {
+class HealthDrawer extends StatefulWidget {
   const HealthDrawer({super.key, required this.func});
   final void Function() func;
+
+  @override
+  State<HealthDrawer> createState() => _HealthDrawerState();
+}
+
+class _HealthDrawerState extends State<HealthDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -245,60 +163,33 @@ class HealthDrawer extends StatelessWidget {
               builder: (BuildContext context, void Function(void Function()) setS) {
                 return Row(
                   children: <Widget>[
-                    FutureBuilder<Translation>(
-                      future: translateTo("Language", to: language),
-                      builder: (BuildContext context, AsyncSnapshot<Translation> snapshot) {
-                        return Text(
-                          snapshot.hasData ? snapshot.data!.text : "",
-                          style: GoogleFonts.abel(color: white, fontSize: 18, fontWeight: FontWeight.bold),
-                        );
-                      },
-                    ),
+                    Translate(text: "Language", to: language, fontSize: 18, fontWeight: FontWeight.bold),
                     const Spacer(),
                     GestureDetector(
                       onTap: () => setS(() {
                         language = "en";
-                        func();
+                        widget.func();
                         showToast("Language Changed Successfully");
                       }),
                       child: Container(
                         width: 30,
                         height: 30,
                         decoration: BoxDecoration(border: Border.all(color: language == "en" ? blue : white, width: 2), color: transparent, borderRadius: BorderRadius.circular(5)),
-                        child: Center(
-                          child: Text(
-                            "EN",
-                            style: GoogleFonts.abel(
-                              color: language == "en" ? blue : white,
-                              fontSize: 18,
-                              fontWeight: language == "en" ? FontWeight.bold : FontWeight.normal,
-                            ),
-                          ),
-                        ),
+                        child: Center(child: Text("EN", style: GoogleFonts.abel(color: language == "en" ? blue : white, fontSize: 18, fontWeight: language == "en" ? FontWeight.bold : FontWeight.normal))),
                       ),
                     ),
                     const SizedBox(width: 10),
                     GestureDetector(
                       onTap: () => setS(() {
                         language = "fr";
-                        func();
-
+                        widget.func();
                         showToast("Langue modifiée avec succès");
                       }),
                       child: Container(
                         width: 30,
                         height: 30,
                         decoration: BoxDecoration(border: Border.all(color: language == "fr" ? blue : white, width: 2), color: transparent, borderRadius: BorderRadius.circular(5)),
-                        child: Center(
-                          child: Text(
-                            "FR",
-                            style: GoogleFonts.abel(
-                              color: language == "fr" ? blue : white,
-                              fontSize: 18,
-                              fontWeight: language == "fr" ? FontWeight.bold : FontWeight.normal,
-                            ),
-                          ),
-                        ),
+                        child: Center(child: Text("FR", style: GoogleFonts.abel(color: language == "fr" ? blue : white, fontSize: 18, fontWeight: language == "fr" ? FontWeight.bold : FontWeight.normal))),
                       ),
                     ),
                   ],

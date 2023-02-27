@@ -6,7 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
-import 'package:sms_advanced/sms_advanced.dart';
+//import 'package:sms_advanced/sms_advanced.dart';
 
 import '../stuff/classes.dart';
 import '../stuff/globals.dart';
@@ -22,10 +22,7 @@ class _OTPState extends State<OTP> {
   final OtpFieldController _otpFieldController = OtpFieldController();
   @override
   void initState() {
-    receiver.onSmsReceived!.listen((SmsMessage msg) => _otpFieldController.set(msg.body!.split('')));
-    Future.delayed(3.seconds, () {
-      _otpFieldController.set("12345".split(''));
-    });
+    //receiver.onSmsReceived!.listen((SmsMessage msg) => _otpFieldController.set(msg.body!.split('')));
     super.initState();
   }
 
@@ -52,10 +49,10 @@ class _OTPState extends State<OTP> {
                   Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
                   Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                   Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
-                  const SizedBox(height: 10),
-                  Translate(text: "Wait For", color: blue, fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 2.seconds),
-                  Translate(text: "SMS Notification.", fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 2.seconds),
-                  Translate(text: "The pin fields will automatically be filled when sms is intercepted.", fontSize: 16, to: language).animate().fadeIn(duration: 2.seconds),
+                  const SizedBox(height: 40),
+                  Translate(text: "Wait For", color: blue, fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 500.ms),
+                  Translate(text: "SMS Notification.", fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 500.ms),
+                  Translate(text: "The pin fields will automatically be filled when sms is intercepted.", fontSize: 16, to: language).animate().fadeIn(duration: 500.ms),
                   const SizedBox(height: 40),
                   IgnorePointer(
                     ignoring: true,

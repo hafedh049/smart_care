@@ -5,6 +5,7 @@ import 'package:health_care/authentification/recovery.dart';
 import 'package:health_care/authentification/sign_up.dart';
 import 'package:health_care/stuff/classes.dart';
 import 'package:health_care/stuff/globals.dart';
+import 'package:lottie/lottie.dart';
 
 import '../stuff/functions.dart';
 
@@ -54,9 +55,9 @@ class _SignInState extends State<SignIn> {
                     Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                     Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue.withOpacity(.5)), const SizedBox(width: 30)]),
                     const SizedBox(height: 60),
-                    Translate(text: "Welcome", fontWeight: FontWeight.bold, to: language, color: blue).animate().fadeIn(duration: 2.seconds),
-                    Translate(text: "Sign-In now", fontWeight: FontWeight.bold, to: language, fontSize: 35).animate().fadeIn(duration: 2.seconds),
-                    Translate(text: "Welcome back, please fill the form to sign in and continue.", to: language, fontSize: 16).animate().fadeIn(duration: 2.seconds),
+                    Translate(text: "Welcome", fontWeight: FontWeight.bold, to: language, color: blue).animate().fadeIn(duration: 500.ms),
+                    Translate(text: "Sign-In now", fontWeight: FontWeight.bold, to: language, fontSize: 35).animate().fadeIn(duration: 500.ms),
+                    Translate(text: "Welcome back, please fill the form to sign in and continue.", to: language, fontSize: 16).animate().fadeIn(duration: 500.ms),
                     const SizedBox(height: 30),
                     Row(
                       children: <Widget>[
@@ -136,19 +137,22 @@ class _SignInState extends State<SignIn> {
                         const SizedBox(width: 10),
                         Translate(text: "OR", fontSize: 20, fontWeight: FontWeight.bold, to: language),
                         const SizedBox(width: 10),
-                        Container(height: .5, width: MediaQuery.of(context).size.width * .38, decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(25))),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Container(height: .5, width: MediaQuery.of(context).size.width * .4, decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(25))),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const <Widget>[PhoneAuth(), GoogleAuth(), OTPAuth()],
+                        children: <Widget>[const OTPAuth(), Expanded(child: SizedBox(height: 5, child: LottieBuilder.asset("assets/line.json"))), const GoogleAuth()],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

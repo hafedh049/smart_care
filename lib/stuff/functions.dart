@@ -33,13 +33,6 @@ void playNote(String note) {
   player.open(Audio("assets/$note.mp3"));
 }
 
-Future<void> sendSms(String toNumber, String messageBody) async {
-  await twilio.sendSMS(
-    toNumber: toNumber,
-    messageBody: messageBody,
-  );
-}
-
 Future<String> countryCodeDetector(String number) async {
   PhoneNumber phone = await PhoneNumber.getRegionInfoFromPhoneNumber(number);
   return phone.dialCode ?? "";
