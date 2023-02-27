@@ -63,7 +63,10 @@ class GetStarted extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const SignIn())),
+                  onTap: () {
+                    db!.update("SMART_CARE", <String, dynamic>{"FIRST_TIME": 0});
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const SignIn()));
+                  },
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[

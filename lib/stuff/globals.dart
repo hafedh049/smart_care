@@ -1,6 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:sms_advanced/sms_advanced.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:translator/translator.dart';
 
 Color white = Colors.white;
@@ -9,9 +10,12 @@ Color darkBlue = const Color.fromARGB(30, 7, 32, 60);
 Color transparent = Colors.transparent;
 Color blue = const Color.fromARGB(255, 0, 80, 146);
 
-bool firstTime = true;
+int? firstTime;
+int? isActive;
 
 bool isDarkTheme = true;
+
+Database? db;
 
 final List<String> specialityList = <String>[
   "Physician",
@@ -34,6 +38,9 @@ final GlobalKey<ScaffoldState> signUpScaffoldKey = GlobalKey<ScaffoldState>();
 final GlobalKey<ScaffoldState> recoveryScaffoldKey = GlobalKey<ScaffoldState>();
 final GlobalKey<ScaffoldState> otp1ScaffoldKey = GlobalKey<ScaffoldState>();
 final GlobalKey<ScaffoldState> otp2ScaffoldKey = GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> homeScaffoldKey = GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> errorScaffoldKey = GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> waitScaffoldKey = GlobalKey<ScaffoldState>();
 
 final AssetsAudioPlayer player = AssetsAudioPlayer.newPlayer();
 
