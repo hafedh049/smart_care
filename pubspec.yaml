@@ -37,6 +37,7 @@ dependencies:
   assets_audio_player: ^3.0.6
   twilio_flutter: ^0.0.9
   sms_advanced: ^1.0.1
+  intl_phone_number_input: ^0.7.2
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_care/stuff/globals.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:translator/translator.dart';
 
 Future<Translation> translateTo(String text, {to = 'en'}) async {
@@ -37,4 +38,9 @@ Future<void> sendSms(String toNumber, String messageBody) async {
     toNumber: toNumber,
     messageBody: messageBody,
   );
+}
+
+Future<String> countryCodeDetector(String number) async {
+  PhoneNumber phone = await PhoneNumber.getRegionInfoFromPhoneNumber(number);
+  return phone.dialCode ?? "";
 }

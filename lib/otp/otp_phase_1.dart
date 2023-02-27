@@ -56,7 +56,7 @@ class _OTPViewState extends State<OTPView> {
                     child: GestureDetector(
                       onTap: () async {
                         //await sendSms("23566502", "TEST");
-                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OTP()));
+                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const OTP()));
                       },
                       child: Container(
                         height: 40,
