@@ -1,4 +1,6 @@
+import 'package:clipboard_listener/clipboard_listener.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,17 +15,30 @@ import '../stuff/globals.dart';
 
 class OTP extends StatefulWidget {
   const OTP({super.key});
-
   @override
   State<OTP> createState() => _OTPState();
 }
 
 class _OTPState extends State<OTP> {
   final OtpFieldController _otpFieldController = OtpFieldController();
+  String data = "";
   @override
   void initState() {
-    //receiver.onSmsReceived!.listen((SmsMessage msg) => _otpFieldController.set(msg.body!.split('')));
+    ClipboardListener.addListener(() async {
+      ClipboardData? clipboard = await Clipboard.getData("text/plain");
+      if (clipboard != null && clipboard.text != null && clipboard.text!.isNotEmpty && clipboard.text!.contains(RegExp(r'^\d+$'))) {
+        data = clipboard.text!;
+        _otpFieldController.set(data.split(RegExp(r"")));
+        await Future.delayed(1.seconds, () {});
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    ClipboardListener.removeListener(() {});
+    super.dispose();
   }
 
   @override

@@ -1,11 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:health_care/otp/opt_phase_2.dart';
-import 'package:health_care/stuff/functions.dart';
+import 'package:smart_care/otp/opt_phase_2.dart';
+import 'package:smart_care/stuff/functions.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:lottie/lottie.dart';
+//import 'package:sms_advanced/sms_advanced.dart';
 import '../stuff/classes.dart';
 import '../stuff/globals.dart';
 
@@ -20,6 +22,8 @@ class _OTPViewState extends State<OTPView> {
   final TextEditingController _phoneController = TextEditingController();
   final FocusNode _phoneNode = FocusNode();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool wait = false;
+  String countryCode = "";
 
   @override
   void dispose() {
@@ -74,7 +78,9 @@ class _OTPViewState extends State<OTPView> {
                         cursorColor: blue,
                         errorMessage: language == 'en' ? 'Not a valid number' : 'Not a valid number',
                         inputBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                        onInputChanged: (PhoneNumber value) {},
+                        onInputChanged: (PhoneNumber value) {
+                          countryCode = value.dialCode!;
+                        },
                         textStyle: GoogleFonts.abel(fontSize: 16),
                         spaceBetweenSelectorAndTextField: 0,
                         textFieldController: _phoneController,
@@ -93,35 +99,64 @@ class _OTPViewState extends State<OTPView> {
                     ),
                     const SizedBox(height: 40),
                     Center(
-                      child: GestureDetector(
-                        onTap: () async {
-                          try {
-                            if (_formKey.currentState!.validate()) {
-                              showToast(language == "en" ? "Wait for the SMS" : "Attendez le SMS");
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const OTP()));
-                            } else {
-                              showToast(language == "en" ? "Please verify your phone number" : "Veuillez vérifier votre numéro de téléphone");
-                            }
-                          } catch (_) {
-                            showToast(_.toString());
-                          }
-                        },
-                        child: Container(
-                          height: 40,
-                          width: MediaQuery.of(context).size.width * .6,
-                          decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(25)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: <Widget>[
-                                const Spacer(),
-                                Translate(text: "Continue", fontSize: 20, fontWeight: FontWeight.bold, to: language),
-                                const Spacer(),
-                                CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
-                              ],
+                      child: StatefulBuilder(
+                        builder: (BuildContext context, void Function(void Function()) setS) {
+                          return IgnorePointer(
+                            ignoring: wait,
+                            child: GestureDetector(
+                              onTap: () async {
+                                try {
+                                  if (_formKey.currentState!.validate()) {
+                                    setS(() => wait = true);
+                                    await FirebaseAuth.instance.verifyPhoneNumber(
+                                      phoneNumber: "$countryCode${_phoneController.text.trim().replaceAll(RegExp(r' '), '')}",
+                                      verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {},
+                                      verificationFailed: (FirebaseAuthException error) {
+                                        showToast(error.message!, color: red);
+                                      },
+                                      timeout: 30.seconds,
+                                      forceResendingToken: 1,
+                                      codeSent: (String verificationId, int? forceResendingToken) async {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) => const OTP(),
+                                          ),
+                                        );
+                                        /* receiver.onSmsReceived!.listen((SmsMessage msg) {   
+                                        });*/
+                                      },
+                                      codeAutoRetrievalTimeout: (String verificationId) {},
+                                    );
+                                  } else {
+                                    showToast(language == "en" ? "Verify fields please" : "Vérifiez les champs s'il vous plaît");
+                                  }
+                                } catch (_) {
+                                  setS(() => wait = false);
+                                  showToast(_.toString());
+                                }
+                              },
+                              child: AnimatedContainer(
+                                duration: 500.ms,
+                                height: 40,
+                                width: wait ? MediaQuery.of(context).size.width * .35 : MediaQuery.of(context).size.width * .6,
+                                decoration: BoxDecoration(color: wait ? green : blue, borderRadius: BorderRadius.circular(25)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      if (!wait) const Spacer(),
+                                      Translate(text: wait ? "Connecting ..." : "Sign-In", fontWeight: FontWeight.bold, to: language, fontSize: 20),
+                                      if (!wait) const Spacer(),
+                                      if (!wait) CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       ),
                     ),
                     LottieBuilder.asset("assets/phase_1.json"),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:health_care/authentification/sign_in.dart';
-import 'package:health_care/stuff/classes.dart';
-import 'package:health_care/stuff/globals.dart';
+import 'package:smart_care/authentification/sign_in.dart';
+import 'package:smart_care/stuff/classes.dart';
+import 'package:smart_care/stuff/globals.dart';
 import 'package:lottie/lottie.dart';
 
 class GetStarted extends StatelessWidget {

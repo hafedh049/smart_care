@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:health_care/otp/otp_phase_1.dart';
-import 'package:health_care/stuff/functions.dart';
-import 'dart:math' as math;
-
-import 'package:health_care/stuff/globals.dart';
+import 'package:smart_care/otp/otp_phase_1.dart';
+import 'package:smart_care/stuff/functions.dart';
+import 'package:smart_care/stuff/globals.dart';
 import 'package:lottie/lottie.dart';
 import 'package:translator/translator.dart';
+import 'dart:math' as math;
 
 class HalfCirclePainter extends CustomPainter {
   @override
@@ -31,7 +30,7 @@ class HalfCirclePainter extends CustomPainter {
 
 // ignore: must_be_immutable
 class CustomTextField extends StatelessWidget {
-  CustomTextField({super.key, this.type = TextInputType.text, required this.controller, this.validator, required this.hint, required this.prefix, this.obscured = false, this.to = "en"});
+  CustomTextField({super.key, this.readonly = false, this.type = TextInputType.text, required this.controller, this.validator, required this.hint, required this.prefix, this.obscured = false, this.to = "en"});
   final bool obscured;
   final TextEditingController controller;
   final String hint;
@@ -40,6 +39,7 @@ class CustomTextField extends StatelessWidget {
   final IconData prefix;
   final TextInputType type;
   final String? Function(String?)? validator;
+  final bool readonly;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +56,8 @@ class CustomTextField extends StatelessWidget {
                 controller: controller,
                 cursorColor: blue,
                 autocorrect: false,
+                readOnly: readonly,
+                enabled: !readonly,
                 cursorRadius: const Radius.circular(15),
                 cursorWidth: 1,
                 obscureText: obscured ? !obscure : false,
@@ -64,9 +66,12 @@ class CustomTextField extends StatelessWidget {
                   labelText: snapshot.hasData ? snapshot.data!.text : hint,
                   labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
                   prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(prefix, size: 15, color: blue)),
-                  suffixIcon: obscured ? IconButton(splashColor: blue.withOpacity(.3), highlightColor: blue.withOpacity(.3), focusColor: blue.withOpacity(.3), onPressed: () => _(() => obscure = !obscure), icon: Icon(!obscure ? Icons.visibility_off : Icons.visibility, size: 15)) : null,
+                  suffixIcon: obscured ? IconButton(splashColor: blue.withOpacity(.3), highlightColor: blue.withOpacity(.3), focusColor: blue.withOpacity(.3), onPressed: () => _(() => obscure = !obscure), icon: Icon(!obscure ? Icons.visibility_off : Icons.visibility, color: blue, size: 15)) : null,
                   enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                  disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
                   focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                  errorBorder: OutlineInputBorder(borderSide: BorderSide(color: red)),
+                  errorStyle: GoogleFonts.abel(color: red, fontSize: 14),
                 ),
               );
             },

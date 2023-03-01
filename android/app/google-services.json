@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "922916622086",
-    "project_id": "medical-care-930d6",
-    "storage_bucket": "medical-care-930d6.appspot.com"
+    "project_number": "326479825147",
+    "project_id": "smart-care-b4ab6",
+    "storage_bucket": "smart-care-b4ab6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:922916622086:android:71dcbd968c9d4556c3d887",
+        "mobilesdk_app_id": "1:326479825147:android:b8bf5fa20d1ff010ba485e",
         "android_client_info": {
-          "package_name": "com.example.health_care"
+          "package_name": "com.example.smart_care"
         }
       },
       "oauth_client": [
         {
-          "client_id": "922916622086-4eufi3sufv6u47ipt29302kmnuv6tfrn.apps.googleusercontent.com",
+          "client_id": "326479825147-uk5jcin65rd5c1sml9i4rtjnj7249abe.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCl2pvYrf-DwYhNfZe9VmzR1Ux-lj_Zyhg"
+          "current_key": "AIzaSyAWbsPuogjLWkP6qPjDF1pjwDwota94rl8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "922916622086-4eufi3sufv6u47ipt29302kmnuv6tfrn.apps.googleusercontent.com",
+              "client_id": "326479825147-uk5jcin65rd5c1sml9i4rtjnj7249abe.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

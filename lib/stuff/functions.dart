@@ -2,7 +2,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:health_care/stuff/globals.dart';
+import 'package:smart_care/stuff/globals.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:translator/translator.dart';
@@ -20,7 +20,7 @@ TextSpan customTextSpan() {
 
 void showToast(String content, {Color? color}) {
   Fluttertoast.showToast(
-    msg: content,
+    msg: content.replaceAll(RegExp(r'\[.+\] '), ''),
     backgroundColor: color ?? blue.withOpacity(.3),
     fontSize: 14,
     gravity: ToastGravity.TOP,

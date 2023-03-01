@@ -1,6 +1,6 @@
-# health_care
+# smart_care
 
-this application will help patients to consult any near or available doctor, analyze their state, etc...
+A new Flutter project.
 
 ## Getting Started
 

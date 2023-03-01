@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:health_care/stuff/classes.dart';
-import 'package:health_care/stuff/functions.dart';
-import 'package:health_care/stuff/globals.dart';
+import 'package:smart_care/stuff/classes.dart';
+import 'package:smart_care/stuff/functions.dart';
+import 'package:smart_care/stuff/globals.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+
+import '../home/home.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -24,10 +28,13 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String speciality = "";
+  final TextEditingController _specialityController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool wait = false;
+
   @override
   void dispose() {
+    _specialityController.dispose();
     _phoneNode.dispose();
     _phoneController.dispose();
     _emailController.dispose();
@@ -85,7 +92,43 @@ class _SignUpState extends State<SignUp> {
                     CustomTextField(validator: fieldsValidators["email"], controller: _emailController, hint: "E-mail", to: language, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
                     const SizedBox(height: 10),
                     CustomTextField(validator: fieldsValidators["password"], controller: _passwordController, hint: "Password", to: language, prefix: FontAwesomeIcons.lock, obscured: true),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
+                    StatefulBuilder(
+                      builder: (BuildContext context, void Function(void Function()) setS) {
+                        return GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        const SizedBox(height: 10),
+                                        ...specialityList
+                                            .map((String speciality_) => GestureDetector(
+                                                  onTap: () {
+                                                    setS(() => _specialityController.text = speciality_);
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: SizedBox(
+                                                    height: 40,
+                                                    child: Translate(text: speciality_, to: language, color: white, fontSize: 16, fontWeight: FontWeight.bold),
+                                                  ),
+                                                ))
+                                            .toList(),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: CustomTextField(controller: _specialityController, hint: "Speciality", prefix: FontAwesomeIcons.bomb, validator: fieldsValidators["speciality"], to: language, readonly: true));
+                      },
+                    ),
+                    const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: InternationalPhoneNumberInput(
@@ -119,79 +162,67 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    StatefulBuilder(
-                      builder: (BuildContext context, void Function(void Function()) setS) {
-                        return GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      const SizedBox(height: 10),
-                                      ...specialityList
-                                          .map((String speciality_) => GestureDetector(
-                                                onTap: () {
-                                                  setS(() => speciality = "( $speciality_ )");
-                                                  Navigator.pop(context);
-                                                },
-                                                child: SizedBox(
-                                                  height: 40,
-                                                  child: Translate(text: speciality_, to: language, color: white, fontSize: 16, fontWeight: FontWeight.bold),
-                                                ),
-                                              ))
-                                          .toList(),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          child: Row(
-                            children: <Widget>[
-                              Translate(text: "Speciality", to: language, color: blue, fontSize: 18, fontWeight: FontWeight.bold),
-                              if (speciality.isNotEmpty) const SizedBox(width: 10),
-                              if (speciality.isNotEmpty) Translate(text: speciality, to: language, fontSize: 18, fontWeight: FontWeight.bold),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
                     const SizedBox(height: 10),
                     Center(
-                      child: GestureDetector(
-                        onTap: () async {
-                          try {
-                            if (_formKey.currentState!.validate()) {
-                              showToast(language == "en" ? "Welcome" : "Bienvenue");
-                            } else {
-                              showToast(language == "en" ? "Verify fields please" : "Vérifiez les champs s'il vous plaît");
-                            }
-                          } catch (_) {
-                            showToast(_.toString());
-                          }
-                        },
-                        child: Container(
-                          height: 40,
-                          width: MediaQuery.of(context).size.width * .6,
-                          decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(25)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: <Widget>[
-                                const Spacer(),
-                                Translate(text: "Sign-In", to: language, fontSize: 20, fontWeight: FontWeight.bold),
-                                const Spacer(),
-                                CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
-                              ],
+                      child: StatefulBuilder(
+                        builder: (BuildContext context, void Function(void Function()) setS) {
+                          return IgnorePointer(
+                            ignoring: wait,
+                            child: GestureDetector(
+                              onTap: () async {
+                                try {
+                                  if (_formKey.currentState!.validate()) {
+                                    setS(() => wait = true);
+                                    await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
+                                      await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).set({
+                                        "account_creation_date": Timestamp.now(),
+                                        "medical_professional_name": _usernameController.text.trim(),
+                                        "service": _serviceController.text.trim(),
+                                        "job_location": _jobLocationController.text.trim(),
+                                        "cin": _cinController.text.trim(),
+                                        "id": _idController.text.trim(),
+                                        "email": _emailController.text.trim(),
+                                        "password": _passwordController.text.trim(),
+                                        "speciality": _specialityController.text.trim(),
+                                        "phone_number": _phoneController.text.trim(),
+                                      }).then(
+                                        (void value) => Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) => const Home(),
+                                          ),
+                                        ),
+                                      );
+                                    });
+                                  } else {
+                                    showToast(language == "en" ? "Verify fields please" : "Vérifiez les champs s'il vous plaît");
+                                  }
+                                } catch (_) {
+                                  setS(() => wait = false);
+                                  showToast(_.toString());
+                                }
+                              },
+                              child: AnimatedContainer(
+                                duration: 500.ms,
+                                height: 40,
+                                width: wait ? MediaQuery.of(context).size.width * .35 : MediaQuery.of(context).size.width * .6,
+                                decoration: BoxDecoration(color: wait ? green : blue, borderRadius: BorderRadius.circular(25)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      if (!wait) const Spacer(),
+                                      Translate(text: wait ? "Connecting ..." : "Sign-In", fontWeight: FontWeight.bold, to: language, fontSize: 20),
+                                      if (!wait) const Spacer(),
+                                      if (!wait) CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(height: 10),

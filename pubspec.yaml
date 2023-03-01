@@ -1,4 +1,4 @@
-name: health_care
+name: smart_care
 description: this application will help patients to consult any near or available doctor, analyze their state, etc...
 
 publish_to: 'none'
@@ -35,11 +35,12 @@ dependencies:
   image_picker: ^0.8.6+3
   image_cropper: ^3.0.1
   assets_audio_player: ^3.0.6
-  sms_advanced: ^1.0.1
+  #sms_advanced: ^1.0.1
   intl_phone_number_input: ^0.7.2
   sqflite: ^2.2.5
   internet_connection_checker: ^1.0.0+1
   connectivity_plus: ^3.0.3
+  clipboard_listener: ^2.0.0
 
 dev_dependencies:
   flutter_test:

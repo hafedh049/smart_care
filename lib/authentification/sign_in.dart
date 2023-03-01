@@ -1,11 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:health_care/authentification/recovery.dart';
-import 'package:health_care/authentification/sign_up.dart';
-import 'package:health_care/stuff/classes.dart';
-import 'package:health_care/stuff/globals.dart';
-import 'package:lottie/lottie.dart';
+import 'package:smart_care/authentification/recovery.dart';
+import 'package:smart_care/authentification/sign_up.dart';
+import 'package:smart_care/home/home.dart';
+import 'package:smart_care/stuff/classes.dart';
+import 'package:smart_care/stuff/globals.dart';
 
 import '../stuff/functions.dart';
 
@@ -20,6 +21,7 @@ class _SignInState extends State<SignIn> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool wait = false;
 
   @override
   void dispose() {
@@ -83,34 +85,52 @@ class _SignInState extends State<SignIn> {
                     CustomTextField(validator: fieldsValidators["password"], controller: _passwordController, hint: "Password", obscured: true, to: language, prefix: FontAwesomeIcons.lock),
                     const SizedBox(height: 60),
                     Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          try {
-                            if (_formKey.currentState!.validate()) {
-                              showToast(language == "en" ? "Welcome" : "Bienvenue");
-                            } else {
-                              showToast(language == "en" ? "Verify fields please" : "Vérifiez les champs s'il vous plaît");
-                            }
-                          } catch (_) {
-                            showToast(_.toString());
-                          }
-                        },
-                        child: Container(
-                          height: 40,
-                          width: MediaQuery.of(context).size.width * .6,
-                          decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(25)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: <Widget>[
-                                const Spacer(),
-                                Translate(text: "Sign-In", fontWeight: FontWeight.bold, to: language, fontSize: 20),
-                                const Spacer(),
-                                CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
-                              ],
+                      child: StatefulBuilder(
+                        builder: (BuildContext context, void Function(void Function()) setS) {
+                          return IgnorePointer(
+                            ignoring: wait,
+                            child: GestureDetector(
+                              onTap: () async {
+                                try {
+                                  if (_formKey.currentState!.validate()) {
+                                    setS(() => wait = true);
+                                    await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then(
+                                          (UserCredential value) => Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (BuildContext context) => const Home(),
+                                            ),
+                                          ),
+                                        );
+                                  } else {
+                                    showToast(language == "en" ? "Verify fields please" : "Vérifiez les champs s'il vous plaît");
+                                  }
+                                } catch (_) {
+                                  setS(() => wait = false);
+                                  showToast(_.toString());
+                                }
+                              },
+                              child: AnimatedContainer(
+                                duration: 500.ms,
+                                height: 40,
+                                width: wait ? MediaQuery.of(context).size.width * .37 : MediaQuery.of(context).size.width * .6,
+                                decoration: BoxDecoration(color: wait ? green : blue, borderRadius: BorderRadius.circular(25)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      if (!wait) const Spacer(),
+                                      Translate(text: wait ? "Connecting ..." : "Sign-In", fontWeight: FontWeight.bold, to: language, fontSize: 20),
+                                      if (!wait) const Spacer(),
+                                      if (!wait) CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(height: 30),
@@ -150,7 +170,7 @@ class _SignInState extends State<SignIn> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[const OTPAuth(), Expanded(child: SizedBox(height: 5, child: LottieBuilder.asset("assets/line.json"))), const GoogleAuth()],
+                        children: const <Widget>[OTPAuth(), GoogleAuth()],
                       ),
                     ),
                   ],
