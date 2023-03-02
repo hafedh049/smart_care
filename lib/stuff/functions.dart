@@ -1,22 +1,8 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_care/stuff/globals.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:translator/translator.dart';
-
-Future<Translation> translateTo(String text, {to = 'en'}) async {
-  return await translator.translate(text, to: to);
-}
-
-TextSpan customTextSpan() {
-  return TextSpan(
-    text: "Don't have an account? ",
-    style: GoogleFonts.abel(fontSize: 16),
-  );
-}
 
 void showToast(String content, {Color? color}) {
   Fluttertoast.showToast(
@@ -32,11 +18,6 @@ void showToast(String content, {Color? color}) {
 
 void playNote(String note) {
   player.open(Audio("assets/$note.mp3"));
-}
-
-Future<String> countryCodeDetector(String number) async {
-  PhoneNumber phone = await PhoneNumber.getRegionInfoFromPhoneNumber(number);
-  return phone.dialCode ?? "";
 }
 
 Future<void> openDB() async {

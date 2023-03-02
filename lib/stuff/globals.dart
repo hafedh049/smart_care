@@ -1,8 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
-//import 'package:sms_advanced/sms_advanced.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:translator/translator.dart';
 
 Color white = Colors.white;
 Color black = Colors.black;
@@ -30,30 +28,18 @@ final List<String> specialityList = <String>[
   "Social worker",
 ];
 
-final GoogleTranslator translator = GoogleTranslator();
-
 String language = "en";
 
-final GlobalKey<ScaffoldState> getStartedScaffoldKey = GlobalKey<ScaffoldState>();
-final GlobalKey<ScaffoldState> signInScaffoldKey = GlobalKey<ScaffoldState>();
-final GlobalKey<ScaffoldState> signUpScaffoldKey = GlobalKey<ScaffoldState>();
-final GlobalKey<ScaffoldState> recoveryScaffoldKey = GlobalKey<ScaffoldState>();
-final GlobalKey<ScaffoldState> otp1ScaffoldKey = GlobalKey<ScaffoldState>();
-final GlobalKey<ScaffoldState> otp2ScaffoldKey = GlobalKey<ScaffoldState>();
 final GlobalKey<ScaffoldState> homeScaffoldKey = GlobalKey<ScaffoldState>();
-final GlobalKey<ScaffoldState> errorScaffoldKey = GlobalKey<ScaffoldState>();
-final GlobalKey<ScaffoldState> waitScaffoldKey = GlobalKey<ScaffoldState>();
 
 final AssetsAudioPlayer player = AssetsAudioPlayer.newPlayer();
-
-//SmsReceiver receiver = SmsReceiver();
 
 Map<String, String? Function(String?)?> fieldsValidators = <String, String? Function(String?)?>{
   "email": (String? text) {
     if (text!.isEmpty) {
       return language == "en" ? "E-mail is mandatory" : "E-mail est obligatoire";
     } else if (!text.contains(RegExp(r'^[\w\.-]+@[\w\.-]+\.\w{2,4}$'))) {
-      return language == "en" ? "Please verify your e-mail" : "Veuillez vérifier votre e-mail";
+      return language == "en" ? "Please verify your E-mail" : "Veuillez vérifier votre e-mail";
     }
     return null;
   },
@@ -68,8 +54,8 @@ Map<String, String? Function(String?)?> fieldsValidators = <String, String? Func
   "username": (String? text) {
     if (text!.isEmpty) {
       return language == "en" ? "Name field is empty." : "Le champ nom est vide.";
-    } else if (!text.contains(RegExp(r'^[a-zA-Z][a-zA-Z0-9-_]{3,32}$'))) {
-      return language == "en" ? "This field must start with an alphabetic character. Can contain the following characters: a-z A-Z 0-9 - and _" : "Ce champ doit commencer par un caractère alphabétique. Peut contenir les caractères suivants : a-z A-Z 0-9 - et _";
+    } else if (!text.contains(RegExp(r'^[a-zA-Z][\w ]+$'))) {
+      return language == "en" ? "This field must start with an alphabetic character." : "Ce champ doit commencer par un caractère alphabétique.";
     }
     return null;
   },
@@ -84,7 +70,7 @@ Map<String, String? Function(String?)?> fieldsValidators = <String, String? Func
   "service": (String? text) {
     if (text!.isEmpty) {
       return language == "en" ? "Service field must not be empty." : "Le champ service ne doit pas être vide.";
-    } else if (!text.contains(RegExp(r'^[ \w]{3,}$'))) {
+    } else if (!text.contains(RegExp(r'^[ \wéçèà]{3,}$'))) {
       return language == "en" ? "Incorrect or unknown service." : "Incorrect or unknown service.";
     }
     return null;
@@ -92,7 +78,7 @@ Map<String, String? Function(String?)?> fieldsValidators = <String, String? Func
   "id": (String? text) {
     if (text!.isEmpty) {
       return language == "en" ? "ID must not be empty." : "Le champ du ID ne doit pas être vide.";
-    } else if (!text.contains(RegExp(r'^[\#a-z0-9]{8,14}$'))) {
+    } else if (!text.contains(RegExp(r'^\#[a-z0-9]{4,14}$'))) {
       return language == "en" ? "Wrong format for ID. It must start with # and contains alphanumeric caracters." : "Mauvais format pour l'ID. Il doit commencer par # et contenir des caractères alphanumériques.";
     }
     return null;

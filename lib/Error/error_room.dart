@@ -13,13 +13,6 @@ class ErrorRoom extends StatelessWidget {
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) setS) {
         return Scaffold(
-          key: errorScaffoldKey,
-          drawer: HealthDrawer(
-            func: () {
-              errorScaffoldKey.currentState!.closeDrawer();
-              setS(() {});
-            },
-          ),
           backgroundColor: darkBlue,
           body: Padding(
             padding: const EdgeInsets.only(left: 8.0),
@@ -34,7 +27,7 @@ class ErrorRoom extends StatelessWidget {
                   const SizedBox(height: 10),
                   Center(child: LottieBuilder.asset("assets/error.json")),
                   const SizedBox(height: 20),
-                  Center(child: Translate(text: error.replaceAll(RegExp(r'\[.+\] '), ''), fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 500.ms)),
+                  Center(child: Translate(text: error.replaceAll(RegExp(r'\[.+\] '), ''), fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms)),
                 ],
               ),
             ),

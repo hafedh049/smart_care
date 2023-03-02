@@ -1,0 +1,310 @@
+{
+    "welcome": "Welcome",
+    "@welcome": {
+        "description": "A Flutter developer greetings"
+    },
+    "sign_in_now": "Sign-In now",
+    "@sign_in_now": {
+        "description": "Sign-In Now Text"
+    },
+    "welcome_back": "Welcome back, please fill the form to sign in and continue.",
+    "@welcome_back": {
+        "description": "A Welcome back"
+    },
+    "recover_account": "Recover Account",
+    "@recover_account": {
+        "description": "Recover Account Button"
+    },
+    "e_mail": "E-mail",
+    "@e_mail": {
+        "description": "E-mail hint"
+    },
+    "password": "Password",
+    "@password": {
+        "description": "Password hint"
+    },
+    "verify_fields_please": "Verify fields please",
+    "@verify_fields_please": {
+        "description": "Verify fields please text."
+    },
+    "connecting": "Connecting ...",
+    "@connecting": {
+        "description": "Connecting ..."
+    },
+    "sign_in": "Sign-In",
+    "@sign_in": {
+        "description": "Sign-In text."
+    },
+    "sign_out": "Sign-Out",
+    "@sign_out": {
+        "description": "Sign-Out text."
+    },
+    "signing_out": "Signing-Out ...",
+    "@signing_out": {
+        "description": "Signing-Out ... text."
+    },
+    "signing_in": "Signing-In ...",
+    "@signing_in": {
+        "description": "Signing-In ... text."
+    },
+    "dont_have_an_account": "Don't have an account? ",
+    "@dont_have_an_account": {
+        "description": "Don't have an account? "
+    },
+    "register_now": "Register now",
+    "@register_now": {
+        "description": "Resigtre now text"
+    },
+    "or": "OR",
+    "@or": {
+        "description": "OR Word."
+    },
+    "sign_up": "Sign Up",
+    "@sign_up": {
+        "description": "Sign-Up Word."
+    },
+    "form": "Form",
+    "@form": {
+        "description": "Form Word."
+    },
+    "to_create_this_form": "To create and account you need to fill this form.",
+    "@to_create_this_form": {
+        "description": "Form Word."
+    },
+    "username": "Medical Professional Name",
+    "@username": {
+        "description": "Medical Professional Name."
+    },
+    "service": "Service",
+    "@service": {
+        "description": "Service."
+    },
+    "job_location": "Job Location",
+    "@job_location": {
+        "description": "JobLocation."
+    },
+    "cin": "National Identity Card",
+    "@cin": {
+        "description": "National Identity Card."
+    },
+    "id": "Identifier",
+    "@id": {
+        "description": "Identifier."
+    },
+    "speciality": "Speciality",
+    "@speciality": {
+        "description": "Speciality."
+    },
+    "language": "Language",
+    "@language": {
+        "description": "Language."
+    },
+    "physician": "Physician",
+    "@physician": {
+        "description": "Physician."
+    },
+    "nurse": "Nurse",
+    "@nurse": {
+        "description": "Nurse."
+    },
+    "dentist": "Dentist",
+    "@dentist": {
+        "description": "Dentist."
+    },
+    "pharmacist": "Pharmacist",
+    "@pharmacist": {
+        "description": "Pharmacist."
+    },
+    "physical_therapist": "Physical Therapist",
+    "@physical_therapist": {
+        "description": "Physical Therapist."
+    },
+    "occupational_therapist": "Occupational Therapist",
+    "@occupational_therapist": {
+        "description": "Occupational Therapist."
+    },
+    "optometrist": "Optometrist",
+    "@optometrist": {
+        "description": "Optometrist."
+    },
+    "social_worker": "Social Worker",
+    "@social_worker": {
+        "description": "Social Worker."
+    },
+    "email_regex1": "E-mail is mandatory",
+    "@email_regex1": {
+        "description": "E-mail is mandatory."
+    },
+    "email_regex2": "Please verify your E-mail",
+    "@email_regex2": {
+        "description": "Please verify your E-mail."
+    },
+    "password_regex1": "Password should not be empty",
+    "@password_regex1": {
+        "description": "Password should not be empty."
+    },
+    "password_regex2": "Password expression should be at least 8 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number and can contain special characters",
+    "@password_regex2": {
+        "description": "Password expression should be at least 8 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number and can contain special characters."
+    },
+    "username_regex1": "Name field is empty.",
+    "@username_regex1": {
+        "description": "Name field is empty."
+    },
+    "username_regex2": "This field must start with an alphabetic character.",
+    "@username_regex2": {
+        "description": "This field must start with an alphabetic character."
+    },
+    "cin_regex1": "CIN field is mandatory.",
+    "@cin_regex1": {
+        "description": "CIN field is mandatory."
+    },
+    "cin_regex2": "CIN field should contains 8 digits.",
+    "@cin_regex2": {
+        "description": "CIN field should contains 8 digits."
+    },
+    "service_regex1": "Service field must not be empty.",
+    "@service_regex1": {
+        "description": "Service field must not be empty."
+    },
+    "service_regex2": "Incorrect or unknown service.",
+    "@service_regex2": {
+        "description": "Incorrect or unknown service."
+    },
+    "id_regex1": "ID must not be empty.",
+    "@id_regex1": {
+        "description": "ID must not be empty."
+    },
+    "id_regex2": "Wrong format for ID. It must start with # and contains alphanumeric caracters.",
+    "@id_regex2": {
+        "description": "Wrong format for ID. It must start with # and contains alphanumeric caracters."
+    },
+    "job_location_regex1": "You must provide your work location please.",
+    "@job_location_regex1": {
+        "description": "You must provide your work location please."
+    },
+    "job_location_regex2": "Please write a clear and existing work location.",
+    "@job_location_regex2": {
+        "description": "Please write a clear and existing work location."
+    },
+    "speciality_regex1": "Please choose one of the listed specialities.",
+    "@speciality_regex1": {
+        "description": "Please choose one of the listed specialities."
+    },
+    "country": "Country",
+    "@country": {
+        "description": "Country."
+    },
+    "not_valid_number": "Not a valid number",
+    "@not_valid_number": {
+        "description": "Not a valid number."
+    },
+    "phone_number": "Phone Number",
+    "@phone_number": {
+        "description": "Phone Number."
+    },
+    "account_created": "Account Created",
+    "@account_created": {
+        "description": "Account Created."
+    },
+    "verify_fields": "Verify fields please",
+    "@verify_fields": {
+        "description": "Verify fields please."
+    },
+    "no_user_linked": "No user linked to this account please create one",
+    "@no_user_linked": {
+        "description": "No user linked to this account please create one."
+    },
+    "language_changed": "Language Changed Successfully",
+    "@language_changed": {
+        "description": "Language Changed Successfully."
+    },
+    "wait_for": "Wait For",
+    "@wait_for": {
+        "description": "Wait For."
+    },
+    "sms_notification": "SMS Notification.",
+    "@sms_notification": {
+        "description": "SMS Notification."
+    },
+    "the_pin_fields": "The pin fields will automatically be filled when sms is intercepted.",
+    "@the_pin_fields": {
+        "description": "The pin fields will automatically be filled when sms is intercepted."
+    },
+    "sending": "Sending ...",
+    "@sending": {
+        "description": "SMS Notification."
+    },
+    "send_sms": "SEND SMS",
+    "@send_sms": {
+        "description": "SEND SMS."
+    },
+    "otp_recovery": "OTP Recovery",
+    "@otp_recovery": {
+        "description": "OTP Recovery."
+    },
+    "first_phase": "First Phase.",
+    "@first_phase": {
+        "description": "First Phase."
+    },
+    "enter_phone_number": "Please enter your phone number to send OTP code.",
+    "@enter_phone_number": {
+        "description": "Please enter your phone number to send OTP code."
+    },
+    "account": "Account",
+    "@account": {
+        "description": "Account."
+    },
+    "recovery": "Recovery",
+    "@recovery": {
+        "description": "Recovery."
+    },
+    "after_continuing": "After continuing you will recieve a mail that contains a link to recover your account in the inbox.",
+    "@after_continuing": {
+        "description": "After continuing you will recieve a mail that contains a link to recover your account in the inbox."
+    },
+    "old_email": "Old E-mail",
+    "@old_email": {
+        "description": "Old E-mail."
+    },
+    "old_password": "Old Password",
+    "@old_password": {
+        "description": "Old Password."
+    },
+    "new_password": "New Password",
+    "@new_password": {
+        "description": "New Password."
+    },
+    "email_sent": "E-mail Sent",
+    "@email_sent": {
+        "description": "E-mail Sent."
+    },
+    "verify_email_field": "Verify E-mail field",
+    "@verify_email_field": {
+        "description": "Verify E-mail field"
+    },
+    "done": "Done",
+    "@done": {
+        "description": "Done."
+    },
+    "send_email": "Send E-mail",
+    "@send_email": {
+        "description": "Send E-mail."
+    },
+    "virtual": "Virtual",
+    "@virtual": {
+        "description": "Virtual."
+    },
+    "ecosystem": "Ecosystem",
+    "@ecosystem": {
+        "description": "Ecosystem."
+    },
+    "specialized_healthcare": "Specialized healthcare, on a single tech platform, simplifying access to anyone, anywhere.",
+    "@specialized_healthcare": {
+        "description": "Specialized healthcare, on a single tech platform, simplifying access to anyone, anywhere."
+    },
+    "get_started": "Get Started",
+    "@get_started": {
+        "description": "Get Started."
+    }
+}

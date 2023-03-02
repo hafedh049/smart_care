@@ -5,21 +5,14 @@ import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GetStarted extends StatelessWidget {
   const GetStarted({super.key});
-
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (BuildContext context, void Function(void Function()) setS) {
       return Scaffold(
-        key: getStartedScaffoldKey,
-        drawer: HealthDrawer(
-          func: () {
-            getStartedScaffoldKey.currentState!.closeDrawer();
-            setS(() {});
-          },
-        ),
         backgroundColor: darkBlue,
         body: Padding(
           padding: const EdgeInsets.only(left: 8.0),
@@ -29,13 +22,13 @@ class GetStarted extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => getStartedScaffoldKey.currentState!.openDrawer(), icon: FontAwesomeIcons.ellipsis), const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
+                Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
                 Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                 Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue.withOpacity(.5)), const SizedBox(width: 30)]),
                 const SizedBox(height: 30),
-                Translate(text: language == "en" ? "Virtual" : "Ecosystem", color: blue, fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 500.ms),
-                Translate(text: language == "en" ? "Ecosystem" : "Virtual", fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 500.ms),
-                Translate(text: "Specialized healthcare, on a single tech platform, simplifying access to anyone, anywhere.", fontSize: 16, to: language).animate().fadeIn(duration: 500.ms),
+                Translate(text: AppLocalizations.of(context)!.virtual, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                Translate(text: AppLocalizations.of(context)!.ecosystem, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                Translate(text: AppLocalizations.of(context)!.specialized_healthcare, fontSize: 16).animate().fadeIn(duration: 500.ms),
                 Center(
                   child: Stack(
                     alignment: AlignmentDirectional.center,
@@ -72,7 +65,7 @@ class GetStarted extends StatelessWidget {
                     children: <Widget>[
                       CircleAvatar(radius: 25, backgroundColor: blue, child: const Icon(FontAwesomeIcons.chevronRight, size: 20)),
                       const SizedBox(width: 20),
-                      Translate(text: "Get Started", fontWeight: FontWeight.bold, fontSize: 16, to: language),
+                      Translate(text: AppLocalizations.of(context)!.get_started, fontWeight: FontWeight.bold, fontSize: 16),
                     ],
                   ),
                 )

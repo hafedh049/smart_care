@@ -7,7 +7,7 @@ import 'package:smart_care/otp/opt_phase_2.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:lottie/lottie.dart';
-//import 'package:sms_advanced/sms_advanced.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../stuff/classes.dart';
 import '../stuff/globals.dart';
 
@@ -37,13 +37,6 @@ class _OTPViewState extends State<OTPView> {
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) setS) {
         return Scaffold(
-          key: otp1ScaffoldKey,
-          drawer: HealthDrawer(
-            func: () {
-              otp1ScaffoldKey.currentState!.closeDrawer();
-              setS(() {});
-            },
-          ),
           backgroundColor: darkBlue,
           body: Padding(
             padding: const EdgeInsets.only(left: 8.0),
@@ -58,16 +51,16 @@ class _OTPViewState extends State<OTPView> {
                     Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                     Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
                     const SizedBox(height: 40),
-                    Translate(text: "OTP Recovery", color: blue, fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 500.ms),
-                    Translate(text: "First Phase.", fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 500.ms),
-                    Translate(text: "Please enter your phone number to send OTP code.", fontSize: 16, to: language).animate().fadeIn(duration: 500.ms),
+                    Translate(text: AppLocalizations.of(context)!.otp_recovery, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                    Translate(text: AppLocalizations.of(context)!.first_phase, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                    Translate(text: AppLocalizations.of(context)!.enter_phone_number, fontSize: 16).animate().fadeIn(duration: 500.ms),
                     const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: InternationalPhoneNumberInput(
                         initialValue: PhoneNumber(isoCode: "TN", dialCode: "+216"),
                         searchBoxDecoration: InputDecoration(
-                          labelText: language == 'en' ? 'Country' : 'Pays',
+                          labelText: AppLocalizations.of(context)!.country,
                           labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
                           prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.flag, size: 15, color: blue)),
                           enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
@@ -76,7 +69,7 @@ class _OTPViewState extends State<OTPView> {
                         autoValidateMode: AutovalidateMode.always,
                         focusNode: _phoneNode,
                         cursorColor: blue,
-                        errorMessage: language == 'en' ? 'Not a valid number' : 'Not a valid number',
+                        errorMessage: AppLocalizations.of(context)!.not_valid_number,
                         inputBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
                         onInputChanged: (PhoneNumber value) {
                           countryCode = value.dialCode!;
@@ -89,7 +82,7 @@ class _OTPViewState extends State<OTPView> {
                         onInputValidated: (bool value) => value ? _phoneNode.unfocus() : null,
                         selectorConfig: const SelectorConfig(leadingPadding: 8.0, selectorType: PhoneInputSelectorType.BOTTOM_SHEET, trailingSpace: false, useEmoji: true, setSelectorButtonAsPrefixIcon: true),
                         inputDecoration: InputDecoration(
-                          labelText: language == 'en' ? 'Phone Number' : 'Numéro Du Téléphone',
+                          labelText: AppLocalizations.of(context)!.phone_number,
                           labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
                           prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.phone, size: 15, color: blue)),
                           enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
@@ -112,15 +105,18 @@ class _OTPViewState extends State<OTPView> {
                                       phoneNumber: "$countryCode${_phoneController.text.trim().replaceAll(RegExp(r' '), '')}",
                                       verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {},
                                       verificationFailed: (FirebaseAuthException error) {
+                                        setS(() => wait = false);
                                         showToast(error.message!, color: red);
                                       },
-                                      timeout: 30.seconds,
+                                      timeout: 1.minutes,
                                       forceResendingToken: 1,
                                       codeSent: (String verificationId, int? forceResendingToken) async {
+                                        setS(() => wait = false);
+                                        showToast("SMS Sent", color: green);
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (BuildContext context) => const OTP(),
+                                            builder: (BuildContext context) => OTP(verification: verificationId),
                                           ),
                                         );
                                         /* receiver.onSmsReceived!.listen((SmsMessage msg) {   
@@ -129,7 +125,7 @@ class _OTPViewState extends State<OTPView> {
                                       codeAutoRetrievalTimeout: (String verificationId) {},
                                     );
                                   } else {
-                                    showToast(language == "en" ? "Verify fields please" : "Vérifiez les champs s'il vous plaît");
+                                    showToast(AppLocalizations.of(context)!.verify_fields_please);
                                   }
                                 } catch (_) {
                                   setS(() => wait = false);
@@ -147,7 +143,7 @@ class _OTPViewState extends State<OTPView> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       if (!wait) const Spacer(),
-                                      Translate(text: wait ? "Connecting ..." : "Sign-In", fontWeight: FontWeight.bold, to: language, fontSize: 20),
+                                      Translate(text: wait ? AppLocalizations.of(context)!.sending : AppLocalizations.of(context)!.send_sms, fontWeight: FontWeight.bold, fontSize: 20),
                                       if (!wait) const Spacer(),
                                       if (!wait) CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
                                     ],

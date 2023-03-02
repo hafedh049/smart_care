@@ -7,7 +7,7 @@ import 'package:smart_care/authentification/sign_up.dart';
 import 'package:smart_care/home/home.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../stuff/functions.dart';
 
 class SignIn extends StatefulWidget {
@@ -35,13 +35,6 @@ class _SignInState extends State<SignIn> {
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) setS) {
         return Scaffold(
-          key: signInScaffoldKey,
-          drawer: HealthDrawer(
-            func: () {
-              signInScaffoldKey.currentState!.closeDrawer();
-              setS(() {});
-            },
-          ),
           backgroundColor: darkBlue,
           body: Padding(
             padding: const EdgeInsets.only(left: 8.0),
@@ -56,10 +49,10 @@ class _SignInState extends State<SignIn> {
                     Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
                     Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                     Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue.withOpacity(.5)), const SizedBox(width: 30)]),
-                    const SizedBox(height: 60),
-                    Translate(text: "Welcome", fontWeight: FontWeight.bold, to: language, color: blue).animate().fadeIn(duration: 500.ms),
-                    Translate(text: "Sign-In now", fontWeight: FontWeight.bold, to: language, fontSize: 35).animate().fadeIn(duration: 500.ms),
-                    Translate(text: "Welcome back, please fill the form to sign in and continue.", to: language, fontSize: 16).animate().fadeIn(duration: 500.ms),
+                    const SizedBox(height: 40),
+                    Translate(text: AppLocalizations.of(context)!.welcome, fontWeight: FontWeight.bold, color: blue).animate().fadeIn(duration: 500.ms),
+                    Translate(text: AppLocalizations.of(context)!.sign_in_now, fontWeight: FontWeight.bold, fontSize: 35).animate().fadeIn(duration: 500.ms),
+                    Translate(text: AppLocalizations.of(context)!.welcome_back, fontSize: 16).animate().fadeIn(duration: 500.ms),
                     const SizedBox(height: 30),
                     Row(
                       children: <Widget>[
@@ -72,7 +65,7 @@ class _SignInState extends State<SignIn> {
                             decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(25)),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Center(child: Translate(text: "Recover Account", to: language, fontSize: 16, fontWeight: FontWeight.bold)),
+                              child: Center(child: Translate(text: AppLocalizations.of(context)!.recover_account, fontSize: 16, fontWeight: FontWeight.bold)),
                             ),
                           ),
                         ),
@@ -80,9 +73,9 @@ class _SignInState extends State<SignIn> {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    CustomTextField(validator: fieldsValidators["email"], controller: _emailController, hint: "E-mail", to: language, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
+                    CustomTextField(validator: fieldsValidators["email"], controller: _emailController, hint: AppLocalizations.of(context)!.e_mail, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
                     const SizedBox(height: 10),
-                    CustomTextField(validator: fieldsValidators["password"], controller: _passwordController, hint: "Password", obscured: true, to: language, prefix: FontAwesomeIcons.lock),
+                    CustomTextField(validator: fieldsValidators["password"], controller: _passwordController, hint: AppLocalizations.of(context)!.password, obscured: true, prefix: FontAwesomeIcons.lock),
                     const SizedBox(height: 60),
                     Center(
                       child: StatefulBuilder(
@@ -103,7 +96,7 @@ class _SignInState extends State<SignIn> {
                                           ),
                                         );
                                   } else {
-                                    showToast(language == "en" ? "Verify fields please" : "Vérifiez les champs s'il vous plaît");
+                                    showToast(AppLocalizations.of(context)!.verify_fields_please);
                                   }
                                 } catch (_) {
                                   setS(() => wait = false);
@@ -121,7 +114,7 @@ class _SignInState extends State<SignIn> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       if (!wait) const Spacer(),
-                                      Translate(text: wait ? "Connecting ..." : "Sign-In", fontWeight: FontWeight.bold, to: language, fontSize: 20),
+                                      Translate(text: wait ? AppLocalizations.of(context)!.connecting : AppLocalizations.of(context)!.sign_in, fontWeight: FontWeight.bold, fontSize: 20),
                                       if (!wait) const Spacer(),
                                       if (!wait) CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
                                     ],
@@ -141,9 +134,9 @@ class _SignInState extends State<SignIn> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Translate(text: "Don't have an account? ", fontSize: 18, to: language),
+                            Translate(text: AppLocalizations.of(context)!.dont_have_an_account, fontSize: 18),
                             const SizedBox(width: 10),
-                            Translate(text: "Register now", color: blue, fontSize: 18, fontWeight: FontWeight.bold, to: language),
+                            Translate(text: AppLocalizations.of(context)!.register_now, color: blue, fontSize: 18, fontWeight: FontWeight.bold),
                           ],
                         ),
                       ),
@@ -155,7 +148,7 @@ class _SignInState extends State<SignIn> {
                       children: <Widget>[
                         Container(height: .5, width: MediaQuery.of(context).size.width * .4, decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(25))),
                         const SizedBox(width: 10),
-                        Translate(text: "OR", fontSize: 20, fontWeight: FontWeight.bold, to: language),
+                        Translate(text: AppLocalizations.of(context)!.or, fontSize: 20, fontWeight: FontWeight.bold),
                         const SizedBox(width: 10),
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),

@@ -8,7 +8,7 @@ import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../home/home.dart';
 
 class SignUp extends StatefulWidget {
@@ -31,7 +31,7 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _specialityController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool wait = false;
-
+  String countryCode = "";
   @override
   void dispose() {
     _specialityController.dispose();
@@ -52,14 +52,6 @@ class _SignUpState extends State<SignUp> {
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) setS) {
         return Scaffold(
-          key: signUpScaffoldKey,
-          drawer: HealthDrawer(
-            func: () {
-              signUpScaffoldKey.currentState!.closeDrawer();
-              setS(() {});
-              _formKey.currentState!.validate();
-            },
-          ),
           backgroundColor: darkBlue,
           body: Padding(
             padding: const EdgeInsets.only(left: 8.0),
@@ -75,23 +67,23 @@ class _SignUpState extends State<SignUp> {
                     Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                     Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
                     const SizedBox(height: 60),
-                    Translate(text: "Sign Up", color: blue, to: language, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                    Translate(text: "Form.", fontWeight: FontWeight.bold, to: language).animate().fadeIn(duration: 500.ms),
-                    Translate(text: "To create and account you need to fill this form.", fontSize: 16, to: language).animate().fadeIn(duration: 500.ms),
+                    Translate(text: AppLocalizations.of(context)!.sign_up, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                    Translate(text: AppLocalizations.of(context)!.form, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                    Translate(text: AppLocalizations.of(context)!.to_create_this_form, fontSize: 16).animate().fadeIn(duration: 500.ms),
                     const SizedBox(height: 30),
-                    CustomTextField(validator: fieldsValidators["username"], controller: _usernameController, hint: "Medical Professional Name", to: language, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name),
+                    CustomTextField(validator: fieldsValidators["username"], controller: _usernameController, hint: AppLocalizations.of(context)!.username, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name),
                     const SizedBox(height: 10),
-                    CustomTextField(validator: fieldsValidators["service"], controller: _serviceController, hint: "Service", to: language, prefix: FontAwesomeIcons.servicestack),
+                    CustomTextField(validator: fieldsValidators["service"], controller: _serviceController, hint: AppLocalizations.of(context)!.service, prefix: FontAwesomeIcons.servicestack),
                     const SizedBox(height: 10),
-                    CustomTextField(validator: fieldsValidators["job location"], controller: _jobLocationController, hint: "Job Location", to: language, prefix: FontAwesomeIcons.locationPin),
+                    CustomTextField(validator: fieldsValidators["job location"], controller: _jobLocationController, hint: AppLocalizations.of(context)!.job_location, prefix: FontAwesomeIcons.locationPin),
                     const SizedBox(height: 10),
-                    CustomTextField(validator: fieldsValidators["cin"], controller: _cinController, hint: "National Identity Card", to: language, prefix: FontAwesomeIcons.idBadge, type: TextInputType.number),
+                    CustomTextField(validator: fieldsValidators["cin"], controller: _cinController, hint: AppLocalizations.of(context)!.cin, prefix: FontAwesomeIcons.idBadge, type: TextInputType.number),
                     const SizedBox(height: 10),
-                    CustomTextField(validator: fieldsValidators["id"], controller: _idController, hint: "Identifier", to: language, prefix: FontAwesomeIcons.userSecret),
+                    CustomTextField(validator: fieldsValidators["id"], controller: _idController, hint: AppLocalizations.of(context)!.id, prefix: FontAwesomeIcons.userSecret),
                     const SizedBox(height: 10),
-                    CustomTextField(validator: fieldsValidators["email"], controller: _emailController, hint: "E-mail", to: language, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
+                    CustomTextField(validator: fieldsValidators["email"], controller: _emailController, hint: AppLocalizations.of(context)!.e_mail, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
                     const SizedBox(height: 10),
-                    CustomTextField(validator: fieldsValidators["password"], controller: _passwordController, hint: "Password", to: language, prefix: FontAwesomeIcons.lock, obscured: true),
+                    CustomTextField(validator: fieldsValidators["password"], controller: _passwordController, hint: AppLocalizations.of(context)!.password, prefix: FontAwesomeIcons.lock, obscured: true),
                     const SizedBox(height: 10),
                     StatefulBuilder(
                       builder: (BuildContext context, void Function(void Function()) setS) {
@@ -115,7 +107,7 @@ class _SignUpState extends State<SignUp> {
                                                   },
                                                   child: SizedBox(
                                                     height: 40,
-                                                    child: Translate(text: speciality_, to: language, color: white, fontSize: 16, fontWeight: FontWeight.bold),
+                                                    child: Translate(text: speciality_, color: white, fontSize: 16, fontWeight: FontWeight.bold),
                                                   ),
                                                 ))
                                             .toList(),
@@ -125,7 +117,7 @@ class _SignUpState extends State<SignUp> {
                                 },
                               );
                             },
-                            child: CustomTextField(controller: _specialityController, hint: "Speciality", prefix: FontAwesomeIcons.bomb, validator: fieldsValidators["speciality"], to: language, readonly: true));
+                            child: CustomTextField(controller: _specialityController, hint: AppLocalizations.of(context)!.speciality, prefix: FontAwesomeIcons.bomb, validator: fieldsValidators["speciality"], readonly: true));
                       },
                     ),
                     const SizedBox(height: 10),
@@ -133,7 +125,7 @@ class _SignUpState extends State<SignUp> {
                       padding: const EdgeInsets.only(right: 8.0),
                       child: InternationalPhoneNumberInput(
                         searchBoxDecoration: InputDecoration(
-                          labelText: language == 'en' ? 'Country' : 'Pays',
+                          labelText: AppLocalizations.of(context)!.country,
                           labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
                           prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.flag, size: 15, color: blue)),
                           enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
@@ -143,9 +135,11 @@ class _SignUpState extends State<SignUp> {
                         focusNode: _phoneNode,
                         cursorColor: blue,
                         initialValue: PhoneNumber(isoCode: "TN", dialCode: "+216"),
-                        errorMessage: language == 'en' ? 'Not a valid number' : 'Not a valid number',
+                        errorMessage: AppLocalizations.of(context)!.not_valid_number,
                         inputBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                        onInputChanged: (PhoneNumber value) {},
+                        onInputChanged: (PhoneNumber value) {
+                          countryCode = value.dialCode!;
+                        },
                         textStyle: GoogleFonts.abel(fontSize: 16),
                         spaceBetweenSelectorAndTextField: 0,
                         textFieldController: _phoneController,
@@ -154,7 +148,7 @@ class _SignUpState extends State<SignUp> {
                         onInputValidated: (bool value) => value ? _phoneNode.unfocus() : null,
                         selectorConfig: const SelectorConfig(leadingPadding: 8.0, selectorType: PhoneInputSelectorType.BOTTOM_SHEET, trailingSpace: false, useEmoji: true, setSelectorButtonAsPrefixIcon: true),
                         inputDecoration: InputDecoration(
-                          labelText: language == 'en' ? 'Phone Number' : 'Numéro Du Téléphone',
+                          labelText: AppLocalizations.of(context)!.phone_number,
                           labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
                           prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.phone, size: 15, color: blue)),
                           enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
@@ -173,29 +167,33 @@ class _SignUpState extends State<SignUp> {
                                 try {
                                   if (_formKey.currentState!.validate()) {
                                     setS(() => wait = true);
-                                    await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
-                                      await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).set({
-                                        "account_creation_date": Timestamp.now(),
-                                        "medical_professional_name": _usernameController.text.trim(),
-                                        "service": _serviceController.text.trim(),
-                                        "job_location": _jobLocationController.text.trim(),
-                                        "cin": _cinController.text.trim(),
-                                        "id": _idController.text.trim(),
-                                        "email": _emailController.text.trim(),
-                                        "password": _passwordController.text.trim(),
-                                        "speciality": _specialityController.text.trim(),
-                                        "phone_number": _phoneController.text.trim(),
-                                      }).then(
-                                        (void value) => Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) => const Home(),
-                                          ),
-                                        ),
-                                      );
+                                    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
+                                      await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((value) async {
+                                        await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).set({
+                                          "account_creation_date": Timestamp.now(),
+                                          "medical_professional_name": _usernameController.text.trim(),
+                                          "service": _serviceController.text.trim(),
+                                          "job_location": _jobLocationController.text.trim(),
+                                          "cin": _cinController.text.trim(),
+                                          "id": _idController.text.trim(),
+                                          "email": _emailController.text.trim(),
+                                          "password": _passwordController.text.trim(),
+                                          "speciality": _specialityController.text.trim(),
+                                          "phone_number": _phoneController.text.trim(),
+                                        }).then((void value) async {
+                                          setS(() => wait = false);
+                                          showToast(AppLocalizations.of(context)!.account_created);
+                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Home()));
+                                          /*await FirebaseAuth.instance.currentUser!.linkWithPhoneNumber("$countryCode${_phoneController.text.trim().replaceAll(RegExp(r' '), '')}").then((ConfirmationResult value) {
+                                            value.confirm(value.verificationId).then((UserCredential value) {
+                                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Home()));
+                                            });
+                                          });*/
+                                        });
+                                      });
                                     });
                                   } else {
-                                    showToast(language == "en" ? "Verify fields please" : "Vérifiez les champs s'il vous plaît");
+                                    showToast(AppLocalizations.of(context)!.verify_fields_please);
                                   }
                                 } catch (_) {
                                   setS(() => wait = false);
@@ -213,7 +211,7 @@ class _SignUpState extends State<SignUp> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       if (!wait) const Spacer(),
-                                      Translate(text: wait ? "Connecting ..." : "Sign-In", fontWeight: FontWeight.bold, to: language, fontSize: 20),
+                                      Translate(text: wait ? AppLocalizations.of(context)!.connecting : AppLocalizations.of(context)!.sign_in, fontWeight: FontWeight.bold, fontSize: 20),
                                       if (!wait) const Spacer(),
                                       if (!wait) CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
                                     ],

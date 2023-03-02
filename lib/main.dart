@@ -4,14 +4,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/get_started/get_started.dart';
 import 'package:smart_care/home/home.dart';
+import 'package:smart_care/l10n/l10n.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:smart_care/wait/wait_room.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'error/error_room.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,8 +45,15 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      supportedLocales: L10n.all,
       theme: isDarkTheme ? ThemeData.dark(useMaterial3: true) : ThemeData.light(useMaterial3: true),
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const <LocalizationsDelegate>[
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       home: FutureBuilder<FirebaseApp>(
         future: Firebase.initializeApp(),
         builder: (BuildContext context, AsyncSnapshot<FirebaseApp> snapshot) {
