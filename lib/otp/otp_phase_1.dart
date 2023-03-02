@@ -119,8 +119,6 @@ class _OTPViewState extends State<OTPView> {
                                             builder: (BuildContext context) => OTP(verification: verificationId),
                                           ),
                                         );
-                                        /* receiver.onSmsReceived!.listen((SmsMessage msg) {   
-                                        });*/
                                       },
                                       codeAutoRetrievalTimeout: (String verificationId) {},
                                     );

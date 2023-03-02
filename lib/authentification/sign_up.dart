@@ -179,7 +179,7 @@ class _SignUpState extends State<SignUp> {
                                           "email": _emailController.text.trim(),
                                           "password": _passwordController.text.trim(),
                                           "speciality": _specialityController.text.trim(),
-                                          "phone_number": _phoneController.text.trim(),
+                                          "phone_number": "$countryCode${_phoneController.text.replaceAll(RegExp(r''), '').trim()}",
                                         }).then((void value) async {
                                           setS(() => wait = false);
                                           showToast(AppLocalizations.of(context)!.account_created);

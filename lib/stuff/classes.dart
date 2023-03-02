@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:smart_care/home/home.dart';
 import 'package:smart_care/otp/otp_phase_1.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
@@ -103,9 +102,7 @@ class GoogleAuth extends StatelessWidget {
                       List<String> providers = await FirebaseAuth.instance.fetchSignInMethodsForEmail(value.user!.email!);
                       if (providers.isNotEmpty) {
                         await FirebaseAuth.instance.currentUser!.unlink(providers.first).then((User value) async {
-                          await value.linkWithCredential(credential).then((value) {
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Home()));
-                          });
+                          await value.linkWithCredential(credential);
                         });
                       } else {
                         showToast(AppLocalizations.of(context)!.no_user_linked, color: red);
@@ -114,7 +111,7 @@ class GoogleAuth extends StatelessWidget {
                   });
                 });
               } catch (_) {
-                showToast(_.toString(), color: red);
+                //showToast(_.toString(), color: red);
               }
             },
             child: const Center(child: Icon(FontAwesomeIcons.google, size: 15)),
@@ -183,14 +180,15 @@ class _HealthDrawerState extends State<HealthDrawer> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
+            Container(width: 275, height: 200, color: white),
             const Spacer(),
-            Row(children: <Widget>[Expanded(child: Container(height: 1, color: white))]),
+            Container(width: 267, height: 1, color: white),
             const SizedBox(height: 10),
             GestureDetector(
                 onTap: () async {
-                  showToast(AppLocalizations.of(context)!.signing_out);
-                  await GoogleSignIn().signOut().then((GoogleSignInAccount? value) async {
-                    await FirebaseAuth.instance.signOut();
+                  await FirebaseAuth.instance.signOut().then((void value) async {
+                    await GoogleSignIn().signOut();
+                    showToast(AppLocalizations.of(context)!.signing_out);
                   });
                 },
                 child: Translate(text: AppLocalizations.of(context)!.sign_out, fontSize: 18, fontWeight: FontWeight.bold)),

@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:clipboard_listener/clipboard_listener.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,9 +12,9 @@ import 'package:lottie/lottie.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
-import 'package:smart_care/home/home.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../stuff/classes.dart';
+import '../stuff/functions.dart';
 import '../stuff/globals.dart';
 
 class OTP extends StatefulWidget {
@@ -33,12 +36,27 @@ class _OTPState extends State<OTP> {
       if (clipboard != null && clipboard.text != null && clipboard.text!.isNotEmpty && clipboard.text!.contains(RegExp(r'^\d+$'))) {
         data = clipboard.text!;
         _otpFieldController.set(data.split(RegExp(r"")));
-        _buttonBuilder.currentState!.setState(() {});
-        await Future.delayed(2.seconds, () async {
-          PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: widget.verification, smsCode: data);
-          await FirebaseAuth.instance.signInWithCredential(credential).then((UserCredential value) {
-            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Home()));
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: widget.verification, smsCode: data);
+        await FirebaseAuth.instance.signInWithCredential(credential).then((UserCredential value) async {
+          await value.user!.linkWithCredential(credential);
+          _buttonBuilder.currentState!.setState(() {
+            wait = true;
           });
+          /* await FirebaseFirestore.instance.collection("health_care_professionals").where('phone_number', isEqualTo: value.user!.phoneNumber!).get().then((QuerySnapshot<Map<String, dynamic>> value) async {
+            if (value.docs.isNotEmpty) {
+              List<String> providers = await FirebaseAuth.instance.fetchSignInMethodsForEmail(value.docs.first.get("email"));
+              print(providers);
+              if (providers.isNotEmpty) {
+                await FirebaseAuth.instance.currentUser!.unlink(providers.first).then((User value) async {
+                  //
+                });
+              } else {
+                showToast(AppLocalizations.of(context)!.no_user_linked, color: red);
+              }
+            } else {
+              showToast(AppLocalizations.of(context)!.dont_have_an_account.replaceFirst(RegExp(r'\?'), ''), color: red);
+            }
+          });*/
         });
       }
     });
@@ -49,6 +67,7 @@ class _OTPState extends State<OTP> {
   void dispose() {
     ClipboardListener.removeListener(() {});
     _otpFieldController.clear();
+    _buttonBuilder.currentState!.dispose();
     super.dispose();
   }
 
@@ -76,7 +95,7 @@ class _OTPState extends State<OTP> {
                   IgnorePointer(
                     ignoring: true,
                     child: OTPTextField(
-                      length: 5,
+                      length: 6,
                       outlineBorderRadius: 5,
                       controller: _otpFieldController,
                       width: MediaQuery.of(context).size.width,
