@@ -1,9 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:clipboard_listener/clipboard_listener.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
@@ -167,29 +172,51 @@ class _SignUpState extends State<SignUp> {
                                 try {
                                   if (_formKey.currentState!.validate()) {
                                     setS(() => wait = true);
-                                    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
-                                      await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((value) async {
-                                        await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).set({
-                                          "account_creation_date": Timestamp.now(),
-                                          "medical_professional_name": _usernameController.text.trim(),
-                                          "service": _serviceController.text.trim(),
-                                          "job_location": _jobLocationController.text.trim(),
-                                          "cin": _cinController.text.trim(),
-                                          "id": _idController.text.trim(),
-                                          "email": _emailController.text.trim(),
-                                          "password": _passwordController.text.trim(),
-                                          "speciality": _specialityController.text.trim(),
-                                          "phone_number": "$countryCode${_phoneController.text.replaceAll(RegExp(r''), '').trim()}",
-                                        }).then((void value) async {
-                                          setS(() => wait = false);
-                                          showToast(AppLocalizations.of(context)!.account_created);
-                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Home()));
-                                          /*await FirebaseAuth.instance.currentUser!.linkWithPhoneNumber("$countryCode${_phoneController.text.trim().replaceAll(RegExp(r' '), '')}").then((ConfirmationResult value) {
-                                            value.confirm(value.verificationId).then((UserCredential value) {
-                                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Home()));
+                                    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential userCredential) async {
+                                      await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).set({
+                                        "account_creation_date": Timestamp.now(),
+                                        "medical_professional_name": _usernameController.text.trim(),
+                                        "service": _serviceController.text.trim(),
+                                        "job_location": _jobLocationController.text.trim(),
+                                        "cin": _cinController.text.trim(),
+                                        "id": _idController.text.trim(),
+                                        "email": _emailController.text.trim(),
+                                        "password": _passwordController.text.trim(),
+                                        "speciality": _specialityController.text.trim(),
+                                        "phone_number": "$countryCode${_phoneController.text.replaceAll(RegExp(r''), '').trim()}",
+                                      }).then((void value) async {
+                                        // Obtain the Google sign-in credentials
+                                        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+                                        final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+                                        final OAuthCredential googleCredential = GoogleAuthProvider.credential(
+                                          accessToken: googleAuth.accessToken,
+                                          idToken: googleAuth.idToken,
+                                        );
+                                        // Link the email/password account with the Google account
+                                        await userCredential.user!.linkWithCredential(googleCredential);
+
+                                        await FirebaseAuth.instance.verifyPhoneNumber(
+                                          forceResendingToken: 1,
+                                          timeout: 30.ms,
+                                          phoneNumber: "$countryCode${_phoneController.text.replaceAll(RegExp(r''), '').trim()}",
+                                          verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
+                                          verificationFailed: (FirebaseAuthException error) {},
+                                          codeSent: (String verificationId, int? forceResendingToken) {
+                                            ClipboardListener.addListener(() async {
+                                              ClipboardData? clipboard = await Clipboard.getData("text/plain");
+                                              if (clipboard != null && clipboard.text != null && clipboard.text!.isNotEmpty && clipboard.text!.contains(RegExp(r'^\d+$'))) {
+                                                String sms = clipboard.text!;
+                                                PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: sms);
+                                                await userCredential.user!.linkWithCredential(credential);
+                                              }
                                             });
-                                          });*/
-                                        });
+                                            ClipboardListener.removeListener(() {});
+                                          },
+                                          codeAutoRetrievalTimeout: (String verificationId) {},
+                                        );
+                                        setS(() => wait = false);
+                                        showToast(AppLocalizations.of(context)!.account_created);
+                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Home()));
                                       });
                                     });
                                   } else {

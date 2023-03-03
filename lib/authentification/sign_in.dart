@@ -4,7 +4,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/authentification/recovery.dart';
 import 'package:smart_care/authentification/sign_up.dart';
-import 'package:smart_care/home/home.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -87,20 +86,12 @@ class _SignInState extends State<SignIn> {
                                 try {
                                   if (_formKey.currentState!.validate()) {
                                     setS(() => wait = true);
-                                    await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then(
-                                          (UserCredential value) => Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (BuildContext context) => const Home(),
-                                            ),
-                                          ),
-                                        );
+                                    await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim());
                                   } else {
                                     showToast(AppLocalizations.of(context)!.verify_fields_please);
                                   }
                                 } catch (_) {
                                   setS(() => wait = false);
-                                  showToast(_.toString());
                                 }
                               },
                               child: AnimatedContainer(

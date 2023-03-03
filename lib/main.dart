@@ -20,6 +20,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Animate.restartOnHotReload = true;
   ErrorWidget.builder = (FlutterErrorDetails details) => ErrorRoom(error: details.exceptionAsString());
+  SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]);
   await openDB();
   Map<String, dynamic> userData = (await db!.rawQuery("SELECT FIRST_TIME,IS_ACTIVE FROM SMART_CARE WHERE ID = 1;")).first;
   firstTime = userData["FIRST_TIME"] as int;

@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -100,30 +103,30 @@ class _OTPViewState extends State<OTPView> {
                               onTap: () async {
                                 try {
                                   if (_formKey.currentState!.validate()) {
-                                    setS(() => wait = true);
-                                    await FirebaseAuth.instance.verifyPhoneNumber(
-                                      phoneNumber: "$countryCode${_phoneController.text.trim().replaceAll(RegExp(r' '), '')}",
-                                      verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {},
-                                      verificationFailed: (FirebaseAuthException error) {
-                                        setS(() => wait = false);
-                                        showToast(error.message!, color: red);
-                                      },
-                                      timeout: 1.minutes,
-                                      forceResendingToken: 1,
-                                      codeSent: (String verificationId, int? forceResendingToken) async {
-                                        setS(() => wait = false);
-                                        showToast("SMS Sent", color: green);
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) => OTP(verification: verificationId),
-                                          ),
-                                        );
-                                      },
-                                      codeAutoRetrievalTimeout: (String verificationId) {},
-                                    );
+                                    QuerySnapshot<Map<String, dynamic>> samples = await FirebaseFirestore.instance.collection("health_care_professionals").where("phone_number", isEqualTo: "$countryCode${_phoneController.text.trim().replaceAll(RegExp(r' '), '')}").get();
+                                    if (samples.docs.isNotEmpty) {
+                                      setS(() => wait = true);
+                                      await FirebaseAuth.instance.verifyPhoneNumber(
+                                        phoneNumber: "$countryCode${_phoneController.text.trim().replaceAll(RegExp(r' '), '')}",
+                                        verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {},
+                                        verificationFailed: (FirebaseAuthException error) {
+                                          setS(() => wait = false);
+                                          showToast(error.message!, color: red);
+                                        },
+                                        timeout: 1.minutes,
+                                        forceResendingToken: 1,
+                                        codeSent: (String verificationId, int? forceResendingToken) async {
+                                          setS(() => wait = false);
+                                          showToast("SMS Sent", color: green);
+                                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OTP(verification: verificationId)));
+                                        },
+                                        codeAutoRetrievalTimeout: (String verificationId) {},
+                                      );
+                                    } else {
+                                      showToast(AppLocalizations.of(context)!.no_user_linked,color : red);
+                                    }
                                   } else {
-                                    showToast(AppLocalizations.of(context)!.verify_fields_please);
+                                    showToast(AppLocalizations.of(context)!.verify_fields_please,color : red);
                                   }
                                 } catch (_) {
                                   setS(() => wait = false);

@@ -96,22 +96,20 @@ class GoogleAuth extends StatelessWidget {
             onTap: () async {
               try {
                 await GoogleSignIn().signIn().then((GoogleSignInAccount? googleAccount) async {
-                  await googleAccount!.authentication.then((GoogleSignInAuthentication authentication) async {
-                    AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
-                    await FirebaseAuth.instance.signInWithCredential(credential).then((UserCredential value) async {
-                      List<String> providers = await FirebaseAuth.instance.fetchSignInMethodsForEmail(value.user!.email!);
-                      if (providers.isNotEmpty) {
-                        await FirebaseAuth.instance.currentUser!.unlink(providers.first).then((User value) async {
-                          await value.linkWithCredential(credential);
-                        });
-                      } else {
-                        showToast(AppLocalizations.of(context)!.no_user_linked, color: red);
-                      }
+                  List<String> signInMethods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(googleAccount!.email);
+                  if (signInMethods.contains('google.com')) {
+                    // Google provider is linked with email/password provider
+                    await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
+                      AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
+                      await FirebaseAuth.instance.signInWithCredential(credential);
                     });
-                  });
+                  } else {
+                    // Google provider is not linked with email/password provider
+                    showToast(AppLocalizations.of(context)!.no_user_linked, color: red);
+                  }
                 });
               } catch (_) {
-                //showToast(_.toString(), color: red);
+                showToast(_.toString(), color: red);
               }
             },
             child: const Center(child: Icon(FontAwesomeIcons.google, size: 15)),
@@ -186,10 +184,9 @@ class _HealthDrawerState extends State<HealthDrawer> {
             const SizedBox(height: 10),
             GestureDetector(
                 onTap: () async {
-                  await FirebaseAuth.instance.signOut().then((void value) async {
-                    await GoogleSignIn().signOut();
-                    showToast(AppLocalizations.of(context)!.signing_out);
-                  });
+                  showToast(AppLocalizations.of(context)!.signing_out);
+                  await GoogleSignIn().signOut();
+                  await FirebaseAuth.instance.signOut();
                 },
                 child: Translate(text: AppLocalizations.of(context)!.sign_out, fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
