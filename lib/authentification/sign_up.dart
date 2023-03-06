@@ -9,12 +9,12 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../home/home.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -72,9 +72,9 @@ class _SignUpState extends State<SignUp> {
                     Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                     Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
                     const SizedBox(height: 60),
-                    Translate(text: AppLocalizations.of(context)!.sign_up, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                    Translate(text: AppLocalizations.of(context)!.form, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                    Translate(text: AppLocalizations.of(context)!.to_create_this_form, fontSize: 16).animate().fadeIn(duration: 500.ms),
+                    CustomizedText(text: AppLocalizations.of(context)!.sign_up, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                    CustomizedText(text: AppLocalizations.of(context)!.form, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                    CustomizedText(text: AppLocalizations.of(context)!.to_create_this_form, fontSize: 16).animate().fadeIn(duration: 500.ms),
                     const SizedBox(height: 30),
                     CustomTextField(validator: fieldsValidators["username"], controller: _usernameController, hint: AppLocalizations.of(context)!.username, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name),
                     const SizedBox(height: 10),
@@ -112,7 +112,7 @@ class _SignUpState extends State<SignUp> {
                                                   },
                                                   child: SizedBox(
                                                     height: 40,
-                                                    child: Translate(text: speciality_, color: white, fontSize: 16, fontWeight: FontWeight.bold),
+                                                    child: CustomizedText(text: speciality_, color: white, fontSize: 16, fontWeight: FontWeight.bold),
                                                   ),
                                                 ))
                                             .toList(),
@@ -216,7 +216,7 @@ class _SignUpState extends State<SignUp> {
                                         );
                                         setS(() => wait = false);
                                         showToast(AppLocalizations.of(context)!.account_created);
-                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Home()));
+                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()));
                                       });
                                     });
                                   } else {
@@ -231,14 +231,14 @@ class _SignUpState extends State<SignUp> {
                                 duration: 500.ms,
                                 height: 40,
                                 width: wait ? MediaQuery.of(context).size.width * .35 : MediaQuery.of(context).size.width * .6,
-                                decoration: BoxDecoration(color: wait ? green : blue, borderRadius: BorderRadius.circular(25)),
+                                decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(15)),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       if (!wait) const Spacer(),
-                                      Translate(text: wait ? AppLocalizations.of(context)!.connecting : AppLocalizations.of(context)!.sign_in, fontWeight: FontWeight.bold, fontSize: 20),
+                                      CustomizedText(text: wait ? AppLocalizations.of(context)!.connecting : AppLocalizations.of(context)!.sign_in, fontWeight: FontWeight.bold, fontSize: 20),
                                       if (!wait) const Spacer(),
                                       if (!wait) CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
                                     ],

@@ -54,9 +54,9 @@ class _OTPViewState extends State<OTPView> {
                     Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                     Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
                     const SizedBox(height: 40),
-                    Translate(text: AppLocalizations.of(context)!.otp_recovery, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                    Translate(text: AppLocalizations.of(context)!.first_phase, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                    Translate(text: AppLocalizations.of(context)!.enter_phone_number, fontSize: 16).animate().fadeIn(duration: 500.ms),
+                    CustomizedText(text: AppLocalizations.of(context)!.otp_recovery, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                    CustomizedText(text: AppLocalizations.of(context)!.first_phase, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                    CustomizedText(text: AppLocalizations.of(context)!.enter_phone_number, fontSize: 16).animate().fadeIn(duration: 500.ms),
                     const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
@@ -117,16 +117,16 @@ class _OTPViewState extends State<OTPView> {
                                         forceResendingToken: 1,
                                         codeSent: (String verificationId, int? forceResendingToken) async {
                                           setS(() => wait = false);
-                                          showToast("SMS Sent", color: green);
+                                          showToast("SMS Sent", color: blue);
                                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OTP(verification: verificationId)));
                                         },
                                         codeAutoRetrievalTimeout: (String verificationId) {},
                                       );
                                     } else {
-                                      showToast(AppLocalizations.of(context)!.no_user_linked,color : red);
+                                      showToast(AppLocalizations.of(context)!.no_user_linked, color: red);
                                     }
                                   } else {
-                                    showToast(AppLocalizations.of(context)!.verify_fields_please,color : red);
+                                    showToast(AppLocalizations.of(context)!.verify_fields_please, color: red);
                                   }
                                 } catch (_) {
                                   setS(() => wait = false);
@@ -137,14 +137,14 @@ class _OTPViewState extends State<OTPView> {
                                 duration: 500.ms,
                                 height: 40,
                                 width: wait ? MediaQuery.of(context).size.width * .35 : MediaQuery.of(context).size.width * .6,
-                                decoration: BoxDecoration(color: wait ? green : blue, borderRadius: BorderRadius.circular(25)),
+                                decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(15)),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       if (!wait) const Spacer(),
-                                      Translate(text: wait ? AppLocalizations.of(context)!.sending : AppLocalizations.of(context)!.send_sms, fontWeight: FontWeight.bold, fontSize: 20),
+                                      CustomizedText(text: wait ? AppLocalizations.of(context)!.sending : AppLocalizations.of(context)!.send_sms, fontWeight: FontWeight.bold, fontSize: 20),
                                       if (!wait) const Spacer(),
                                       if (!wait) CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
                                     ],

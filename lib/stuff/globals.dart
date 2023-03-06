@@ -5,15 +5,12 @@ import 'package:sqflite/sqflite.dart';
 Color white = Colors.white;
 Color black = Colors.black;
 Color darkBlue = const Color.fromARGB(30, 7, 32, 60);
-Color green = const Color.fromARGB(255, 0, 168, 87);
 Color transparent = Colors.transparent;
 Color blue = const Color.fromARGB(255, 0, 80, 146);
-Color red = Colors.red;
+Color red = const Color.fromARGB(255, 153, 10, 0);
 
 int? firstTime;
 int? isActive;
-
-bool isDarkTheme = true;
 
 Database? db;
 

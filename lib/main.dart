@@ -7,8 +7,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/get_started/get_started.dart';
-import 'package:smart_care/home/home.dart';
 import 'package:smart_care/l10n/l10n.dart';
+import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:smart_care/wait/wait_room.dart';
@@ -37,8 +37,17 @@ void main() async {
     }
   });
   runApp(const Main());
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: <SystemUiOverlay>[]);
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: transparent));
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: <SystemUiOverlay>[SystemUiOverlay.top]);
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: transparent,
+    statusBarBrightness: Brightness.dark,
+    statusBarIconBrightness: Brightness.light,
+    systemNavigationBarColor: transparent,
+    systemNavigationBarContrastEnforced: false,
+    systemNavigationBarDividerColor: transparent,
+    systemNavigationBarIconBrightness: Brightness.light,
+    systemStatusBarContrastEnforced: false,
+  ));
 }
 
 class Main extends StatelessWidget {
@@ -47,7 +56,7 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       supportedLocales: L10n.all,
-      theme: isDarkTheme ? ThemeData.dark(useMaterial3: true) : ThemeData.light(useMaterial3: true),
+      theme: ThemeData.dark(useMaterial3: true),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const <LocalizationsDelegate>[
         AppLocalizations.delegate,
@@ -70,7 +79,7 @@ class Main extends StatelessWidget {
                   if (snap.hasError) {
                     return ErrorRoom(error: snap.error.toString());
                   } else if (snap.connectionState == ConnectionState.active) {
-                    return snap.data == null ? const SignIn() : const Home();
+                    return snap.data == null ? const SignIn() : const Screens();
                   }
                   return const WaitRoom();
                 },

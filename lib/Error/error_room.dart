@@ -27,7 +27,7 @@ class ErrorRoom extends StatelessWidget {
                   const SizedBox(height: 10),
                   Center(child: LottieBuilder.asset("assets/error.json")),
                   const SizedBox(height: 20),
-                  Center(child: Translate(text: error.replaceAll(RegExp(r'\[.+\] '), ''), fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms)),
+                  Center(child: CustomizedText(text: error.replaceAll(RegExp(r'\[.+\] '), ''), fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms)),
                 ],
               ),
             ),

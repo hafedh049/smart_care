@@ -84,36 +84,38 @@ class GoogleAuth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      width: 60,
-      color: darkBlue,
-      child: Center(
-        child: CircleAvatar(
-          radius: 20,
-          backgroundColor: red,
-          child: GestureDetector(
-            onTap: () async {
-              try {
-                await GoogleSignIn().signIn().then((GoogleSignInAccount? googleAccount) async {
-                  List<String> signInMethods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(googleAccount!.email);
-                  if (signInMethods.contains('google.com')) {
-                    // Google provider is linked with email/password provider
-                    await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
-                      AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
-                      await FirebaseAuth.instance.signInWithCredential(credential);
-                    });
-                  } else {
-                    // Google provider is not linked with email/password provider
-                    showToast(AppLocalizations.of(context)!.no_user_linked, color: red);
-                  }
+    return GestureDetector(
+      onTap: () async {
+        try {
+          await GoogleSignIn().signIn().then((GoogleSignInAccount? googleAccount) async {
+            if (googleAccount != null) {
+              List<String> signInMethods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(googleAccount.email);
+              if (signInMethods.contains('google.com')) {
+                // Google provider is linked with email/password provider
+                await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
+                  AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
+                  await FirebaseAuth.instance.signInWithCredential(credential);
                 });
-              } catch (_) {
-                showToast(_.toString(), color: red);
+              } else {
+                // Google provider is not linked with email/password provider
+                showToast(AppLocalizations.of(context)!.no_user_linked, color: red);
               }
-            },
-            child: const Center(child: Icon(FontAwesomeIcons.google, size: 15)),
-          ),
+            }
+          });
+        } catch (_) {
+          showToast(_.toString(), color: red);
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: red),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: const <Widget>[
+            Icon(FontAwesomeIcons.google, size: 25),
+            CustomizedText(text: "Continue with Google", fontSize: 16, fontWeight: FontWeight.bold),
+          ],
         ),
       ),
     );
@@ -125,19 +127,21 @@ class OTPAuth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      width: 60,
-      color: darkBlue,
-      child: Center(
-        child: CircleAvatar(
-          radius: 20,
-          backgroundColor: Colors.green,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const OTPView()));
-            },
-            child: const Center(child: Icon(FontAwesomeIcons.phone, size: 15)),
+    return Center(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const OTPView()));
+        },
+        child: Container(
+          margin: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.green),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const <Widget>[
+              Icon(FontAwesomeIcons.phone, size: 25),
+              CustomizedText(text: "Continue with Phone", fontSize: 16, fontWeight: FontWeight.bold),
+            ],
           ),
         ),
       ),
@@ -145,8 +149,8 @@ class OTPAuth extends StatelessWidget {
   }
 }
 
-class Translate extends StatelessWidget {
-  const Translate({super.key, required this.text, this.color = Colors.white, this.fontSize = 35, this.fontWeight = FontWeight.normal});
+class CustomizedText extends StatelessWidget {
+  const CustomizedText({super.key, required this.text, this.color = Colors.white, this.fontSize = 35, this.fontWeight = FontWeight.normal});
   final String text;
   final double fontSize;
   final Color color;
@@ -188,7 +192,7 @@ class _HealthDrawerState extends State<HealthDrawer> {
                   await GoogleSignIn().signOut();
                   await FirebaseAuth.instance.signOut();
                 },
-                child: Translate(text: AppLocalizations.of(context)!.sign_out, fontSize: 18, fontWeight: FontWeight.bold)),
+                child: CustomizedText(text: AppLocalizations.of(context)!.sign_out, fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
           ],
         ),

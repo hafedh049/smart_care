@@ -45,6 +45,8 @@ dependencies:
   google_sign_in: ^6.0.1
   intl: ^0.17.0
   flutter_launcher_icons: ^0.12.0
+  animated_bottom_navigation_bar: ^1.1.0+1
+  firebase_messaging: ^14.2.5
 
 dev_dependencies:
   flutter_test:

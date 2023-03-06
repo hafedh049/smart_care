@@ -64,9 +64,9 @@ class _OTPState extends State<OTP> {
                   Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                   Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
                   const SizedBox(height: 40),
-                  Translate(text: AppLocalizations.of(context)!.wait_for, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                  Translate(text: AppLocalizations.of(context)!.sms_notification, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                  Translate(text: AppLocalizations.of(context)!.the_pin_fields, fontSize: 16).animate().fadeIn(duration: 500.ms),
+                  CustomizedText(text: AppLocalizations.of(context)!.wait_for, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                  CustomizedText(text: AppLocalizations.of(context)!.sms_notification, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                  CustomizedText(text: AppLocalizations.of(context)!.the_pin_fields, fontSize: 16).animate().fadeIn(duration: 500.ms),
                   const SizedBox(height: 40),
                   IgnorePointer(
                     ignoring: true,
@@ -103,14 +103,14 @@ class _OTPState extends State<OTP> {
                             duration: 500.ms,
                             height: 40,
                             width: wait ? MediaQuery.of(context).size.width * .35 : MediaQuery.of(context).size.width * .6,
-                            decoration: BoxDecoration(color: wait ? green : blue, borderRadius: BorderRadius.circular(25)),
+                            decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(15)),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   if (!wait) const Spacer(),
-                                  Translate(text: wait ? AppLocalizations.of(context)!.signing_in : AppLocalizations.of(context)!.sign_in, fontWeight: FontWeight.bold, fontSize: 20),
+                                  CustomizedText(text: wait ? AppLocalizations.of(context)!.signing_in : AppLocalizations.of(context)!.sign_in, fontWeight: FontWeight.bold, fontSize: 20),
                                   if (!wait) const Spacer(),
                                   if (!wait) CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
                                 ],
