@@ -41,124 +41,124 @@ class _OTPViewState extends State<OTPView> {
       builder: (BuildContext context, void Function(void Function()) setS) {
         return Scaffold(
           backgroundColor: darkBlue,
+          resizeToAvoidBottomInset: false,
+          extendBody: true,
+          extendBodyBehindAppBar: true,
           body: Padding(
             padding: const EdgeInsets.only(left: 8.0),
-            child: SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-                    Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
-                    Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
-                    const SizedBox(height: 40),
-                    CustomizedText(text: AppLocalizations.of(context)!.otp_recovery, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                    CustomizedText(text: AppLocalizations.of(context)!.first_phase, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                    CustomizedText(text: AppLocalizations.of(context)!.enter_phone_number, fontSize: 16).animate().fadeIn(duration: 500.ms),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: InternationalPhoneNumberInput(
-                        initialValue: PhoneNumber(isoCode: "TN", dialCode: "+216"),
-                        searchBoxDecoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.country,
-                          labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
-                          prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.flag, size: 15, color: blue)),
-                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                        ),
-                        autoValidateMode: AutovalidateMode.always,
-                        focusNode: _phoneNode,
-                        cursorColor: blue,
-                        errorMessage: AppLocalizations.of(context)!.not_valid_number,
-                        inputBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                        onInputChanged: (PhoneNumber value) {
-                          countryCode = value.dialCode!;
-                        },
-                        textStyle: GoogleFonts.abel(fontSize: 16),
-                        spaceBetweenSelectorAndTextField: 0,
-                        textFieldController: _phoneController,
-                        selectorTextStyle: GoogleFonts.abel(fontSize: 16),
-                        selectorButtonOnErrorPadding: 0,
-                        onInputValidated: (bool value) => value ? _phoneNode.unfocus() : null,
-                        selectorConfig: const SelectorConfig(leadingPadding: 8.0, selectorType: PhoneInputSelectorType.BOTTOM_SHEET, trailingSpace: false, useEmoji: true, setSelectorButtonAsPrefixIcon: true),
-                        inputDecoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.phone_number,
-                          labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
-                          prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.phone, size: 15, color: blue)),
-                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                        ),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
+                  Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
+                  Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
+                  const SizedBox(height: 40),
+                  CustomizedText(text: AppLocalizations.of(context)!.otp_recovery, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                  CustomizedText(text: AppLocalizations.of(context)!.first_phase, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                  CustomizedText(text: AppLocalizations.of(context)!.enter_phone_number, fontSize: 16).animate().fadeIn(duration: 500.ms),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: InternationalPhoneNumberInput(
+                      initialValue: PhoneNumber(isoCode: "TN", dialCode: "+216"),
+                      searchBoxDecoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.country,
+                        labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
+                        prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.flag, size: 15, color: blue)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                      ),
+                      autoValidateMode: AutovalidateMode.always,
+                      focusNode: _phoneNode,
+                      cursorColor: blue,
+                      errorMessage: AppLocalizations.of(context)!.not_valid_number,
+                      inputBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                      onInputChanged: (PhoneNumber value) {
+                        countryCode = value.dialCode!;
+                      },
+                      textStyle: GoogleFonts.abel(fontSize: 16),
+                      spaceBetweenSelectorAndTextField: 0,
+                      textFieldController: _phoneController,
+                      selectorTextStyle: GoogleFonts.abel(fontSize: 16),
+                      selectorButtonOnErrorPadding: 0,
+                      onInputValidated: (bool value) => value ? _phoneNode.unfocus() : null,
+                      selectorConfig: const SelectorConfig(leadingPadding: 8.0, selectorType: PhoneInputSelectorType.BOTTOM_SHEET, trailingSpace: false, useEmoji: true, setSelectorButtonAsPrefixIcon: true),
+                      inputDecoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.phone_number,
+                        labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
+                        prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.phone, size: 15, color: blue)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
                       ),
                     ),
-                    const SizedBox(height: 40),
-                    Center(
-                      child: StatefulBuilder(
-                        builder: (BuildContext context, void Function(void Function()) setS) {
-                          return IgnorePointer(
-                            ignoring: wait,
-                            child: GestureDetector(
-                              onTap: () async {
-                                try {
-                                  if (_formKey.currentState!.validate()) {
-                                    QuerySnapshot<Map<String, dynamic>> samples = await FirebaseFirestore.instance.collection("health_care_professionals").where("phone_number", isEqualTo: "$countryCode${_phoneController.text.trim().replaceAll(RegExp(r' '), '')}").get();
-                                    if (samples.docs.isNotEmpty) {
-                                      setS(() => wait = true);
-                                      await FirebaseAuth.instance.verifyPhoneNumber(
-                                        phoneNumber: "$countryCode${_phoneController.text.trim().replaceAll(RegExp(r' '), '')}",
-                                        verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {},
-                                        verificationFailed: (FirebaseAuthException error) {
-                                          setS(() => wait = false);
-                                          showToast(error.message!, color: red);
-                                        },
-                                        timeout: 1.minutes,
-                                        forceResendingToken: 1,
-                                        codeSent: (String verificationId, int? forceResendingToken) async {
-                                          setS(() => wait = false);
-                                          showToast("SMS Sent", color: blue);
-                                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OTP(verification: verificationId)));
-                                        },
-                                        codeAutoRetrievalTimeout: (String verificationId) {},
-                                      );
-                                    } else {
-                                      showToast(AppLocalizations.of(context)!.no_user_linked, color: red);
-                                    }
+                  ),
+                  const SizedBox(height: 40),
+                  Center(
+                    child: StatefulBuilder(
+                      builder: (BuildContext context, void Function(void Function()) setS) {
+                        return IgnorePointer(
+                          ignoring: wait,
+                          child: GestureDetector(
+                            onTap: () async {
+                              try {
+                                if (_formKey.currentState!.validate()) {
+                                  QuerySnapshot<Map<String, dynamic>> samples = await FirebaseFirestore.instance.collection("health_care_professionals").where("phone_number", isEqualTo: "$countryCode${_phoneController.text.trim().replaceAll(RegExp(r' '), '')}").get();
+                                  if (samples.docs.isNotEmpty) {
+                                    setS(() => wait = true);
+                                    await FirebaseAuth.instance.verifyPhoneNumber(
+                                      phoneNumber: "$countryCode${_phoneController.text.trim().replaceAll(RegExp(r' '), '')}",
+                                      verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {},
+                                      verificationFailed: (FirebaseAuthException error) {
+                                        setS(() => wait = false);
+                                        showToast(error.message!, color: red);
+                                      },
+                                      timeout: 1.minutes,
+                                      forceResendingToken: 1,
+                                      codeSent: (String verificationId, int? forceResendingToken) async {
+                                        setS(() => wait = false);
+                                        showToast("SMS Sent", color: blue);
+                                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OTP(verification: verificationId)));
+                                      },
+                                      codeAutoRetrievalTimeout: (String verificationId) {},
+                                    );
                                   } else {
-                                    showToast(AppLocalizations.of(context)!.verify_fields_please, color: red);
+                                    showToast(AppLocalizations.of(context)!.no_user_linked, color: red);
                                   }
-                                } catch (_) {
-                                  setS(() => wait = false);
-                                  showToast(_.toString());
+                                } else {
+                                  showToast(AppLocalizations.of(context)!.verify_fields_please, color: red);
                                 }
-                              },
-                              child: AnimatedContainer(
-                                duration: 500.ms,
-                                height: 40,
-                                width: wait ? MediaQuery.of(context).size.width * .35 : MediaQuery.of(context).size.width * .6,
-                                decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(15)),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      if (!wait) const Spacer(),
-                                      CustomizedText(text: wait ? AppLocalizations.of(context)!.sending : AppLocalizations.of(context)!.send_sms, fontWeight: FontWeight.bold, fontSize: 20),
-                                      if (!wait) const Spacer(),
-                                      if (!wait) CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
-                                    ],
-                                  ),
+                              } catch (_) {
+                                setS(() => wait = false);
+                                showToast(_.toString());
+                              }
+                            },
+                            child: AnimatedContainer(
+                              duration: 500.ms,
+                              height: 40,
+                              width: wait ? MediaQuery.of(context).size.width * .35 : MediaQuery.of(context).size.width * .6,
+                              decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(15)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Visibility(visible: !wait, child: const Spacer()),
+                                    CustomizedText(text: wait ? AppLocalizations.of(context)!.sending : AppLocalizations.of(context)!.send_sms, fontWeight: FontWeight.bold, fontSize: 20),
+                                    Visibility(visible: !wait, child: const Spacer()),
+                                    Visibility(visible: !wait, child: CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15))),
+                                  ],
                                 ),
                               ),
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
-                    LottieBuilder.asset("assets/phase_1.json"),
-                  ],
-                ),
+                  ),
+                  LottieBuilder.asset("assets/phase_1.json"),
+                ],
               ),
             ),
           ),

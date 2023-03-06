@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -193,7 +194,7 @@ class _HealthDrawerState extends State<HealthDrawer> {
                   await FirebaseAuth.instance.signOut();
                 },
                 child: CustomizedText(text: AppLocalizations.of(context)!.sign_out, fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
+            const SizedBox(height: 40),
           ],
         ),
       ),
@@ -202,14 +203,41 @@ class _HealthDrawerState extends State<HealthDrawer> {
 }
 
 class CustomIcon extends StatelessWidget {
-  const CustomIcon({super.key, required this.func, required this.icon});
+  const CustomIcon({super.key, required this.func, required this.icon, this.clicked = false});
   final void Function() func;
   final IconData icon;
+  final bool clicked;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: func,
-      child: Container(width: 40, height: 40, color: darkBlue, child: Center(child: Icon(icon, size: 15))),
+      child: CircleAvatar(
+        radius: 25,
+        backgroundColor: clicked ? blue.withOpacity(.4) : transparent,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                icon,
+                size: 15,
+                color: clicked ? white : white.withOpacity(.5),
+              ),
+              Visibility(visible: clicked, child: const SizedBox(height: 5)),
+              AnimatedContainer(
+                duration: 500.ms,
+                width: clicked ? 30 : 0,
+                height: clicked ? 1 : 0,
+                decoration: BoxDecoration(
+                  color: blue,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

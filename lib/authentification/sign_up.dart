@@ -57,19 +57,22 @@ class _SignUpState extends State<SignUp> {
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) setS) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
+          extendBody: true,
+          extendBodyBehindAppBar: true,
           backgroundColor: darkBlue,
           body: Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
+              padding: EdgeInsets.zero,
               child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-                    Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
+                    Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
+                    Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                     Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
                     const SizedBox(height: 60),
                     CustomizedText(text: AppLocalizations.of(context)!.sign_up, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
@@ -250,7 +253,7 @@ class _SignUpState extends State<SignUp> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 40),
                   ],
                 ),
               ),

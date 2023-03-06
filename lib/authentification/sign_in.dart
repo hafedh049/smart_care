@@ -49,11 +49,11 @@ class _SignInState extends State<SignIn> {
                   Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
                   Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                   Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue.withOpacity(.5)), const SizedBox(width: 30)]),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 10),
                   CustomizedText(text: AppLocalizations.of(context)!.welcome, fontWeight: FontWeight.bold, color: blue).animate().fadeIn(duration: 500.ms),
                   CustomizedText(text: AppLocalizations.of(context)!.sign_in_now, fontWeight: FontWeight.bold, fontSize: 35).animate().fadeIn(duration: 500.ms),
                   CustomizedText(text: AppLocalizations.of(context)!.welcome_back, fontSize: 16).animate().fadeIn(duration: 500.ms),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 10),
                   Row(
                     children: <Widget>[
                       const Spacer(),

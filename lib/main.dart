@@ -27,11 +27,11 @@ void main() async {
   isActive = userData["IS_ACTIVE"] as int;
   Connectivity().onConnectivityChanged.listen((ConnectivityResult event) async {
     if (await InternetConnectionChecker().hasConnection) {
-      showToast("Connection is On", color: Colors.greenAccent);
+      showToast("Online", color: blue);
       await db!.update("SMART_CARE", <String, dynamic>{"IS_ACTIVE": 1});
       isActive = 1;
     } else {
-      showToast("Connection is Off", color: Colors.redAccent);
+      showToast("Offline", color: red);
       await db!.update("SMART_CARE", <String, dynamic>{"IS_ACTIVE": 0});
       isActive = 0;
     }

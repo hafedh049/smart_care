@@ -27,7 +27,7 @@ final List<String> specialityList = <String>[
 
 String language = "en";
 
-final GlobalKey<ScaffoldState> homeScaffoldKey = GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> screensScaffoldKey = GlobalKey<ScaffoldState>();
 
 final AssetsAudioPlayer player = AssetsAudioPlayer.newPlayer();
 

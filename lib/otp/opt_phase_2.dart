@@ -12,7 +12,7 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../home/home.dart';
+import 'package:smart_care/screens/screens.dart';
 import '../stuff/classes.dart';
 import '../stuff/globals.dart';
 
@@ -39,7 +39,7 @@ class _OTPState extends State<OTP> {
         PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: widget.verification, smsCode: data);
         await FirebaseAuth.instance.signInWithCredential(credential).then((UserCredential value) async {
           _buttonBuilder.currentState!.setState(() => wait = false);
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Home()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()));
         });
       }
     });
@@ -52,78 +52,78 @@ class _OTPState extends State<OTP> {
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) setS) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
+          extendBody: true,
+          extendBodyBehindAppBar: true,
           backgroundColor: darkBlue,
           body: Padding(
             padding: const EdgeInsets.only(left: 8.0),
-            child: SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-                  Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
-                  Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
-                  const SizedBox(height: 40),
-                  CustomizedText(text: AppLocalizations.of(context)!.wait_for, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                  CustomizedText(text: AppLocalizations.of(context)!.sms_notification, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                  CustomizedText(text: AppLocalizations.of(context)!.the_pin_fields, fontSize: 16).animate().fadeIn(duration: 500.ms),
-                  const SizedBox(height: 40),
-                  IgnorePointer(
-                    ignoring: true,
-                    child: OTPTextField(
-                      length: 6,
-                      outlineBorderRadius: 5,
-                      controller: _otpFieldController,
-                      width: MediaQuery.of(context).size.width,
-                      fieldWidth: 40,
-                      keyboardType: TextInputType.number,
-                      style: GoogleFonts.abel(fontSize: 17),
-                      textFieldAlignment: MainAxisAlignment.spaceAround,
-                      fieldStyle: FieldStyle.box,
-                      onChanged: (String pin) {},
-                      onCompleted: (String pin) {},
-                      otpFieldStyle: OtpFieldStyle(
-                        backgroundColor: darkBlue,
-                        borderColor: white,
-                        disabledBorderColor: Colors.white.withOpacity(.5),
-                        enabledBorderColor: white,
-                        errorBorderColor: Colors.red,
-                        focusBorderColor: blue,
-                      ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
+                Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
+                Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
+                const SizedBox(height: 40),
+                CustomizedText(text: AppLocalizations.of(context)!.wait_for, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                CustomizedText(text: AppLocalizations.of(context)!.sms_notification, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                CustomizedText(text: AppLocalizations.of(context)!.the_pin_fields, fontSize: 16).animate().fadeIn(duration: 500.ms),
+                const SizedBox(height: 40),
+                IgnorePointer(
+                  ignoring: true,
+                  child: OTPTextField(
+                    length: 6,
+                    outlineBorderRadius: 5,
+                    controller: _otpFieldController,
+                    width: MediaQuery.of(context).size.width,
+                    fieldWidth: 40,
+                    keyboardType: TextInputType.number,
+                    style: GoogleFonts.abel(fontSize: 17),
+                    textFieldAlignment: MainAxisAlignment.spaceAround,
+                    fieldStyle: FieldStyle.box,
+                    onChanged: (String pin) {},
+                    onCompleted: (String pin) {},
+                    otpFieldStyle: OtpFieldStyle(
+                      backgroundColor: darkBlue,
+                      borderColor: white,
+                      disabledBorderColor: Colors.white.withOpacity(.5),
+                      enabledBorderColor: white,
+                      errorBorderColor: Colors.red,
+                      focusBorderColor: blue,
                     ),
                   ),
-                  const SizedBox(height: 30),
-                  Center(
-                    child: StatefulBuilder(
-                      key: _buttonBuilder,
-                      builder: (BuildContext context, void Function(void Function()) setS) {
-                        return IgnorePointer(
-                          ignoring: wait,
-                          child: AnimatedContainer(
-                            duration: 500.ms,
-                            height: 40,
-                            width: wait ? MediaQuery.of(context).size.width * .35 : MediaQuery.of(context).size.width * .6,
-                            decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(15)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  if (!wait) const Spacer(),
-                                  CustomizedText(text: wait ? AppLocalizations.of(context)!.signing_in : AppLocalizations.of(context)!.sign_in, fontWeight: FontWeight.bold, fontSize: 20),
-                                  if (!wait) const Spacer(),
-                                  if (!wait) CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
-                                ],
-                              ),
+                ),
+                const SizedBox(height: 30),
+                Center(
+                  child: StatefulBuilder(
+                    key: _buttonBuilder,
+                    builder: (BuildContext context, void Function(void Function()) setS) {
+                      return IgnorePointer(
+                        ignoring: wait,
+                        child: AnimatedContainer(
+                          duration: 500.ms,
+                          height: 40,
+                          width: wait ? MediaQuery.of(context).size.width * .35 : MediaQuery.of(context).size.width * .6,
+                          decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(15)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Visibility(visible: !wait, child: const Spacer()),
+                                CustomizedText(text: wait ? AppLocalizations.of(context)!.signing_in : AppLocalizations.of(context)!.sign_in, fontWeight: FontWeight.bold, fontSize: 20),
+                                Visibility(visible: !wait, child: const Spacer()),
+                                Visibility(visible: !wait, child: CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15))),
+                              ],
                             ),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
-                  Center(child: LottieBuilder.asset("assets/shield.json")),
-                ],
-              ),
+                ),
+                Center(child: LottieBuilder.asset("assets/shield.json")),
+              ],
             ),
           ),
         );

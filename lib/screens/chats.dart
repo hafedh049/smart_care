@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class Chats extends StatefulWidget {
+  const Chats({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Chats> createState() => _ChatsState();
 }
 
-class _HomeState extends State<Home> {
+class _ChatsState extends State<Chats> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
