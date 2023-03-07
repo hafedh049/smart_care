@@ -53,7 +53,7 @@ class _RecoveryState extends State<Recovery> {
                   CustomizedText(text: AppLocalizations.of(context)!.recovery, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
                   CustomizedText(text: AppLocalizations.of(context)!.after_continuing, fontSize: 16).animate().fadeIn(duration: 500.ms),
                   const SizedBox(height: 10),
-                  CustomTextField(controller: _emailController, hint: "E-mail", prefix: FontAwesomeIcons.envelope, validator: fieldsValidators["email"], type: TextInputType.emailAddress),
+                  CustomTextField(controller: _emailController, hint: "E-mail", prefix: FontAwesomeIcons.envelope, validator: fieldsValidatorsFunction("email", context), type: TextInputType.emailAddress),
                   const SizedBox(height: 10),
                   Center(
                     child: StatefulBuilder(

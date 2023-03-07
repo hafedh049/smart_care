@@ -73,9 +73,9 @@ class _SignInState extends State<SignIn> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  CustomTextField(validator: fieldsValidators["email"], controller: _emailController, hint: AppLocalizations.of(context)!.e_mail, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
+                  CustomTextField(validator: fieldsValidatorsFunction("email", context), controller: _emailController, hint: AppLocalizations.of(context)!.e_mail, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
                   const SizedBox(height: 10),
-                  CustomTextField(validator: fieldsValidators["password"], controller: _passwordController, hint: AppLocalizations.of(context)!.password, obscured: true, prefix: FontAwesomeIcons.lock),
+                  CustomTextField(validator: fieldsValidatorsFunction("password", context), controller: _passwordController, hint: AppLocalizations.of(context)!.password, obscured: true, prefix: FontAwesomeIcons.lock),
                   const SizedBox(height: 40),
                   Center(
                     child: StatefulBuilder(

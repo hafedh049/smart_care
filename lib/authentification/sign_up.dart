@@ -1,5 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clipboard_listener/clipboard_listener.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,6 +40,7 @@ class _SignUpState extends State<SignUp> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool wait = false;
   String countryCode = "";
+  File? _profilePicture;
   @override
   void dispose() {
     _specialityController.dispose();
@@ -75,23 +79,45 @@ class _SignUpState extends State<SignUp> {
                     Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                     Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
                     const SizedBox(height: 60),
-                    CustomizedText(text: AppLocalizations.of(context)!.sign_up, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                    CustomizedText(text: AppLocalizations.of(context)!.form, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                    CustomizedText(text: AppLocalizations.of(context)!.to_create_this_form, fontSize: 16).animate().fadeIn(duration: 500.ms),
+                    Row(
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            CustomizedText(text: AppLocalizations.of(context)!.sign_up, color: blue, fontWeight: FontWeight.bold),
+                            CustomizedText(text: AppLocalizations.of(context)!.form, fontWeight: FontWeight.bold),
+                            CustomizedText(text: AppLocalizations.of(context)!.to_create_this_form, fontSize: 16),
+                          ],
+                        ),
+                        const Spacer(),
+                        CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          radius: 57,
+                          child: _profilePicture == null
+                              ? CachedNetworkImage(
+                                  imageUrl: noUser,
+                                )
+                              : CircleAvatar(
+                                  radius: 57,
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage: FileImage(_profilePicture!),
+                                ),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 30),
-                    CustomTextField(validator: fieldsValidators["username"], controller: _usernameController, hint: AppLocalizations.of(context)!.username, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name),
+                    CustomTextField(validator: fieldsValidatorsFunction("username", context), controller: _usernameController, hint: AppLocalizations.of(context)!.username, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name),
                     const SizedBox(height: 10),
-                    CustomTextField(validator: fieldsValidators["service"], controller: _serviceController, hint: AppLocalizations.of(context)!.service, prefix: FontAwesomeIcons.servicestack),
+                    CustomTextField(validator: fieldsValidatorsFunction("service", context), controller: _serviceController, hint: AppLocalizations.of(context)!.service, prefix: FontAwesomeIcons.servicestack),
                     const SizedBox(height: 10),
-                    CustomTextField(validator: fieldsValidators["job location"], controller: _jobLocationController, hint: AppLocalizations.of(context)!.job_location, prefix: FontAwesomeIcons.locationPin),
+                    CustomTextField(validator: fieldsValidatorsFunction("job location", context), controller: _jobLocationController, hint: AppLocalizations.of(context)!.job_location, prefix: FontAwesomeIcons.locationPin),
                     const SizedBox(height: 10),
-                    CustomTextField(validator: fieldsValidators["cin"], controller: _cinController, hint: AppLocalizations.of(context)!.cin, prefix: FontAwesomeIcons.idBadge, type: TextInputType.number),
+                    CustomTextField(validator: fieldsValidatorsFunction("cin", context), controller: _cinController, hint: AppLocalizations.of(context)!.cin, prefix: FontAwesomeIcons.idBadge, type: TextInputType.number),
                     const SizedBox(height: 10),
-                    CustomTextField(validator: fieldsValidators["id"], controller: _idController, hint: AppLocalizations.of(context)!.id, prefix: FontAwesomeIcons.userSecret),
+                    CustomTextField(validator: fieldsValidatorsFunction("id", context), controller: _idController, hint: AppLocalizations.of(context)!.id, prefix: FontAwesomeIcons.userSecret),
                     const SizedBox(height: 10),
-                    CustomTextField(validator: fieldsValidators["email"], controller: _emailController, hint: AppLocalizations.of(context)!.e_mail, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
+                    CustomTextField(validator: fieldsValidatorsFunction("email", context), controller: _emailController, hint: AppLocalizations.of(context)!.e_mail, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
                     const SizedBox(height: 10),
-                    CustomTextField(validator: fieldsValidators["password"], controller: _passwordController, hint: AppLocalizations.of(context)!.password, prefix: FontAwesomeIcons.lock, obscured: true),
+                    CustomTextField(validator: fieldsValidatorsFunction("password", context), controller: _passwordController, hint: AppLocalizations.of(context)!.password, prefix: FontAwesomeIcons.lock, obscured: true),
                     const SizedBox(height: 10),
                     StatefulBuilder(
                       builder: (BuildContext context, void Function(void Function()) setS) {
@@ -107,7 +133,7 @@ class _SignUpState extends State<SignUp> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: <Widget>[
                                         const SizedBox(height: 10),
-                                        ...specialityList
+                                        ...specialityListFunction(context)
                                             .map((String speciality_) => GestureDetector(
                                                   onTap: () {
                                                     setS(() => _specialityController.text = speciality_);
@@ -125,7 +151,7 @@ class _SignUpState extends State<SignUp> {
                                 },
                               );
                             },
-                            child: CustomTextField(controller: _specialityController, hint: AppLocalizations.of(context)!.speciality, prefix: FontAwesomeIcons.bomb, validator: fieldsValidators["speciality"], readonly: true));
+                            child: CustomTextField(controller: _specialityController, hint: AppLocalizations.of(context)!.speciality, prefix: FontAwesomeIcons.bomb, validator: fieldsValidatorsFunction("speciality", context), readonly: true));
                       },
                     ),
                     const SizedBox(height: 10),
