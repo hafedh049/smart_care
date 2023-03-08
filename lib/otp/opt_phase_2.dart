@@ -77,12 +77,9 @@ class _OTPState extends State<OTP> {
                     controller: _otpFieldController,
                     width: MediaQuery.of(context).size.width,
                     fieldWidth: 40,
-                    keyboardType: TextInputType.number,
                     style: GoogleFonts.abel(fontSize: 17),
                     textFieldAlignment: MainAxisAlignment.spaceAround,
                     fieldStyle: FieldStyle.box,
-                    onChanged: (String pin) {},
-                    onCompleted: (String pin) {},
                     otpFieldStyle: OtpFieldStyle(
                       backgroundColor: darkBlue,
                       borderColor: white,
@@ -104,16 +101,16 @@ class _OTPState extends State<OTP> {
                           duration: 500.ms,
                           height: 40,
                           width: wait ? MediaQuery.of(context).size.width * .35 : MediaQuery.of(context).size.width * .6,
-                          decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(15)),
+                          decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Visibility(visible: !wait, child: const Spacer()),
-                                CustomizedText(text: wait ? AppLocalizations.of(context)!.signing_in : AppLocalizations.of(context)!.sign_in, fontWeight: FontWeight.bold, fontSize: 20),
+                                CustomizedText(text: wait ? AppLocalizations.of(context)!.signing_in : AppLocalizations.of(context)!.sign_in, color: black, fontWeight: FontWeight.bold, fontSize: 20),
                                 Visibility(visible: !wait, child: const Spacer()),
-                                Visibility(visible: !wait, child: CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15))),
+                                Visibility(visible: !wait, child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: black)),
                               ],
                             ),
                           ),

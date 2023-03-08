@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:lottie/lottie.dart';
 import 'package:smart_care/otp/otp_phase_1.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
@@ -85,38 +86,46 @@ class GoogleAuth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        try {
-          await GoogleSignIn().signIn().then((GoogleSignInAccount? googleAccount) async {
-            if (googleAccount != null) {
-              List<String> signInMethods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(googleAccount.email);
-              if (signInMethods.contains('google.com')) {
-                // Google provider is linked with email/password provider
-                await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
-                  AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
-                  await FirebaseAuth.instance.signInWithCredential(credential);
-                });
-              } else {
-                // Google provider is not linked with email/password provider
-                showToast(AppLocalizations.of(context)!.no_user_linked, color: red);
+    return Center(
+      child: GestureDetector(
+        onTap: () async {
+          try {
+            await GoogleSignIn().signIn().then((GoogleSignInAccount? googleAccount) async {
+              if (googleAccount != null) {
+                List<String> signInMethods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(googleAccount.email);
+                if (signInMethods.contains('google.com')) {
+                  // Google provider is linked with email/password provider
+                  await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
+                    AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
+                    await FirebaseAuth.instance.signInWithCredential(credential);
+                  });
+                } else {
+                  // Google provider is not linked with email/password provider
+                  showToast(AppLocalizations.of(context)!.no_user_linked, color: red);
+                }
               }
-            }
-          });
-        } catch (_) {
-          showToast(_.toString(), color: red);
-        }
-      },
-      child: Container(
-        margin: const EdgeInsets.all(8.0),
-        padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: red),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: const <Widget>[
-            Icon(FontAwesomeIcons.google, size: 25),
-            CustomizedText(text: "Continue with Google", fontSize: 16, fontWeight: FontWeight.bold),
-          ],
+            });
+          } catch (_) {
+            showToast(_.toString(), color: red);
+          }
+        },
+        child: Container(
+          height: 40,
+          width: MediaQuery.of(context).size.width * .6,
+          padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            boxShadow: [BoxShadow(blurStyle: BlurStyle.outer, color: white.withOpacity(0.5), spreadRadius: 1, blurRadius: 7, offset: const Offset(0, 2))],
+            color: transparent,
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(color: white.withOpacity(.5)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Image.asset("assets/google.png"),
+              CustomizedText(text: "CONTINUE WITH GOOGLE", fontSize: 16, fontWeight: FontWeight.bold, color: white),
+            ],
+          ),
         ),
       ),
     );
@@ -130,18 +139,22 @@ class OTPAuth extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const OTPView()));
-        },
+        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const OTPView())),
         child: Container(
-          margin: const EdgeInsets.all(8.0),
+          height: 40,
+          width: MediaQuery.of(context).size.width * .6,
           padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.green),
+          decoration: BoxDecoration(
+            boxShadow: [BoxShadow(blurStyle: BlurStyle.outer, color: white.withOpacity(0.5), spreadRadius: 1, blurRadius: 7, offset: const Offset(0, 2))],
+            color: transparent,
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(color: white.withOpacity(.5)),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const <Widget>[
-              Icon(FontAwesomeIcons.phone, size: 25),
-              CustomizedText(text: "Continue with Phone", fontSize: 16, fontWeight: FontWeight.bold),
+            children: <Widget>[
+              Image.asset("assets/phone.png"),
+              CustomizedText(text: "CONTINUE WITH PHONE", color: white, fontSize: 16, fontWeight: FontWeight.bold),
             ],
           ),
         ),
@@ -159,7 +172,16 @@ class CustomizedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: GoogleFonts.abel(color: color, fontSize: fontSize, fontWeight: fontWeight));
+    return Text(
+      text,
+      style: GoogleFonts.roboto(
+        color: color,
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+      ),
+      softWrap: true,
+      overflow: TextOverflow.fade,
+    );
   }
 }
 
@@ -203,10 +225,11 @@ class _HealthDrawerState extends State<HealthDrawer> {
 }
 
 class CustomIcon extends StatelessWidget {
-  const CustomIcon({super.key, required this.func, required this.icon, this.clicked = false});
+  const CustomIcon({super.key, required this.func, required this.icon, this.clicked = false, this.size = 15});
   final void Function() func;
   final IconData icon;
   final bool clicked;
+  final double size;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -221,7 +244,7 @@ class CustomIcon extends StatelessWidget {
             children: <Widget>[
               Icon(
                 icon,
-                size: 15,
+                size: size,
                 color: clicked ? white : white.withOpacity(.5),
               ),
               Visibility(visible: clicked, child: const SizedBox(height: 5)),
@@ -231,12 +254,69 @@ class CustomIcon extends StatelessWidget {
                 height: clicked ? 1 : 0,
                 decoration: BoxDecoration(
                   color: blue,
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(5),
                 ),
               )
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class Or extends StatelessWidget {
+  const Or({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(height: .5, width: MediaQuery.of(context).size.width * .4, decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(25))),
+        const SizedBox(width: 10),
+        CustomizedText(text: AppLocalizations.of(context)!.or, fontSize: 20, fontWeight: FontWeight.bold),
+        const SizedBox(width: 10),
+        Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: Container(height: .5, width: MediaQuery.of(context).size.width * .4, decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(25))),
+        ),
+      ],
+    );
+  }
+}
+
+class Role extends StatelessWidget {
+  const Role({super.key, required this.role, required this.state});
+  final String role;
+  final bool state;
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      width: 120,
+      height: 120,
+      padding: const EdgeInsets.all(8.0),
+      duration: 500.ms,
+      decoration: BoxDecoration(
+        border: state ? Border.all(color: blue) : null,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          LottieBuilder.asset("assets/$role.json", width: 60, height: 60),
+          const SizedBox(height: 5),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              CustomizedText(text: role[0].toUpperCase() + role.substring(1), fontSize: 18, fontWeight: FontWeight.bold, color: white),
+              Visibility(visible: state, child: const SizedBox(width: 10)),
+              Visibility(visible: state, child: Icon(FontAwesomeIcons.circleCheck, color: blue, size: 15)),
+            ],
+          ),
+        ],
       ),
     );
   }

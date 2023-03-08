@@ -61,8 +61,8 @@ class GetStarted extends StatelessWidget {
                 child: Container(
                   height: 60,
                   margin: const EdgeInsets.only(right: 8.0),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue),
-                  child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.get_started, fontWeight: FontWeight.bold, fontSize: 25)),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
+                  child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.get_started, color: black, fontWeight: FontWeight.bold, fontSize: 25)),
                 ),
               )
             ],

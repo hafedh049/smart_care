@@ -79,16 +79,16 @@ class _RecoveryState extends State<Recovery> {
                               duration: 500.ms,
                               height: 40,
                               width: wait ? MediaQuery.of(context).size.width * .35 : MediaQuery.of(context).size.width * .6,
-                              decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(15)),
+                              decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    if (!wait) const Spacer(),
-                                    CustomizedText(text: wait ? AppLocalizations.of(context)!.done : AppLocalizations.of(context)!.send_email, fontWeight: FontWeight.bold, fontSize: 20),
-                                    if (!wait) const Spacer(),
-                                    if (!wait) CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
+                                    Visibility(visible: !wait, child: const Spacer()),
+                                    CustomizedText(text: wait ? AppLocalizations.of(context)!.done : AppLocalizations.of(context)!.send_email, color: black, fontWeight: FontWeight.bold, fontSize: 18),
+                                    Visibility(visible: !wait, child: const Spacer()),
+                                    Visibility(visible: !wait, child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: black)),
                                   ],
                                 ),
                               ),

@@ -49,11 +49,11 @@ class _SignInState extends State<SignIn> {
                   Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
                   Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                   Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue.withOpacity(.5)), const SizedBox(width: 30)]),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   CustomizedText(text: AppLocalizations.of(context)!.welcome, fontWeight: FontWeight.bold, color: blue).animate().fadeIn(duration: 500.ms),
                   CustomizedText(text: AppLocalizations.of(context)!.sign_in_now, fontWeight: FontWeight.bold, fontSize: 35).animate().fadeIn(duration: 500.ms),
                   CustomizedText(text: AppLocalizations.of(context)!.welcome_back, fontSize: 16).animate().fadeIn(duration: 500.ms),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   Row(
                     children: <Widget>[
                       const Spacer(),
@@ -62,21 +62,21 @@ class _SignInState extends State<SignIn> {
                         child: Container(
                           height: 35,
                           width: 150,
-                          decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(15)),
+                          decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.recover_account, fontSize: 16, fontWeight: FontWeight.bold)),
+                            child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.recover_account, fontSize: 16, color: black, fontWeight: FontWeight.bold)),
                           ),
                         ),
                       ),
                       const SizedBox(width: 10),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   CustomTextField(validator: fieldsValidatorsFunction("email", context), controller: _emailController, hint: AppLocalizations.of(context)!.e_mail, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
                   const SizedBox(height: 10),
                   CustomTextField(validator: fieldsValidatorsFunction("password", context), controller: _passwordController, hint: AppLocalizations.of(context)!.password, obscured: true, prefix: FontAwesomeIcons.lock),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
                   Center(
                     child: StatefulBuilder(
                       builder: (BuildContext context, void Function(void Function()) setS) {
@@ -99,16 +99,16 @@ class _SignInState extends State<SignIn> {
                               duration: 500.ms,
                               height: 40,
                               width: wait ? MediaQuery.of(context).size.width * .37 : MediaQuery.of(context).size.width * .6,
-                              decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(15)),
+                              decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    if (!wait) const Spacer(),
-                                    CustomizedText(text: wait ? AppLocalizations.of(context)!.connecting : AppLocalizations.of(context)!.sign_in, fontWeight: FontWeight.bold, fontSize: 20),
-                                    if (!wait) const Spacer(),
-                                    if (!wait) CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15)),
+                                    Visibility(visible: !wait, child: const Spacer()),
+                                    CustomizedText(text: wait ? AppLocalizations.of(context)!.connecting : AppLocalizations.of(context)!.sign_in, fontWeight: FontWeight.bold, fontSize: 20, color: black),
+                                    Visibility(visible: !wait, child: const Spacer()),
+                                    Visibility(visible: !wait, child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: black)),
                                   ],
                                 ),
                               ),
@@ -118,38 +118,23 @@ class _SignInState extends State<SignIn> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
                   Center(
                     child: GestureDetector(
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const SignUp())),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.dont_have_an_account, fontSize: 18),
-                          const SizedBox(width: 10),
-                          CustomizedText(text: AppLocalizations.of(context)!.register_now, color: blue, fontSize: 18, fontWeight: FontWeight.bold),
-                        ],
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * .6,
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: blue)),
+                        child: Center(child: CustomizedText(text: "Create Profile", fontWeight: FontWeight.bold, fontSize: 20, color: blue)),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 40),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(height: .5, width: MediaQuery.of(context).size.width * .4, decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(25))),
-                      const SizedBox(width: 10),
-                      CustomizedText(text: AppLocalizations.of(context)!.or, fontSize: 20, fontWeight: FontWeight.bold),
-                      const SizedBox(width: 10),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Container(height: .5, width: MediaQuery.of(context).size.width * .4, decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(25))),
-                      ),
-                    ],
-                  ),
+                  const SizedBox(height: 20),
+                  const Or(),
                   const SizedBox(height: 20),
                   const GoogleAuth(),
+                  const SizedBox(height: 10),
                   const OTPAuth(),
                 ],
               ),

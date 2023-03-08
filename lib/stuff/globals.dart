@@ -1,14 +1,14 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Color white = Colors.white;
 Color black = Colors.black;
-Color darkBlue = const Color.fromARGB(30, 7, 32, 60);
+Color darkBlue = const Color.fromARGB(255, 24, 25, 26);
 Color transparent = Colors.transparent;
-Color blue = const Color.fromARGB(255, 0, 80, 146);
-Color red = const Color.fromARGB(255, 153, 10, 0);
+Color blue = const Color.fromARGB(255, 93, 172, 248);
+Color red = const Color.fromARGB(255, 219, 15, 0);
+Color green = Colors.lightGreenAccent;
 
 int? firstTime;
 int? isActive;
@@ -32,8 +32,6 @@ List<String> specialityListFunction(BuildContext context) {
 String noUser = 'https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/doctor-icon.png?alt=media&token=69e755f5-e674-4064-a97e-708f2ec8c25c';
 
 final GlobalKey<ScaffoldState> screensScaffoldKey = GlobalKey<ScaffoldState>();
-
-final AssetsAudioPlayer player = AssetsAudioPlayer.newPlayer();
 
 String? Function(String?)? fieldsValidatorsFunction(String text, BuildContext context) {
   Map<String, String? Function(String?)?> fieldsValidators = <String, String? Function(String?)?>{

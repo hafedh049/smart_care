@@ -138,16 +138,16 @@ class _OTPViewState extends State<OTPView> {
                               duration: 500.ms,
                               height: 40,
                               width: wait ? MediaQuery.of(context).size.width * .35 : MediaQuery.of(context).size.width * .6,
-                              decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(15)),
+                              decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Visibility(visible: !wait, child: const Spacer()),
-                                    CustomizedText(text: wait ? AppLocalizations.of(context)!.sending : AppLocalizations.of(context)!.send_sms, fontWeight: FontWeight.bold, fontSize: 20),
+                                    CustomizedText(text: wait ? AppLocalizations.of(context)!.sending : AppLocalizations.of(context)!.send_sms, color: black, fontWeight: FontWeight.bold, fontSize: 20),
                                     Visibility(visible: !wait, child: const Spacer()),
-                                    Visibility(visible: !wait, child: CircleAvatar(radius: 17, backgroundColor: darkBlue, child: const Icon(FontAwesomeIcons.chevronRight, size: 15))),
+                                    Visibility(visible: !wait, child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: black)),
                                   ],
                                 ),
                               ),
