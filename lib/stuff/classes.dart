@@ -321,3 +321,17 @@ class Role extends StatelessWidget {
     );
   }
 }
+
+class SignUpIcon extends StatelessWidget {
+  const SignUpIcon({super.key, required this.icon, required this.activeState});
+  final IconData icon;
+  final bool activeState;
+  @override
+  Widget build(BuildContext context) {
+    return Icon(icon, size: 20, color: activeState ? blue : white)
+        .animate(
+          target: activeState ? 1 : 0,
+        )
+        .scale(duration: 500.ms, begin: const Offset(1, 1), end: const Offset(1.5, 1.5));
+  }
+}

@@ -126,7 +126,7 @@ class _SignInState extends State<SignIn> {
                         width: MediaQuery.of(context).size.width * .6,
                         padding: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: blue)),
-                        child: Center(child: CustomizedText(text: "Create Profile", fontWeight: FontWeight.bold, fontSize: 20, color: blue)),
+                        child: Center(child: CustomizedText(text: "Create Account", fontWeight: FontWeight.bold, fontSize: 20, color: blue)),
                       ),
                     ),
                   ),

@@ -6,13 +6,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clipboard_listener/clipboard_listener.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
@@ -39,6 +39,7 @@ class _SignUpState extends State<SignUp> {
   final GlobalKey _stepsCompletedkey = GlobalKey();
   final GlobalKey _nextKey = GlobalKey();
   final GlobalKey _previousKey = GlobalKey();
+  final GlobalKey _iconsKey = GlobalKey();
   bool _next = true;
   bool _previous = false;
   String _countryCode = "";
@@ -46,6 +47,8 @@ class _SignUpState extends State<SignUp> {
   File? _profilePicture;
   double _stepsCompleted = 0;
   final List<bool> _rolesList = <bool>[false, false, true];
+  final List<bool> _iconsList = <bool>[true, false, false, false, false, false];
+
   @override
   void dispose() {
     _fieldsPageController.dispose();
@@ -78,7 +81,7 @@ class _SignUpState extends State<SignUp> {
                   Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
                   Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                   Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Row(
@@ -173,6 +176,26 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   const SizedBox(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: StatefulBuilder(
+                      key: _iconsKey,
+                      builder: (BuildContext context, void Function(void Function()) snapshot) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            SignUpIcon(icon: FontAwesomeIcons.userDoctor, activeState: _iconsList[0]),
+                            SignUpIcon(icon: FontAwesomeIcons.userSecret, activeState: _iconsList[1]),
+                            SignUpIcon(icon: FontAwesomeIcons.envelope, activeState: _iconsList[2]),
+                            SignUpIcon(icon: FontAwesomeIcons.lock, activeState: _iconsList[3]),
+                            SignUpIcon(icon: FontAwesomeIcons.phone, activeState: _iconsList[4]),
+                            SignUpIcon(icon: FontAwesomeIcons.idCard, activeState: _iconsList[5]),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   Stack(
                     children: <Widget>[
                       Container(margin: const EdgeInsets.only(right: 8.0), width: MediaQuery.of(context).size.width, height: 3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: white.withOpacity(.5))),
@@ -184,7 +207,7 @@ class _SignUpState extends State<SignUp> {
                       )
                     ],
                   ),
-                  const SizedBox(height: 60),
+                  const SizedBox(height: 40),
                   Flexible(
                     child: PageView(
                       controller: _fieldsPageController,
@@ -192,6 +215,10 @@ class _SignUpState extends State<SignUp> {
                       onPageChanged: (int page) {
                         _stepsCompletedkey.currentState!.setState(() {
                           _stepsCompleted = (MediaQuery.of(context).size.width - 16) * page / 5;
+                          _iconsKey.currentState!.setState(() {
+                            _iconsList.setAll(0, <bool>[for (int index = 0; index < 6; index++) false]);
+                            _iconsList[page] = true;
+                          });
                         });
                       },
                       children: <Widget>[
@@ -364,7 +391,71 @@ class _SignUpState extends State<SignUp> {
                                     }
                                   }
                                 }
-                              : null,
+                              : () async {
+                                  try {
+                                    if (_rolesList.any((bool element) => element == true)) {
+                                      await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential userCredential) async {
+                                        String profilePictureUrl = noUser;
+                                        if (_profilePicture != null) {
+                                          await FirebaseStorage.instance.ref().child("profile_pictures/${userCredential.user!.uid}").putFile(_profilePicture!).then((TaskSnapshot task) async {
+                                            profilePictureUrl = await task.ref.getDownloadURL();
+                                          });
+                                        }
+                                        await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).set({
+                                          "account_creation_date": Timestamp.now(),
+                                          "medical_professional_name": _usernameController.text.trim(),
+                                          "id": _idController.text.trim(),
+                                          "role": _role,
+                                          "image_url": profilePictureUrl,
+                                          "email": _emailController.text.trim(),
+                                          "password": _passwordController.text.trim(),
+                                          "phone_number": "$_countryCode${_phoneController.text.replaceAll(RegExp(r' '), '').trim()}",
+                                        }).then((void value) async {
+                                          // Obtain the Google sign-in credentials
+                                          final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+                                          final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+                                          final OAuthCredential googleCredential = GoogleAuthProvider.credential(
+                                            accessToken: googleAuth.accessToken,
+                                            idToken: googleAuth.idToken,
+                                          );
+                                          // Link the email/password account with the Google account
+                                          await userCredential.user!.linkWithCredential(googleCredential);
+
+                                          await FirebaseAuth.instance
+                                              .verifyPhoneNumber(
+                                            forceResendingToken: 1,
+                                            timeout: 30.ms,
+                                            phoneNumber: "$_countryCode${_phoneController.text.replaceAll(RegExp(r' '), '').trim()}",
+                                            verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
+                                            verificationFailed: (FirebaseAuthException error) {},
+                                            codeSent: (String verificationId, int? forceResendingToken) {
+                                              ClipboardListener.addListener(() async {
+                                                ClipboardData? clipboard = await Clipboard.getData("text/plain");
+                                                if (clipboard != null && clipboard.text != null && clipboard.text!.isNotEmpty && clipboard.text!.contains(RegExp(r'^\d+$'))) {
+                                                  String sms = clipboard.text!;
+                                                  PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: sms);
+                                                  await userCredential.user!.linkWithCredential(credential);
+                                                }
+                                              });
+                                              ClipboardListener.removeListener(() {});
+                                            },
+                                            codeAutoRetrievalTimeout: (String verificationId) {},
+                                          )
+                                              .then((void value) async {
+                                            await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) {
+                                              showToast(AppLocalizations.of(context)!.account_created);
+                                            });
+                                          });
+                                        });
+                                      });
+                                    } else {
+                                      showToast(AppLocalizations.of(context)!.verify_fields_please);
+                                    }
+                                  } catch (_) {
+                                    setS(() => _next = false);
+                                    showToast(_.toString());
+                                  }
+                                },
                           child: AnimatedContainer(
                             duration: 500.ms,
                             height: 40,
@@ -432,7 +523,7 @@ class _SignUpState extends State<SignUp> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 50),
                 ],
               ),
             ),
@@ -442,61 +533,3 @@ class _SignUpState extends State<SignUp> {
     );
   }
 }
-
-
-
-/* try {
-                                if (_formKey.currentState!.validate()) {
-                                  setS(() => _next = true);
-                                  await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential userCredential) async {
-                                    await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).set({
-                                      "account_creation_date": Timestamp.now(),
-                                      "medical_professional_name": _usernameController.text.trim(),
-                                      "job_location": _jobLocationController.text.trim(),
-                                      "id": _idController.text.trim(),
-                                      "email": _emailController.text.trim(),
-                                      "password": _passwordController.text.trim(),
-                                      "speciality": _specialityController.text.trim(),
-                                      "phone_number": "$_countryCode${_phoneController.text.replaceAll(RegExp(r''), '').trim()}",
-                                    }).then((void value) async {
-                                      // Obtain the Google sign-in credentials
-                                      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-                                      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
-                                      final OAuthCredential googleCredential = GoogleAuthProvider.credential(
-                                        accessToken: googleAuth.accessToken,
-                                        idToken: googleAuth.idToken,
-                                      );
-                                      // Link the email/password account with the Google account
-                                      await userCredential.user!.linkWithCredential(googleCredential);
-
-                                      await FirebaseAuth.instance.verifyPhoneNumber(
-                                        forceResendingToken: 1,
-                                        timeout: 30.ms,
-                                        phoneNumber: "$_countryCode${_phoneController.text.replaceAll(RegExp(r''), '').trim()}",
-                                        verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
-                                        verificationFailed: (FirebaseAuthException error) {},
-                                        codeSent: (String verificationId, int? forceResendingToken) {
-                                          ClipboardListener.addListener(() async {
-                                            ClipboardData? clipboard = await Clipboard.getData("text/plain");
-                                            if (clipboard != null && clipboard.text != null && clipboard.text!.isNotEmpty && clipboard.text!.contains(RegExp(r'^\d+$'))) {
-                                              String sms = clipboard.text!;
-                                              PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: sms);
-                                              await userCredential.user!.linkWithCredential(credential);
-                                            }
-                                          });
-                                          ClipboardListener.removeListener(() {});
-                                        },
-                                        codeAutoRetrievalTimeout: (String verificationId) {},
-                                      );
-                                      setS(() => _next = false);
-                                      showToast(AppLocalizations.of(context)!.account_created);
-                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()));
-                                    });
-                                  });
-                                } else {
-                                  showToast(AppLocalizations.of(context)!.verify_fields_please);
-                                }
-                              } catch (_) {
-                                setS(() => _next = false);
-                                showToast(_.toString());
-                              }*/

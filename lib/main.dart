@@ -22,18 +22,13 @@ void main() async {
   ErrorWidget.builder = (FlutterErrorDetails details) => ErrorRoom(error: details.exceptionAsString());
   SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]);
   await openDB();
-  Map<String, dynamic> userData = (await db!.rawQuery("SELECT FIRST_TIME,IS_ACTIVE FROM SMART_CARE WHERE ID = 1;")).first;
+  Map<String, dynamic> userData = (await db!.rawQuery("SELECT FIRST_TIME FROM SMART_CARE WHERE ID = 1;")).first;
   firstTime = userData["FIRST_TIME"] as int;
-  isActive = userData["IS_ACTIVE"] as int;
   Connectivity().onConnectivityChanged.listen((ConnectivityResult event) async {
     if (await InternetConnectionChecker().hasConnection) {
       showToast("Online", color: blue);
-      await db!.update("SMART_CARE", <String, dynamic>{"IS_ACTIVE": 1});
-      isActive = 1;
     } else {
       showToast("Offline", color: red);
-      await db!.update("SMART_CARE", <String, dynamic>{"IS_ACTIVE": 0});
-      isActive = 0;
     }
   });
   runApp(const Main());

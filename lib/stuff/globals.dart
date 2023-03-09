@@ -11,7 +11,6 @@ Color red = const Color.fromARGB(255, 219, 15, 0);
 Color green = Colors.lightGreenAccent;
 
 int? firstTime;
-int? isActive;
 
 Database? db;
 

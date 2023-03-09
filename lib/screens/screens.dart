@@ -6,6 +6,7 @@ import 'package:smart_care/screens/chats.dart';
 import 'package:smart_care/screens/historic.dart';
 import 'package:smart_care/screens/home.dart';
 import 'package:smart_care/screens/upload.dart';
+import 'package:smart_care/screens/workflow.dart';
 import 'package:smart_care/stuff/classes.dart';
 
 import '../stuff/globals.dart';
@@ -22,6 +23,7 @@ class _ScreensState extends State<Screens> {
   final List<Map<String, dynamic>> _screens = <Map<String, dynamic>>[
     {"screen": const Home(), "icon": FontAwesomeIcons.house},
     {"screen": const Upload(), "icon": FontAwesomeIcons.camera},
+    {"screen": const WorkFlow(), "icon": FontAwesomeIcons.sheetPlastic},
     {"screen": const Chats(), "icon": FontAwesomeIcons.solidMessage},
     {"screen": const Historic(), "icon": FontAwesomeIcons.solidFolder},
   ];
