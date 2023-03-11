@@ -13,6 +13,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
@@ -39,15 +40,13 @@ class _SignUpState extends State<SignUp> {
   final GlobalKey _stepsCompletedkey = GlobalKey();
   final GlobalKey _nextKey = GlobalKey();
   final GlobalKey _previousKey = GlobalKey();
-  final GlobalKey _iconsKey = GlobalKey();
   bool _next = true;
   bool _previous = false;
   String _countryCode = "";
-  String _role = "";
+  String _role = "Patient";
   File? _profilePicture;
   double _stepsCompleted = 0;
   final List<bool> _rolesList = <bool>[false, false, true];
-  final List<bool> _iconsList = <bool>[true, false, false, false, false, false];
 
   @override
   void dispose() {
@@ -122,7 +121,8 @@ class _SignUpState extends State<SignUp> {
                                         CustomIcon(
                                             size: 25,
                                             func: () async {
-                                              final String path = await takesFromCameraOrGallery(true, context);
+                                              final String path = await takesFromCameraOrGallery(true);
+                                              Navigator.pop(context);
                                               if (path.isNotEmpty) {
                                                 _profilePictureKey.currentState!.setState(() {
                                                   _profilePicture = File(path);
@@ -133,7 +133,8 @@ class _SignUpState extends State<SignUp> {
                                         CustomIcon(
                                           size: 25,
                                           func: () async {
-                                            final String path = await takesFromCameraOrGallery(false, context);
+                                            final String path = await takesFromCameraOrGallery(false);
+                                            Navigator.pop(context);
                                             if (path.isNotEmpty) {
                                               _profilePictureKey.currentState!.setState(() {
                                                 _profilePicture = File(path);
@@ -176,26 +177,6 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: StatefulBuilder(
-                      key: _iconsKey,
-                      builder: (BuildContext context, void Function(void Function()) snapshot) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            SignUpIcon(icon: FontAwesomeIcons.userDoctor, activeState: _iconsList[0]),
-                            SignUpIcon(icon: FontAwesomeIcons.userSecret, activeState: _iconsList[1]),
-                            SignUpIcon(icon: FontAwesomeIcons.envelope, activeState: _iconsList[2]),
-                            SignUpIcon(icon: FontAwesomeIcons.lock, activeState: _iconsList[3]),
-                            SignUpIcon(icon: FontAwesomeIcons.phone, activeState: _iconsList[4]),
-                            SignUpIcon(icon: FontAwesomeIcons.idCard, activeState: _iconsList[5]),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 20),
                   Stack(
                     children: <Widget>[
                       Container(margin: const EdgeInsets.only(right: 8.0), width: MediaQuery.of(context).size.width, height: 3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: white.withOpacity(.5))),
@@ -215,10 +196,6 @@ class _SignUpState extends State<SignUp> {
                       onPageChanged: (int page) {
                         _stepsCompletedkey.currentState!.setState(() {
                           _stepsCompleted = (MediaQuery.of(context).size.width - 16) * page / 5;
-                          _iconsKey.currentState!.setState(() {
-                            _iconsList.setAll(0, <bool>[for (int index = 0; index < 6; index++) false]);
-                            _iconsList[page] = true;
-                          });
                         });
                       },
                       children: <Widget>[
@@ -320,9 +297,6 @@ class _SignUpState extends State<SignUp> {
                                             if (!_rolesList[0]) {
                                               _rolesList.setAll(0, [true, false, false]);
                                               _role = "Admin";
-                                            } else {
-                                              _rolesList.setAll(0, [false, false, false]);
-                                              _role = "";
                                             }
                                           });
                                         },
@@ -334,9 +308,6 @@ class _SignUpState extends State<SignUp> {
                                             if (!_rolesList[1]) {
                                               _rolesList.setAll(0, [false, true, false]);
                                               _role = "Doctor";
-                                            } else {
-                                              _rolesList.setAll(0, [false, false, false]);
-                                              _role = "";
                                             }
                                           });
                                         },
@@ -352,9 +323,6 @@ class _SignUpState extends State<SignUp> {
                                       if (!_rolesList[2]) {
                                         _rolesList.setAll(0, [false, false, true]);
                                         _role = "Patient";
-                                      } else {
-                                        _rolesList.setAll(0, [false, false, false]);
-                                        _role = "";
                                       }
                                     });
                                   },
@@ -395,22 +363,27 @@ class _SignUpState extends State<SignUp> {
                                   try {
                                     if (_rolesList.any((bool element) => element == true)) {
                                       await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential userCredential) async {
+                                        showToast(AppLocalizations.of(context)!.account_created);
                                         String profilePictureUrl = noUser;
                                         if (_profilePicture != null) {
                                           await FirebaseStorage.instance.ref().child("profile_pictures/${userCredential.user!.uid}").putFile(_profilePicture!).then((TaskSnapshot task) async {
                                             profilePictureUrl = await task.ref.getDownloadURL();
                                           });
+                                          showToast("Picture Uploaded");
                                         }
                                         await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).set({
                                           "account_creation_date": Timestamp.now(),
                                           "medical_professional_name": _usernameController.text.trim(),
                                           "id": _idController.text.trim(),
-                                          "role": _role,
+                                          "role": _role.toLowerCase(),
+                                          "uid": FirebaseAuth.instance.currentUser!.uid,
                                           "image_url": profilePictureUrl,
                                           "email": _emailController.text.trim(),
                                           "password": _passwordController.text.trim(),
                                           "phone_number": "$_countryCode${_phoneController.text.replaceAll(RegExp(r' '), '').trim()}",
+                                          "status": true,
                                         }).then((void value) async {
+                                          showToast("Data Stored");
                                           // Obtain the Google sign-in credentials
                                           final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
                                           final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
@@ -418,34 +391,35 @@ class _SignUpState extends State<SignUp> {
                                             accessToken: googleAuth.accessToken,
                                             idToken: googleAuth.idToken,
                                           );
+                                          showToast("Signed With Google");
                                           // Link the email/password account with the Google account
                                           await userCredential.user!.linkWithCredential(googleCredential);
+                                          showToast("Account Linked With Google");
 
-                                          await FirebaseAuth.instance
-                                              .verifyPhoneNumber(
+                                          await FirebaseAuth.instance.verifyPhoneNumber(
                                             forceResendingToken: 1,
                                             timeout: 30.ms,
                                             phoneNumber: "$_countryCode${_phoneController.text.replaceAll(RegExp(r' '), '').trim()}",
                                             verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
                                             verificationFailed: (FirebaseAuthException error) {},
-                                            codeSent: (String verificationId, int? forceResendingToken) {
+                                            codeSent: (String verificationId, int? forceResendingToken) async {
                                               ClipboardListener.addListener(() async {
                                                 ClipboardData? clipboard = await Clipboard.getData("text/plain");
                                                 if (clipboard != null && clipboard.text != null && clipboard.text!.isNotEmpty && clipboard.text!.contains(RegExp(r'^\d+$'))) {
                                                   String sms = clipboard.text!;
                                                   PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: sms);
                                                   await userCredential.user!.linkWithCredential(credential);
+                                                  showToast("Account Linked With Phone Number");
                                                 }
                                               });
                                               ClipboardListener.removeListener(() {});
+                                              await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) {
+                                                showToast("Signed-In Using E-mail & Password");
+                                              });
+                                              await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => route.isFirst);
                                             },
                                             codeAutoRetrievalTimeout: (String verificationId) {},
-                                          )
-                                              .then((void value) async {
-                                            await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) {
-                                              showToast(AppLocalizations.of(context)!.account_created);
-                                            });
-                                          });
+                                          );
                                         });
                                       });
                                     } else {

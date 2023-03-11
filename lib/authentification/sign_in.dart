@@ -1,9 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/authentification/recovery.dart';
 import 'package:smart_care/authentification/sign_up.dart';
+import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -88,6 +91,7 @@ class _SignInState extends State<SignIn> {
                                 if (_formKey.currentState!.validate()) {
                                   setS(() => wait = true);
                                   await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim());
+                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => route.isFirst);
                                 } else {
                                   showToast(AppLocalizations.of(context)!.verify_fields_please);
                                 }

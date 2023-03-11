@@ -9,6 +9,7 @@ Color transparent = Colors.transparent;
 Color blue = const Color.fromARGB(255, 93, 172, 248);
 Color red = const Color.fromARGB(255, 219, 15, 0);
 Color green = Colors.lightGreenAccent;
+Color grey = Colors.grey;
 
 int? firstTime;
 

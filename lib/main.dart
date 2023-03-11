@@ -68,17 +68,7 @@ class Main extends StatelessWidget {
             if (firstTime == 1) {
               return const GetStarted();
             } else {
-              return StreamBuilder<User?>(
-                stream: FirebaseAuth.instance.authStateChanges(),
-                builder: (BuildContext context, AsyncSnapshot<User?> snap) {
-                  if (snap.hasError) {
-                    return ErrorRoom(error: snap.error.toString());
-                  } else if (snap.connectionState == ConnectionState.active) {
-                    return snap.data == null ? const SignIn() : const Screens();
-                  }
-                  return const WaitRoom();
-                },
-              );
+              return FirebaseAuth.instance.currentUser == null ? const SignIn() : const Screens();
             }
           }
           return const WaitRoom();

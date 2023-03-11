@@ -1,12 +1,18 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:smart_care/screens/chats.dart';
-import 'package:smart_care/screens/historic.dart';
-import 'package:smart_care/screens/home.dart';
-import 'package:smart_care/screens/upload.dart';
-import 'package:smart_care/screens/workflow.dart';
+import 'package:smart_care/error/error_room.dart';
+import 'package:smart_care/screens/doctor/chats.dart' as doctor_chat;
+import 'package:smart_care/screens/patient/chats.dart' as patient_chat;
+import 'package:smart_care/screens/patient/historic.dart' as patient_historic;
+import 'package:smart_care/screens/patient/home.dart' as patient_home;
+import 'package:smart_care/screens/doctor/home.dart' as doctor_home;
+import 'package:smart_care/screens/patient/upload.dart' as patient_upload;
+import 'package:smart_care/screens/patient/workflow.dart' as patient_workflow;
+import 'package:smart_care/screens/admin/dashboard.dart' as admin_dashboard;
 import 'package:smart_care/stuff/classes.dart';
 
 import '../stuff/globals.dart';
@@ -21,12 +27,16 @@ class Screens extends StatefulWidget {
 class _ScreensState extends State<Screens> {
   final PageController _screensController = PageController();
   final List<Map<String, dynamic>> _screens = <Map<String, dynamic>>[
-    {"screen": const Home(), "icon": FontAwesomeIcons.house},
-    {"screen": const Upload(), "icon": FontAwesomeIcons.camera},
-    {"screen": const WorkFlow(), "icon": FontAwesomeIcons.sheetPlastic},
-    {"screen": const Chats(), "icon": FontAwesomeIcons.solidMessage},
-    {"screen": const Historic(), "icon": FontAwesomeIcons.solidFolder},
+    {"screen": const patient_home.Home(), "icon": FontAwesomeIcons.house, "role": "patient"},
+    {"screen": const doctor_home.Home(), "icon": FontAwesomeIcons.house, "role": "doctor"},
+    {"screen": const patient_upload.Upload(), "icon": FontAwesomeIcons.camera, "role": "patient"},
+    {"screen": const patient_workflow.WorkFlow(), "icon": FontAwesomeIcons.sheetPlastic, "role": "patient"},
+    {"screen": const patient_chat.Chats(), "icon": FontAwesomeIcons.solidMessage, "role": "patient"},
+    {"screen": const doctor_chat.Chats(), "icon": FontAwesomeIcons.solidMessage, "role": "doctor"},
+    {"screen": const patient_historic.Historic(), "icon": FontAwesomeIcons.solidFolder, "role": "patient"},
+    {"screen": const admin_dashboard.Dashboard(), "icon": FontAwesomeIcons.chartGantt, "role": "admin"},
   ];
+  List<Map<String, dynamic>> _filteredScreens = <Map<String, dynamic>>[];
   final GlobalKey _screensKey = GlobalKey();
   int _activeIndex = 0;
   @override
@@ -38,66 +48,80 @@ class _ScreensState extends State<Screens> {
           screensScaffoldKey.currentState!.closeDrawer();
         },
       ),
-      body: Stack(
-        alignment: AlignmentDirectional.bottomCenter,
-        children: [
-          Column(
-            children: <Widget>[
-              Expanded(
-                child: PageView(
-                  onPageChanged: (int page) {
-                    _screensKey.currentState!.setState(() => _activeIndex = page);
-                  },
-                  controller: _screensController,
-                  children: _screens.map((Map<String, dynamic> page) => page["screen"] as Widget).toList(),
+      body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        future: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).get(),
+        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.hasData) {
+            _filteredScreens = _screens.where((Map<String, dynamic> item) => item["role"] == snapshot.data!.get("role")).toList();
+            return Stack(
+              alignment: AlignmentDirectional.bottomCenter,
+              children: [
+                Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: PageView(
+                        onPageChanged: (int page) {
+                          _screensKey.currentState!.setState(() => _activeIndex = page);
+                        },
+                        controller: _screensController,
+                        children: _filteredScreens.map((Map<String, dynamic> page) => page["screen"] as Widget).toList(),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(height: 30),
-              CustomIcon(
-                  func: () {
-                    screensScaffoldKey.currentState!.openDrawer();
-                  },
-                  icon: FontAwesomeIcons.ellipsisVertical),
-              const Spacer(),
-              Center(
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 48.0, left: 8.0, right: 8.0),
-                  decoration: BoxDecoration(color: const Color.fromARGB(255, 27, 27, 27), borderRadius: BorderRadius.circular(25)),
-                  height: 60,
-                  child: StatefulBuilder(
-                    key: _screensKey,
-                    builder: (BuildContext context, void Function(void Function()) setS) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          for (int screen = 0; screen < _screens.length; screen++)
-                            CustomIcon(
-                              clicked: _activeIndex == screen ? true : false,
-                              func: () {
-                                setS(
-                                  () {
-                                    _activeIndex = screen;
-                                    _screensController.jumpToPage(screen);
-                                  },
-                                );
-                              },
-                              icon: _screens[screen]["icon"],
-                            ),
-                        ],
-                      );
-                    },
-                  ),
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    /* const SizedBox(height: 30),
+                    CustomIcon(
+                        func: () {
+                          screensScaffoldKey.currentState!.openDrawer();
+                        },
+                        icon: FontAwesomeIcons.ellipsisVertical),*/
+                    const Spacer(),
+                    Center(
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 48.0, left: 8.0, right: 8.0),
+                        decoration: BoxDecoration(color: const Color.fromARGB(255, 27, 27, 27), borderRadius: BorderRadius.circular(25)),
+                        height: 60,
+                        child: StatefulBuilder(
+                          key: _screensKey,
+                          builder: (BuildContext context, void Function(void Function()) setS) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                for (int screen = 0; screen < _filteredScreens.length; screen++)
+                                  CustomIcon(
+                                    clicked: _activeIndex == screen ? true : false,
+                                    func: () {
+                                      setS(
+                                        () {
+                                          _activeIndex = screen;
+                                          _screensController.jumpToPage(screen);
+                                        },
+                                      );
+                                    },
+                                    icon: _filteredScreens[screen]["icon"],
+                                  ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(color: blue),
+            );
+          } else {
+            return ErrorRoom(error: snapshot.error.toString());
+          }
+        },
       ),
     );
   }

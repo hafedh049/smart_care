@@ -30,11 +30,11 @@ Future<void> openDB() async {
   );
 }
 
-Future<String> takesFromCameraOrGallery(bool camera, BuildContext context) async {
+Future<String> takesFromCameraOrGallery(bool camera) async {
   try {
     XFile? image = await ImagePicker().pickImage(source: camera ? ImageSource.camera : ImageSource.gallery, imageQuality: 100, preferredCameraDevice: CameraDevice.front);
     if (image != null) {
-      return await cropImage(image.path, context);
+      return await cropImage(image.path);
     }
     return "";
   } catch (_) {
@@ -43,18 +43,23 @@ Future<String> takesFromCameraOrGallery(bool camera, BuildContext context) async
   }
 }
 
-Future<String> cropImage(String imagePath, BuildContext context) async {
+Future<String> cropImage(String imagePath) async {
   try {
     CroppedFile? croppedImage = await ImageCropper().cropImage(sourcePath: imagePath);
     if (croppedImage != null) {
-      Navigator.pop(context);
       return croppedImage.path;
     }
-    Navigator.pop(context);
     return "";
   } catch (_) {
-    Navigator.pop(context);
     showToast(_.toString(), color: red);
     return "";
   }
+}
+
+String getTimeFromDate(DateTime date) {
+  String hours = date.hour.toString().padLeft(2, '0');
+  String minutes = date.minute.toString().padLeft(2, '0');
+  String meridian = date.hour < 12 ? 'AM' : 'PM';
+  hours = (date.hour % 12).toString().padLeft(2, '0');
+  return '$hours:$minutes $meridian';
 }

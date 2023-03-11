@@ -7,7 +7,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/otp/otp_phase_1.dart';
+import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'dart:math' as math;
@@ -98,6 +101,7 @@ class GoogleAuth extends StatelessWidget {
                   await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
                     AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
                     await FirebaseAuth.instance.signInWithCredential(credential);
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => route.isFirst);
                   });
                 } else {
                   // Google provider is not linked with email/password provider
@@ -214,6 +218,7 @@ class _HealthDrawerState extends State<HealthDrawer> {
                   showToast(AppLocalizations.of(context)!.signing_out);
                   await GoogleSignIn().signOut();
                   await FirebaseAuth.instance.signOut();
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => route.isFirst);
                 },
                 child: CustomizedText(text: AppLocalizations.of(context)!.sign_out, fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 40),
@@ -333,5 +338,55 @@ class SignUpIcon extends StatelessWidget {
           target: activeState ? 1 : 0,
         )
         .scale(duration: 500.ms, begin: const Offset(1, 1), end: const Offset(1.5, 1.5));
+  }
+}
+
+class ListTileShimmer extends StatelessWidget {
+  const ListTileShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: grey,
+      highlightColor: white,
+      child: ListTile(
+        leading: Container(
+          width: 48.0,
+          height: 48.0,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
+        ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              height: 8.0,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              height: 8.0,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: 40.0,
+              height: 8.0,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
+            ),
+          ],
+        ),
+        horizontalTitleGap: 8.0,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+      ),
+    );
   }
 }

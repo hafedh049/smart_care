@@ -47,6 +47,9 @@ dependencies:
   cached_network_image: ^3.2.3
   carousel_slider: ^4.2.1
   smooth_page_indicator: ^1.0.1
+  shimmer: ^2.0.0
+  file_picker: ^5.2.5
+  chatview: ^0.0.3
 
 dev_dependencies:
   flutter_test:
@@ -54,13 +57,15 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter_native_splash:
-  image: assets/splash.png
+  image: assets/health.png
   color: "#00191A"
   android: true
   ios: true
+  adaptive_icon_background: "assets/health.png"
+  adaptive_icon_foreground: "assets/health.png"
 
 flutter_icons:
-  image_path: assets/splash.png
+  image_path: assets/health.png
   android: true
   ios: true
 
