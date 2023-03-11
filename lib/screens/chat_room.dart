@@ -1,4 +1,5 @@
 import 'package:chatview/chatview.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,7 +9,8 @@ import 'package:smart_care/stuff/smart_theme.dart';
 import '../stuff/globals.dart';
 
 class ChatRoom extends StatefulWidget {
-  const ChatRoom({super.key});
+  const ChatRoom({super.key, required this.talkTo});
+  final Map<String, dynamic> talkTo;
 
   @override
   State<ChatRoom> createState() => _ChatRoomState();
@@ -17,12 +19,14 @@ class ChatRoom extends StatefulWidget {
 class _ChatRoomState extends State<ChatRoom> {
   final ScrollController _scrollController = ScrollController();
   late final ChatController _chatController;
-  final ChatUser _sender = ChatUser(id: "1", name: "Hafedh");
-  final ChatUser _receiver = ChatUser(id: "2", name: "Nourhene");
+  late final ChatUser _sender;
+  late final ChatUser _receiver;
   final AppTheme _darkTheme = DarkTheme();
 
   @override
   void initState() {
+    _sender = ChatUser(id: me["uid"], name: me["medical_professional_name"]);
+    _receiver = ChatUser(id: widget.talkTo["uid"], name: widget.talkTo["medical_professional_name"]);
     _chatController = ChatController(initialMessageList: <Message>[], scrollController: _scrollController);
     super.initState();
   }
@@ -41,7 +45,7 @@ class _ChatRoomState extends State<ChatRoom> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        backgroundColor: darkBlue,
+        backgroundColor: _darkTheme.backgroundColor,
         body: Column(
           children: <Widget>[
             Expanded(
@@ -55,7 +59,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   actions: const <Widget>[],
                   profilePicture: noUser,
                   titleTextStyle: GoogleFonts.roboto(color: _darkTheme.appBarTitleTextStyle, fontSize: 16, fontWeight: FontWeight.bold),
-                  title: "Hafedh Gunichi",
+                  title: widget.talkTo["medical_professional_name"],
                   onBackPress: () {},
                 ),
                 chatBubbleConfig: ChatBubbleConfiguration(
@@ -112,7 +116,23 @@ class _ChatRoomState extends State<ChatRoom> {
                     galleryIconColor: _darkTheme.galleryIconColor,
                     galleryImagePickerIcon: const Icon(FontAwesomeIcons.image, size: 15),
                     onImageSelected: (String emoji, String messageId) {
-                      print(MessageType.values);
+                      List<String> id = '${me["uid"] + widget.talkTo["uid"]}'.split('');
+                      id.sort((String a, String b) => a.codeUnitAt(0).compareTo(b.codeUnitAt(0)));
+                      FirebaseFirestore.instance.collection("chats").doc(id.join()).set(
+                        {
+                          "messages_list": FieldValue.arrayUnion(
+                            <Map<String, dynamic>>[
+                              {
+                                "message_type": "image",
+                                "created_at": Timestamp.now(),
+                                "send_by_username": me["medical_professional_name"],
+                                "send_by_uid": me["uid"],
+                              }
+                            ],
+                          ),
+                        },
+                        SetOptions(merge: true),
+                      );
                       _chatController.addMessage(
                         Message(
                           messageType: MessageType.image,

@@ -13,6 +13,8 @@ Color grey = Colors.grey;
 
 int? firstTime;
 
+Map<String, dynamic> me = <String, dynamic>{};
+
 Database? db;
 
 List<String> specialityListFunction(BuildContext context) {

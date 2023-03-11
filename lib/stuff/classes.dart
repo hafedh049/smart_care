@@ -38,7 +38,7 @@ class HalfCirclePainter extends CustomPainter {
 
 // ignore: must_be_immutable
 class CustomTextField extends StatelessWidget {
-  CustomTextField({super.key, this.readonly = false, this.type = TextInputType.text, required this.controller, this.validator, required this.hint, required this.prefix, this.obscured = false});
+  CustomTextField({super.key, this.readonly = false, this.func, this.type = TextInputType.text, required this.controller, this.validator, required this.hint, required this.prefix, this.obscured = false});
   final bool obscured;
   final TextEditingController controller;
   final String hint;
@@ -47,6 +47,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputType type;
   final String? Function(String?)? validator;
   final bool readonly;
+  final void Function(String)? func;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +62,7 @@ class CustomTextField extends StatelessWidget {
             cursorColor: blue,
             autocorrect: false,
             readOnly: readonly,
+            onChanged: func,
             enabled: !readonly,
             cursorRadius: const Radius.circular(15),
             cursorWidth: 1,

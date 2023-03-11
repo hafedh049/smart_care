@@ -71,7 +71,7 @@ class _ChatsState extends State<Chats> {
                 itemCount: 20,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const ChatRoom())),
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const ChatRoom(talkTo: {}))),
                     contentPadding: EdgeInsets.zero,
                     leading: Stack(
                       alignment: AlignmentDirectional.bottomEnd,

@@ -52,6 +52,7 @@ class _ScreensState extends State<Screens> {
         future: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).get(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.hasData) {
+            me = snapshot.data!.data()!;
             _filteredScreens = _screens.where((Map<String, dynamic> item) => item["role"] == snapshot.data!.get("role")).toList();
             return Stack(
               alignment: AlignmentDirectional.bottomCenter,
@@ -73,17 +74,13 @@ class _ScreensState extends State<Screens> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    /* const SizedBox(height: 30),
-                    CustomIcon(
-                        func: () {
-                          screensScaffoldKey.currentState!.openDrawer();
-                        },
-                        icon: FontAwesomeIcons.ellipsisVertical),*/
+                    const SizedBox(height: 30),
+                    CustomIcon(func: () => screensScaffoldKey.currentState!.openDrawer(), icon: FontAwesomeIcons.ellipsisVertical),
                     const Spacer(),
                     Center(
                       child: Container(
                         margin: const EdgeInsets.only(bottom: 48.0, left: 8.0, right: 8.0),
-                        decoration: BoxDecoration(color: const Color.fromARGB(255, 27, 27, 27), borderRadius: BorderRadius.circular(25)),
+                        decoration: BoxDecoration(color: const Color.fromARGB(255, 41, 41, 41), borderRadius: BorderRadius.circular(25)),
                         height: 60,
                         child: StatefulBuilder(
                           key: _screensKey,
@@ -95,12 +92,10 @@ class _ScreensState extends State<Screens> {
                                   CustomIcon(
                                     clicked: _activeIndex == screen ? true : false,
                                     func: () {
-                                      setS(
-                                        () {
-                                          _activeIndex = screen;
-                                          _screensController.jumpToPage(screen);
-                                        },
-                                      );
+                                      setS(() {
+                                        _activeIndex = screen;
+                                        _screensController.jumpToPage(screen);
+                                      });
                                     },
                                     icon: _filteredScreens[screen]["icon"],
                                   ),
