@@ -1,41 +1,43 @@
-import 'package:chatview/chatview.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:smart_care/stuff/smart_theme.dart';
+// ignore_for_file: depend_on_referenced_packages
 
-import '../stuff/globals.dart';
+import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:smart_care/stuff/classes.dart';
+import 'package:smart_care/stuff/globals.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+
+import '../stuff/functions.dart';
 
 class ChatRoom extends StatefulWidget {
   const ChatRoom({super.key, required this.talkTo});
   final Map<String, dynamic> talkTo;
-
   @override
   State<ChatRoom> createState() => _ChatRoomState();
 }
 
 class _ChatRoomState extends State<ChatRoom> {
-  final ScrollController _scrollController = ScrollController();
-  late final ChatController _chatController;
-  late final ChatUser _sender;
-  late final ChatUser _receiver;
-  final AppTheme _darkTheme = DarkTheme();
-
+  List<types.Message> _messages = [];
+  final types.User _user = types.User(id: FirebaseAuth.instance.currentUser!.uid);
+  late final types.User _remoteUser;
   @override
   void initState() {
-    _sender = ChatUser(id: me["uid"], name: me["medical_professional_name"]);
-    _receiver = ChatUser(id: widget.talkTo["uid"], name: widget.talkTo["medical_professional_name"]);
-    _chatController = ChatController(initialMessageList: <Message>[], scrollController: _scrollController);
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _chatController.dispose();
-    _scrollController.dispose();
-    super.dispose();
+    _remoteUser = types.User(id: widget.talkTo["uid"]);
   }
 
   @override
@@ -45,202 +47,440 @@ class _ChatRoomState extends State<ChatRoom> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        backgroundColor: _darkTheme.backgroundColor,
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: ChatView(
-                appBar: ChatViewAppBar(
-                  userStatusTextStyle: GoogleFonts.roboto(color: blue),
-                  backGroundColor: _darkTheme.appBarColor,
-                  elevation: _darkTheme.elevation,
-                  backArrowColor: _darkTheme.backArrowColor,
-                  userStatus: "Actif",
-                  actions: const <Widget>[],
-                  profilePicture: noUser,
-                  titleTextStyle: GoogleFonts.roboto(color: _darkTheme.appBarTitleTextStyle, fontSize: 16, fontWeight: FontWeight.bold),
-                  title: widget.talkTo["medical_professional_name"],
-                  onBackPress: () {},
-                ),
-                chatBubbleConfig: ChatBubbleConfiguration(
-                  inComingChatBubbleConfig: ChatBubble(
-                    borderRadius: BorderRadius.circular(15),
-                    color: _darkTheme.inComingChatBubbleColor,
-                    linkPreviewConfig: LinkPreviewConfiguration(
-                      backgroundColor: _darkTheme.linkPreviewIncomingChatColor,
-                      bodyStyle: _darkTheme.incomingChatLinkBodyStyle,
-                      linkStyle: _darkTheme.linkPreviewIncomingTitleStyle,
-                      borderRadius: 15,
-                      loadingColor: blue,
-                      titleStyle: _darkTheme.linkPreviewIncomingTitleStyle,
-                    ),
-                  ),
-                  longPressAnimationDuration: 200.ms,
-                  onDoubleTap: (Message message) {},
-                  outgoingChatBubbleConfig: ChatBubble(
-                    borderRadius: BorderRadius.circular(15),
-                    color: _darkTheme.outgoingChatBubbleColor,
-                    linkPreviewConfig: LinkPreviewConfiguration(
-                      backgroundColor: _darkTheme.linkPreviewOutgoingChatColor,
-                      bodyStyle: _darkTheme.outgoingChatLinkBodyStyle,
-                      linkStyle: _darkTheme.linkPreviewOutgoingTitleStyle,
-                      borderRadius: 15,
-                      loadingColor: blue,
-                      titleStyle: _darkTheme.outgoingChatLinkTitleStyle,
-                    ),
-                  ),
-                ),
-                repliedMessageConfig: RepliedMessageConfiguration(
-                  backgroundColor: _darkTheme.repliedMessageColor,
-                  borderRadius: BorderRadius.circular(15),
-                  opacity: .3,
-                  repliedImageMessageBorderRadius: BorderRadius.circular(15),
-                  verticalBarColor: blue,
-                  verticalBarWidth: 1,
-                ),
-                replyPopupConfig: ReplyPopupConfiguration(
-                  backgroundColor: _darkTheme.replyPopupColor,
-                  topBorderColor: _darkTheme.replyPopupTopBorderColor,
-                  buttonTextStyle: GoogleFonts.roboto(color: _darkTheme.replyPopupButtonColor, fontSize: 16, fontWeight: FontWeight.bold),
-                  onMoreTap: () {},
-                  onReplyTap: (Message message) {},
-                  onUnsendTap: (Message message) {},
-                  onReportTap: () {},
-                ),
-                sendMessageConfig: SendMessageConfiguration(
-                  closeIconColor: _darkTheme.closeIconColor,
-                  defaultSendButtonColor: _darkTheme.sendButtonColor,
-                  imagePickerIconsConfig: ImagePickerIconsConfiguration(
-                    cameraIconColor: _darkTheme.cameraIconColor,
-                    cameraImagePickerIcon: const Icon(FontAwesomeIcons.camera, size: 15),
-                    galleryIconColor: _darkTheme.galleryIconColor,
-                    galleryImagePickerIcon: const Icon(FontAwesomeIcons.image, size: 15),
-                    onImageSelected: (String emoji, String messageId) {
-                      List<String> id = '${me["uid"] + widget.talkTo["uid"]}'.split('');
-                      id.sort((String a, String b) => a.codeUnitAt(0).compareTo(b.codeUnitAt(0)));
-                      FirebaseFirestore.instance.collection("chats").doc(id.join()).set(
-                        {
-                          "messages_list": FieldValue.arrayUnion(
-                            <Map<String, dynamic>>[
-                              {
-                                "message_type": "image",
-                                "created_at": Timestamp.now(),
-                                "send_by_username": me["medical_professional_name"],
-                                "send_by_uid": me["uid"],
-                              }
-                            ],
-                          ),
-                        },
-                        SetOptions(merge: true),
-                      );
-                      _chatController.addMessage(
-                        Message(
-                          messageType: MessageType.image,
-                          createdAt: DateTime.now(),
-                          sendBy: _sender.name,
-                          message: emoji,
-                          id: messageId,
-                        ),
-                      );
-                    },
-                  ),
-                  replyDialogColor: _darkTheme.replyDialogColor,
-                  replyMessageColor: _darkTheme.replyMessageColor,
-                  replyTitleColor: _darkTheme.replyTitleColor,
-                  textFieldBackgroundColor: _darkTheme.textFieldBackgroundColor,
-                  textFieldConfig: TextFieldConfiguration(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    hintText: "Send Message ...",
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    textStyle: GoogleFonts.roboto(color: _darkTheme.textFieldTextColor),
-                    maxLines: 3,
-                  ),
-                ),
-                showReceiverProfileCircle: true,
-                showTypingIndicator: true,
-                swipeToReplyConfig: SwipeToReplyConfiguration(
-                  animationDuration: 100.ms,
-                  onLeftSwipe: (String message, String sendBy) {},
-                  replyIconColor: _darkTheme.replyMicIconColor,
-                  onRightSwipe: (String message, String sendBy) {},
-                ),
-                typeIndicatorConfig: TypeIndicatorConfiguration(
-                  flashingCircleBrightColor: white,
-                  flashingCircleDarkColor: grey,
-                  indicatorSize: 4,
-                  indicatorSpacing: 2,
-                ),
-                enablePagination: true,
-                isLastPage: true,
-                loadMoreData: () async {},
-                loadingWidget: CircularProgressIndicator(color: blue),
-                messageConfig: MessageConfiguration(
-                  emojiMessageConfig: EmojiMessageConfiguration(padding: const EdgeInsets.all(8.0)),
-                  imageMessageConfig: ImageMessageConfiguration(
-                    borderRadius: BorderRadius.circular(5),
-                    height: 220,
-                    width: 120,
-                    shareIconConfig: ShareIconConfiguration(
-                      defaultIconBackgroundColor: _darkTheme.shareIconBackgroundColor,
-                      defaultIconColor: _darkTheme.shareIconColor,
-                      icon: const Icon(FontAwesomeIcons.share, size: 20),
-                      onPressed: (String url) {},
-                    ),
-                    onTap: (String url) {},
-                  ),
-                  messageReactionConfig: MessageReactionConfiguration(
-                    backgroundColor: _darkTheme.messageReactionBackGroundColor,
-                    borderColor: _darkTheme.messageReactionBorderColor,
-                    borderRadius: BorderRadius.circular(5),
-                    borderWidth: .5,
-                    reactionSize: 20,
-                  ),
-                ),
-                onSendTap: (String message, ReplyMessage replyMessage) {
-                  _chatController.addMessage(Message(message: message, createdAt: DateTime.now(), sendBy: _sender.name));
-                },
-                profileCircleConfig: ProfileCircleConfiguration(
-                  bottomPadding: 0.0,
-                  circleRadius: 20,
-                  profileImageUrl: noUser,
-                ),
-                reactionPopupConfig: ReactionPopupConfiguration(
-                  animationDuration: 500.ms,
-                  backgroundColor: _darkTheme.reactionPopupColor,
-                  emojiConfig: EmojiConfiguration(
-                    size: 15,
-                  ),
-                  glassMorphismConfig: GlassMorphismConfiguration(
-                    backgroundColor: grey,
-                    borderColor: transparent,
-                    borderRadius: 5,
-                    strokeWidth: 0,
-                  ),
-                  onEmojiTap: (String emoji, String messageId) {},
-                  showGlassMorphismEffect: true,
-                ),
-                chatBackgroundConfig: ChatBackgroundConfiguration(
-                  backgroundColor: _darkTheme.backgroundColor,
-                  backgroundImage: null,
-                  horizontalDragToShowMessageTime: true,
-                  messageTimeIconColor: blue,
-                  messageTimeTextStyle: GoogleFonts.roboto(color: white),
-                  sortEnable: true,
-                  loadingWidget: CircularProgressIndicator(color: blue),
-                  defaultGroupSeparatorConfig: DefaultGroupSeparatorConfiguration(
-                    padding: const EdgeInsets.all(8.0),
-                    textStyle: GoogleFonts.roboto(color: white),
-                  ),
-                ),
-                sender: _sender,
-                receiver: _receiver,
-                chatController: _chatController,
-              ),
+        appBar: AppBar(
+          shape: const RoundedRectangleBorder(/*side: BorderSide(color: white, width: 1),*/ borderRadius: BorderRadius.vertical(bottom: Radius.circular(25))),
+          centerTitle: false,
+          leading: IconButton(
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            focusColor: Colors.transparent,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white),
+          ),
+          actions: [
+            IconButton(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              onPressed: () {},
+              icon: Icon(FontAwesomeIcons.video, size: 15, color: white),
             ),
-            const SizedBox(height: 40),
+            IconButton(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              onPressed: () {},
+              icon: Icon(FontAwesomeIcons.phone, size: 15, color: white),
+            ),
           ],
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              CircleAvatar(radius: 15, backgroundImage: CachedNetworkImageProvider(widget.talkTo["image_url"])),
+              const SizedBox(width: 5),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomizedText(text: widget.talkTo["medical_professional_name"], fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                  CustomizedText(text: widget.talkTo["status"] ? "Online" : "Offline", fontSize: 14, color: blue),
+                ],
+              ),
+            ],
+          ),
+          backgroundColor: const Color(0xff2b2250),
+        ),
+        backgroundColor: const Color(0xff1f1c38),
+        body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          stream: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").orderBy("created_at", descending: true).snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data!.docs;
+              _messages = data.map(
+                (QueryDocumentSnapshot<Map<String, dynamic>> e) {
+                  if ("audio" == e["type"]) {
+                    return types.AudioMessage(
+                      uri: e.get("uri"),
+                      size: e.get("size") as num,
+                      duration: e.get("duration").ms,
+                      mimeType: e.get("mimetype"),
+                      waveForm: <double>[for (int i = -100; i <= 100; i++) i / 100],
+                      name: e.get("name"),
+                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
+                      id: e.get("message_id"),
+                      createdAt: e.get("created_at").toDate().millisecond,
+                      remoteId: widget.talkTo["uid"],
+                      showStatus: true,
+                      status: types.Status.delivered,
+                      type: types.MessageType.audio,
+                    );
+                  } else if (e.get("type") == "custom") {
+                    return types.CustomMessage(
+                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
+                      id: e.get("message_id"),
+                      createdAt: e.get("created_at").toDate().millisecond,
+                      remoteId: widget.talkTo["uid"],
+                      showStatus: true,
+                      status: types.Status.delivered,
+                      type: types.MessageType.custom,
+                    );
+                  } else if (e.get("type") == "file") {
+                    return types.FileMessage(
+                      uri: e.get("file_uri"),
+                      size: e.get("size") as num,
+                      name: e.get("name"),
+                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
+                      id: e.get("file_id"),
+                      createdAt: e.get("created_at").toDate().millisecond,
+                      remoteId: widget.talkTo["uid"],
+                      showStatus: true,
+                      mimeType: e.get("mimeType"),
+                      status: types.Status.delivered,
+                      type: types.MessageType.file,
+                    );
+                  } else if (e.get("type") == "image") {
+                    return types.ImageMessage(
+                      uri: e.get("image_uri"),
+                      size: e.get("size"),
+                      height: 300,
+                      width: 200,
+                      name: e.get("name"),
+                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
+                      id: e.get("image_id"),
+                      createdAt: e.get("created_at").toDate().millisecond,
+                      remoteId: widget.talkTo["uid"],
+                      showStatus: true,
+                      status: types.Status.delivered,
+                      type: types.MessageType.image,
+                    );
+                  } else if (e.get("type") == "system") {
+                    return types.SystemMessage(
+                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
+                      id: e.get("message_id"),
+                      text: e.get("message"),
+                      createdAt: e.get("created_at").toDate().millisecond,
+                      metadata: const <String, dynamic>{},
+                      remoteId: widget.talkTo["uid"],
+                      showStatus: true,
+                      status: types.Status.delivered,
+                      type: types.MessageType.system,
+                    );
+                  } else if (e.get("type") == "text") {
+                    return types.TextMessage(
+                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
+                      id: e.get("message_id"),
+                      text: e.get("message"),
+                      createdAt: e.get("created_at").toDate().millisecond,
+                      remoteId: widget.talkTo["uid"],
+                      showStatus: true,
+                      status: types.Status.delivered,
+                      type: types.MessageType.text,
+                    );
+                  } else if (e.get("type") == "video") {
+                    return types.VideoMessage(
+                      uri: e.get("uri"),
+                      size: e.get("size") as num,
+                      height: 300,
+                      width: 200,
+                      name: e.get("name"),
+                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
+                      id: e.get("message_id"),
+                      createdAt: e.get("created_at").toDate().millisecond,
+                      remoteId: widget.talkTo["uid"],
+                      showStatus: true,
+                      status: types.Status.delivered,
+                      type: types.MessageType.video,
+                    );
+                  } else {
+                    return types.UnsupportedMessage(
+                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
+                      id: e.get("message_id"),
+                      createdAt: e.get("create_at").toDate().millisecond,
+                    );
+                  }
+                },
+              ).toList();
+              return Chat(
+                scrollPhysics: const BouncingScrollPhysics(),
+                isLastPage: true,
+                theme: const DarkChatTheme(messageInsetsVertical: 10),
+                useTopSafeAreaInset: true,
+                messages: _messages,
+                onAttachmentPressed: _handleAttachmentPressed,
+                onMessageTap: _handleMessageTap,
+                onSendPressed: _handleSendPressed,
+                showUserAvatars: true,
+                showUserNames: true,
+                user: _user,
+                textMessageOptions: TextMessageOptions(
+                  isTextSelectable: true,
+                  onLinkPressed: (String link) async {
+                    await launchUrlString(link);
+                  },
+                  openOnPreviewImageTap: true,
+                  openOnPreviewTitleTap: true,
+                ),
+                hideBackgroundOnEmojiMessages: false,
+                inputOptions: InputOptions(
+                  inputClearMode: InputClearMode.always,
+                  onTextChanged: (String text) {},
+                  onTextFieldTap: () {},
+                  sendButtonVisibilityMode: SendButtonVisibilityMode.editing,
+                  textEditingController: null,
+                ),
+                isAttachmentUploading: false, //true,
+                onMessageVisibilityChanged: (types.Message message, bool visible) {},
+                onMessageStatusTap: (BuildContext context, types.Message message) {},
+                onMessageStatusLongPress: (BuildContext context, types.Message message) {},
+                onMessageLongPress: (BuildContext context, types.Message message) {},
+                onMessageDoubleTap: (BuildContext context, types.Message message) {},
+                onBackgroundTap: () {},
+                onAvatarTap: (types.User user) {},
+                emojiEnlargementBehavior: EmojiEnlargementBehavior.multi,
+              );
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.blue,
+                ),
+              );
+            } else {
+              Fluttertoast.showToast(msg: snapshot.error.toString());
+              return Container();
+            }
+          },
         ),
       ),
     );
+  }
+
+  void _handleAttachmentPressed() {
+    showModalBottomSheet<void>(
+      isDismissible: true,
+      enableDrag: true,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) => SafeArea(
+        child: SizedBox(
+          height: 100,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _handleImageSelection();
+                },
+                icon: Icon(FontAwesomeIcons.photoFilm, color: white, size: 20),
+              ),
+              Container(color: Colors.grey, width: .5, height: 50),
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _handleFileSelection();
+                },
+                icon: Icon(FontAwesomeIcons.fileImport, color: white, size: 20),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _handleFileSelection() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowCompression: true, allowedExtensions: const <String>["pdf", "txt", "doc", "xml", "csv", "mp4", "mp3"]);
+    if (result != null && result.files.single.path != null) {
+      FieldValue now = FieldValue.serverTimestamp();
+      Uint8List bytes = await File(result.files.first.path!).readAsBytes();
+      showToast("Uploading ...");
+      await FirebaseStorage.instance.ref("chats/").child(now.toString()).putData(bytes).then(
+        (TaskSnapshot ref) async {
+          String uri = await ref.ref.getDownloadURL();
+          await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").doc().set(
+            {
+              "owner_id": me["uid"],
+              "file_uri": uri,
+              "created_at": now,
+              "file_id": now.toString(),
+              "name": result.files.single.name,
+              "size": bytes.length,
+              "type": "file",
+              "mimeType": lookupMimeType(result.files.single.path!),
+            },
+          ).then(
+            (void value) async {
+              await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set(
+                {
+                  "last_message": {"message": result.files.single.name, "timestamp": now},
+                },
+              ).then(
+                (void value) async {
+                  await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).collection("content").doc().set(
+                    {
+                      "owner_id": me["uid"],
+                      "file_uri": uri,
+                      "created_at": now,
+                      "file_id": now.toString(),
+                      "name": result.files.single.name,
+                      "size": bytes.length,
+                      "type": "file",
+                      "mimeType": lookupMimeType(result.files.single.path!),
+                    },
+                  ).then(
+                    (void value) async {
+                      await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set(
+                        {
+                          "last_message": {"message": result.files.single.name, "timestamp": now},
+                        },
+                      );
+                    },
+                  );
+                },
+              );
+            },
+          );
+        },
+      );
+    }
+  }
+
+  void _handleImageSelection() async {
+    final result = await ImagePicker().pickImage(
+      imageQuality: 100,
+      source: ImageSource.gallery,
+    );
+
+    if (result != null) {
+      Uint8List bytes = await result.readAsBytes();
+      FieldValue now = FieldValue.serverTimestamp();
+      Fluttertoast.showToast(msg: "Uploading ...");
+      await FirebaseStorage.instance.ref("chats_files/").child(now.toString()).putData(bytes).then(
+        (TaskSnapshot ref) async {
+          String uri = await ref.ref.getDownloadURL();
+          await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").doc().set(
+            {
+              "owner_id": me["uid"],
+              "image_uri": uri,
+              "created_at": now,
+              "image_id": now.toString(),
+              "name": result.name,
+              "size": bytes.length,
+              "type": "image",
+            },
+          ).then(
+            (void value) async {
+              await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set(
+                {
+                  "last_message": {"message": result.name, "timestamp": now},
+                },
+              ).then(
+                (void value) async {
+                  await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).collection("content").doc().set(
+                    {
+                      "owner_id": me["uid"],
+                      "image_uri": uri,
+                      "created_at": now,
+                      "image_id": now.toString(),
+                      "name": result.name,
+                      "size": bytes.length,
+                      "type": "image",
+                    },
+                  ).then(
+                    (void value) async {
+                      await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set(
+                        {
+                          "last_message": {"message": result.name, "timestamp": now},
+                        },
+                      );
+                    },
+                  );
+                },
+              );
+            },
+          );
+        },
+      );
+    }
+  }
+
+  void _handleSendPressed(types.PartialText message) async {
+    FieldValue now = FieldValue.serverTimestamp();
+    await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").doc().set(
+      {
+        "owner_id": me["uid"],
+        "message_id": now.toString(),
+        "message": message.text,
+        "created_at": now,
+        "type": "text",
+      },
+    ).then(
+      (void value) async {
+        await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set(
+          {
+            "last_message": {"message": message.text, "timestamp": now},
+          },
+        ).then(
+          (void value) async {
+            await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).collection("content").doc().set(
+              {
+                "owner_id": me["uid"],
+                "message_id": now.toString(),
+                "message": message.text,
+                "created_at": now,
+                "type": "text",
+              },
+            ).then(
+              (void value) async {
+                await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set(
+                  {
+                    "last_message": {"message": message.text, "timestamp": now},
+                  },
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _handleMessageTap(BuildContext _, types.Message message) async {
+    if (message is types.FileMessage) {
+      var localPath = message.uri;
+      if (message.uri.startsWith('http')) {
+        try {
+          final index = _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage = (_messages[index] as types.FileMessage).copyWith(
+            isLoading: true,
+          );
+
+          _messages[index] = updatedMessage;
+
+          final client = http.Client();
+          final request = await client.get(Uri.parse(message.uri));
+          final bytes = request.bodyBytes;
+          final documentsDir = (await getApplicationDocumentsDirectory()).path;
+          localPath = '$documentsDir/${message.name}';
+
+          if (!File(localPath).existsSync()) {
+            final file = File(localPath);
+            await file.writeAsBytes(bytes);
+          }
+        } finally {
+          final index = _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage = (_messages[index] as types.FileMessage).copyWith(
+            isLoading: null,
+          );
+
+          _messages[index] = updatedMessage;
+        }
+      }
+      Fluttertoast.showToast(msg: "Opening file ...");
+      await OpenFilex.open(localPath);
+    }
   }
 }

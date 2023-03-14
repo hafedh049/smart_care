@@ -49,7 +49,9 @@ dependencies:
   smooth_page_indicator: ^1.0.1
   shimmer: ^2.0.0
   file_picker: ^5.2.5
-  chatview: ^0.0.3
+  flutter_chat_ui: ^1.6.6
+  mime: ^1.0.4
+  open_filex: ^4.3.2
 
 dev_dependencies:
   flutter_test:

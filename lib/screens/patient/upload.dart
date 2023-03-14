@@ -46,28 +46,30 @@ class _UploadState extends State<Upload> {
                       GestureDetector(
                         onTap: () async {
                           final String imagePath = await takesFromCameraOrGallery(true);
-                          showToast("Bilan Loaded");
-                          final String now = DateTime.now().toString();
-                          String url = "";
-                          FirebaseStorage.instance.ref().child("bilans/${FirebaseAuth.instance.currentUser!.uid}/$now").putFile(File(imagePath)).then((
-                            TaskSnapshot taskSnapshot,
-                          ) async {
-                            url = await taskSnapshot.ref.getDownloadURL();
-                            showToast("Bilan Uploaded");
-                            await FirebaseFirestore.instance.collection("bilan").doc(FirebaseAuth.instance.currentUser!.uid).set(
-                              {
-                                "bilan_list": FieldValue.arrayUnion(
-                                  <Map<String, dynamic>>[
-                                    {
-                                      "bilan_url": url,
-                                      "upload_date": now,
-                                    },
-                                  ],
-                                ),
-                              },
-                              SetOptions(merge: true),
-                            ).then((void value) => showToast("Bilan's Link Stored Successfully"));
-                          });
+                          if (imagePath.isNotEmpty) {
+                            showToast("Bilan Loaded");
+                            final String now = DateTime.now().toString();
+                            String url = "";
+                            FirebaseStorage.instance.ref().child("bilans/${FirebaseAuth.instance.currentUser!.uid}/$now").putFile(File(imagePath)).then((
+                              TaskSnapshot taskSnapshot,
+                            ) async {
+                              url = await taskSnapshot.ref.getDownloadURL();
+                              showToast("Bilan Uploaded");
+                              await FirebaseFirestore.instance.collection("bilan").doc(FirebaseAuth.instance.currentUser!.uid).set(
+                                {
+                                  "bilan_list": FieldValue.arrayUnion(
+                                    <Map<String, dynamic>>[
+                                      {
+                                        "bilan_url": url,
+                                        "upload_date": now,
+                                      },
+                                    ],
+                                  ),
+                                },
+                                SetOptions(merge: true),
+                              ).then((void value) => showToast("Bilan's Link Stored Successfully"));
+                            });
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8.0),
@@ -91,28 +93,30 @@ class _UploadState extends State<Upload> {
                       GestureDetector(
                         onTap: () async {
                           final String imagePath = await takesFromCameraOrGallery(false);
-                          showToast("Bilan Loaded");
-                          final String now = DateTime.now().toString();
-                          String url = "";
-                          FirebaseStorage.instance.ref().child("bilans/${FirebaseAuth.instance.currentUser!.uid}/$now").putFile(File(imagePath)).then((
-                            TaskSnapshot taskSnapshot,
-                          ) async {
-                            url = await taskSnapshot.ref.getDownloadURL();
-                            showToast("Bilan Uploaded");
-                            await FirebaseFirestore.instance.collection("bilan").doc(FirebaseAuth.instance.currentUser!.uid).set(
-                              {
-                                "bilan_list": FieldValue.arrayUnion(
-                                  <Map<String, dynamic>>[
-                                    {
-                                      "bilan_url": url,
-                                      "upload_date": now,
-                                    },
-                                  ],
-                                ),
-                              },
-                              SetOptions(merge: true),
-                            ).then((void value) => showToast("Bilan's Link Stored Successfully"));
-                          });
+                          if (imagePath.isNotEmpty) {
+                            showToast("Bilan Loaded");
+                            final String now = DateTime.now().toString();
+                            String url = "";
+                            FirebaseStorage.instance.ref().child("bilans/${FirebaseAuth.instance.currentUser!.uid}/$now").putFile(File(imagePath)).then((
+                              TaskSnapshot taskSnapshot,
+                            ) async {
+                              url = await taskSnapshot.ref.getDownloadURL();
+                              showToast("Bilan Uploaded");
+                              await FirebaseFirestore.instance.collection("bilan").doc(FirebaseAuth.instance.currentUser!.uid).set(
+                                {
+                                  "bilan_list": FieldValue.arrayUnion(
+                                    <Map<String, dynamic>>[
+                                      {
+                                        "bilan_url": url,
+                                        "upload_date": now,
+                                      },
+                                    ],
+                                  ),
+                                },
+                                SetOptions(merge: true),
+                              ).then((void value) => showToast("Bilan's Link Stored Successfully"));
+                            });
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8.0),

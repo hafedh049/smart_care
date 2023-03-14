@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,7 +20,9 @@ class _ChatsState extends State<Chats> {
   final TextEditingController _searchController = TextEditingController();
   final GlobalKey _searchKey = GlobalKey();
   final GlobalKey _textFieldKey = GlobalKey();
+  final GlobalKey _deleteTextKey = GlobalKey();
   bool _disabled = true;
+  bool _deleteVisibility = true;
   @override
   void dispose() {
     _searchController.dispose();
@@ -63,69 +64,121 @@ class _ChatsState extends State<Chats> {
                             readOnly: _disabled,
                             onChanged: (String value) {
                               _searchKey.currentState!.setState(() {});
+                              if (_searchController.text.isNotEmpty) {
+                                _deleteTextKey.currentState!.setState(() {
+                                  _deleteVisibility = true;
+                                });
+                              } else {
+                                _deleteVisibility = false;
+                              }
                             },
                             controller: _searchController,
                             style: GoogleFonts.roboto(color: white),
-                            decoration: InputDecoration(hintText: 'Search Doctors', hintStyle: GoogleFonts.roboto(color: grey), border: InputBorder.none),
+                            decoration: InputDecoration(hintText: 'Search for a doctor', hintStyle: GoogleFonts.roboto(color: grey), border: InputBorder.none),
                           );
                         },
                       ),
                     ),
-                    IconButton(icon: Icon(Icons.close, color: grey), onPressed: () => _searchController.clear()),
+                    StatefulBuilder(
+                      key: _deleteTextKey,
+                      builder: (BuildContext context, void Function(void Function()) _) {
+                        return Visibility(
+                          visible: _deleteVisibility,
+                          child: IconButton(
+                            icon: Icon(Icons.close, color: grey),
+                            onPressed: () => _searchController.clear(),
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
               const SizedBox(height: 10),
               Expanded(
                 child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: FirebaseFirestore.instance.collection("health_care_professionals").where("role", isEqualTo: "doctor").snapshots(),
+                  stream: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").snapshots(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                     if (snapshot.hasData) {
                       if (snapshot.data!.docs.isEmpty) {
-                        return Center(child: CustomizedText(text: "No Doctors Yet", color: blue, fontSize: 20));
+                        return Center(child: CustomizedText(text: "No Doctors Available", color: blue, fontSize: 20));
                       } else {
                         Future.delayed(500.ms, () => _textFieldKey.currentState!.setState(() => _disabled = false));
                         return StatefulBuilder(
                           key: _searchKey,
                           builder: (BuildContext context, void Function(void Function()) _) {
-                            final List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = snapshot.data!.docs
+                            final List<QueryDocumentSnapshot<Map<String, dynamic>>> patientsList = snapshot.data!.docs
                                 .where((
                                   QueryDocumentSnapshot<Map<String, dynamic>> item,
                                 ) =>
                                     item.get("medical_professional_name").toLowerCase().contains(_searchController.text.trim().toLowerCase()))
                                 .toList();
-                            return ListView.builder(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                              itemCount: doctorsList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return GestureDetector(
-                                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: doctorsList[index].data()))),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Stack(
-                                        alignment: AlignmentDirectional.bottomEnd,
-                                        children: <Widget>[
-                                          CircleAvatar(radius: 25, backgroundImage: CachedNetworkImageProvider(doctorsList[index].get("image_url"))),
-                                          CircleAvatar(radius: 5, backgroundColor: doctorsList[index].get("status") ? green : red),
-                                        ],
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          CustomizedText(text: doctorsList[index].get("medical_professional_name"), fontSize: 16, fontWeight: FontWeight.bold),
-                                          CustomizedText(text: doctorsList[index].get("last_message").firstWhere((dynamic element) => element["sender"] == doctorsList[index].get("uid") || element["sender"] == FirebaseAuth.instance.currentUser!.uid)["message"], fontSize: 14, color: white.withOpacity(.7)),
-                                        ],
-                                      ),
-                                      const Spacer(),
-                                      CustomizedText(text: getTimeFromDate(doctorsList[index].get("last_message").firstWhere((dynamic element) => element["sender"] == doctorsList[index].get("uid") || element["sender"] == FirebaseAuth.instance.currentUser!.uid)["timestamp"].toDate()), fontSize: 14, color: white.withOpacity(.7)),
-                                      const SizedBox(width: 10),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
+                            return patientsList.isEmpty
+                                ? Center(child: CustomizedText(text: "No Chats Until Now", fontSize: 20, color: white))
+                                : ListView.builder(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                    itemCount: patientsList.length,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return FutureBuilder(
+                                          future: FirebaseFirestore.instance.collection("health_care_professionals").doc(patientsList[index].id).get(),
+                                          builder: (BuildContext context, tileSnapshot) {
+                                            if (tileSnapshot.hasData) {
+                                              return ListTile(
+                                                contentPadding: EdgeInsets.zero,
+                                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: tileSnapshot.data!.data()!))),
+                                                leading: Stack(
+                                                  alignment: AlignmentDirectional.bottomEnd,
+                                                  children: <Widget>[
+                                                    CircleAvatar(radius: 25, backgroundImage: CachedNetworkImageProvider(patientsList[index].get("image_url"))),
+                                                    CircleAvatar(radius: 5, backgroundColor: patientsList[index].get("status") ? green : red),
+                                                  ],
+                                                ),
+                                                title: CustomizedText(text: patientsList[index].get("medical_professional_name"), fontSize: 16, fontWeight: FontWeight.bold),
+                                                subtitle: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                                                  stream: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(patientsList[index].id).snapshots(),
+                                                  builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+                                                    return CustomizedText(
+                                                      text: snapshot.hasData
+                                                          ? snapshot.data!.exists
+                                                              ? snapshot.data != null
+                                                                  ? snapshot.data!.get("last_message")["message"]
+                                                                  : "No messages yet"
+                                                              : "No messages yet"
+                                                          : snapshot.connectionState == ConnectionState.waiting
+                                                              ? "..."
+                                                              : snapshot.error.toString(),
+                                                      fontSize: 14,
+                                                      color: white.withOpacity(.7),
+                                                    );
+                                                  },
+                                                ),
+                                                trailing: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                                                  stream: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(patientsList[index].id).snapshots(),
+                                                  builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+                                                    return CustomizedText(
+                                                      text: snapshot.hasData
+                                                          ? snapshot.data!.exists
+                                                              ? snapshot.data != null
+                                                                  ? getTimeFromDate(snapshot.data!.get("last_message")["timestamp"].toDate())
+                                                                  : ""
+                                                              : ""
+                                                          : snapshot.connectionState == ConnectionState.waiting
+                                                              ? ""
+                                                              : snapshot.error.toString(),
+                                                      fontSize: 14,
+                                                      color: white.withOpacity(.7),
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            } else if (tileSnapshot.connectionState == ConnectionState.waiting) {
+                                              return const ListTileShimmer();
+                                            } else {
+                                              return ErrorRoom(error: tileSnapshot.error.toString());
+                                            }
+                                          });
+                                    },
+                                  );
                           },
                         );
                       }

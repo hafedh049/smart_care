@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Color white = Colors.white;
 Color black = Colors.black;
-Color darkBlue = const Color.fromARGB(255, 24, 25, 26);
+Color darkBlue = const Color(0xff272336); //const Color.fromARGB(255, 24, 25, 26);
 Color transparent = Colors.transparent;
 Color blue = const Color.fromARGB(255, 93, 172, 248);
 Color red = const Color.fromARGB(255, 219, 15, 0);
