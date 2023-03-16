@@ -17,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -95,9 +96,9 @@ class _ChatRoomState extends State<ChatRoom> {
         backgroundColor: const Color(0xff1f1c38),
         body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").orderBy("created_at", descending: true).snapshots(),
-          builder: (context, snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.hasData) {
-              List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data!.docs;
+              List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data == null ? <QueryDocumentSnapshot<Map<String, dynamic>>>[] : snapshot.data!.docs;
               _messages = data.map(
                 (QueryDocumentSnapshot<Map<String, dynamic>> e) {
                   if ("audio" == e["type"]) {
@@ -206,7 +207,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 scrollPhysics: const BouncingScrollPhysics(),
                 isLastPage: true,
                 theme: const DarkChatTheme(messageInsetsVertical: 10),
-                useTopSafeAreaInset: true,
+                useTopSafeAreaInset: true, bubbleRtlAlignment: BubbleRtlAlignment.left,
                 messages: _messages,
                 onAttachmentPressed: _handleAttachmentPressed,
                 onMessageTap: _handleMessageTap,
@@ -248,7 +249,7 @@ class _ChatRoomState extends State<ChatRoom> {
               );
             } else {
               Fluttertoast.showToast(msg: snapshot.error.toString());
-              return Container();
+              return ErrorRoom(error: snapshot.error.toString());
             }
           },
         ),
@@ -294,7 +295,7 @@ class _ChatRoomState extends State<ChatRoom> {
   void _handleFileSelection() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowCompression: true, allowedExtensions: const <String>["pdf", "txt", "doc", "xml", "csv", "mp4", "mp3"]);
     if (result != null && result.files.single.path != null) {
-      FieldValue now = FieldValue.serverTimestamp();
+      Timestamp now = Timestamp.now();
       Uint8List bytes = await File(result.files.first.path!).readAsBytes();
       showToast("Uploading ...");
       await FirebaseStorage.instance.ref("chats/").child(now.toString()).putData(bytes).then(
@@ -317,6 +318,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 {
                   "last_message": {"message": result.files.single.name, "timestamp": now},
                 },
+                SetOptions(merge: true),
               ).then(
                 (void value) async {
                   await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).collection("content").doc().set(
@@ -336,6 +338,7 @@ class _ChatRoomState extends State<ChatRoom> {
                         {
                           "last_message": {"message": result.files.single.name, "timestamp": now},
                         },
+                        SetOptions(merge: true),
                       );
                     },
                   );
@@ -356,7 +359,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
     if (result != null) {
       Uint8List bytes = await result.readAsBytes();
-      FieldValue now = FieldValue.serverTimestamp();
+      Timestamp now = Timestamp.now();
       Fluttertoast.showToast(msg: "Uploading ...");
       await FirebaseStorage.instance.ref("chats_files/").child(now.toString()).putData(bytes).then(
         (TaskSnapshot ref) async {
@@ -377,6 +380,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 {
                   "last_message": {"message": result.name, "timestamp": now},
                 },
+                SetOptions(merge: true),
               ).then(
                 (void value) async {
                   await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).collection("content").doc().set(
@@ -395,6 +399,7 @@ class _ChatRoomState extends State<ChatRoom> {
                         {
                           "last_message": {"message": result.name, "timestamp": now},
                         },
+                        SetOptions(merge: true),
                       );
                     },
                   );
@@ -408,7 +413,7 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   void _handleSendPressed(types.PartialText message) async {
-    FieldValue now = FieldValue.serverTimestamp();
+    Timestamp now = Timestamp.now();
     await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").doc().set(
       {
         "owner_id": me["uid"],
@@ -423,6 +428,7 @@ class _ChatRoomState extends State<ChatRoom> {
           {
             "last_message": {"message": message.text, "timestamp": now},
           },
+          SetOptions(merge: true),
         ).then(
           (void value) async {
             await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).collection("content").doc().set(
@@ -435,10 +441,11 @@ class _ChatRoomState extends State<ChatRoom> {
               },
             ).then(
               (void value) async {
-                await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set(
+                await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).set(
                   {
                     "last_message": {"message": message.text, "timestamp": now},
                   },
+                  SetOptions(merge: true),
                 );
               },
             );
@@ -453,8 +460,8 @@ class _ChatRoomState extends State<ChatRoom> {
       var localPath = message.uri;
       if (message.uri.startsWith('http')) {
         try {
-          final index = _messages.indexWhere((element) => element.id == message.id);
-          final updatedMessage = (_messages[index] as types.FileMessage).copyWith(
+          final int index = _messages.indexWhere((element) => element.id == message.id);
+          final types.Message updatedMessage = (_messages[index] as types.FileMessage).copyWith(
             isLoading: true,
           );
 

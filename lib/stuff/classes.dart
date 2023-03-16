@@ -7,7 +7,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/otp/otp_phase_1.dart';
 import 'package:smart_care/screens/screens.dart';
@@ -348,47 +347,82 @@ class ListTileShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: grey,
-      highlightColor: white,
-      child: ListTile(
-        leading: Container(
-          width: 48.0,
-          height: 48.0,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              width: double.infinity,
-              height: 8.0,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
-            ),
-            const SizedBox(height: 10),
-          ],
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              width: double.infinity,
-              height: 8.0,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              width: 40.0,
-              height: 8.0,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
-            ),
-          ],
-        ),
-        horizontalTitleGap: 8.0,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+    return ListTile(
+      leading: Container(
+        width: 48.0,
+        height: 48.0,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
       ),
-    );
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            width: double.infinity,
+            height: 8.0,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
+          ),
+          const SizedBox(height: 10),
+        ],
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            width: double.infinity,
+            height: 8.0,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            width: 40.0,
+            height: 8.0,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
+          ),
+        ],
+      ),
+      horizontalTitleGap: 8.0,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+    ).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white, grey]);
+  }
+}
+
+class CircleShimmer extends StatelessWidget {
+  const CircleShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const CircleAvatar(radius: 15).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white, grey]);
+  }
+}
+
+class TextShimmer extends StatelessWidget {
+  const TextShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 40,
+      height: 7,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+    ).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white]);
+  }
+}
+
+class AvatarUsernameLocationShimmer extends StatelessWidget {
+  const AvatarUsernameLocationShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        const CircleAvatar(radius: 25),
+        const SizedBox(height: 15),
+        Container(width: 120, height: 9, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white)),
+        const SizedBox(height: 10),
+        Container(width: 170, height: 7, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white)),
+      ],
+    ).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white, grey]);
   }
 }
