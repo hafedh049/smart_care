@@ -203,7 +203,7 @@ class AboutDoctor extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         CustomizedText(text: "Available Time", color: white, fontSize: 20, fontWeight: FontWeight.bold),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         SingleChildScrollView(
                           padding: EdgeInsets.zero,
                           physics: const BouncingScrollPhysics(),
@@ -253,7 +253,7 @@ class AboutDoctor extends StatelessWidget {
                               ),
                             )
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),

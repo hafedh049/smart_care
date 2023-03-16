@@ -113,3 +113,6 @@ Map<int, String> weekDayPredictor = <int, String>{
   6: "Sat",
   7: "Sun",
 };
+
+String appTitle = "Smart Care";
+String appIcon = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/health.png?alt=media&token=5b9a461b-bf46-4dfd-bc83-e8ec9a66f990";

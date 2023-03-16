@@ -382,6 +382,15 @@ class _SignUpState extends State<SignUp> {
                                           "password": _passwordController.text.trim(),
                                           "phone_number": "$_countryCode${_phoneController.text.replaceAll(RegExp(r' '), '').trim()}",
                                           "status": true,
+                                          "years_of_experience": 0,
+                                          "patients_checked_list": [],
+                                          "location": "",
+                                          "speciality": "",
+                                          "rating": 0,
+                                          "schedules_list": [],
+                                          "available_time": [],
+                                          "age": 0,
+                                          "about": "",
                                         }).then((void value) async {
                                           showToast("Data Stored");
                                           // Obtain the Google sign-in credentials
@@ -413,10 +422,12 @@ class _SignUpState extends State<SignUp> {
                                                 }
                                               });
                                               ClipboardListener.removeListener(() {});
-                                              await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) {
+                                              await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
                                                 showToast("Signed-In Using E-mail & Password");
+                                                await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true}).then((void value) async {
+                                                  await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => route.isFirst);
+                                                });
                                               });
-                                              await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => route.isFirst);
                                             },
                                             codeAutoRetrievalTimeout: (String verificationId) {},
                                           );

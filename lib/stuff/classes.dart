@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -8,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smart_care/authentification/sign_in.dart';
+import 'package:smart_care/drawer/profile.dart';
 import 'package:smart_care/otp/otp_phase_1.dart';
 import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/functions.dart';
@@ -205,23 +208,159 @@ class _HealthDrawerState extends State<HealthDrawer> {
       width: 275,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25))),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(left: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Container(width: 275, height: 200, color: white),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(height: 40),
+                Row(
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundColor: blue,
+                      radius: 35,
+                      backgroundImage: CachedNetworkImageProvider(appIcon),
+                    ),
+                    const SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        CustomizedText(text: appTitle, color: white, fontSize: 20, fontWeight: FontWeight.bold),
+                        const SizedBox(width: 10),
+                        CustomizedText(text: "You make world better !.", color: white.withOpacity(.7), fontSize: 16),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Container(width: 267, height: .1, color: white),
+            const SizedBox(height: 10),
+            GestureDetector(
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Profile())),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                child: Row(
+                  children: <Widget>[
+                    Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
+                    const SizedBox(width: 5),
+                    Icon(FontAwesomeIcons.idCard, color: white, size: 20),
+                    const SizedBox(width: 10),
+                    CustomizedText(text: "Profile", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                child: Row(
+                  children: <Widget>[
+                    Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
+                    const SizedBox(width: 5),
+                    Icon(FontAwesomeIcons.gear, color: white, size: 20),
+                    const SizedBox(width: 10),
+                    CustomizedText(text: "Settings", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                child: Row(
+                  children: <Widget>[
+                    Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
+                    const SizedBox(width: 5),
+                    Icon(FontAwesomeIcons.heartPulse, color: white, size: 20),
+                    const SizedBox(width: 10),
+                    CustomizedText(text: "About Us", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                child: Row(
+                  children: <Widget>[
+                    Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
+                    const SizedBox(width: 5),
+                    Icon(FontAwesomeIcons.peopleGroup, color: white, size: 20),
+                    const SizedBox(width: 10),
+                    CustomizedText(text: "Community", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+                  ],
+                ),
+              ),
+            ),
             const Spacer(),
-            Container(width: 267, height: 1, color: white),
+            Container(width: 267, height: .1, color: white),
             const SizedBox(height: 10),
             GestureDetector(
                 onTap: () async {
                   showToast(AppLocalizations.of(context)!.signing_out);
                   await GoogleSignIn().signOut();
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => route.isFirst);
+                  await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": false}).then((void value) async {
+                    await FirebaseAuth.instance.signOut().then((void value) => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => route.isFirst));
+                  });
                 },
                 child: CustomizedText(text: AppLocalizations.of(context)!.sign_out, fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
+            Container(width: 267, height: .1, color: white),
+            const SizedBox(height: 10),
+            CustomizedText(text: "'Smart Care' is your assistant for managing BloodBorne Pathogen Exposure.\n\nWe appreciate your contribution.\nYou can help us here.", fontSize: 14, color: white.withOpacity(.7)),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {},
+                  child: CircleAvatar(
+                    radius: 24,
+                    backgroundColor: white,
+                    child: CircleAvatar(
+                      radius: 22,
+                      backgroundColor: const Color.fromARGB(255, 36, 35, 42),
+                      child: Icon(FontAwesomeIcons.instagram, color: white, size: 25),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: CircleAvatar(
+                    radius: 24,
+                    backgroundColor: white,
+                    child: CircleAvatar(
+                      radius: 22,
+                      backgroundColor: const Color.fromARGB(255, 36, 35, 42),
+                      child: Icon(FontAwesomeIcons.facebook, color: white, size: 25),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: CircleAvatar(
+                    radius: 24,
+                    backgroundColor: white,
+                    child: CircleAvatar(
+                      radius: 22,
+                      backgroundColor: const Color.fromARGB(255, 36, 35, 42),
+                      child: Icon(FontAwesomeIcons.twitter, color: white, size: 25),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 40),
           ],
         ),
@@ -248,11 +387,7 @@ class CustomIcon extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Icon(
-                icon,
-                size: size,
-                color: clicked ? white : white.withOpacity(.5),
-              ),
+              Icon(icon, size: size, color: clicked ? white : white.withOpacity(.5)),
               Visibility(visible: clicked, child: const SizedBox(height: 5)),
               AnimatedContainer(
                 duration: 500.ms,
