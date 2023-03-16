@@ -103,3 +103,13 @@ String? Function(String?)? fieldsValidatorsFunction(String text, BuildContext co
 
   return fieldsValidators[text];
 }
+
+Map<int, String> weekDayPredictor = <int, String>{
+  1: "Mon",
+  2: "Tue",
+  3: "Wed",
+  4: "Thu",
+  5: "Fri",
+  6: "Sat",
+  7: "Sun",
+};

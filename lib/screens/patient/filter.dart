@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/chat_room.dart';
+import 'package:smart_care/screens/doctor/about_doctor.dart';
 import 'package:smart_care/stuff/globals.dart';
 
 import '../../stuff/classes.dart';
@@ -97,7 +98,7 @@ class _FilterListState extends State<FilterList> {
                           alignment: AlignmentDirectional.bottomEnd,
                           children: <Widget>[
                             GestureDetector(
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const ,)),
+                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutDoctor(uid: doctorsList[index].get("uid")))),
                               child: CircleAvatar(radius: 25, backgroundImage: CachedNetworkImageProvider(doctorsList[index].get("image_url"))),
                             ),
                             CircleAvatar(radius: 5, backgroundColor: doctorsList[index].get("status") ? green : red),

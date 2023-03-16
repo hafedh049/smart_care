@@ -63,3 +63,7 @@ String getTimeFromDate(DateTime date) {
   hours = (date.hour % 12).toString().padLeft(2, '0');
   return '$hours:$minutes $meridian';
 }
+
+String showWeekDay(int index) {
+  return weekDayPredictor[DateTime(DateTime.now().year, DateTime.now().month, index).weekday]!;
+}
