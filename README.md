@@ -48,12 +48,11 @@
       <li>Submit a pull request.</li>
     </ol>
     <h2>Contact</h2>
-    <p>If you have any questions or concerns, please contact the SmartCare team at smartcare@example.com.</p>
+    <p>If you have any questions or concerns, please contact the SmartCare team at hafedhgunichi@gmail.com.</p>
     <h2>Acknowledgements</h2>
     <p>We would like to thank the following contributors for their contributions to SmartCare:</p>
     <ul>
-      <li>John Doe</li>
-      <li>Jane Smith</li>
+      <li>Hafedh Gunichi</li>
     </ul>
     <h2>License</h2>
     <p>SmartCare is licensed under the MIT license. See <a href="LICENSE">LICENSE</a> for more information.</p>
