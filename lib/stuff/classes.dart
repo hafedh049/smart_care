@@ -236,67 +236,67 @@ class HealthDrawer extends StatelessWidget {
             const SizedBox(height: 10),
             Container(width: 267, height: .1, color: white),
             const SizedBox(height: 10),
-            GestureDetector(
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Profile())),
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                child: Row(
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+              child: ListTile(
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Profile())),
+                leading: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
                     const SizedBox(width: 5),
                     Icon(FontAwesomeIcons.idCard, color: white, size: 20),
-                    const SizedBox(width: 10),
-                    CustomizedText(text: "Profile", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
                   ],
                 ),
+                title: CustomizedText(text: "Profile", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 10),
-            GestureDetector(
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartSettings())),
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                child: Row(
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+              child: ListTile(
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartSettings())),
+                leading: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
                     const SizedBox(width: 5),
                     Icon(FontAwesomeIcons.gear, color: white, size: 20),
-                    const SizedBox(width: 10),
-                    CustomizedText(text: "Settings", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
                   ],
                 ),
+                title: CustomizedText(text: "Settings", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 10),
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                child: Row(
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+              child: ListTile(
+                onTap: () {},
+                leading: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
                     const SizedBox(width: 5),
                     Icon(FontAwesomeIcons.heartPulse, color: white, size: 20),
-                    const SizedBox(width: 10),
-                    CustomizedText(text: "About Us", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
                   ],
                 ),
+                title: CustomizedText(text: "About Us", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 10),
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                child: Row(
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+              child: ListTile(
+                onTap: () {},
+                leading: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
                     const SizedBox(width: 5),
                     Icon(FontAwesomeIcons.peopleGroup, color: white, size: 20),
-                    const SizedBox(width: 10),
-                    CustomizedText(text: "Community", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
                   ],
                 ),
+                title: CustomizedText(text: "Community", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
             const Spacer(),

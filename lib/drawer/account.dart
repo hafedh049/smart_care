@@ -1,18 +1,80 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: use_build_context_synchronously
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/stuff/functions.dart';
 
 import '../stuff/classes.dart';
 import '../stuff/globals.dart';
 
-class Account extends StatelessWidget {
-  Account({super.key});
-  String _gender = "m";
+class Account extends StatefulWidget {
+  const Account({super.key});
+
+  @override
+  State<Account> createState() => _AccountState();
+}
+
+class _AccountState extends State<Account> {
+  List<String> _rolesList = [];
+  final TextEditingController _changerController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _changerController.dispose();
+    super.dispose();
+  }
+
+  void change(String hint, IconData prefix, bool password, TextInputType type, String? Function(String?)? validator, String key) {
+    Color color = grey;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: StatefulBuilder(
+            builder: (BuildContext context, void Function(void Function()) setS) {
+              return Row(
+                children: <Widget>[
+                  Flexible(
+                    child: Form(
+                      key: _formKey,
+                      child: CustomTextField(
+                        controller: _changerController,
+                        hint: hint,
+                        prefix: prefix,
+                        obscured: password,
+                        type: type,
+                        validator: validator,
+                        func: (String text) => setS(() => color = text.isNotEmpty ? blue : grey),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  GestureDetector(
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                        await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{key: _changerController.text.trim()}).then((void value) => Navigator.pop(context));
+                      }
+                    },
+                    child: Container(width: 40, height: 40, decoration: BoxDecoration(color: color.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.check, size: 15, color: color)),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,196 +83,356 @@ class Account extends StatelessWidget {
       backgroundColor: darkBlue,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(height: 20),
-              Row(
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.x, size: 15, color: grey)),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(width: 40, height: 40, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.check, size: 15, color: white)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              CustomizedText(text: "Account", fontSize: 40, fontWeight: FontWeight.bold, color: white),
-              const SizedBox(height: 60),
-              GestureDetector(
-                onTap: () {},
-                child: Row(
+        child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          stream: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+            if (snapshot.hasData) {
+              return SingleChildScrollView(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    CustomizedText(text: "Photo", fontSize: 14, color: grey),
-                    const SizedBox(width: 80),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.x, size: 15, color: grey)),
+                    ),
+                    const SizedBox(height: 10),
+                    CustomizedText(text: "Account", fontSize: 40, fontWeight: FontWeight.bold, color: white),
+                    const SizedBox(height: 60),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          CustomizedText(text: "Photo", fontSize: 14, color: grey),
+                          const SizedBox(width: 80),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              CircleAvatar(radius: 50, backgroundColor: grey.withOpacity(.2), child: Icon(FontAwesomeIcons.user, color: grey, size: 35)),
+                              const SizedBox(height: 10),
+                              CustomizedText(text: "Upload Picture", fontSize: 14, color: blue),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    GestureDetector(
+                      onTap: () => change("Name", FontAwesomeIcons.userDoctor, false, TextInputType.text, fieldsValidatorsFunction("username", context), "medical_professional_name"),
+                      child: Row(
+                        children: <Widget>[
+                          CustomizedText(text: "Name", fontSize: 14, color: grey),
+                          const SizedBox(width: 80),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                CustomizedText(text: "Hafedh Gunichi", fontSize: 18, color: white),
+                                const SizedBox(height: 5),
+                                Container(height: .1, color: white),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    Row(
                       children: <Widget>[
-                        CircleAvatar(radius: 50, backgroundColor: grey.withOpacity(.2), child: Icon(FontAwesomeIcons.user, color: grey, size: 35)),
-                        const SizedBox(height: 10),
-                        CustomizedText(text: "Upload Picture", fontSize: 14, color: blue),
+                        CustomizedText(text: "Gender", fontSize: 14, color: grey),
+                        const SizedBox(width: 72),
+                        GestureDetector(
+                          onTap: () async => await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "m"}),
+                          child: CircleAvatar(radius: 25, backgroundColor: _gender == "m" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.mars, color: _gender == "m" ? white : grey, size: 20)),
+                        ),
+                        const SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: () async => await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "f"}),
+                          child: CircleAvatar(radius: 25, backgroundColor: _gender == "f" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.venus, color: _gender == "f" ? white : grey, size: 20)),
+                        ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
-              GestureDetector(
-                onTap: () {},
-                child: Row(
-                  children: <Widget>[
-                    CustomizedText(text: "Name", fontSize: 14, color: grey),
-                    const SizedBox(width: 80),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
+                    const SizedBox(height: 40),
+                    GestureDetector(
+                      onTap: () => change("Age", FontAwesomeIcons.zero, false, TextInputType.number, fieldsValidatorsFunction("age", context), "age"),
+                      child: Row(
                         children: <Widget>[
-                          CustomizedText(text: "Hafedh Gunichi", fontSize: 18, color: white),
-                          const SizedBox(height: 5),
-                          Container(height: .1, color: white),
+                          CustomizedText(text: "Age", fontSize: 14, color: grey),
+                          const SizedBox(width: 90),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                CustomizedText(text: "28", fontSize: 18, color: white),
+                                const SizedBox(height: 5),
+                                Container(height: .1, color: white),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
-              StatefulBuilder(
-                builder: (BuildContext context, void Function(void Function()) setS) {
-                  return Row(
-                    children: <Widget>[
-                      CustomizedText(text: "Gender", fontSize: 14, color: grey),
-                      const SizedBox(width: 72),
-                      GestureDetector(onTap: () => setS(() => _gender = "m"), child: CircleAvatar(radius: 25, backgroundColor: _gender == "m" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.mars, color: _gender == "m" ? white : grey, size: 20))),
-                      const SizedBox(width: 10),
-                      GestureDetector(onTap: () => setS(() => _gender = "f"), child: CircleAvatar(radius: 25, backgroundColor: _gender == "f" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.venus, color: _gender == "f" ? white : grey, size: 20))),
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 40),
-              GestureDetector(
-                onTap: () {},
-                child: Row(
-                  children: <Widget>[
-                    CustomizedText(text: "Age", fontSize: 14, color: grey),
-                    const SizedBox(width: 90),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
+                    const SizedBox(height: 40),
+                    GestureDetector(
+                      onTap: null,
+                      child: Row(
                         children: <Widget>[
-                          CustomizedText(text: "28", fontSize: 18, color: white),
-                          const SizedBox(height: 5),
-                          Container(height: .1, color: white),
+                          CustomizedText(text: "E-mail", fontSize: 14, color: grey),
+                          const SizedBox(width: 75),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                CustomizedText(text: "hafedhgunichi@gmail.com", fontSize: 18, color: white),
+                                const SizedBox(height: 5),
+                                Container(height: .1, color: white),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
-              GestureDetector(
-                onTap: () {},
-                child: Row(
-                  children: <Widget>[
-                    CustomizedText(text: "E-mail", fontSize: 14, color: grey),
-                    const SizedBox(width: 75),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
+                    const SizedBox(height: 40),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Row(
                         children: <Widget>[
-                          CustomizedText(text: "hafedhgunichi@gmail.com", fontSize: 18, color: white),
-                          const SizedBox(height: 5),
-                          Container(height: .1, color: white),
+                          CustomizedText(text: "Password", fontSize: 14, color: grey),
+                          const SizedBox(width: 55),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                CustomizedText(text: "*************", fontSize: 18, color: white),
+                                const SizedBox(height: 5),
+                                Container(height: .1, color: white),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
-              GestureDetector(
-                onTap: () {},
-                child: Row(
-                  children: <Widget>[
-                    CustomizedText(text: "Password", fontSize: 14, color: grey),
-                    const SizedBox(width: 55),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          CustomizedText(text: "*************", fontSize: 18, color: white),
-                          const SizedBox(height: 5),
-                          Container(height: .1, color: white),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      content: SizedBox(
-                        width: MediaQuery.of(context).size.width * .9,
-                        height: MediaQuery.of(context).size.height * .6,
-                        child: CardSwiper(
-                          isLoop: true,
-                          duration: 100.ms,
-                          padding: EdgeInsets.zero,
-                          cards: <Widget>[
-                            for (Map<String, dynamic> speciality in specialityListFunction(context))
-                              GestureDetector(
-                                onTap: () {
-                                  showToast(speciality["speciality"]);
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: darkBlue,
-                                    borderRadius: BorderRadius.circular(15),
-                                    image: DecorationImage(
-                                      image: CachedNetworkImageProvider(speciality["url"]),
-                                      fit: BoxFit.cover,
+                    const SizedBox(height: 40),
+                    GestureDetector(
+                      onTap: () {
+                        showToast("Tap if you want to select otherwise swipe in any direction.");
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            contentPadding: EdgeInsets.zero,
+                            content: SizedBox(
+                              width: MediaQuery.of(context).size.width * .9,
+                              height: MediaQuery.of(context).size.height * .6,
+                              child: CardSwiper(
+                                isLoop: true,
+                                duration: 100.ms,
+                                padding: EdgeInsets.zero,
+                                cards: <Widget>[
+                                  for (Map<String, dynamic> speciality in specialityListFunction(context))
+                                    GestureDetector(
+                                      onTap: () async {
+                                        await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"speciality": speciality["speciality"]});
+                                        showToast(speciality["speciality"]);
+                                        Navigator.pop(context);
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8.0),
+                                        decoration: BoxDecoration(
+                                          color: darkBlue,
+                                          borderRadius: BorderRadius.circular(15),
+                                          image: DecorationImage(
+                                            image: CachedNetworkImageProvider(speciality["url"]),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            CustomizedText(text: speciality["speciality"], fontSize: 25, color: blue, fontWeight: FontWeight.bold),
+                                            const SizedBox(height: 30),
+                                            Expanded(
+                                              child: SizedBox(
+                                                child: AnimatedTextKit(
+                                                  animatedTexts: <AnimatedText>[
+                                                    TypewriterAnimatedText(
+                                                      speciality["description"],
+                                                      textStyle: GoogleFonts.roboto(
+                                                        fontSize: 14,
+                                                        color: speciality["color"],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
+                                ],
                               ),
-                          ],
-                        ),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          CustomizedText(text: "Speciality", fontSize: 14, color: grey),
+                          const SizedBox(width: 55),
+                          CustomizedText(text: "Hafedh Gunichi", fontSize: 18, color: white),
+                          const SizedBox(width: 25),
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
+                            child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey),
+                          ),
+                        ],
                       ),
                     ),
-                  );
-                },
-                child: Row(
-                  children: <Widget>[
-                    CustomizedText(text: "Speciality", fontSize: 14, color: grey),
-                    const SizedBox(width: 55),
-                    CustomizedText(text: "Hafedh Gunichi", fontSize: 18, color: white),
-                    const SizedBox(width: 25),
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                      child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey),
+                    const SizedBox(height: 40),
+                    GestureDetector(
+                      onTap: () => change("Years of Experience", FontAwesomeIcons.zero, false, TextInputType.number, fieldsValidatorsFunction("age", context), "years_of_experience"),
+                      child: Row(
+                        children: <Widget>[
+                          CustomizedText(text: "Years of Experience", fontSize: 14, color: grey),
+                          const SizedBox(width: 55),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                CustomizedText(text: "38", fontSize: 18, color: white),
+                                const SizedBox(height: 5),
+                                Container(height: .1, color: white),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                    const SizedBox(height: 40),
+                    GestureDetector(
+                      onTap: () {
+                        showDateRangePicker(context: context, firstDate: firstDate, lastDate: lastDate);
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          CustomizedText(text: "Available Time", fontSize: 14, color: grey),
+                          const SizedBox(width: 55),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                CustomizedText(text: "..........", fontSize: 18, color: white),
+                                const SizedBox(height: 5),
+                                Container(height: .1, color: white),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    GestureDetector(
+                      onTap: () => change("About", FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidatorsFunction("about", context), "about"),
+                      child: Row(
+                        children: <Widget>[
+                          CustomizedText(text: "About", fontSize: 14, color: grey),
+                          const SizedBox(width: 55),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                CustomizedText(text: "..............", fontSize: 18, color: white),
+                                const SizedBox(height: 5),
+                                Container(height: .1, color: white),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    GestureDetector(
+                      onTap: () => change("Location", FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidatorsFunction("job location", context), "location"),
+                      child: Row(
+                        children: <Widget>[
+                          CustomizedText(text: "Location", fontSize: 14, color: grey),
+                          const SizedBox(width: 55),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                CustomizedText(text: "--", fontSize: 18, color: white),
+                                const SizedBox(height: 5),
+                                Container(height: .1, color: white),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    GestureDetector(
+                      onTap: null,
+                      child: Row(
+                        children: <Widget>[
+                          CustomizedText(text: "Phone", fontSize: 14, color: grey),
+                          const SizedBox(width: 55),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                CustomizedText(text: "+216 23 566 502", fontSize: 18, color: white),
+                                const SizedBox(height: 5),
+                                Container(height: .1, color: white),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    Row(
+                      children: <Widget>[
+                        CustomizedText(text: "Role", fontSize: 14, color: grey),
+                        const SizedBox(width: 72),
+                        GestureDetector(
+                          onTap: () async => await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"roles_list": _rolesList}),
+                          child: CircleAvatar(radius: 25, backgroundColor: _gender == "m" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.hospitalUser, color: _gender == "m" ? white : grey, size: 20)),
+                        ),
+                        const SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: () async => await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"roles_list": _rolesList}),
+                          child: CircleAvatar(radius: 25, backgroundColor: _gender == "f" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.userDoctor, color: _gender == "f" ? white : grey, size: 20)),
+                        ),
+                        const SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: () async => await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"roles_list": _rolesList}),
+                          child: CircleAvatar(radius: 25, backgroundColor: _gender == "f" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.lock, color: _gender == "f" ? white : grey, size: 20)),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 40),
                   ],
                 ),
-              ),
-            ],
-          ),
+              );
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return Expanded(child: ListView.builder(padding: EdgeInsets.zero, itemCount: 10, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()));
+            } else {
+              return ErrorRoom(error: snapshot.error.toString());
+            }
+          },
         ),
       ),
     );

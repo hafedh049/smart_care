@@ -26,6 +26,7 @@ class Screens extends StatefulWidget {
 }
 
 class _ScreensState extends State<Screens> {
+  final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
   late final PageController _screensController;
   final List<Map<String, dynamic>> _screens = <Map<String, dynamic>>[
     {"screen": const patient_home.Home(), "icon": FontAwesomeIcons.house, "role": "patient"},
@@ -44,7 +45,7 @@ class _ScreensState extends State<Screens> {
   @override
   void dispose() {
     _screensController.dispose();
-    screensScaffoldKey.currentState!.closeDrawer();
+    drawerScaffoldKey.currentState!.closeDrawer();
     super.dispose();
   }
 
@@ -60,7 +61,7 @@ class _ScreensState extends State<Screens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: screensScaffoldKey,
+      key: drawerScaffoldKey,
       drawer: const HealthDrawer(),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         future: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).get(),
@@ -89,7 +90,7 @@ class _ScreensState extends State<Screens> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const SizedBox(height: 30),
-                    CustomIcon(func: () => screensScaffoldKey.currentState!.openDrawer(), icon: FontAwesomeIcons.ellipsisVertical),
+                    CustomIcon(func: () => drawerScaffoldKey.currentState!.openDrawer(), icon: FontAwesomeIcons.ellipsisVertical),
                     const Spacer(),
                     Center(
                       child: Container(
