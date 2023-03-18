@@ -10,13 +10,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smart_care/authentification/sign_in.dart';
-import 'package:smart_care/drawer/profile.dart';
+import 'package:smart_care/drawer/settings.dart';
 import 'package:smart_care/otp/otp_phase_1.dart';
 import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'dart:math' as math;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../drawer/profile.dart';
 
 class HalfCirclePainter extends CustomPainter {
   @override
@@ -105,7 +107,7 @@ class GoogleAuth extends StatelessWidget {
                   await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
                     AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
                     await FirebaseAuth.instance.signInWithCredential(credential);
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => route.isFirst);
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 0)), (Route route) => route.isFirst);
                   });
                 } else {
                   // Google provider is not linked with email/password provider
@@ -193,15 +195,9 @@ class CustomizedText extends StatelessWidget {
   }
 }
 
-class HealthDrawer extends StatefulWidget {
-  const HealthDrawer({super.key, required this.func});
-  final void Function() func;
+class HealthDrawer extends StatelessWidget {
+  const HealthDrawer({super.key});
 
-  @override
-  State<HealthDrawer> createState() => _HealthDrawerState();
-}
-
-class _HealthDrawerState extends State<HealthDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -257,7 +253,7 @@ class _HealthDrawerState extends State<HealthDrawer> {
             ),
             const SizedBox(height: 10),
             GestureDetector(
-              onTap: () {},
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartSettings())),
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                 child: Row(

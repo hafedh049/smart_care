@@ -376,6 +376,7 @@ class _SignUpState extends State<SignUp> {
                                           "medical_professional_name": _usernameController.text.trim(),
                                           "id": _idController.text.trim(),
                                           "role": _role.toLowerCase(),
+                                          "roles_list": <String>[],
                                           "uid": FirebaseAuth.instance.currentUser!.uid,
                                           "image_url": profilePictureUrl,
                                           "email": _emailController.text.trim(),
@@ -390,6 +391,7 @@ class _SignUpState extends State<SignUp> {
                                           "schedules_list": [],
                                           "available_time": [],
                                           "age": 0,
+                                          "gender": "m",
                                           "about": "",
                                         }).then((void value) async {
                                           showToast("Data Stored");
@@ -425,7 +427,7 @@ class _SignUpState extends State<SignUp> {
                                               await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
                                                 showToast("Signed-In Using E-mail & Password");
                                                 await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true}).then((void value) async {
-                                                  await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => route.isFirst);
+                                                  await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 0)), (Route route) => route.isFirst);
                                                 });
                                               });
                                             },

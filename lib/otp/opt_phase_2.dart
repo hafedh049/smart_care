@@ -39,7 +39,7 @@ class _OTPState extends State<OTP> {
         PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: widget.verification, smsCode: data);
         await FirebaseAuth.instance.signInWithCredential(credential).then((UserCredential value) async {
           _buttonBuilder.currentState!.setState(() => wait = false);
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => route.isFirst);
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 0)), (Route route) => route.isFirst);
         });
       }
     });

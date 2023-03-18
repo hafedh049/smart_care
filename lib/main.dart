@@ -68,7 +68,7 @@ class Main extends StatelessWidget {
             if (firstTime == 1) {
               return const GetStarted();
             } else {
-              return FirebaseAuth.instance.currentUser == null ? const SignIn() : const Screens();
+              return FirebaseAuth.instance.currentUser == null ? const SignIn() : const Screens(firstScreen: 0);
             }
           }
           return const WaitRoom();

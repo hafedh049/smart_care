@@ -123,7 +123,7 @@ class PrimaryPrevention extends StatelessWidget {
                     await db!.update("SMART_CARE", <String, dynamic>{"FIRST_TIME": 0});
 
                     if (FirebaseAuth.instance.currentUser != null) {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 0)));
                     } else {
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const SignIn()));
                     }

@@ -93,7 +93,7 @@ class _SignInState extends State<SignIn> {
                                   setS(() => wait = true);
                                   await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
                                     await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true}).then((void value) async {
-                                      await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => route.isFirst);
+                                      await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 0)), (Route route) => route.isFirst);
                                     });
                                   });
                                 } else {

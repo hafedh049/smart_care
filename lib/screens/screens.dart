@@ -18,14 +18,15 @@ import 'package:smart_care/stuff/classes.dart';
 import '../stuff/globals.dart';
 
 class Screens extends StatefulWidget {
-  const Screens({super.key});
+  const Screens({super.key, required this.firstScreen});
+  final int firstScreen;
 
   @override
   State<Screens> createState() => _ScreensState();
 }
 
 class _ScreensState extends State<Screens> {
-  final PageController _screensController = PageController();
+  late final PageController _screensController;
   final List<Map<String, dynamic>> _screens = <Map<String, dynamic>>[
     {"screen": const patient_home.Home(), "icon": FontAwesomeIcons.house, "role": "patient"},
     {"screen": const doctor_home.Home(), "icon": FontAwesomeIcons.house, "role": "doctor"},
@@ -39,15 +40,28 @@ class _ScreensState extends State<Screens> {
   List<Map<String, dynamic>> _filteredScreens = <Map<String, dynamic>>[];
   final GlobalKey _screensKey = GlobalKey();
   int _activeIndex = 0;
+
+  @override
+  void dispose() {
+    _screensController.dispose();
+    screensScaffoldKey.currentState!.closeDrawer();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    _screensController = PageController();
+    if (_screensController.hasClients) {
+      _screensController.jumpToPage(widget.firstScreen);
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: screensScaffoldKey,
-      drawer: HealthDrawer(
-        func: () {
-          screensScaffoldKey.currentState!.closeDrawer();
-        },
-      ),
+      drawer: const HealthDrawer(),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         future: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).get(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
