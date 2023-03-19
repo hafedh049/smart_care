@@ -2,7 +2,6 @@
 
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clipboard_listener/clipboard_listener.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -154,21 +153,9 @@ class _SignUpState extends State<SignUp> {
                             key: _profilePictureKey,
                             builder: (BuildContext context, void Function(void Function()) func) {
                               return CircleAvatar(
-                                backgroundColor: blue,
+                                backgroundColor: grey.withOpacity(.2),
                                 radius: 40,
-                                child: _profilePicture == null
-                                    ? CachedNetworkImage(
-                                        imageUrl: noUser,
-                                        width: 40,
-                                        height: 40,
-                                      )
-                                    : CircleAvatar(
-                                        radius: 40,
-                                        backgroundColor: Colors.transparent,
-                                        backgroundImage: FileImage(
-                                          _profilePicture!,
-                                        ),
-                                      ),
+                                child: _profilePicture == null ? Icon(FontAwesomeIcons.user, color: grey, size: 35) : CircleAvatar(radius: 40, backgroundColor: Colors.transparent, backgroundImage: FileImage(_profilePicture!)),
                               );
                             },
                           ),
@@ -383,14 +370,14 @@ class _SignUpState extends State<SignUp> {
                                           "password": _passwordController.text.trim(),
                                           "phone_number": "$_countryCode${_phoneController.text.replaceAll(RegExp(r' '), '').trim()}",
                                           "status": true,
-                                          "years_of_experience": "0",
+                                          "years_of_experience": "20",
                                           "patients_checked_list": [],
                                           "location": "",
                                           "speciality": "",
                                           "rating": "0",
                                           "schedules_list": [],
                                           "available_time": [],
-                                          "age": "0",
+                                          "age": "35",
                                           "gender": "m",
                                           "about": "",
                                         }).then((void value) async {

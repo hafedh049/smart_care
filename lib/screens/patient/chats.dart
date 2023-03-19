@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/chat_room.dart';
@@ -131,8 +132,13 @@ class _ChatsState extends State<Chats> {
                                               leading: Stack(
                                                 alignment: AlignmentDirectional.bottomEnd,
                                                 children: <Widget>[
-                                                  CircleAvatar(radius: 25, backgroundImage: CachedNetworkImageProvider(tileSnapshot.data!.get("image_url"))),
-                                                  //  CircleAvatar(radius: 5, backgroundColor: tileSnapshot.data!.get("status") ? green : red),
+                                                  CircleAvatar(
+                                                    radius: 30,
+                                                    backgroundImage: tileSnapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(tileSnapshot.data!.get("image_url")),
+                                                    backgroundColor: grey.withOpacity(.2),
+                                                    child: tileSnapshot.data!.get("image_url") != noUser ? null : Icon(FontAwesomeIcons.user, color: grey, size: 25),
+                                                  ),
+                                                  CircleAvatar(radius: 5, backgroundColor: tileSnapshot.data!.get("status") ? green : red),
                                                 ],
                                               ),
                                               title: CustomizedText(text: tileSnapshot.data!.get("medical_professional_name"), fontSize: 16, fontWeight: FontWeight.bold),

@@ -90,7 +90,18 @@ class _ScreensState extends State<Screens> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const SizedBox(height: 30),
-                    CustomIcon(func: () => drawerScaffoldKey.currentState!.openDrawer(), icon: FontAwesomeIcons.ellipsisVertical),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () => drawerScaffoldKey.currentState!.openDrawer(),
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
+                          child: Icon(FontAwesomeIcons.ellipsisVertical, size: 15, color: grey),
+                        ),
+                      ),
+                    ),
                     const Spacer(),
                     Center(
                       child: Container(

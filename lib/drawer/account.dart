@@ -1,9 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -23,9 +26,9 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
-  List<String> _rolesList = [];
   final TextEditingController _changerController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey _profilePictureKey = GlobalKey();
 
   @override
   void dispose() {
@@ -100,7 +103,62 @@ class _AccountState extends State<Account> {
                     CustomizedText(text: "Account", fontSize: 40, fontWeight: FontWeight.bold, color: white),
                     const SizedBox(height: 60),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) => SizedBox(
+                            height: 160,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CustomIcon(
+                                  size: 25,
+                                  func: () async {
+                                    Navigator.pop(context);
+                                    if (snapshot.data!.get("image_url") != noUser) {
+                                      await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"image_url": noUser}).then((void value) => showToast("Picture Uploaded"));
+                                      await FirebaseStorage.instance.ref("/profile_pictures/${FirebaseAuth.instance.currentUser!.uid}").delete().then((void value) => showToast("Picture Removed"));
+                                    }
+                                  },
+                                  icon: FontAwesomeIcons.x,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    CustomIcon(
+                                      size: 25,
+                                      func: () async {
+                                        final String path = await takesFromCameraOrGallery(true);
+                                        showToast("Uploading Picture");
+                                        Navigator.pop(context);
+                                        await FirebaseStorage.instance.ref("/profile_pictures/${FirebaseAuth.instance.currentUser!.uid}").putFile(File(path)).then((TaskSnapshot task) async {
+                                          await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"image_url": await task.ref.getDownloadURL()});
+                                          showToast("Picture Uploaded");
+                                        });
+                                      },
+                                      icon: FontAwesomeIcons.camera,
+                                    ),
+                                    CustomIcon(
+                                      size: 25,
+                                      func: () async {
+                                        final String path = await takesFromCameraOrGallery(false);
+                                        showToast("Uploading Picture");
+                                        Navigator.pop(context);
+                                        await FirebaseStorage.instance.ref("/profile_pictures/${FirebaseAuth.instance.currentUser!.uid}").putFile(File(path)).then((TaskSnapshot task) async {
+                                          await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"image_url": await task.ref.getDownloadURL()});
+                                          showToast("Picture Uploaded");
+                                        });
+                                      },
+                                      icon: Icons.image,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -109,7 +167,17 @@ class _AccountState extends State<Account> {
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              CircleAvatar(radius: 50, backgroundColor: grey.withOpacity(.2), child: Icon(FontAwesomeIcons.user, color: grey, size: 35)),
+                              StatefulBuilder(
+                                key: _profilePictureKey,
+                                builder: (BuildContext context, void Function(void Function()) _) {
+                                  return CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")),
+                                    backgroundColor: grey.withOpacity(.2),
+                                    child: snapshot.data!.get("image_url") != noUser ? null : Icon(FontAwesomeIcons.user, color: grey, size: 35),
+                                  );
+                                },
+                              ),
                               const SizedBox(height: 10),
                               CustomizedText(text: "Upload Picture", fontSize: 14, color: blue),
                             ],
@@ -129,12 +197,14 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: "Hafedh Gunichi", fontSize: 18, color: white),
+                                CustomizedText(text: snapshot.data!.get("medical_professional_name"), fontSize: 18, color: white),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
                             ),
                           ),
+                          const SizedBox(width: 25),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
@@ -145,12 +215,12 @@ class _AccountState extends State<Account> {
                         const SizedBox(width: 72),
                         GestureDetector(
                           onTap: () async => await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "m"}),
-                          child: CircleAvatar(radius: 25, backgroundColor: _gender == "m" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.mars, color: _gender == "m" ? white : grey, size: 20)),
+                          child: CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("gender") == "m" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.mars, color: snapshot.data!.get("gender") == "m" ? white : grey, size: 20)),
                         ),
                         const SizedBox(width: 10),
                         GestureDetector(
                           onTap: () async => await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "f"}),
-                          child: CircleAvatar(radius: 25, backgroundColor: _gender == "f" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.venus, color: _gender == "f" ? white : grey, size: 20)),
+                          child: CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("gender") == "f" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.venus, color: snapshot.data!.get("gender") == "f" ? white : grey, size: 20)),
                         ),
                       ],
                     ),
@@ -166,12 +236,14 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: "28", fontSize: 18, color: white),
+                                CustomizedText(text: snapshot.data!.get("age"), fontSize: 18, color: white),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
                             ),
                           ),
+                          const SizedBox(width: 25),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
@@ -187,12 +259,14 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: "hafedhgunichi@gmail.com", fontSize: 18, color: white),
+                                SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("email"), fontSize: 18, color: white)),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
                             ),
                           ),
+                          const SizedBox(width: 25),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
@@ -208,12 +282,14 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: "*************", fontSize: 18, color: white),
+                                SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("password").split("").map((String char) => "* ").toList().join(""), fontSize: 18, color: white)),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
                             ),
                           ),
+                          const SizedBox(width: 25),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
@@ -236,9 +312,10 @@ class _AccountState extends State<Account> {
                                   for (Map<String, dynamic> speciality in specialityListFunction(context))
                                     GestureDetector(
                                       onTap: () async {
-                                        await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"speciality": speciality["speciality"]});
-                                        showToast(speciality["speciality"]);
-                                        Navigator.pop(context);
+                                        await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"speciality": speciality["speciality"]}).then((void value) {
+                                          showToast(speciality["speciality"]);
+                                          Navigator.pop(context);
+                                        });
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
@@ -284,14 +361,19 @@ class _AccountState extends State<Account> {
                         children: <Widget>[
                           CustomizedText(text: "Speciality", fontSize: 14, color: grey),
                           const SizedBox(width: 55),
-                          CustomizedText(text: "Hafedh Gunichi", fontSize: 18, color: white),
-                          const SizedBox(width: 25),
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                            child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("speciality"), fontSize: 18, color: white)),
+                                const SizedBox(height: 5),
+                                Container(height: .1, color: white),
+                              ],
+                            ),
                           ),
+                          const SizedBox(width: 25),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
@@ -307,38 +389,43 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: "38", fontSize: 18, color: white),
+                                CustomizedText(text: snapshot.data!.get("years_of_experience"), fontSize: 18, color: white),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
                             ),
                           ),
+                          const SizedBox(width: 25),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 40),
-                    GestureDetector(
-                      onTap: () {
-                        showDateRangePicker(context: context, firstDate: firstDate, lastDate: lastDate);
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          CustomizedText(text: "Available Time", fontSize: 14, color: grey),
-                          const SizedBox(width: 55),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                CustomizedText(text: "..........", fontSize: 18, color: white),
-                                const SizedBox(height: 5),
-                                Container(height: .1, color: white),
-                              ],
+                    if (snapshot.data!.get("role") != "patient") const SizedBox(height: 40),
+                    if (snapshot.data!.get("role") != "patient")
+                      GestureDetector(
+                        onTap: () {
+                          showTimePicker(context: context, initialTime: TimeOfDay.now());
+                        },
+                        child: Row(
+                          children: <Widget>[
+                            CustomizedText(text: "Available Time", fontSize: 14, color: grey),
+                            const SizedBox(width: 55),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("available_time").toString(), fontSize: 18, color: white)),
+                                  const SizedBox(height: 5),
+                                  Container(height: .1, color: white),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 25),
+                            Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
+                          ],
+                        ),
                       ),
-                    ),
                     const SizedBox(height: 40),
                     GestureDetector(
                       onTap: () => change("About", FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidatorsFunction("about", context), "about"),
@@ -351,12 +438,14 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: "..............", fontSize: 18, color: white),
+                                SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("about").isEmpty ? "--" : snapshot.data!.get("about"), fontSize: 18, color: white)),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
                             ),
                           ),
+                          const SizedBox(width: 25),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
@@ -372,12 +461,14 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: "--", fontSize: 18, color: white),
+                                CustomizedText(text: snapshot.data!.get("location").isEmpty ? "--" : snapshot.data!.get("location"), fontSize: 18, color: white),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
                             ),
                           ),
+                          const SizedBox(width: 25),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
@@ -393,12 +484,14 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: "+216 23 566 502", fontSize: 18, color: white),
+                                CustomizedText(text: snapshot.data!.get("phone_number"), fontSize: 18, color: white),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
                             ),
                           ),
+                          const SizedBox(width: 25),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
@@ -406,21 +499,12 @@ class _AccountState extends State<Account> {
                     Row(
                       children: <Widget>[
                         CustomizedText(text: "Role", fontSize: 14, color: grey),
-                        const SizedBox(width: 72),
-                        GestureDetector(
-                          onTap: () async => await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"roles_list": _rolesList}),
-                          child: CircleAvatar(radius: 25, backgroundColor: _gender == "m" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.hospitalUser, color: _gender == "m" ? white : grey, size: 20)),
-                        ),
+                        const SizedBox(width: 80),
+                        CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("patient") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.hospitalUser, color: snapshot.data!.get("roles_list").contains("patient") ? white : grey, size: 20)),
                         const SizedBox(width: 10),
-                        GestureDetector(
-                          onTap: () async => await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"roles_list": _rolesList}),
-                          child: CircleAvatar(radius: 25, backgroundColor: _gender == "f" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.userDoctor, color: _gender == "f" ? white : grey, size: 20)),
-                        ),
+                        CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("doctor") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.userDoctor, color: snapshot.data!.get("roles_list").contains("doctor") ? white : grey, size: 20)),
                         const SizedBox(width: 10),
-                        GestureDetector(
-                          onTap: () async => await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"roles_list": _rolesList}),
-                          child: CircleAvatar(radius: 25, backgroundColor: _gender == "f" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.lock, color: _gender == "f" ? white : grey, size: 20)),
-                        ),
+                        CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("admin") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.lock, color: snapshot.data!.get("roles_list").contains("admin") ? white : grey, size: 20)),
                       ],
                     ),
                     const SizedBox(height: 40),

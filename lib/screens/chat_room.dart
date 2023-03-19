@@ -33,12 +33,25 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   List<types.Message> _messages = [];
-  final types.User _user = types.User(id: FirebaseAuth.instance.currentUser!.uid);
+  late final types.User _user;
   late final types.User _remoteUser;
   @override
   void initState() {
     super.initState();
-    _remoteUser = types.User(id: widget.talkTo["uid"]);
+    _user = types.User(
+      id: FirebaseAuth.instance.currentUser!.uid,
+      createdAt: me["account_creation_date"].toDate().millisecond,
+      firstName: me["medical_professional_name"].split(" ").length == 2 ? me["medical_professional_name"].split(" ")[0] : me["medical_professional_name"],
+      imageUrl: me["image_url"],
+      lastName: me["medical_professional_name"].split(" ").length == 2 ? me["medical_professional_name"].split(" ")[1] : "",
+    );
+    _remoteUser = types.User(
+      id: widget.talkTo["uid"],
+      createdAt: widget.talkTo["account_creation_date"].toDate().millisecond,
+      firstName: widget.talkTo["medical_professional_name"].split(" ").length == 2 ? me["medical_professional_name"].split(" ")[0] : me["medical_professional_name"],
+      imageUrl: widget.talkTo["image_url"],
+      lastName: widget.talkTo["medical_professional_name"].split(" ").length == 2 ? me["medical_professional_name"].split(" ")[1] : "",
+    );
   }
 
   @override
@@ -49,7 +62,7 @@ class _ChatRoomState extends State<ChatRoom> {
       },
       child: Scaffold(
         appBar: AppBar(
-          shape: const RoundedRectangleBorder(/*side: BorderSide(color: white, width: 1),*/ borderRadius: BorderRadius.vertical(bottom: Radius.circular(25))),
+          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(25))),
           centerTitle: false,
           leading: IconButton(
             highlightColor: Colors.transparent,
@@ -80,7 +93,12 @@ class _ChatRoomState extends State<ChatRoom> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              CircleAvatar(radius: 15, backgroundImage: CachedNetworkImageProvider(widget.talkTo["image_url"])),
+              CircleAvatar(
+                radius: 20,
+                backgroundImage: widget.talkTo["image_url"] == noUser ? null : CachedNetworkImageProvider(widget.talkTo["image_url"]),
+                backgroundColor: grey.withOpacity(.2),
+                child: widget.talkTo["image_url"] != noUser ? null : Icon(FontAwesomeIcons.user, color: grey, size: 15),
+              ),
               const SizedBox(width: 5),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,7 +130,6 @@ class _ChatRoomState extends State<ChatRoom> {
                       author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
                       id: e.get("message_id"),
                       createdAt: e.get("created_at").toDate().millisecond,
-                      remoteId: widget.talkTo["uid"],
                       showStatus: true,
                       status: types.Status.delivered,
                       type: types.MessageType.audio,
@@ -122,7 +139,6 @@ class _ChatRoomState extends State<ChatRoom> {
                       author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
                       id: e.get("message_id"),
                       createdAt: e.get("created_at").toDate().millisecond,
-                      remoteId: widget.talkTo["uid"],
                       showStatus: true,
                       status: types.Status.delivered,
                       type: types.MessageType.custom,
@@ -135,7 +151,6 @@ class _ChatRoomState extends State<ChatRoom> {
                       author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
                       id: e.get("file_id"),
                       createdAt: e.get("created_at").toDate().millisecond,
-                      remoteId: widget.talkTo["uid"],
                       showStatus: true,
                       mimeType: e.get("mimeType"),
                       status: types.Status.delivered,
@@ -151,7 +166,6 @@ class _ChatRoomState extends State<ChatRoom> {
                       author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
                       id: e.get("image_id"),
                       createdAt: e.get("created_at").toDate().millisecond,
-                      remoteId: widget.talkTo["uid"],
                       showStatus: true,
                       status: types.Status.delivered,
                       type: types.MessageType.image,
@@ -162,8 +176,6 @@ class _ChatRoomState extends State<ChatRoom> {
                       id: e.get("message_id"),
                       text: e.get("message"),
                       createdAt: e.get("created_at").toDate().millisecond,
-                      metadata: const <String, dynamic>{},
-                      remoteId: widget.talkTo["uid"],
                       showStatus: true,
                       status: types.Status.delivered,
                       type: types.MessageType.system,
@@ -174,7 +186,6 @@ class _ChatRoomState extends State<ChatRoom> {
                       id: e.get("message_id"),
                       text: e.get("message"),
                       createdAt: e.get("created_at").toDate().millisecond,
-                      remoteId: widget.talkTo["uid"],
                       showStatus: true,
                       status: types.Status.delivered,
                       type: types.MessageType.text,
@@ -189,7 +200,6 @@ class _ChatRoomState extends State<ChatRoom> {
                       author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
                       id: e.get("message_id"),
                       createdAt: e.get("created_at").toDate().millisecond,
-                      remoteId: widget.talkTo["uid"],
                       showStatus: true,
                       status: types.Status.delivered,
                       type: types.MessageType.video,
@@ -206,7 +216,9 @@ class _ChatRoomState extends State<ChatRoom> {
               return Chat(
                 scrollPhysics: const BouncingScrollPhysics(),
                 isLastPage: true,
-                theme: const DarkChatTheme(messageInsetsVertical: 10),
+                theme: const DarkChatTheme(
+                  messageInsetsVertical: 10,
+                ),
                 useTopSafeAreaInset: true, bubbleRtlAlignment: BubbleRtlAlignment.left,
                 messages: _messages,
                 onAttachmentPressed: _handleAttachmentPressed,
@@ -293,7 +305,7 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   void _handleFileSelection() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowCompression: true, allowedExtensions: const <String>["pdf", "txt", "doc", "xml", "csv", "mp4", "mp3"]);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowCompression: true, allowedExtensions: const <String>["pdf", "txt", "doc", "xml", "csv"]);
     if (result != null && result.files.single.path != null) {
       Timestamp now = Timestamp.now();
       Uint8List bytes = await File(result.files.first.path!).readAsBytes();
@@ -334,7 +346,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     },
                   ).then(
                     (void value) async {
-                      await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set(
+                      await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).set(
                         {
                           "last_message": {"message": result.files.single.name, "timestamp": now},
                         },
@@ -356,7 +368,6 @@ class _ChatRoomState extends State<ChatRoom> {
       imageQuality: 100,
       source: ImageSource.gallery,
     );
-
     if (result != null) {
       Uint8List bytes = await result.readAsBytes();
       Timestamp now = Timestamp.now();
@@ -395,7 +406,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     },
                   ).then(
                     (void value) async {
-                      await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set(
+                      await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).set(
                         {
                           "last_message": {"message": result.name, "timestamp": now},
                         },

@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smart_care/authentification/sign_in.dart';
+import 'package:smart_care/drawer/about_us.dart';
 import 'package:smart_care/drawer/settings.dart';
 import 'package:smart_care/otp/otp_phase_1.dart';
 import 'package:smart_care/screens/screens.dart';
@@ -271,7 +272,7 @@ class HealthDrawer extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
               child: ListTile(
-                onTap: () {},
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const AboutUs())),
                 leading: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -305,7 +306,9 @@ class HealthDrawer extends StatelessWidget {
             GestureDetector(
                 onTap: () async {
                   showToast(AppLocalizations.of(context)!.signing_out);
-                  await GoogleSignIn().signOut();
+                  if (await GoogleSignIn().isSignedIn()) {
+                    await GoogleSignIn().signOut();
+                  }
                   await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": false}).then((void value) async {
                     await FirebaseAuth.instance.signOut().then((void value) => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => route.isFirst));
                   });
