@@ -5,9 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:smart_care/authentification/choices_box.dart';
 import 'package:smart_care/authentification/recovery.dart';
 import 'package:smart_care/authentification/sign_up.dart';
-import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -62,7 +62,12 @@ class _SignInState extends State<SignIn> {
                     children: <Widget>[
                       const Spacer(),
                       GestureDetector(
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Recovery())),
+                        onTap: () {
+                          if (play == 1) {
+                            playNote("tap.wav");
+                          }
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Recovery()));
+                        },
                         child: Container(
                           height: 35,
                           width: 150,
@@ -89,11 +94,14 @@ class _SignInState extends State<SignIn> {
                           child: GestureDetector(
                             onTap: () async {
                               try {
+                                if (play == 1) {
+                                  playNote("tap.wav");
+                                }
                                 if (_formKey.currentState!.validate()) {
                                   setS(() => wait = true);
                                   await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
                                     await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true}).then((void value) async {
-                                      await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 0)), (Route route) => route.isFirst);
+                                      await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => route.isFirst);
                                     });
                                   });
                                 } else {
@@ -130,7 +138,12 @@ class _SignInState extends State<SignIn> {
                   const SizedBox(height: 20),
                   Center(
                     child: GestureDetector(
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const SignUp())),
+                      onTap: () {
+                        if (play == 1) {
+                          playNote("tap.wav");
+                        }
+                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const SignUp()));
+                      },
                       child: Container(
                         width: MediaQuery.of(context).size.width * .6,
                         padding: const EdgeInsets.all(8.0),

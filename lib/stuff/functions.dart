@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -24,8 +25,8 @@ Future<void> openDB() async {
     "database.db",
     version: 1,
     onCreate: (Database db, int version) {
-      db.execute("CREATE TABLE SMART_CARE (ID INTEGER PRIMARY KEY , FIRST_TIME INTEGER);");
-      db.insert("SMART_CARE", <String, dynamic>{"FIRST_TIME": 1, "ID": 1});
+      db.execute("CREATE TABLE SMART_CARE (ID INTEGER PRIMARY KEY , FIRST_TIME INTEGER, AUDIO INTEGER);");
+      db.insert("SMART_CARE", <String, dynamic>{"FIRST_TIME": 1, "ID": 1, "AUDIO": 1});
     },
   );
 }
@@ -66,4 +67,8 @@ String getTimeFromDate(DateTime date) {
 
 String showWeekDay(int day) {
   return weekDayPredictor[DateTime(DateTime.now().year, DateTime.now().month, day).weekday]!;
+}
+
+void playNote(String note) {
+  player.open(Audio("assets/$note"));
 }

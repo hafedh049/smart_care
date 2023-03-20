@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -13,7 +14,9 @@ Color grey = Colors.grey;
 
 int? firstTime;
 int darkTheme = 1;
-int play = 1;
+int? play;
+
+final AssetsAudioPlayer player = AssetsAudioPlayer.newPlayer();
 
 Map<String, dynamic> me = <String, dynamic>{};
 

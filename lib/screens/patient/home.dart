@@ -3,11 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:smart_care/drawer/profile.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/patient/filter.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../stuff/functions.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -33,7 +36,20 @@ class Home extends StatelessWidget {
                     if (snapshot.hasData) {
                       return Column(
                         children: <Widget>[
-                          CircleAvatar(radius: 30, backgroundColor: blue, backgroundImage: CachedNetworkImageProvider(snapshot.data!.get("image_url"))),
+                          GestureDetector(
+                            onTap: () {
+                              if (play == 1) {
+                                playNote("tap.wav");
+                              }
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Profile()));
+                            },
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")),
+                              backgroundColor: grey.withOpacity(.2),
+                              child: snapshot.data!.get("image_url") != noUser ? null : Icon(FontAwesomeIcons.user, color: grey, size: 25),
+                            ),
+                          ),
                           const SizedBox(height: 15),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -50,7 +66,7 @@ class Home extends StatelessWidget {
                             children: <Widget>[
                               Icon(FontAwesomeIcons.locationPin, size: 15, color: blue),
                               const SizedBox(width: 10),
-                              const Text("Monastir, Tunisie", style: TextStyle(fontSize: 16)),
+                              CustomizedText(text: snapshot.data!.get("location").isNotEmpty ? snapshot.data!.get("location") : "Monastir, Tunisie", fontSize: 16, color: grey),
                             ],
                           ),
                         ],
@@ -65,7 +81,12 @@ class Home extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               GestureDetector(
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const FilterList())),
+                onTap: () {
+                  if (play == 1) {
+                    playNote("tap.wav");
+                  }
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const FilterList()));
+                },
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(color: grey.withOpacity(.5), borderRadius: const BorderRadius.only(topRight: Radius.circular(7), bottomRight: Radius.circular(7), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15))),
@@ -108,7 +129,7 @@ class Home extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
                                 margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                                child: CustomizedText(text: "Find Doctor", fontSize: 18, color: darkBlue),
+                                child: CustomizedText(text: "Find Doctor", fontSize: 16, color: darkBlue),
                               ),
                             ),
                           ],
@@ -137,7 +158,7 @@ class Home extends StatelessWidget {
                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
                                 padding: const EdgeInsets.all(8.0),
                                 margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                                child: CustomizedText(text: "Apointment", fontSize: 18, color: darkBlue),
+                                child: CustomizedText(text: "Appointment", fontSize: 16, color: darkBlue),
                               ),
                             ),
                           ],
@@ -156,7 +177,13 @@ class Home extends StatelessWidget {
                       children: <Widget>[
                         CustomizedText(text: "Upcoming Apointment", fontSize: 16, color: white, fontWeight: FontWeight.bold),
                         const Spacer(),
-                        GestureDetector(onTap: () {}, child: CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold)),
+                        GestureDetector(
+                            onTap: () {
+                              if (play == 1) {
+                                playNote("tap.wav");
+                              }
+                            },
+                            child: CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const SizedBox(height: 10),
@@ -164,7 +191,11 @@ class Home extends StatelessWidget {
                       children: <Widget>[
                         Expanded(
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              if (play == 1) {
+                                playNote("tap.wav");
+                              }
+                            },
                             child: Container(
                               height: 180,
                               decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
@@ -183,7 +214,7 @@ class Home extends StatelessWidget {
                                       const SizedBox(width: 10),
                                       Column(
                                         children: <Widget>[
-                                          CustomizedText(text: '"Dr. ${"Dental Specialist"}', fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                                          CustomizedText(text: '"Dr. ${"Dental Specialist"}"', fontSize: 16, color: white, fontWeight: FontWeight.bold),
                                           const SizedBox(height: 5),
                                           CustomizedText(text: "Dental Specialist", fontSize: 14, color: white.withOpacity(.8)),
                                         ],
@@ -214,7 +245,11 @@ class Home extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            if (play == 1) {
+                              playNote("tap.wav");
+                            }
+                          },
                           child: Container(
                             height: 180,
                             padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 16.0),
@@ -237,12 +272,22 @@ class Home extends StatelessWidget {
                       children: <Widget>[
                         CustomizedText(text: "Articles", fontSize: 16, color: white, fontWeight: FontWeight.bold),
                         const Spacer(),
-                        GestureDetector(onTap: () {}, child: CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold)),
+                        GestureDetector(
+                            onTap: () {
+                              if (play == 1) {
+                                playNote("tap.wav");
+                              }
+                            },
+                            child: CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const SizedBox(height: 10),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        if (play == 1) {
+                          playNote("tap.wav");
+                        }
+                      },
                       child: Container(
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
                         child: Row(

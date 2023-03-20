@@ -8,12 +8,11 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:lottie/lottie.dart';
+import 'package:smart_care/authentification/choices_box.dart';
 import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/drawer/about_us.dart';
 import 'package:smart_care/drawer/settings.dart';
 import 'package:smart_care/otp/otp_phase_1.dart';
-import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'dart:math' as math;
@@ -100,6 +99,9 @@ class GoogleAuth extends StatelessWidget {
       child: GestureDetector(
         onTap: () async {
           try {
+            if (play == 1) {
+              playNote("tap.wav");
+            }
             await GoogleSignIn().signIn().then((GoogleSignInAccount? googleAccount) async {
               if (googleAccount != null) {
                 List<String> signInMethods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(googleAccount.email);
@@ -108,7 +110,7 @@ class GoogleAuth extends StatelessWidget {
                   await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
                     AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
                     await FirebaseAuth.instance.signInWithCredential(credential);
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 0)), (Route route) => route.isFirst);
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => route.isFirst);
                   });
                 } else {
                   // Google provider is not linked with email/password provider
@@ -150,7 +152,12 @@ class OTPAuth extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const OTPView())),
+        onTap: () {
+          if (play == 1) {
+            playNote("tap.wav");
+          }
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const OTPView()));
+        },
         child: Container(
           height: 40,
           width: MediaQuery.of(context).size.width * .6,
@@ -237,74 +244,98 @@ class HealthDrawer extends StatelessWidget {
             const SizedBox(height: 10),
             Container(width: 267, height: .1, color: white),
             const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-              child: ListTile(
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Profile())),
-                leading: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
-                    const SizedBox(width: 5),
-                    Icon(FontAwesomeIcons.idCard, color: white, size: 20),
-                  ],
-                ),
-                title: CustomizedText(text: "Profile", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+            ListTile(
+              onTap: () {
+                if (play == 1) {
+                  playNote("tap.wav");
+                }
+                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Profile()));
+              },
+              leading: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
+                  const SizedBox(width: 5),
+                  Icon(FontAwesomeIcons.idCard, color: white, size: 20),
+                ],
               ),
+              title: CustomizedText(text: "Profile", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-              child: ListTile(
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartSettings())),
-                leading: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
-                    const SizedBox(width: 5),
-                    Icon(FontAwesomeIcons.gear, color: white, size: 20),
-                  ],
-                ),
-                title: CustomizedText(text: "Settings", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+            ListTile(
+              onTap: () {
+                if (play == 1) {
+                  playNote("tap.wav");
+                }
+                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartSettings()));
+              },
+              leading: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
+                  const SizedBox(width: 5),
+                  Icon(FontAwesomeIcons.gear, color: white, size: 20),
+                ],
               ),
+              title: CustomizedText(text: "Settings", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-              child: ListTile(
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const AboutUs())),
-                leading: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
-                    const SizedBox(width: 5),
-                    Icon(FontAwesomeIcons.heartPulse, color: white, size: 20),
-                  ],
-                ),
-                title: CustomizedText(text: "About Us", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+            ListTile(
+              onTap: () {
+                if (play == 1) {
+                  playNote("tap.wav");
+                }
+                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const AboutUs()));
+              },
+              leading: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
+                  const SizedBox(width: 5),
+                  Icon(FontAwesomeIcons.heartPulse, color: white, size: 20),
+                ],
               ),
+              title: CustomizedText(text: "About Us", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-              child: ListTile(
-                onTap: () {},
-                leading: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
-                    const SizedBox(width: 5),
-                    Icon(FontAwesomeIcons.peopleGroup, color: white, size: 20),
-                  ],
-                ),
-                title: CustomizedText(text: "Community", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+            ListTile(
+              onTap: () {
+                if (play == 1) {
+                  playNote("tap.wav");
+                }
+              },
+              leading: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
+                  const SizedBox(width: 5),
+                  Icon(FontAwesomeIcons.peopleGroup, color: white, size: 20),
+                ],
               ),
+              title: CustomizedText(text: "Community", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const Spacer(),
+            Container(width: 267, height: .1, color: white),
+            ListTile(
+              onTap: () {
+                if (play == 1) {
+                  playNote("tap.wav");
+                }
+              },
+              leading: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
+                  const SizedBox(width: 5),
+                  Icon(FontAwesomeIcons.bots, color: white, size: 20),
+                ],
+              ),
+              title: CustomizedText(text: "Smart Chat-Bot", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             Container(width: 267, height: .1, color: white),
             const SizedBox(height: 10),
             GestureDetector(
                 onTap: () async {
+                  if (play == 1) {
+                    playNote("tap.wav");
+                  }
                   showToast(AppLocalizations.of(context)!.signing_out);
                   if (await GoogleSignIn().isSignedIn()) {
                     await GoogleSignIn().signOut();
@@ -323,39 +354,39 @@ class HealthDrawer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    if (play == 1) {
+                      playNote("tap.wav");
+                    }
+                  },
                   child: CircleAvatar(
-                    radius: 24,
+                    radius: 22,
                     backgroundColor: white,
-                    child: CircleAvatar(
-                      radius: 22,
-                      backgroundColor: const Color.fromARGB(255, 36, 35, 42),
-                      child: Icon(FontAwesomeIcons.instagram, color: white, size: 25),
-                    ),
+                    child: CircleAvatar(radius: 20, backgroundColor: const Color.fromARGB(255, 36, 35, 42), child: Icon(FontAwesomeIcons.instagram, color: white, size: 25)),
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    if (play == 1) {
+                      playNote("tap.wav");
+                    }
+                  },
                   child: CircleAvatar(
-                    radius: 24,
+                    radius: 22,
                     backgroundColor: white,
-                    child: CircleAvatar(
-                      radius: 22,
-                      backgroundColor: const Color.fromARGB(255, 36, 35, 42),
-                      child: Icon(FontAwesomeIcons.facebook, color: white, size: 25),
-                    ),
+                    child: CircleAvatar(radius: 20, backgroundColor: const Color.fromARGB(255, 36, 35, 42), child: Icon(FontAwesomeIcons.facebook, color: white, size: 25)),
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    if (play == 1) {
+                      playNote("tap.wav");
+                    }
+                  },
                   child: CircleAvatar(
-                    radius: 24,
+                    radius: 22,
                     backgroundColor: white,
-                    child: CircleAvatar(
-                      radius: 22,
-                      backgroundColor: const Color.fromARGB(255, 36, 35, 42),
-                      child: Icon(FontAwesomeIcons.twitter, color: white, size: 25),
-                    ),
+                    child: CircleAvatar(radius: 20, backgroundColor: const Color.fromARGB(255, 36, 35, 42), child: Icon(FontAwesomeIcons.twitter, color: white, size: 25)),
                   ),
                 ),
               ],
@@ -423,41 +454,6 @@ class Or extends StatelessWidget {
           child: Container(height: .5, width: MediaQuery.of(context).size.width * .4, decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(25))),
         ),
       ],
-    );
-  }
-}
-
-class Role extends StatelessWidget {
-  const Role({super.key, required this.role, required this.state});
-  final String role;
-  final bool state;
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      width: 120,
-      height: 120,
-      padding: const EdgeInsets.all(8.0),
-      duration: 500.ms,
-      decoration: BoxDecoration(
-        border: state ? Border.all(color: blue) : null,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          LottieBuilder.asset("assets/$role.json", width: 60, height: 60),
-          const SizedBox(height: 5),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              CustomizedText(text: role[0].toUpperCase() + role.substring(1), fontSize: 18, fontWeight: FontWeight.bold, color: white),
-              Visibility(visible: state, child: const SizedBox(width: 10)),
-              Visibility(visible: state, child: Icon(FontAwesomeIcons.circleCheck, color: blue, size: 15)),
-            ],
-          ),
-        ],
-      ),
     );
   }
 }
@@ -557,6 +553,32 @@ class AvatarUsernameLocationShimmer extends StatelessWidget {
         const SizedBox(height: 10),
         Container(width: 170, height: 7, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white)),
       ],
+    ).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white, grey]);
+  }
+}
+
+class ContainerShimmer extends StatelessWidget {
+  const ContainerShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            for (int tile = 0; tile < 11; tile++)
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                width: MediaQuery.of(context).size.width,
+                height: 10,
+                decoration: const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
+              )
+          ],
+        ),
+      ),
     ).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white, grey]);
   }
 }

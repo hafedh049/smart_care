@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/drawer/account.dart';
+import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/stuff/globals.dart';
 
 import '../stuff/classes.dart';
+import '../stuff/functions.dart';
 
 class SmartSettings extends StatelessWidget {
   const SmartSettings({super.key});
@@ -20,7 +25,12 @@ class SmartSettings extends StatelessWidget {
           children: <Widget>[
             const SizedBox(height: 20),
             GestureDetector(
-              onTap: () => Navigator.pop(context),
+              onTap: () {
+                if (play == 1) {
+                  playNote("tap.wav");
+                }
+                Navigator.pop(context);
+              },
               child: Container(
                 width: 40,
                 height: 40,
@@ -34,7 +44,12 @@ class SmartSettings extends StatelessWidget {
             CustomizedText(text: "Account", fontSize: 20, fontWeight: FontWeight.bold, color: white),
             const SizedBox(height: 40),
             GestureDetector(
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Account())),
+              onTap: () {
+                if (play == 1) {
+                  playNote("tap.wav");
+                }
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Account()));
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -47,7 +62,18 @@ class SmartSettings extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      CustomizedText(text: "Hafedh Gunichi", fontSize: 18, color: white),
+                      StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                        stream: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+                        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+                          if (snapshot.hasData) {
+                            return CustomizedText(text: snapshot.data!.get("medical_professional_name"), fontSize: 18, color: white);
+                          } else if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Container(width: 120, height: 9, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white)).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white, grey]);
+                          } else {
+                            return ErrorRoom(error: snapshot.error.toString());
+                          }
+                        },
+                      ),
                       CustomizedText(text: "Personal Info", fontSize: 12, color: white.withOpacity(.6)),
                     ],
                   ),
@@ -63,30 +89,31 @@ class SmartSettings extends StatelessWidget {
             const SizedBox(height: 40),
             CustomizedText(text: "Settings", fontSize: 20, fontWeight: FontWeight.bold, color: white),
             const SizedBox(height: 40),
-            GestureDetector(
-              onTap: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Colors.blue.shade900.withOpacity(.2),
-                    child: Icon(FontAwesomeIcons.user, color: Colors.blue.shade900, size: 15),
-                  ),
-                  CustomizedText(text: "Language", fontSize: 18, color: white),
-                  CustomizedText(text: "English", fontSize: 12, color: white.withOpacity(.6)),
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                    child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey),
-                  ),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.blue.shade900.withOpacity(.2),
+                  child: Icon(FontAwesomeIcons.user, color: Colors.blue.shade900, size: 15),
+                ),
+                CustomizedText(text: "Language", fontSize: 18, color: white),
+                CustomizedText(text: "English", fontSize: 12, color: white.withOpacity(.6)),
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
+                  child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey),
+                ),
+              ],
             ),
             const SizedBox(height: 40),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                if (play == 1) {
+                  playNote("tap.wav");
+                }
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -97,21 +124,27 @@ class SmartSettings extends StatelessWidget {
                   ),
                   CustomizedText(text: "Sounds", fontSize: 18, color: white),
                   CustomizedText(text: "Enabled", fontSize: 12, color: white.withOpacity(.6)),
-                  Switch(
-                    activeThumbImage: const AssetImage("assets/play.png"),
-                    inactiveThumbImage: const AssetImage("assets/mute.png"),
-                    value: play == 1 ? true : false,
-                    onChanged: (bool value) => play = value ? 1 : 0,
-                    activeTrackColor: blue,
-                    activeColor: white,
-                    inactiveTrackColor: grey,
-                  )
+                  StatefulBuilder(builder: (BuildContext context, void Function(void Function()) _) {
+                    return Switch(
+                      activeThumbImage: const AssetImage("assets/play.png"),
+                      inactiveThumbImage: const AssetImage("assets/mute.png"),
+                      value: play == 1 ? true : false,
+                      onChanged: (bool value) => _(() => play = value ? 1 : 0),
+                      activeTrackColor: blue,
+                      activeColor: white,
+                      inactiveTrackColor: grey,
+                    );
+                  })
                 ],
               ),
             ),
             const SizedBox(height: 40),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                if (play == 1) {
+                  playNote("tap.wav");
+                }
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -136,7 +169,11 @@ class SmartSettings extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                if (play == 1) {
+                  playNote("tap.wav");
+                }
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[

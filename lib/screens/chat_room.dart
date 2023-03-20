@@ -58,6 +58,9 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        if (play == 1) {
+          playNote("tap.wav");
+        }
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(

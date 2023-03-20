@@ -64,6 +64,9 @@ class _AccountState extends State<Account> {
                   const SizedBox(width: 10),
                   GestureDetector(
                     onTap: () async {
+                      if (play == 1) {
+                        playNote("tap.wav");
+                      }
                       if (_formKey.currentState!.validate()) {
                         await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{key: _changerController.text.trim()}).then((void value) => Navigator.pop(context));
                       }
@@ -96,7 +99,12 @@ class _AccountState extends State<Account> {
                   children: <Widget>[
                     const SizedBox(height: 20),
                     GestureDetector(
-                      onTap: () => Navigator.pop(context),
+                      onTap: () {
+                        if (play == 1) {
+                          playNote("tap.wav");
+                        }
+                        Navigator.pop(context);
+                      },
                       child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.x, size: 15, color: grey)),
                     ),
                     const SizedBox(height: 10),
@@ -104,6 +112,9 @@ class _AccountState extends State<Account> {
                     const SizedBox(height: 60),
                     GestureDetector(
                       onTap: () {
+                        if (play == 1) {
+                          playNote("tap.wav");
+                        }
                         showModalBottomSheet(
                           context: context,
                           builder: (BuildContext context) => SizedBox(
@@ -187,7 +198,12 @@ class _AccountState extends State<Account> {
                     ),
                     const SizedBox(height: 40),
                     GestureDetector(
-                      onTap: () => change("Name", FontAwesomeIcons.userDoctor, false, TextInputType.text, fieldsValidatorsFunction("username", context), "medical_professional_name"),
+                      onTap: () {
+                        if (play == 1) {
+                          playNote("tap.wav");
+                        }
+                        change("Name", FontAwesomeIcons.userDoctor, false, TextInputType.text, fieldsValidatorsFunction("username", context), "medical_professional_name");
+                      },
                       child: Row(
                         children: <Widget>[
                           CustomizedText(text: "Name", fontSize: 14, color: grey),
@@ -214,19 +230,34 @@ class _AccountState extends State<Account> {
                         CustomizedText(text: "Gender", fontSize: 14, color: grey),
                         const SizedBox(width: 72),
                         GestureDetector(
-                          onTap: () async => await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "m"}),
+                          onTap: () async {
+                            if (play == 1) {
+                              playNote("tap.wav");
+                            }
+                            await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "m"});
+                          },
                           child: CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("gender") == "m" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.mars, color: snapshot.data!.get("gender") == "m" ? white : grey, size: 20)),
                         ),
                         const SizedBox(width: 10),
                         GestureDetector(
-                          onTap: () async => await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "f"}),
+                          onTap: () async {
+                            if (play == 1) {
+                              playNote("tap.wav");
+                            }
+                            await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "f"});
+                          },
                           child: CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("gender") == "f" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.venus, color: snapshot.data!.get("gender") == "f" ? white : grey, size: 20)),
                         ),
                       ],
                     ),
                     const SizedBox(height: 40),
                     GestureDetector(
-                      onTap: () => change("Age", FontAwesomeIcons.zero, false, TextInputType.number, fieldsValidatorsFunction("age", context), "age"),
+                      onTap: () {
+                        if (play == 1) {
+                          playNote("tap.wav");
+                        }
+                        change("Age", FontAwesomeIcons.zero, false, TextInputType.number, fieldsValidatorsFunction("age", context), "age");
+                      },
                       child: Row(
                         children: <Widget>[
                           CustomizedText(text: "Age", fontSize: 14, color: grey),
@@ -272,7 +303,7 @@ class _AccountState extends State<Account> {
                     ),
                     const SizedBox(height: 40),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: null,
                       child: Row(
                         children: <Widget>[
                           CustomizedText(text: "Password", fontSize: 14, color: grey),
@@ -296,6 +327,9 @@ class _AccountState extends State<Account> {
                     const SizedBox(height: 40),
                     GestureDetector(
                       onTap: () {
+                        if (play == 1) {
+                          playNote("tap.wav");
+                        }
                         showToast("Tap if you want to select otherwise swipe in any direction.");
                         showDialog(
                           context: context,
@@ -312,6 +346,9 @@ class _AccountState extends State<Account> {
                                   for (Map<String, dynamic> speciality in specialityListFunction(context))
                                     GestureDetector(
                                       onTap: () async {
+                                        if (play == 1) {
+                                          playNote("tap.wav");
+                                        }
                                         await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"speciality": speciality["speciality"]}).then((void value) {
                                           showToast(speciality["speciality"]);
                                           Navigator.pop(context);
@@ -379,7 +416,12 @@ class _AccountState extends State<Account> {
                     ),
                     const SizedBox(height: 40),
                     GestureDetector(
-                      onTap: () => change("Years of Experience", FontAwesomeIcons.zero, false, TextInputType.number, fieldsValidatorsFunction("age", context), "years_of_experience"),
+                      onTap: () {
+                        if (play == 1) {
+                          playNote("tap.wav");
+                        }
+                        change("Years of Experience", FontAwesomeIcons.zero, false, TextInputType.number, fieldsValidatorsFunction("age", context), "years_of_experience");
+                      },
                       child: Row(
                         children: <Widget>[
                           CustomizedText(text: "Years of Experience", fontSize: 14, color: grey),
@@ -404,6 +446,9 @@ class _AccountState extends State<Account> {
                     if (snapshot.data!.get("role") != "patient")
                       GestureDetector(
                         onTap: () {
+                          if (play == 1) {
+                            playNote("tap.wav");
+                          }
                           showTimePicker(context: context, initialTime: TimeOfDay.now());
                         },
                         child: Row(
@@ -428,7 +473,12 @@ class _AccountState extends State<Account> {
                       ),
                     const SizedBox(height: 40),
                     GestureDetector(
-                      onTap: () => change("About", FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidatorsFunction("about", context), "about"),
+                      onTap: () {
+                        if (play == 1) {
+                          playNote("tap.wav");
+                        }
+                        change("About", FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidatorsFunction("about", context), "about");
+                      },
                       child: Row(
                         children: <Widget>[
                           CustomizedText(text: "About", fontSize: 14, color: grey),
@@ -451,7 +501,12 @@ class _AccountState extends State<Account> {
                     ),
                     const SizedBox(height: 40),
                     GestureDetector(
-                      onTap: () => change("Location", FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidatorsFunction("job location", context), "location"),
+                      onTap: () {
+                        if (play == 1) {
+                          playNote("tap.wav");
+                        }
+                        change("Location", FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidatorsFunction("job location", context), "location");
+                      },
                       child: Row(
                         children: <Widget>[
                           CustomizedText(text: "Location", fontSize: 14, color: grey),

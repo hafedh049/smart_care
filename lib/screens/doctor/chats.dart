@@ -32,7 +32,12 @@ class _ChatsState extends State<Chats> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () {
+        if (play == 1) {
+          playNote("tap.wav");
+        }
+        FocusScope.of(context).unfocus();
+      },
       child: Scaffold(
         backgroundColor: darkBlue,
         resizeToAvoidBottomInset: false,
@@ -127,7 +132,12 @@ class _ChatsState extends State<Chats> {
                                           if (tileSnapshot.hasData) {
                                             return ListTile(
                                               contentPadding: EdgeInsets.zero,
-                                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: tileSnapshot.data!.data()!))),
+                                              onTap: () {
+                                                if (play == 1) {
+                                                  playNote("tap.wav");
+                                                }
+                                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: tileSnapshot.data!.data()!)));
+                                              },
                                               leading: Stack(
                                                 alignment: AlignmentDirectional.bottomEnd,
                                                 children: <Widget>[

@@ -10,6 +10,8 @@ import 'package:smart_care/stuff/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../stuff/functions.dart';
+
 // ignore: must_be_immutable
 class PrimaryPrevention extends StatelessWidget {
   PrimaryPrevention({super.key});
@@ -120,7 +122,10 @@ class PrimaryPrevention extends StatelessWidget {
                 const SizedBox(height: 30),
                 GestureDetector(
                   onTap: () async {
-                    await db!.update("SMART_CARE", <String, dynamic>{"FIRST_TIME": 0});
+                    if (play == 1) {
+                      playNote("tap.wav");
+                    }
+                    await db!.update("SMART_CARE", <String, dynamic>{"FIRST_TIME": 0, "AUDIO": 1});
 
                     if (FirebaseAuth.instance.currentUser != null) {
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 0)));

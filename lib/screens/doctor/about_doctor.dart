@@ -71,7 +71,11 @@ class AboutDoctor extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        if (play == 1) {
+                          playNote("tap.wav");
+                        }
+                      },
                       child: Container(
                         width: 80,
                         padding: const EdgeInsets.all(8.0),
@@ -89,7 +93,11 @@ class AboutDoctor extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        if (play == 1) {
+                          playNote("tap.wav");
+                        }
+                      },
                       child: Container(
                         width: 80,
                         padding: const EdgeInsets.all(8.0),
@@ -107,7 +115,11 @@ class AboutDoctor extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        if (play == 1) {
+                          playNote("tap.wav");
+                        }
+                      },
                       child: Container(
                         width: 80,
                         padding: const EdgeInsets.all(8.0),
@@ -237,7 +249,11 @@ class AboutDoctor extends StatelessWidget {
                           children: [
                             Expanded(
                               child: GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  if (play == 1) {
+                                    playNote("tap.wav");
+                                  }
+                                },
                                 child: Container(
                                   height: 40,
                                   padding: const EdgeInsets.symmetric(vertical: 2.0),

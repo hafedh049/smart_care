@@ -45,6 +45,9 @@ class _UploadState extends State<Upload> {
                     children: <Widget>[
                       GestureDetector(
                         onTap: () async {
+                          if (play == 1) {
+                            playNote("tap.wav");
+                          }
                           final String imagePath = await takesFromCameraOrGallery(true);
                           if (imagePath.isNotEmpty) {
                             showToast("Bilan Loaded");
@@ -92,6 +95,9 @@ class _UploadState extends State<Upload> {
                       const SizedBox(width: 20),
                       GestureDetector(
                         onTap: () async {
+                          if (play == 1) {
+                            playNote("tap.wav");
+                          }
                           final String imagePath = await takesFromCameraOrGallery(false);
                           if (imagePath.isNotEmpty) {
                             showToast("Bilan Loaded");
@@ -141,6 +147,9 @@ class _UploadState extends State<Upload> {
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () async {
+                      if (play == 1) {
+                        playNote("tap.wav");
+                      }
                       FilePickerResult? result = await FilePicker.platform.pickFiles(
                         allowCompression: true,
                         allowedExtensions: <String>["pdf"],

@@ -103,6 +103,9 @@ class _OTPViewState extends State<OTPView> {
                           child: GestureDetector(
                             onTap: () async {
                               try {
+                                if (play == 1) {
+                                  playNote("tap.wav");
+                                }
                                 if (_formKey.currentState!.validate()) {
                                   QuerySnapshot<Map<String, dynamic>> samples = await FirebaseFirestore.instance.collection("health_care_professionals").where("phone_number", isEqualTo: "$countryCode${_phoneController.text.trim().replaceAll(RegExp(r' '), '')}").get();
                                   if (samples.docs.isNotEmpty) {

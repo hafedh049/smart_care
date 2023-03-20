@@ -15,6 +15,7 @@ import 'package:smart_care/screens/patient/workflow.dart' as patient_workflow;
 import 'package:smart_care/screens/admin/dashboard.dart' as admin_dashboard;
 import 'package:smart_care/stuff/classes.dart';
 
+import '../stuff/functions.dart';
 import '../stuff/globals.dart';
 
 class Screens extends StatefulWidget {
@@ -93,7 +94,12 @@ class _ScreensState extends State<Screens> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
-                        onTap: () => drawerScaffoldKey.currentState!.openDrawer(),
+                        onTap: () {
+                          if (play == 1) {
+                            playNote("tap.wav");
+                          }
+                          drawerScaffoldKey.currentState!.openDrawer();
+                        },
                         child: Container(
                           width: 40,
                           height: 40,

@@ -4,6 +4,8 @@ import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../stuff/functions.dart';
+
 class GetStarted extends StatelessWidget {
   const GetStarted({super.key});
   @override
@@ -27,6 +29,9 @@ class GetStarted extends StatelessWidget {
               const Spacer(),
               GestureDetector(
                 onTap: () {
+                  if (play == 1) {
+                    playNote("tap.wav");
+                  }
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => PrimaryPrevention()));
                 },
                 child: Container(

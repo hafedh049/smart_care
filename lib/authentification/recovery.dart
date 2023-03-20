@@ -62,6 +62,9 @@ class _RecoveryState extends State<Recovery> {
                           ignoring: wait,
                           child: GestureDetector(
                             onTap: () async {
+                              if (play == 1) {
+                                playNote("tap.wav");
+                              }
                               try {
                                 if (_formKey.currentState!.validate()) {
                                   setS(() => wait = false);

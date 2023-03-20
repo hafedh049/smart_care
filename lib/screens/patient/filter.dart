@@ -8,6 +8,7 @@ import 'package:smart_care/screens/doctor/about_doctor.dart';
 import 'package:smart_care/stuff/globals.dart';
 
 import '../../stuff/classes.dart';
+import '../../stuff/functions.dart';
 
 class FilterList extends StatefulWidget {
   const FilterList({super.key});
@@ -50,7 +51,12 @@ class _FilterListState extends State<FilterList> {
               Padding(
                 padding: const EdgeInsets.only(left: 8, right: 8),
                 child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () {
+                    if (play == 1) {
+                      playNote("tap.wav");
+                    }
+                    Navigator.pop(context);
+                  },
                   child: const Icon(FontAwesomeIcons.chevronLeft, size: 20),
                 ),
               ),
@@ -69,6 +75,9 @@ class _FilterListState extends State<FilterList> {
                     visible: _showClearButton,
                     child: GestureDetector(
                       onTap: () => setS(() {
+                        if (play == 1) {
+                          playNote("tap.wav");
+                        }
                         _searchController.clear();
                         _showClearButton = false;
                       }),
@@ -93,12 +102,22 @@ class _FilterListState extends State<FilterList> {
                       itemCount: doctorsList.length,
                       itemBuilder: (BuildContext context, int index) => ListTile(
                         contentPadding: EdgeInsets.zero,
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: doctorsList[index].data()))),
+                        onTap: () {
+                          if (play == 1) {
+                            playNote("tap.wav");
+                          }
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: doctorsList[index].data())));
+                        },
                         leading: Stack(
                           alignment: AlignmentDirectional.bottomEnd,
                           children: <Widget>[
                             GestureDetector(
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutDoctor(uid: doctorsList[index].get("uid")))),
+                              onTap: () {
+                                if (play == 1) {
+                                  playNote("tap.wav");
+                                }
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutDoctor(uid: doctorsList[index].get("uid"))));
+                              },
                               child: CircleAvatar(radius: 25, backgroundImage: CachedNetworkImageProvider(doctorsList[index].get("image_url"))),
                             ),
                             CircleAvatar(radius: 5, backgroundColor: doctorsList[index].get("status") ? green : red),
