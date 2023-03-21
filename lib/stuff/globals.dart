@@ -16,11 +16,15 @@ int? firstTime;
 int darkTheme = 1;
 int? play;
 
+const String apiKey = "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";
+
 final AssetsAudioPlayer player = AssetsAudioPlayer.newPlayer();
 
 Map<String, dynamic> me = <String, dynamic>{};
 
 Database? db;
+
+const String chatBot = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/smart_bot.png?alt=media&token=99ba8285-3b29-489a-a473-a81cc228e3d3";
 
 List<Map<String, dynamic>> specialityListFunction(BuildContext context) {
   return <Map<String, dynamic>>[

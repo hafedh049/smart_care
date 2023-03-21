@@ -114,29 +114,36 @@ class SmartSettings extends StatelessWidget {
                   playNote("tap.wav");
                 }
               },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Colors.orange.withOpacity(.2),
-                    child: const Icon(FontAwesomeIcons.bell, color: Colors.orange, size: 15),
-                  ),
-                  CustomizedText(text: "Sounds", fontSize: 18, color: white),
-                  CustomizedText(text: "Enabled", fontSize: 12, color: white.withOpacity(.6)),
-                  StatefulBuilder(builder: (BuildContext context, void Function(void Function()) _) {
-                    return Switch(
+              child: StatefulBuilder(builder: (BuildContext context, void Function(void Function()) _) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Colors.orange.withOpacity(.2),
+                      child: const Icon(FontAwesomeIcons.bell, color: Colors.orange, size: 15),
+                    ),
+                    CustomizedText(text: "Sounds", fontSize: 18, color: white),
+                    CustomizedText(text: play == 1 ? "Enabled" : "Disabled", fontSize: 12, color: white.withOpacity(.6)),
+                    Switch(
                       activeThumbImage: const AssetImage("assets/play.png"),
                       inactiveThumbImage: const AssetImage("assets/mute.png"),
                       value: play == 1 ? true : false,
-                      onChanged: (bool value) => _(() => play = value ? 1 : 0),
+                      onChanged: (bool value) async {
+                        if (value) {
+                          await db!.execute("UPDATE SMART_CARE SET AUDIO = 1;");
+                        } else {
+                          await db!.execute("UPDATE SMART_CARE SET AUDIO = 0;");
+                        }
+                        _(() => play = value ? 1 : 0);
+                      },
                       activeTrackColor: blue,
                       activeColor: white,
                       inactiveTrackColor: grey,
-                    );
-                  })
-                ],
-              ),
+                    )
+                  ],
+                );
+              }),
             ),
             const SizedBox(height: 40),
             GestureDetector(

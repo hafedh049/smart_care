@@ -13,6 +13,7 @@ import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/drawer/about_us.dart';
 import 'package:smart_care/drawer/settings.dart';
 import 'package:smart_care/otp/otp_phase_1.dart';
+import 'package:smart_care/screens/smart_chat_bot.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'dart:math' as math;
@@ -295,22 +296,6 @@ class HealthDrawer extends StatelessWidget {
               ),
               title: CustomizedText(text: "About Us", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            ListTile(
-              onTap: () {
-                if (play == 1) {
-                  playNote("tap.wav");
-                }
-              },
-              leading: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
-                  const SizedBox(width: 5),
-                  Icon(FontAwesomeIcons.peopleGroup, color: white, size: 20),
-                ],
-              ),
-              title: CustomizedText(text: "Community", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
-            ),
             const Spacer(),
             Container(width: 267, height: .1, color: white),
             ListTile(
@@ -318,6 +303,7 @@ class HealthDrawer extends StatelessWidget {
                 if (play == 1) {
                   playNote("tap.wav");
                 }
+                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartChatBot()));
               },
               leading: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -327,7 +313,7 @@ class HealthDrawer extends StatelessWidget {
                   Icon(FontAwesomeIcons.bots, color: white, size: 20),
                 ],
               ),
-              title: CustomizedText(text: "Smart Chat-Bot", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+              title: CustomizedText(text: "Quark", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
             Container(width: 267, height: .1, color: white),
             const SizedBox(height: 10),

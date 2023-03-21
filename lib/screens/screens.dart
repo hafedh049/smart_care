@@ -27,7 +27,7 @@ class Screens extends StatefulWidget {
 }
 
 class _ScreensState extends State<Screens> {
-  final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
+  late final GlobalKey<ScaffoldState> drawerScaffoldKey;
   late final PageController _screensController;
   final List<Map<String, dynamic>> _screens = <Map<String, dynamic>>[
     {"screen": const patient_home.Home(), "icon": FontAwesomeIcons.house, "role": "patient"},
@@ -46,12 +46,13 @@ class _ScreensState extends State<Screens> {
   @override
   void dispose() {
     _screensController.dispose();
-    drawerScaffoldKey.currentState!.closeDrawer();
+    //drawerScaffoldKey.currentState!.closeDrawer();
     super.dispose();
   }
 
   @override
   void initState() {
+    drawerScaffoldKey = GlobalKey<ScaffoldState>();
     _screensController = PageController();
     if (_screensController.hasClients) {
       _screensController.jumpToPage(widget.firstScreen);
