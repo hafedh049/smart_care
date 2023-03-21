@@ -110,19 +110,12 @@ class Home extends StatelessWidget {
                     Expanded(
                       child: Container(
                         padding: const EdgeInsets.all(8.0),
-                        height: 200,
+                        height: 150,
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue.withOpacity(.7)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             CustomizedText(text: "Online Consultation", fontSize: 25, color: white),
-                            const SizedBox(height: 20),
-                            Row(
-                              children: <Widget>[
-                                CustomizedText(text: "Starting from ", fontSize: 16, color: white),
-                                CustomizedText(text: "\$49", fontSize: 16, color: white, fontWeight: FontWeight.bold),
-                              ],
-                            ),
                             const SizedBox(height: 20),
                             Center(
                               child: Container(
@@ -140,18 +133,11 @@ class Home extends StatelessWidget {
                     Expanded(
                       child: Container(
                         padding: const EdgeInsets.all(8.0),
-                        height: 200,
+                        height: 150,
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.amber.shade900.withOpacity(.7)),
                         child: Column(
                           children: <Widget>[
                             CustomizedText(text: "Visit A Doctor Offline", fontSize: 25, color: white),
-                            const SizedBox(height: 20),
-                            Row(
-                              children: <Widget>[
-                                CustomizedText(text: "Starting from ", fontSize: 16, color: white),
-                                CustomizedText(text: "\$49", fontSize: 16, color: white, fontWeight: FontWeight.bold),
-                              ],
-                            ),
                             const SizedBox(height: 20),
                             Center(
                               child: Container(
@@ -175,7 +161,7 @@ class Home extends StatelessWidget {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        CustomizedText(text: "Upcoming Apointment", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                        CustomizedText(text: "Upcoming Appointment", fontSize: 16, color: white, fontWeight: FontWeight.bold),
                         const Spacer(),
                         GestureDetector(
                             onTap: () {

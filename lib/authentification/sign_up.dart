@@ -373,7 +373,7 @@ class _SignUpState extends State<SignUp> {
                                         "speciality": "Chiropractors and massage therapists",
                                         "rating": "0",
                                         "schedules_list": [],
-                                        "available_time": [],
+                                        "available_time": ["--", "--"],
                                         "age": "35",
                                         "gender": "m",
                                         "about": "",

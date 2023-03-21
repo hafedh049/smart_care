@@ -91,10 +91,10 @@ class _FilterListState extends State<FilterList> {
           ),
           const SizedBox(height: 10),
           StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance.collection("health_care_professionals").where("role", isEqualTo: "doctor").snapshots(),
+            stream: FirebaseFirestore.instance.collection("health_care_professionals").where("roles_list", arrayContains: "doctor").snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               if (snapshot.hasData) {
-                List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = snapshot.data!.docs;
+                List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("uid") != me["uid"]).toList();
                 if (doctorsList.isNotEmpty) {
                   return Expanded(
                     child: ListView.builder(

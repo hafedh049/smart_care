@@ -213,7 +213,7 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: snapshot.data!.get("medical_professional_name"), fontSize: 18, color: white),
+                                CustomizedText(text: snapshot.data!.get("medical_professional_name"), fontSize: 16, color: white),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
@@ -267,7 +267,7 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: snapshot.data!.get("age"), fontSize: 18, color: white),
+                                CustomizedText(text: snapshot.data!.get("age"), fontSize: 16, color: white),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
@@ -290,7 +290,7 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("email"), fontSize: 18, color: white)),
+                                SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("email"), fontSize: 16, color: white)),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
@@ -313,7 +313,7 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("password").split("").map((String char) => "* ").toList().join(""), fontSize: 18, color: white)),
+                                SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("password").split("").map((String char) => "* ").toList().join(""), fontSize: 16, color: white)),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
@@ -324,132 +324,151 @@ class _AccountState extends State<Account> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 40),
-                    GestureDetector(
-                      onTap: () {
-                        if (play == 1) {
-                          playNote("tap.wav");
-                        }
-                        showToast("Tap if you want to select otherwise swipe in any direction.");
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            contentPadding: EdgeInsets.zero,
-                            content: SizedBox(
-                              width: MediaQuery.of(context).size.width * .9,
-                              height: MediaQuery.of(context).size.height * .6,
-                              child: CardSwiper(
-                                isLoop: true,
-                                duration: 100.ms,
-                                padding: EdgeInsets.zero,
-                                cards: <Widget>[
-                                  for (Map<String, dynamic> speciality in specialityListFunction(context))
-                                    GestureDetector(
-                                      onTap: () async {
-                                        if (play == 1) {
-                                          playNote("tap.wav");
-                                        }
-                                        await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"speciality": speciality["speciality"]}).then((void value) {
-                                          showToast(speciality["speciality"]);
-                                          Navigator.pop(context);
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8.0),
-                                        decoration: BoxDecoration(
-                                          color: darkBlue,
-                                          borderRadius: BorderRadius.circular(15),
-                                          image: DecorationImage(
-                                            image: CachedNetworkImageProvider(speciality["url"]),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            CustomizedText(text: speciality["speciality"], fontSize: 25, color: blue, fontWeight: FontWeight.bold),
-                                            const SizedBox(height: 30),
-                                            Expanded(
-                                              child: SizedBox(
-                                                child: AnimatedTextKit(
-                                                  animatedTexts: <AnimatedText>[
-                                                    TypewriterAnimatedText(
-                                                      speciality["description"],
-                                                      textStyle: GoogleFonts.roboto(
-                                                        fontSize: 14,
-                                                        color: speciality["color"],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          CustomizedText(text: "Speciality", fontSize: 14, color: grey),
-                          const SizedBox(width: 55),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("speciality"), fontSize: 18, color: white)),
-                                const SizedBox(height: 5),
-                                Container(height: .1, color: white),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 25),
-                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    GestureDetector(
-                      onTap: () {
-                        if (play == 1) {
-                          playNote("tap.wav");
-                        }
-                        change("Years of Experience", FontAwesomeIcons.zero, false, TextInputType.number, fieldsValidatorsFunction("age", context), "years_of_experience");
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          CustomizedText(text: "Years of Experience", fontSize: 14, color: grey),
-                          const SizedBox(width: 55),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                CustomizedText(text: snapshot.data!.get("years_of_experience"), fontSize: 18, color: white),
-                                const SizedBox(height: 5),
-                                Container(height: .1, color: white),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 25),
-                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
-                        ],
-                      ),
-                    ),
-                    if (snapshot.data!.get("role") != "patient") const SizedBox(height: 40),
-                    if (snapshot.data!.get("role") != "patient")
+                    if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin") const SizedBox(height: 40),
+                    if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin")
                       GestureDetector(
                         onTap: () {
                           if (play == 1) {
                             playNote("tap.wav");
                           }
-                          showTimePicker(context: context, initialTime: TimeOfDay.now());
+                          showToast("Tap if you want to select otherwise swipe in any direction.");
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              contentPadding: EdgeInsets.zero,
+                              content: SizedBox(
+                                width: MediaQuery.of(context).size.width * .9,
+                                height: MediaQuery.of(context).size.height * .6,
+                                child: CardSwiper(
+                                  isLoop: true,
+                                  duration: 100.ms,
+                                  padding: EdgeInsets.zero,
+                                  cards: <Widget>[
+                                    for (Map<String, dynamic> speciality in specialityListFunction(context))
+                                      GestureDetector(
+                                        onTap: () async {
+                                          if (play == 1) {
+                                            playNote("tap.wav");
+                                          }
+                                          await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"speciality": speciality["speciality"]}).then((void value) {
+                                            showToast(speciality["speciality"]);
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          decoration: BoxDecoration(
+                                            color: darkBlue,
+                                            borderRadius: BorderRadius.circular(15),
+                                            image: DecorationImage(
+                                              image: CachedNetworkImageProvider(speciality["url"]),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              CustomizedText(text: speciality["speciality"], fontSize: 25, color: blue, fontWeight: FontWeight.bold),
+                                              const SizedBox(height: 30),
+                                              Expanded(
+                                                child: SizedBox(
+                                                  child: AnimatedTextKit(
+                                                    animatedTexts: <AnimatedText>[
+                                                      TypewriterAnimatedText(
+                                                        speciality["description"],
+                                                        textStyle: GoogleFonts.roboto(
+                                                          fontSize: 14,
+                                                          color: speciality["color"],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Row(
+                          children: <Widget>[
+                            CustomizedText(text: "Speciality", fontSize: 14, color: grey),
+                            const SizedBox(width: 55),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("speciality"), fontSize: 16, color: white)),
+                                  const SizedBox(height: 5),
+                                  Container(height: .1, color: white),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 25),
+                            Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
+                          ],
+                        ),
+                      ),
+                    if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin") const SizedBox(height: 40),
+                    if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin")
+                      GestureDetector(
+                        onTap: () {
+                          if (play == 1) {
+                            playNote("tap.wav");
+                          }
+                          change("Years of Experience", FontAwesomeIcons.zero, false, TextInputType.number, fieldsValidatorsFunction("age", context), "years_of_experience");
+                        },
+                        child: Row(
+                          children: <Widget>[
+                            CustomizedText(text: "Years of Experience", fontSize: 14, color: grey),
+                            const SizedBox(width: 55),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  CustomizedText(text: snapshot.data!.get("years_of_experience"), fontSize: 16, color: white),
+                                  const SizedBox(height: 5),
+                                  Container(height: .1, color: white),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 25),
+                            Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
+                          ],
+                        ),
+                      ),
+                    if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin") const SizedBox(height: 40),
+                    if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin")
+                      GestureDetector(
+                        onTap: () async {
+                          if (play == 1) {
+                            playNote("tap.wav");
+                          }
+                          final List<String> time = <String>["--", "--"];
+                          await showTimePicker(context: context, initialTime: TimeOfDay.now(), helpText: "Select Start Time").then((TimeOfDay? start) async {
+                            if (start != null) {
+                              time[0] = start.format(context);
+                            }
+                            await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({
+                              "available_time": time,
+                            }).then((void value) async {
+                              await showTimePicker(context: context, initialTime: TimeOfDay.now(), helpText: "Select Finish Time").then((TimeOfDay? finish) async {
+                                if (finish != null) {
+                                  time[1] = finish.format(context);
+                                }
+                                await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({
+                                  "available_time": time,
+                                });
+                              });
+                            });
+                          });
                         },
                         child: Row(
                           children: <Widget>[
@@ -460,7 +479,26 @@ class _AccountState extends State<Account> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("available_time").toString(), fontSize: 18, color: white)),
+                                  if (snapshot.data!.get("available_time").isEmpty) CustomizedText(text: "Full Time.", fontSize: 16, color: white),
+                                  if (snapshot.data!.get("available_time").isNotEmpty)
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Icon(FontAwesomeIcons.clockRotateLeft, color: blue, size: 10),
+                                        const SizedBox(width: 5),
+                                        CustomizedText(text: snapshot.data!.get("available_time")[0], fontSize: 14, color: white),
+                                      ],
+                                    ),
+                                  if (snapshot.data!.get("available_time").isNotEmpty) const SizedBox(height: 5),
+                                  if (snapshot.data!.get("available_time").isNotEmpty)
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Icon(FontAwesomeIcons.clockRotateLeft, color: blue, size: 10),
+                                        const SizedBox(width: 5),
+                                        CustomizedText(text: snapshot.data!.get("available_time")[1], fontSize: 14, color: white),
+                                      ],
+                                    ),
                                   const SizedBox(height: 5),
                                   Container(height: .1, color: white),
                                 ],
@@ -488,7 +526,7 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("about").isEmpty ? "--" : snapshot.data!.get("about"), fontSize: 18, color: white)),
+                                SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("about").isEmpty ? "--" : snapshot.data!.get("about"), fontSize: 16, color: white)),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
@@ -516,7 +554,7 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: snapshot.data!.get("location").isEmpty ? "--" : snapshot.data!.get("location"), fontSize: 18, color: white),
+                                CustomizedText(text: snapshot.data!.get("location").isEmpty ? "--" : snapshot.data!.get("location"), fontSize: 16, color: white),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
@@ -539,7 +577,7 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: snapshot.data!.get("phone_number"), fontSize: 18, color: white),
+                                CustomizedText(text: snapshot.data!.get("phone_number"), fontSize: 16, color: white),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],

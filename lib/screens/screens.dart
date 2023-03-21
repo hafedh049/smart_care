@@ -110,34 +110,38 @@ class _ScreensState extends State<Screens> {
                       ),
                     ),
                     const Spacer(),
-                    Center(
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 48.0, left: 8.0, right: 8.0),
-                        decoration: BoxDecoration(color: const Color.fromARGB(255, 41, 41, 41), borderRadius: BorderRadius.circular(25)),
-                        height: 60,
-                        child: StatefulBuilder(
-                          key: _screensKey,
-                          builder: (BuildContext context, void Function(void Function()) setS) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                for (int screen = 0; screen < _filteredScreens.length; screen++)
-                                  CustomIcon(
-                                    clicked: _activeIndex == screen ? true : false,
-                                    func: () {
-                                      setS(() {
-                                        _activeIndex = screen;
-                                        _screensController.jumpToPage(screen);
-                                      });
-                                    },
-                                    icon: _filteredScreens[screen]["icon"],
-                                  ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ),
+                    LayoutBuilder(
+                      builder: (BuildContext context, BoxConstraints constraints) {
+                        return Center(
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom > 0 ? 48.0 : 10.0, left: 8.0, right: 8.0),
+                            decoration: BoxDecoration(color: const Color.fromARGB(255, 41, 41, 41), borderRadius: BorderRadius.circular(25)),
+                            height: 60,
+                            child: StatefulBuilder(
+                              key: _screensKey,
+                              builder: (BuildContext context, void Function(void Function()) setS) {
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    for (int screen = 0; screen < _filteredScreens.length; screen++)
+                                      CustomIcon(
+                                        clicked: _activeIndex == screen ? true : false,
+                                        func: () {
+                                          setS(() {
+                                            _activeIndex = screen;
+                                            _screensController.jumpToPage(screen);
+                                          });
+                                        },
+                                        icon: _filteredScreens[screen]["icon"],
+                                      ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    )
                   ],
                 ),
               ],
