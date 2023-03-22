@@ -9,8 +9,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_password_strength/flutter_password_strength.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:geolocator/geolocator.dart';
+//import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:smart_care/authentification/choices_box.dart';
@@ -40,6 +41,9 @@ class _SignUpState extends State<SignUp> {
   final GlobalKey _stepsCompletedkey = GlobalKey();
   final GlobalKey _nextKey = GlobalKey();
   final GlobalKey _previousKey = GlobalKey();
+  final GlobalKey _passwordStrenghtKey = GlobalKey();
+  final GlobalKey _passwordStrenghtTextKey = GlobalKey();
+  String _text = "Weak";
   bool _next = true;
   bool _previous = false;
   String _countryCode = "";
@@ -227,7 +231,40 @@ class _SignUpState extends State<SignUp> {
                         children: [
                           CustomizedText(text: "You will need to set up a password for your account.", color: white, fontSize: 18),
                           const SizedBox(height: 20),
-                          CustomTextField(validator: fieldsValidatorsFunction("password", context), controller: _passwordController, hint: AppLocalizations.of(context)!.password, prefix: FontAwesomeIcons.lock, obscured: true),
+                          CustomTextField(func: (String text) => _passwordStrenghtKey.currentState!.setState(() {}), validator: fieldsValidatorsFunction("password", context), controller: _passwordController, hint: AppLocalizations.of(context)!.password, prefix: FontAwesomeIcons.lock, obscured: true),
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: StatefulBuilder(
+                              key: _passwordStrenghtKey,
+                              builder: (BuildContext context, void Function(void Function()) _) {
+                                return FlutterPasswordStrength(
+                                  strengthCallback: (double strength) {
+                                    Future.delayed(
+                                        300.ms,
+                                        () => _passwordStrenghtTextKey.currentState!.setState(() {
+                                              if (strength >= 0 && strength < .2) {
+                                                _text = "Weak";
+                                              } else if (strength > .2 && strength < .8) {
+                                                _text = "Medium";
+                                              } else {
+                                                _text = "Strong";
+                                              }
+                                            }));
+                                  },
+                                  password: _passwordController.text.trim(),
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          StatefulBuilder(
+                            key: _passwordStrenghtTextKey,
+                            builder: (BuildContext context, void Function(void Function()) _) {
+                              return CustomizedText(text: _text, color: white, fontSize: 14, fontWeight: FontWeight.bold);
+                            },
+                          ),
+                          const SizedBox(height: 10),
                         ],
                       ),
                       Column(
@@ -356,12 +393,12 @@ class _SignUpState extends State<SignUp> {
                                         });
                                         showToast("Picture Uploaded");
                                       }
-                                      final Position position = await determinePosition();
+                                      //final Position position = await determinePosition();
                                       await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).set({
                                         "account_creation_date": Timestamp.now(),
                                         "medical_professional_name": _usernameController.text.trim(),
                                         "id": _idController.text.trim(),
-                                        "role": "patient",
+                                        "role": _rolesList[0] ? "doctor" : "patient",
                                         "roles_list": <String>[if (_rolesList[0]) "doctor", if (_rolesList[1]) "patient"],
                                         "uid": FirebaseAuth.instance.currentUser!.uid,
                                         "image_url": profilePictureUrl,
@@ -372,6 +409,7 @@ class _SignUpState extends State<SignUp> {
                                         "years_of_experience": "20",
                                         "patients_checked_list": [],
                                         "location": "",
+                                        'workLocation': "Faculté de Médecine de Monastir",
                                         "speciality": "Chiropractors and massage therapists",
                                         "rating": "0",
                                         "schedules_list": [],
@@ -379,7 +417,7 @@ class _SignUpState extends State<SignUp> {
                                         "age": "35",
                                         "gender": "m",
                                         "about": "",
-                                        "geolocation": [position.longitude, position.latitude, position.altitude],
+                                        "geolocation": [0, 0 /*position.longitude, position.latitude, position.altitude*/],
                                       }).then((void value) async {
                                         showToast("Data Stored");
                                         // Obtain the Google sign-in credentials

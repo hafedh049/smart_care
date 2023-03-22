@@ -2,18 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../stuff/classes.dart';
 import '../../stuff/functions.dart';
 import '../../stuff/globals.dart';
 
 class BookAppointment extends StatefulWidget {
-  const BookAppointment({super.key, required this.id, required this.doctorImageUrl, required this.doctorName, required this.speciality});
+  const BookAppointment({super.key, required this.id, required this.doctorImageUrl, required this.doctorName, required this.speciality, required this.workLocation});
   final String id;
   final String doctorName;
   final String doctorImageUrl;
   final String speciality;
+  final String workLocation;
 
   @override
   State<BookAppointment> createState() => _BookAppointmentState();
@@ -371,6 +374,33 @@ class _BookAppointmentState extends State<BookAppointment> {
                           );
                         },
                       ),
+                      const SizedBox(height: 20),
+                      Flexible(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: FlutterMap(
+                            options: MapOptions(center: LatLng(healthcareFacilities[0]["latitude"], healthcareFacilities[0]["longitude"])),
+                            children: <Widget>[
+                              TileLayer(urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', userAgentPackageName: 'dev.fleaflet.flutter_map.example'),
+                              MarkerLayer(
+                                markers: healthcareFacilities
+                                    .map(
+                                      (Map<String, dynamic> item) => Marker(
+                                        point: LatLng(item["latitude"], item["longitude"]),
+                                        builder: (BuildContext context) => Tooltip(
+                                          message: item["name"],
+                                          showDuration: 3.seconds,
+                                          triggerMode: TooltipTriggerMode.tap,
+                                          child: Icon(FontAwesomeIcons.locationCrosshairs, color: blue, size: 20),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   )
                 ],
@@ -392,16 +422,16 @@ class _BookAppointmentState extends State<BookAppointment> {
                           <String, dynamic>{
                             'patientName': me["medical_professional_name"],
                             'doctorName': widget.doctorName,
-                            'patientID': me["uid"],
+                            'patientID': me["uid"].trim(),
                             'doctorID': widget.id,
                             'doctorImageUrl': widget.doctorImageUrl,
                             'doctorSpeciality': widget.speciality,
                             'appointmentDate': _date,
                             'appointmentTime': _time.format(context),
-                            'status': 'pending',
                             'duration': const <String>["5 min", "15 min", "30 min"][_duration - 1],
                             'type': const <String>["Online", "In Person"][_appointmentType - 1],
                             'createdAt': Timestamp.now(),
+                            'workLocation': widget.workLocation,
                           },
                         ).then((value) async {
                           showToast("Appointment Booked");

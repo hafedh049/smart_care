@@ -164,3 +164,26 @@ String appTitle = "Smart Care";
 String appIcon = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/health.png?alt=media&token=5b9a461b-bf46-4dfd-bc83-e8ec9a66f990";
 
 String aboutUs = "Welcome to our telemedicine platform, built using the Flutter cross-platform framework, designed to provide primary prevention and prompt medical assistance in case of an AES (accident d'explosion du sang). Our platform is not only for patients, but it also caters to healthcare professionals who can monitor their patient's health status in real-time. Our platform's primary objective is to assist people in preventing AES by conducting daily and monthly checkups and sending SMS or notification reminders. In case of an AES event, our platform provides a workflow that patients can follow and get the final results from our laboratory experts. We understand the importance of medical assistance during an AES event; hence, we have provided a direct chat option with doctors. In addition, we have integrated a smart chatbot built on top of ChatGPT 3.5 for faster responses to queries when doctors are unavailable. Our telemedicine platform is fully customizable, with two themes - light and dark, and supports eight languages, making it user-friendly for people from diverse backgrounds. You can also enable gesture and message sounds to personalize your experience.Our platform offers a multitude of benefits for both patients and healthcare professionals. Patients can access medical assistance from the comfort of their homes, while healthcare professionals can monitor their patient's health status and offer timely intervention. We believe that our telemedicine platform can help reduce the incidence of AES and save lives.";
+
+List<Map<String, dynamic>> healthcareFacilities = [
+  {"name": "Centre Hospitalier Universitaire Fattouma Bourguiba de Monastir", "latitude": 35.7611469, "longitude": 10.8125058},
+  {"name": "Clinique les Oliviers Monastir", "latitude": 35.7667159, "longitude": 10.8322074},
+  {"name": "Clinique El Amen Monastir", "latitude": 35.7713949, "longitude": 10.8206096},
+  {"name": "Polyclinique des Palmiers Monastir", "latitude": 35.7604815, "longitude": 10.827065},
+  {"name": "Clinique Internationale Monastir", "latitude": 35.768876, "longitude": 10.8319216},
+  {"name": "Clinique Al Hikma Monastir", "latitude": 35.7701055, "longitude": 10.8300627},
+  {"name": "Clinique Monastir Médical", "latitude": 35.7720048, "longitude": 10.8286933},
+  {"name": "Clinique Al Amana Monastir", "latitude": 35.7712026, "longitude": 10.8256544},
+  {"name": "Polyclinique Al Azhar Monastir", "latitude": 35.7616056, "longitude": 10.8219744},
+  {"name": "Clinique Taoufik Monastir", "latitude": 35.7640652, "longitude": 10.8251672},
+  {"name": "Polyclinique de la Rose Monastir", "latitude": 35.7631194, "longitude": 10.8342604},
+  {"name": "Polyclinique Essafaa Monastir", "latitude": 35.7627449, "longitude": 10.8324411},
+  {"name": "Polyclinique Monastir El Wifak", "latitude": 35.7659385, "longitude": 10.8295595},
+  {"name": "Hôpital de Moknine", "latitude": 35.6078568, "longitude": 10.995835},
+  {"name": "Hôpital de Zéramdine", "latitude": 35.4122763, "longitude": 10.978685},
+  {"name": "Hôpital de Jemmal", "latitude": 35.5655434, "longitude": 10.9052743},
+  {"name": "Hôpital de Ksar Hellal", "latitude": 35.670407, "longitude": 10.877977},
+  {"name": "Hôpital de Sahline", "latitude": 35.7840403, "longitude": 10.6963433},
+  {"name": "Hôpital de Sayada", "latitude": 36.8730225, "longitude": 10.326227},
+  {"name": "Faculté de Médecine de Monastir", "latitude": 35.7763282, "longitude": 10.8267896}
+];

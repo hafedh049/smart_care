@@ -21,6 +21,7 @@ class _FilterListState extends State<FilterList> {
   final TextEditingController _searchController = TextEditingController();
   final GlobalKey _xKey = GlobalKey();
   final FocusNode _filterNode = FocusNode();
+  final GlobalKey _filterKey = GlobalKey();
   bool _showClearButton = false;
   @override
   void dispose() {
@@ -64,7 +65,9 @@ class _FilterListState extends State<FilterList> {
                 child: TextField(
                   focusNode: _filterNode,
                   controller: _searchController,
-                  onChanged: (String value) => _xKey.currentState!.setState(() => _showClearButton = value.isEmpty ? false : true),
+                  onChanged: (String value) {
+                    _xKey.currentState!.setState(() => _filterKey.currentState!.setState(() => _showClearButton = value.isEmpty ? false : true));
+                  },
                   decoration: const InputDecoration(hintText: 'Search For Doctors', border: InputBorder.none, contentPadding: EdgeInsets.only(left: 8, right: 8)),
                 ),
               ),
@@ -90,51 +93,61 @@ class _FilterListState extends State<FilterList> {
             ],
           ),
           const SizedBox(height: 10),
-          StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance.collection("health_care_professionals").where("roles_list", arrayContains: "doctor").snapshots(),
-            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-              if (snapshot.hasData) {
-                List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("uid") != me["uid"]).toList();
-                if (doctorsList.isNotEmpty) {
-                  return Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 8.0),
-                      itemCount: doctorsList.length,
-                      itemBuilder: (BuildContext context, int index) => ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        onTap: () {
-                          if (play == 1) {
-                            playNote("tap.wav");
-                          }
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: doctorsList[index].data())));
-                        },
-                        leading: Stack(
-                          alignment: AlignmentDirectional.bottomEnd,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () {
-                                if (play == 1) {
-                                  playNote("tap.wav");
-                                }
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutDoctor(uid: doctorsList[index].get("uid"))));
-                              },
-                              child: CircleAvatar(radius: 25, backgroundImage: CachedNetworkImageProvider(doctorsList[index].get("image_url"))),
+          StatefulBuilder(
+            key: _filterKey,
+            builder: (BuildContext context, void Function(void Function()) _) {
+              return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: FirebaseFirestore.instance.collection("health_care_professionals").where("roles_list", arrayContains: "doctor").snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                  if (snapshot.hasData) {
+                    List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("uid") != me["uid"] && element.get("medical_professional_name").contains(_searchController.text.trim())).toList();
+                    if (doctorsList.isNotEmpty) {
+                      return Expanded(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 8.0),
+                          itemCount: doctorsList.length,
+                          itemBuilder: (BuildContext context, int index) => ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            onTap: () {
+                              if (play == 1) {
+                                playNote("tap.wav");
+                              }
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: doctorsList[index].data())));
+                            },
+                            leading: Stack(
+                              alignment: AlignmentDirectional.bottomEnd,
+                              children: <Widget>[
+                                GestureDetector(
+                                  onTap: () {
+                                    if (play == 1) {
+                                      playNote("tap.wav");
+                                    }
+                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutDoctor(uid: doctorsList[index].get("uid"))));
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor: grey.withOpacity(.2),
+                                    backgroundImage: doctorsList[index].get("image_url") == noUser ? null : CachedNetworkImageProvider(doctorsList[index].get("image_url")),
+                                    child: doctorsList[index].get("image_url") == noUser ? Icon(FontAwesomeIcons.user, size: 15, color: grey) : null,
+                                  ),
+                                ),
+                                CircleAvatar(radius: 5, backgroundColor: doctorsList[index].get("status") ? green : red),
+                              ],
                             ),
-                            CircleAvatar(radius: 5, backgroundColor: doctorsList[index].get("status") ? green : red),
-                          ],
+                            title: CustomizedText(text: doctorsList[index].get("medical_professional_name"), fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                        title: CustomizedText(text: doctorsList[index].get("medical_professional_name"), fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  );
-                } else {
-                  return Center(child: CustomizedText(text: "No Doctors Available", color: white, fontSize: 25, fontWeight: FontWeight.bold));
-                }
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return Expanded(child: ListView.builder(itemCount: 30, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()));
-              } else {
-                return ErrorRoom(error: snapshot.error.toString());
-              }
+                      );
+                    } else {
+                      return Expanded(child: Center(child: CustomizedText(text: "No Doctors Available", color: white, fontSize: 25, fontWeight: FontWeight.bold)));
+                    }
+                  } else if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Expanded(child: ListView.builder(itemCount: 30, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()));
+                  } else {
+                    return ErrorRoom(error: snapshot.error.toString());
+                  }
+                },
+              );
             },
           )
         ],

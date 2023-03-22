@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
@@ -28,6 +27,9 @@ class ChoicesBox extends StatelessWidget {
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
                 if (snapshot.hasData) {
                   final List<dynamic> roles = snapshot.data!.get("roles_list");
+                  if (roles.length == 1) {
+                    return const Screens(firstScreen: 0);
+                  }
                   final List<bool> rolesList = List.generate(roles.length, (int index) => false);
                   bool ignore = false;
                   return StatefulBuilder(

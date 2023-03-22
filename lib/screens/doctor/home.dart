@@ -31,25 +31,26 @@ class _HomeState extends State<Home> {
             Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
             const SizedBox(height: 10),
             StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                stream: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-                  if (snapshot.hasData) {
-                    return ListTile(
-                      leading: CircleAvatar(
-                        radius: 50,
-                        backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")),
-                        backgroundColor: grey.withOpacity(.2),
-                        child: snapshot.data!.get("image_url") != noUser ? null : Icon(FontAwesomeIcons.user, color: grey, size: 35),
-                      ),
-                      title: CustomizedText(text: AppLocalizations.of(context)!.welcome, color: white.withOpacity(.7), fontSize: 14),
-                      subtitle: CustomizedText(text: snapshot.data!.get("medical_professional_name"), color: white, fontSize: 18),
-                    );
-                  } else if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const ListTileShimmer();
-                  } else {
-                    return ErrorRoom(error: snapshot.error.toString());
-                  }
-                }),
+              stream: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+                if (snapshot.hasData) {
+                  return ListTile(
+                    leading: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")),
+                      backgroundColor: grey.withOpacity(.2),
+                      child: snapshot.data!.get("image_url") != noUser ? null : Icon(FontAwesomeIcons.user, color: grey, size: 35),
+                    ),
+                    title: CustomizedText(text: AppLocalizations.of(context)!.welcome, color: white.withOpacity(.7), fontSize: 14),
+                    subtitle: CustomizedText(text: snapshot.data!.get("medical_professional_name"), color: white, fontSize: 18),
+                  );
+                } else if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const ListTileShimmer();
+                } else {
+                  return ErrorRoom(error: snapshot.error.toString());
+                }
+              },
+            ),
           ],
         ),
       ),

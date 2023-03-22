@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/drawer/profile.dart';
 import 'package:smart_care/error/error_room.dart';
+import 'package:smart_care/screens/patient/fetch_all_appointments.dart';
 import 'package:smart_care/screens/patient/filter.dart';
 import 'package:smart_care/screens/patient/summary.dart';
 import 'package:smart_care/stuff/classes.dart';
@@ -169,6 +170,7 @@ class Home extends StatelessWidget {
                               if (play == 1) {
                                 playNote("tap.wav");
                               }
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const FetchAllAppointments()));
                             },
                             child: CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold)),
                       ],
@@ -178,7 +180,7 @@ class Home extends StatelessWidget {
                       children: <Widget>[
                         Expanded(
                           child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                            stream: FirebaseFirestore.instance.collection("appointments").where("patientID", isEqualTo: me["uid"]).snapshots(),
+                            stream: FirebaseFirestore.instance.collection("appointments").where("patientID", isEqualTo: me["uid"].trim()).snapshots(),
                             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                               if (snapshot.hasData) {
                                 final List<QueryDocumentSnapshot<Map<String, dynamic>>> appointments = snapshot.data!.docs;
@@ -211,7 +213,7 @@ class Home extends StatelessWidget {
                                                 height: 130,
                                                 width: 100,
                                                 decoration: BoxDecoration(
-                                                  color: grey.withOpacity(.2),
+                                                  color: darkBlue.withOpacity(.2),
                                                   border: Border.all(color: blue),
                                                   borderRadius: BorderRadius.circular(15),
                                                   image: firstAppointment.get("doctorImageUrl") == noUser ? null : DecorationImage(image: CachedNetworkImageProvider(noUser), fit: BoxFit.cover),

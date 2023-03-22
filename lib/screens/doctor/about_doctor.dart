@@ -80,7 +80,7 @@ class AboutDoctor extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      CustomizedText(text: snapshot.data!.get("speciality").isEmpty ? "--" : snapshot.data!.get("image_url"), fontSize: 14, color: white),
+                      CustomizedText(text: snapshot.data!.get("speciality").isEmpty ? "--" : snapshot.data!.get("speciality"), fontSize: 14, color: white),
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -277,6 +277,7 @@ class AboutDoctor extends StatelessWidget {
                                               doctorName: snapshot.data!.get("medical_professional_name"),
                                               doctorImageUrl: snapshot.data!.get("image_url"),
                                               speciality: snapshot.data!.get("speciality"),
+                                              workLocation: snapshot.data!.get("workLocation"),
                                             ),
                                           ),
                                         );
