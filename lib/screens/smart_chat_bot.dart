@@ -165,8 +165,8 @@ class _SmartChatBotState extends State<SmartChatBot> {
                       child: Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 4.0, top: 4.0),
-                            child: Icon(FontAwesomeIcons.keyboard, color: white, size: 15),
+                            padding: const EdgeInsets.only(left: 4.0),
+                            child: Icon(FontAwesomeIcons.keyboard, color: grey, size: 25),
                           ),
                           const SizedBox(width: 10),
                           Flexible(
@@ -187,9 +187,6 @@ class _SmartChatBotState extends State<SmartChatBot> {
                           if (_userWriting)
                             CustomIcon(
                               func: () async {
-                                if (play == 1) {
-                                  playNote("tap.wav");
-                                }
                                 if (_messagesController.text.trim().isNotEmpty) {
                                   setS(() {
                                     _dancingDotsKey.currentState!.setState(() {
@@ -198,12 +195,15 @@ class _SmartChatBotState extends State<SmartChatBot> {
                                     _userWriting = false;
                                   });
                                   String text = _messagesController.text.trim();
+
                                   _messagesController.clear();
+                                  FocusScope.of(context).unfocus();
                                   await FirebaseFirestore.instance.collection("quark").doc(FirebaseAuth.instance.currentUser!.uid).collection("messages").doc().set({
                                     "message": text,
                                     "timestamp": Timestamp.now(),
                                     "me": true,
                                   }).then((void value) async {
+                                    playNote("replying.mp3");
                                     await _smartChatBot.textCompletion(request: CompletionRequest(maxTokens: 1024, prompt: text)).then((Completion? value) async {
                                       setS(() {
                                         _dancingDotsKey.currentState!.setState(() {
@@ -220,6 +220,7 @@ class _SmartChatBotState extends State<SmartChatBot> {
                                 }
                               },
                               icon: Icons.send,
+                              size: 25,
                             ),
                         ],
                       ),
@@ -259,7 +260,7 @@ class MessageTile extends StatelessWidget {
               ? AnimatedTextKit(
                   repeatForever: false,
                   totalRepeatCount: 1,
-                  animatedTexts: <AnimatedText>[TypewriterAnimatedText(message, speed: 50.ms, textStyle: GoogleFonts.roboto(fontSize: 16, color: white))],
+                  animatedTexts: <AnimatedText>[TypewriterAnimatedText(message, speed: 50.ms, textStyle: GoogleFonts.roboto(fontSize: 13, color: white))],
                 )
               : CustomizedText(text: message, fontSize: 16, color: white),
           const SizedBox(height: 5),

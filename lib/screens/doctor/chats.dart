@@ -142,7 +142,7 @@ class _ChatsState extends State<Chats> {
                                                 alignment: AlignmentDirectional.bottomEnd,
                                                 children: <Widget>[
                                                   CircleAvatar(radius: 25, backgroundImage: CachedNetworkImageProvider(tileSnapshot.data!.get("image_url"))),
-                                                  //  CircleAvatar(radius: 5, backgroundColor: tileSnapshot.data!.get("status") ? green : red),
+                                                  CircleAvatar(radius: 5, backgroundColor: tileSnapshot.data!.get("status") ? green : red),
                                                 ],
                                               ),
                                               title: CustomizedText(text: tileSnapshot.data!.get("medical_professional_name"), fontSize: 16, fontWeight: FontWeight.bold),

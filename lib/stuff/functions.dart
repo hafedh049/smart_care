@@ -3,7 +3,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geolocator/geolocator.dart';
+//import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_care/stuff/globals.dart';
@@ -93,7 +93,7 @@ void playNote(String note) {
   player.open(Audio("assets/$note"));
 }
 
-Future<Position> determinePosition() async {
+/*Future<Position> determinePosition() async {
   bool serviceEnabled;
   LocationPermission permission;
 
@@ -126,6 +126,4 @@ Future<Position> determinePosition() async {
   }
   showToast("Permission granted");
   return await Geolocator.getCurrentPosition();
-}
-
-Future<void> bookAppointment(String doctorID) async {}
+}*/

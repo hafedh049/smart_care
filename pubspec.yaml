@@ -16,17 +16,17 @@ dependencies:
     sdk: flutter
 
   fluttertoast: ^8.2.1
-  http: ^0.13.5
-  badges: ^3.0.2
-  url_launcher: ^6.1.10
+  #http: ^0.13.5
+  #badges: ^3.0.2
+  #url_launcher: ^6.1.10
   flutter_animate: ^4.1.0
   font_awesome_flutter: ^10.4.0
   flutter_map: ^3.1.0
   latlong2: ^0.8.1
   google_fonts: ^4.0.3
-  simple_circular_progress_bar: ^1.0.2
+  #simple_circular_progress_bar: ^1.0.2
   lottie: ^2.2.0
-  fl_chart: ^0.61.0
+  #fl_chart: ^0.61.0
   firebase_auth: ^4.2.2
   firebase_core: ^2.7.0
   cloud_firestore: ^4.4.3
@@ -51,14 +51,14 @@ dependencies:
   mime: ^1.0.4
   open_filex: ^4.3.2
   flutter_rating_bar: ^4.0.1
-  get: ^4.6.5
+  #get: ^4.6.5
   flutter_card_swiper: ^2.0.1
   animated_text_kit: ^4.2.2
   assets_audio_player: ^3.0.6
   chat_gpt_api: ^1.0.2
   flutter_chat_bubble: ^2.0.2
   flutter_keyboard_visibility: ^5.4.0
-  geolocator: ^9.0.2
+  #geolocator: ^9.0.2
   day_night_time_picker: ^1.2.0+2
   flutter_password_strength: ^0.1.6
 

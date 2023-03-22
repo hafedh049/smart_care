@@ -328,7 +328,7 @@ class Home extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 120),
+              LayoutBuilder(builder: (BuildContext context, BoxConstraints boxConstraints) => SizedBox(height: MediaQuery.of(context).padding.bottom > 0 ? 120 : 80)),
             ],
           ),
         ),

@@ -62,98 +62,101 @@ class _ScreensState extends State<Screens> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: drawerScaffoldKey,
-      drawer: const HealthDrawer(),
-      body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        future: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).get(),
-        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-          if (snapshot.hasData) {
-            me = snapshot.data!.data()!;
-            _filteredScreens = _screens.where((Map<String, dynamic> item) => item["role"] == snapshot.data!.get("role")).toList();
-            return Stack(
-              alignment: AlignmentDirectional.bottomCenter,
-              children: [
-                Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: PageView(
-                        onPageChanged: (int page) {
-                          _screensKey.currentState!.setState(() => _activeIndex = page);
-                        },
-                        controller: _screensController,
-                        children: _filteredScreens.map((Map<String, dynamic> page) => page["screen"] as Widget).toList(),
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const SizedBox(height: 30),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (play == 1) {
-                            playNote("tap.wav");
-                          }
-                          drawerScaffoldKey.currentState!.openDrawer();
-                        },
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                          child: Icon(FontAwesomeIcons.ellipsisVertical, size: 15, color: grey),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        key: drawerScaffoldKey,
+        drawer: const HealthDrawer(),
+        body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          future: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).get(),
+          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+            if (snapshot.hasData) {
+              me = snapshot.data!.data()!;
+              _filteredScreens = _screens.where((Map<String, dynamic> item) => item["role"] == snapshot.data!.get("role")).toList();
+              return Stack(
+                alignment: AlignmentDirectional.bottomCenter,
+                children: [
+                  Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: PageView(
+                          onPageChanged: (int page) {
+                            _screensKey.currentState!.setState(() => _activeIndex = page);
+                          },
+                          controller: _screensController,
+                          children: _filteredScreens.map((Map<String, dynamic> page) => page["screen"] as Widget).toList(),
                         ),
                       ),
-                    ),
-                    const Spacer(),
-                    LayoutBuilder(
-                      builder: (BuildContext context, BoxConstraints constraints) {
-                        return Center(
+                    ],
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const SizedBox(height: 30),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            if (play == 1) {
+                              playNote("tap.wav");
+                            }
+                            drawerScaffoldKey.currentState!.openDrawer();
+                          },
                           child: Container(
-                            margin: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom > 0 ? 48.0 : 10.0, left: 8.0, right: 8.0),
-                            decoration: BoxDecoration(color: const Color.fromARGB(255, 41, 41, 41), borderRadius: BorderRadius.circular(25)),
-                            height: 60,
-                            child: StatefulBuilder(
-                              key: _screensKey,
-                              builder: (BuildContext context, void Function(void Function()) setS) {
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    for (int screen = 0; screen < _filteredScreens.length; screen++)
-                                      CustomIcon(
-                                        clicked: _activeIndex == screen ? true : false,
-                                        func: () {
-                                          setS(() {
-                                            _activeIndex = screen;
-                                            _screensController.jumpToPage(screen);
-                                          });
-                                        },
-                                        icon: _filteredScreens[screen]["icon"],
-                                      ),
-                                  ],
-                                );
-                              },
-                            ),
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
+                            child: Icon(FontAwesomeIcons.ellipsisVertical, size: 15, color: grey),
                           ),
-                        );
-                      },
-                    )
-                  ],
-                ),
-              ],
-            );
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(color: blue),
-            );
-          } else {
-            return ErrorRoom(error: snapshot.error.toString());
-          }
-        },
+                        ),
+                      ),
+                      const Spacer(),
+                      LayoutBuilder(
+                        builder: (BuildContext context, BoxConstraints constraints) {
+                          return Center(
+                            child: Container(
+                              margin: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom > 0 ? 48.0 : 10.0, left: 8.0, right: 8.0),
+                              decoration: BoxDecoration(color: const Color.fromARGB(255, 41, 41, 41), borderRadius: BorderRadius.circular(25)),
+                              height: 60,
+                              child: StatefulBuilder(
+                                key: _screensKey,
+                                builder: (BuildContext context, void Function(void Function()) setS) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      for (int screen = 0; screen < _filteredScreens.length; screen++)
+                                        CustomIcon(
+                                          clicked: _activeIndex == screen ? true : false,
+                                          func: () {
+                                            setS(() {
+                                              _activeIndex = screen;
+                                              _screensController.jumpToPage(screen);
+                                            });
+                                          },
+                                          icon: _filteredScreens[screen]["icon"],
+                                        ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                ],
+              );
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(color: blue),
+              );
+            } else {
+              return ErrorRoom(error: snapshot.error.toString());
+            }
+          },
+        ),
       ),
     );
   }
