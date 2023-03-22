@@ -3,6 +3,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_care/stuff/globals.dart';
@@ -65,6 +66,25 @@ String getTimeFromDate(DateTime date) {
   return '$hours:$minutes $meridian';
 }
 
+final Map<int, dynamic> months = <int, dynamic>{
+  1: "January",
+  2: "February",
+  3: "March",
+  4: "April",
+  5: "May",
+  6: "June",
+  7: "July",
+  8: "August",
+  9: "September",
+  10: "October",
+  11: "November",
+  12: "December",
+};
+
+String getDateRepresentation(DateTime date) {
+  return "${showWeekDay(date.weekday)}, ${months[date.month]} ${date.day}";
+}
+
 String showWeekDay(int day) {
   return weekDayPredictor[DateTime(DateTime.now().year, DateTime.now().month, day).weekday]!;
 }
@@ -72,3 +92,40 @@ String showWeekDay(int day) {
 void playNote(String note) {
   player.open(Audio("assets/$note"));
 }
+
+Future<Position> determinePosition() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    return Future.error('Location services are disabled.');
+  }
+
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      if (play == 1) {
+        playNote("error.wav");
+      }
+      showToast("Location permissions are denied", color: red);
+      return Future.error('Location permissions are denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    if (play == 1) {
+      playNote("error.wav");
+    }
+    showToast("Location permissions are denied", color: red);
+    return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+  }
+  if (play == 1) {
+    playNote("tap.wav");
+  }
+  showToast("Permission granted");
+  return await Geolocator.getCurrentPosition();
+}
+
+Future<void> bookAppointment(String doctorID) async {}

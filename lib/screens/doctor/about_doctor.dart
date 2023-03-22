@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/error/error_room.dart';
+import 'package:smart_care/screens/patient/book_appointement.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 
@@ -264,11 +265,21 @@ class AboutDoctor extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: GestureDetector(
-                                      onTap: ()async {
+                                      onTap: () async {
                                         if (play == 1) {
                                           playNote("tap.wav");
                                         }
-await FirebaseFirestore.instance.collection("appointments").d
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) => BookAppointment(
+                                              id: uid,
+                                              doctorName: snapshot.data!.get("medical_professional_name"),
+                                              doctorImageUrl: snapshot.data!.get("image_url"),
+                                              speciality: snapshot.data!.get("speciality"),
+                                            ),
+                                          ),
+                                        );
                                       },
                                       child: Container(
                                         height: 40,
@@ -283,7 +294,7 @@ await FirebaseFirestore.instance.collection("appointments").d
                                         ),
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ],

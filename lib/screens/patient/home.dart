@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/drawer/profile.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/patient/filter.dart';
+import 'package:smart_care/screens/patient/summary.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -176,57 +177,85 @@ class Home extends StatelessWidget {
                     Row(
                       children: <Widget>[
                         Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
-                            },
-                            child: Container(
-                              height: 180,
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
-                              child: Column(
-                                children: <Widget>[
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Container(
-                                        height: 130,
-                                        width: 100,
-                                        decoration: BoxDecoration(border: Border.all(color: blue), borderRadius: BorderRadius.circular(15), image: DecorationImage(image: CachedNetworkImageProvider(noUser), fit: BoxFit.cover)),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Column(
+                          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                            stream: FirebaseFirestore.instance.collection("appointments").where("patientID", isEqualTo: me["uid"]).snapshots(),
+                            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                              if (snapshot.hasData) {
+                                final List<QueryDocumentSnapshot<Map<String, dynamic>>> appointments = snapshot.data!.docs;
+                                if (appointments.isEmpty) {
+                                  return Container(
+                                    height: 180,
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
+                                    child: Center(child: CustomizedText(text: 'No Appointments Yet.', fontSize: 16, color: white, fontWeight: FontWeight.bold)),
+                                  );
+                                } else {
+                                  final QueryDocumentSnapshot<Map<String, dynamic>> firstAppointment = snapshot.data!.docs.first;
+                                  return GestureDetector(
+                                    onTap: () {
+                                      if (play == 1) {
+                                        playNote("tap.wav");
+                                      }
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Summary(data: firstAppointment.data())));
+                                    },
+                                    child: Container(
+                                      height: 180,
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
+                                      child: Column(
                                         children: <Widget>[
-                                          CustomizedText(text: '"Dr. ${"Dental Specialist"}"', fontSize: 16, color: white, fontWeight: FontWeight.bold),
-                                          const SizedBox(height: 5),
-                                          CustomizedText(text: "Dental Specialist", fontSize: 14, color: white.withOpacity(.8)),
+                                          const SizedBox(height: 10),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Container(
+                                                height: 130,
+                                                width: 100,
+                                                decoration: BoxDecoration(
+                                                  color: grey.withOpacity(.2),
+                                                  border: Border.all(color: blue),
+                                                  borderRadius: BorderRadius.circular(15),
+                                                  image: firstAppointment.get("doctorImageUrl") == noUser ? null : DecorationImage(image: CachedNetworkImageProvider(noUser), fit: BoxFit.cover),
+                                                ),
+                                                child: firstAppointment.get("doctorImageUrl") == noUser ? Center(child: Icon(FontAwesomeIcons.user, size: 60, color: grey)) : null,
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Column(
+                                                children: <Widget>[
+                                                  CustomizedText(text: firstAppointment.get("doctorName"), fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                                                  const SizedBox(height: 5),
+                                                  CustomizedText(text: firstAppointment.get("doctorSpeciality").isEmpty ? "--" : firstAppointment.get("doctorSpeciality"), fontSize: 14, color: white.withOpacity(.8)),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          const Spacer(),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue),
+                                            height: 30,
+                                            child: Row(
+                                              children: <Widget>[
+                                                Icon(FontAwesomeIcons.calendar, size: 12, color: white.withOpacity(.6)),
+                                                const SizedBox(width: 10),
+                                                CustomizedText(text: getDateRepresentation(firstAppointment.get("appointmentDate").toDate()), fontSize: 14, color: white.withOpacity(.6), fontWeight: FontWeight.bold),
+                                                const Spacer(),
+                                                Icon(FontAwesomeIcons.clock, size: 12, color: white.withOpacity(.6)),
+                                                const SizedBox(width: 10),
+                                                CustomizedText(text: "At ${firstAppointment.get('appointmentTime')}", fontSize: 14, color: white.withOpacity(.6)),
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
-                                    ],
-                                  ),
-                                  const Spacer(),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue),
-                                    height: 30,
-                                    child: Row(
-                                      children: <Widget>[
-                                        Icon(FontAwesomeIcons.calendar, size: 12, color: white.withOpacity(.6)),
-                                        const SizedBox(width: 10),
-                                        CustomizedText(text: 'Monday, June 22', fontSize: 14, color: white.withOpacity(.6), fontWeight: FontWeight.bold),
-                                        const Spacer(),
-                                        Icon(FontAwesomeIcons.clock, size: 12, color: white.withOpacity(.6)),
-                                        const SizedBox(width: 10),
-                                        CustomizedText(text: "At 08 : 00 PM", fontSize: 14, color: white.withOpacity(.6)),
-                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                  );
+                                }
+                              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                                return Center(child: CircularProgressIndicator(color: blue));
+                              } else {
+                                return ErrorRoom(error: snapshot.error.toString());
+                              }
+                            },
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -235,6 +264,7 @@ class Home extends StatelessWidget {
                             if (play == 1) {
                               playNote("tap.wav");
                             }
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const FilterList()));
                           },
                           child: Container(
                             height: 180,

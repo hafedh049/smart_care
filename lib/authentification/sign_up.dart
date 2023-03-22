@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:smart_care/authentification/choices_box.dart';
@@ -355,6 +356,7 @@ class _SignUpState extends State<SignUp> {
                                         });
                                         showToast("Picture Uploaded");
                                       }
+                                      final Position position = await determinePosition();
                                       await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).set({
                                         "account_creation_date": Timestamp.now(),
                                         "medical_professional_name": _usernameController.text.trim(),
@@ -377,6 +379,7 @@ class _SignUpState extends State<SignUp> {
                                         "age": "35",
                                         "gender": "m",
                                         "about": "",
+                                        "geolocation": [position.longitude, position.latitude, position.altitude],
                                       }).then((void value) async {
                                         showToast("Data Stored");
                                         // Obtain the Google sign-in credentials
