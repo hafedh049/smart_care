@@ -96,9 +96,6 @@ class _BookAppointmentState extends State<BookAppointment> {
                         builder: (context, void Function(void Function()) _) {
                           return GestureDetector(
                             onTap: () {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
                               Navigator.push(
                                 context,
                                 showPicker(
@@ -260,9 +257,6 @@ class _BookAppointmentState extends State<BookAppointment> {
                         builder: (context, void Function(void Function()) _) {
                           return GestureDetector(
                             onTap: () {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
                               showDatePicker(
                                 context: context,
                                 initialDate: _date,

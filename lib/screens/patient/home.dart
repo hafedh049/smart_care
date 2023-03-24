@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/drawer/profile.dart';
 import 'package:smart_care/error/error_room.dart';
+import 'package:smart_care/screens/articles.dart';
 import 'package:smart_care/screens/patient/fetch_all_appointments.dart';
 import 'package:smart_care/screens/patient/filter.dart';
 import 'package:smart_care/screens/patient/summary.dart';
@@ -13,6 +16,7 @@ import 'package:smart_care/stuff/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../stuff/functions.dart';
+import '../article.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -40,9 +44,6 @@ class Home extends StatelessWidget {
                         children: <Widget>[
                           GestureDetector(
                             onTap: () {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
                               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Profile()));
                             },
                             child: CircleAvatar(
@@ -167,9 +168,6 @@ class Home extends StatelessWidget {
                         const Spacer(),
                         GestureDetector(
                             onTap: () {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
                               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const FetchAllAppointments()));
                             },
                             child: CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold)),
@@ -201,6 +199,7 @@ class Home extends StatelessWidget {
                                     },
                                     child: Container(
                                       height: 180,
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
                                       child: Column(
                                         children: <Widget>[
@@ -221,12 +220,15 @@ class Home extends StatelessWidget {
                                                 child: firstAppointment.get("doctorImageUrl") == noUser ? Center(child: Icon(FontAwesomeIcons.user, size: 60, color: grey)) : null,
                                               ),
                                               const SizedBox(width: 10),
-                                              Column(
-                                                children: <Widget>[
-                                                  CustomizedText(text: firstAppointment.get("doctorName"), fontSize: 16, color: white, fontWeight: FontWeight.bold),
-                                                  const SizedBox(height: 5),
-                                                  CustomizedText(text: firstAppointment.get("doctorSpeciality").isEmpty ? "--" : firstAppointment.get("doctorSpeciality"), fontSize: 14, color: white.withOpacity(.8)),
-                                                ],
+                                              Flexible(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    CustomizedText(text: firstAppointment.get("doctorName"), fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                                                    const SizedBox(height: 5),
+                                                    CustomizedText(text: firstAppointment.get("doctorSpeciality").isEmpty ? "--" : firstAppointment.get("doctorSpeciality"), fontSize: 14, color: white.withOpacity(.8)),
+                                                  ],
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -291,44 +293,58 @@ class Home extends StatelessWidget {
                         CustomizedText(text: "Articles", fontSize: 16, color: white, fontWeight: FontWeight.bold),
                         const Spacer(),
                         GestureDetector(
-                            onTap: () {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
-                            },
-                            child: CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold)),
+                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Articles())),
+                          child: CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    GestureDetector(
-                      onTap: () {
-                        if (play == 1) {
-                          playNote("tap.wav");
+                    StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      stream: FirebaseFirestore.instance.collection("articles").snapshots(),
+                      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                        if (snapshot.hasData) {
+                          if (snapshot.data!.docs.isNotEmpty) {
+                            final QueryDocumentSnapshot<Map<String, dynamic>> firstArtical = snapshot.data!.docs[Random().nextInt(snapshot.data!.docs.length)];
+                            return GestureDetector(
+                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Article(article: firstArtical.data()))),
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: firstArtical.get("title"), fontSize: 16, color: white, fontWeight: FontWeight.bold))),
+                                  const SizedBox(width: 10),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
+                                    height: 20,
+                                    width: 20,
+                                    child: Center(child: Icon(FontAwesomeIcons.chevronRight, size: 10, color: white)),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            return Container(
+                              height: 80,
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
+                              child: Center(child: CustomizedText(text: 'No Articles.', fontSize: 16, color: white, fontWeight: FontWeight.bold)),
+                            );
+                          }
+                        } else if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const ListTileShimmer();
+                        } else {
+                          return ErrorRoom(error: snapshot.error.toString());
                         }
                       },
-                      child: Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            CircleAvatar(radius: 15, backgroundColor: blue, backgroundImage: CachedNetworkImageProvider(noUser)),
-                            const Spacer(),
-                            CustomizedText(text: 'How to make your teeth stronger naturally', fontSize: 16, color: white, fontWeight: FontWeight.bold),
-                            const Spacer(),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue),
-                              height: 20,
-                              child: Center(child: Icon(FontAwesomeIcons.chevronRight, size: 10, color: white)),
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
                   ],
                 ),
               ),
-              LayoutBuilder(builder: (BuildContext context, BoxConstraints boxConstraints) => SizedBox(height: MediaQuery.of(context).padding.bottom > 0 ? 120 : 80)),
+              LayoutBuilder(builder: (BuildContext context, BoxConstraints boxConstraints) => SizedBox(height: MediaQuery.of(context).padding.bottom > 0 ? 100 : 80)),
             ],
           ),
         ),

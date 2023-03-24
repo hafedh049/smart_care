@@ -53,9 +53,6 @@ class DoctorProfile extends StatelessWidget {
                         children: <Widget>[
                           GestureDetector(
                             onTap: () {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
                               Navigator.pop(context);
                             },
                             child: Container(
@@ -67,11 +64,7 @@ class DoctorProfile extends StatelessWidget {
                           ),
                           CustomizedText(text: "Doctor Profile", fontSize: 18, fontWeight: FontWeight.bold, color: white),
                           GestureDetector(
-                            onTap: () {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
-                            },
+                            onTap: () {},
                             child: Container(
                               width: 40,
                               height: 40,
@@ -86,9 +79,6 @@ class DoctorProfile extends StatelessWidget {
                         children: <Widget>[
                           GestureDetector(
                             onTap: () {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(

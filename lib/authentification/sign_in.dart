@@ -94,14 +94,11 @@ class _SignInState extends State<SignIn> {
                           child: GestureDetector(
                             onTap: () async {
                               try {
-                                if (play == 1) {
-                                  playNote("tap.wav");
-                                }
                                 if (_formKey.currentState!.validate()) {
                                   setS(() => wait = true);
                                   await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
                                     await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true}).then((void value) async {
-                                      await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => route.isFirst);
+                                      await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
                                     });
                                   });
                                 } else {

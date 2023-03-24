@@ -62,9 +62,6 @@ class PatientProfile extends StatelessWidget {
                           alignment: AlignmentDirectional.topStart,
                           child: GestureDetector(
                             onTap: () {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
                               Navigator.pop(context);
                             },
                             child: Container(
@@ -141,7 +138,7 @@ class PatientProfile extends StatelessWidget {
                             if (play == 1) {
                               playNote("tap.wav");
                             }
-                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 4)), (Route route) => route.isFirst == true);
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 4)), (Route route) => false);
                           },
                           child: Container(
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue),

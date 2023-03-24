@@ -62,15 +62,12 @@ class _RecoveryState extends State<Recovery> {
                           ignoring: wait,
                           child: GestureDetector(
                             onTap: () async {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
                               try {
                                 if (_formKey.currentState!.validate()) {
                                   setS(() => wait = false);
                                   await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text.trim()).then((void value) {
                                     showToast("Password reset email sent to ${_emailController.text.trim()} (If not found check the SPAM section)", color: blue);
-                                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => route.isFirst);
+                                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => false);
                                   });
                                 }
                               } catch (_) {

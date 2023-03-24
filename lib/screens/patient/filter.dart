@@ -109,9 +109,6 @@ class _FilterListState extends State<FilterList> {
                           itemBuilder: (BuildContext context, int index) => ListTile(
                             contentPadding: EdgeInsets.zero,
                             onTap: () {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
                               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: doctorsList[index].data())));
                             },
                             leading: Stack(

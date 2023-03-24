@@ -61,6 +61,7 @@ dependencies:
   #geolocator: ^9.0.2
   day_night_time_picker: ^1.2.0+2
   flutter_password_strength: ^0.1.6
+  comment_tree: ^0.3.0
 
 dev_dependencies:
   flutter_test:

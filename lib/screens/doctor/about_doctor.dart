@@ -87,11 +87,7 @@ class AboutDoctor extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           GestureDetector(
-                            onTap: () {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
-                            },
+                            onTap: () {},
                             child: Container(
                               width: 80,
                               padding: const EdgeInsets.all(8.0),
@@ -109,11 +105,7 @@ class AboutDoctor extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           GestureDetector(
-                            onTap: () {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
-                            },
+                            onTap: () {},
                             child: Container(
                               width: 80,
                               padding: const EdgeInsets.all(8.0),
@@ -131,11 +123,7 @@ class AboutDoctor extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           GestureDetector(
-                            onTap: () {
-                              if (play == 1) {
-                                playNote("tap.wav");
-                              }
-                            },
+                            onTap: () {},
                             child: Container(
                               width: 80,
                               padding: const EdgeInsets.all(8.0),

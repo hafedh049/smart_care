@@ -592,12 +592,14 @@ class _AccountState extends State<Account> {
                     Row(
                       children: <Widget>[
                         CustomizedText(text: "Role", fontSize: 14, color: grey),
-                        const SizedBox(width: 80),
+                        const SizedBox(width: 60),
                         CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("patient") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.hospitalUser, color: snapshot.data!.get("roles_list").contains("patient") ? white : grey, size: 20)),
                         const SizedBox(width: 10),
                         CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("doctor") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.userDoctor, color: snapshot.data!.get("roles_list").contains("doctor") ? white : grey, size: 20)),
                         const SizedBox(width: 10),
                         CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("admin") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.lock, color: snapshot.data!.get("roles_list").contains("admin") ? white : grey, size: 20)),
+                        const SizedBox(width: 10),
+                        CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("laboratory") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.solidHospital, color: snapshot.data!.get("roles_list").contains("laboratory") ? white : grey, size: 20)),
                       ],
                     ),
                     const SizedBox(height: 40),

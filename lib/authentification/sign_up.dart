@@ -49,7 +49,7 @@ class _SignUpState extends State<SignUp> {
   String _countryCode = "";
   File? _profilePicture;
   double _stepsCompleted = 0;
-  final List<bool> _rolesList = <bool>[false, true];
+  final List<bool> _rolesList = <bool>[false, true, false];
 
   @override
   void dispose() {
@@ -347,6 +347,21 @@ class _SignUpState extends State<SignUp> {
                                   });
                                 },
                               ),
+                              const SizedBox(height: 10),
+                              CheckboxListTile(
+                                activeColor: blue,
+                                value: _rolesList[2],
+                                title: CustomizedText(text: "Laboratory", fontSize: 16, color: white),
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    if (!_rolesList[2]) {
+                                      _rolesList[2] = true;
+                                    } else {
+                                      _rolesList[2] = false;
+                                    }
+                                  });
+                                },
+                              ),
                             ],
                           );
                         },
@@ -361,9 +376,6 @@ class _SignUpState extends State<SignUp> {
                       return GestureDetector(
                         onTap: _next
                             ? () async {
-                                if (play == 1) {
-                                  playNote("tap.wav");
-                                }
                                 if (_formKey.currentState!.validate()) {
                                   await _fieldsPageController.nextPage(duration: 200.ms, curve: Curves.linear);
 
@@ -398,7 +410,11 @@ class _SignUpState extends State<SignUp> {
                                         "account_creation_date": Timestamp.now(),
                                         "medical_professional_name": _usernameController.text.trim(),
                                         "id": _idController.text.trim(),
-                                        "role": _rolesList[0] ? "doctor" : "patient",
+                                        "role": _rolesList[0]
+                                            ? "doctor"
+                                            : _rolesList[1]
+                                                ? "patient"
+                                                : "laboratory",
                                         "roles_list": <String>[if (_rolesList[0]) "doctor", if (_rolesList[1]) "patient"],
                                         "uid": FirebaseAuth.instance.currentUser!.uid,
                                         "image_url": profilePictureUrl,
@@ -452,7 +468,7 @@ class _SignUpState extends State<SignUp> {
                                             await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
                                               showToast("Signed-In Using E-mail & Password");
                                               await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true}).then((void value) async {
-                                                await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => route.isFirst);
+                                                await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
                                               });
                                             });
                                           },
@@ -498,9 +514,6 @@ class _SignUpState extends State<SignUp> {
                       return GestureDetector(
                         onTap: _previous
                             ? () async {
-                                if (play == 1) {
-                                  playNote("tap.wav");
-                                }
                                 await _fieldsPageController.previousPage(duration: 200.ms, curve: Curves.linear);
                                 if (_fieldsPageController.page!.toInt() == _fieldsPageController.initialPage) {
                                   _previousKey.currentState!.setState(() {

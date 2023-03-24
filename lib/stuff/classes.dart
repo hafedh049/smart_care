@@ -111,7 +111,7 @@ class GoogleAuth extends StatelessWidget {
                   await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
                     AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
                     await FirebaseAuth.instance.signInWithCredential(credential);
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => route.isFirst);
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
                   });
                 } else {
                   // Google provider is not linked with email/password provider
@@ -319,15 +319,12 @@ class HealthDrawer extends StatelessWidget {
             const SizedBox(height: 10),
             GestureDetector(
                 onTap: () async {
-                  if (play == 1) {
-                    playNote("tap.wav");
-                  }
                   showToast(AppLocalizations.of(context)!.signing_out);
                   if (await GoogleSignIn().isSignedIn()) {
                     await GoogleSignIn().signOut();
                   }
                   await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": false}).then((void value) async {
-                    await FirebaseAuth.instance.signOut().then((void value) => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => route.isFirst));
+                    await FirebaseAuth.instance.signOut().then((void value) => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => false));
                   });
                 },
                 child: CustomizedText(text: AppLocalizations.of(context)!.sign_out, fontSize: 18, fontWeight: FontWeight.bold)),
@@ -340,11 +337,7 @@ class HealthDrawer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {
-                    if (play == 1) {
-                      playNote("tap.wav");
-                    }
-                  },
+                  onTap: () {},
                   child: CircleAvatar(
                     radius: 22,
                     backgroundColor: white,
@@ -352,11 +345,7 @@ class HealthDrawer extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    if (play == 1) {
-                      playNote("tap.wav");
-                    }
-                  },
+                  onTap: () {},
                   child: CircleAvatar(
                     radius: 22,
                     backgroundColor: white,
@@ -364,11 +353,7 @@ class HealthDrawer extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    if (play == 1) {
-                      playNote("tap.wav");
-                    }
-                  },
+                  onTap: () {},
                   child: CircleAvatar(
                     radius: 22,
                     backgroundColor: white,
@@ -567,4 +552,10 @@ class ContainerShimmer extends StatelessWidget {
       ),
     ).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white, grey]);
   }
+}
+
+class Tree {
+  String? text;
+  IconData? icon;
+  Tree({required this.text, required this.icon});
 }

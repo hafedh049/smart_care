@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/doctor/chats.dart' as doctor_chat;
+import 'package:smart_care/screens/laboratory/laboratory.dart';
 import 'package:smart_care/screens/patient/chats.dart' as patient_chat;
 import 'package:smart_care/screens/patient/historic.dart' as patient_historic;
 import 'package:smart_care/screens/patient/home.dart' as patient_home;
@@ -38,6 +39,7 @@ class _ScreensState extends State<Screens> {
     {"screen": const doctor_chat.Chats(), "icon": FontAwesomeIcons.solidMessage, "role": "doctor"},
     {"screen": const patient_historic.Historic(), "icon": FontAwesomeIcons.solidFolder, "role": "patient"},
     {"screen": const admin_dashboard.Dashboard(), "icon": FontAwesomeIcons.chartGantt, "role": "admin"},
+    {"screen": const Laboratory(), "icon": FontAwesomeIcons.house, "role": "laboratory"},
   ];
   List<Map<String, dynamic>> _filteredScreens = <Map<String, dynamic>>[];
   final GlobalKey _screensKey = GlobalKey();
