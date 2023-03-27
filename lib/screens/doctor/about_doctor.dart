@@ -29,7 +29,7 @@ class AboutDoctor extends StatelessWidget {
               Expanded(
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(color: darkBlue, borderRadius: const BorderRadius.only(topLeft: Radius.circular(35), topRight: Radius.circular(35))),
+                  decoration: const BoxDecoration(color: darkBlue, borderRadius: BorderRadius.only(topLeft: Radius.circular(35), topRight: Radius.circular(35))),
                 ),
               ),
             ],
@@ -48,7 +48,7 @@ class AboutDoctor extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft, size: 20),
-                          CustomizedText(text: "Doctor Details", fontSize: 18, color: white, fontWeight: FontWeight.bold),
+                          const CustomizedText(text: "Doctor Details", fontSize: 18, color: white, fontWeight: FontWeight.bold),
                           CustomIcon(func: () {}, icon: FontAwesomeIcons.ellipsisVertical, size: 20),
                         ],
                       ),
@@ -58,9 +58,9 @@ class AboutDoctor extends StatelessWidget {
                         backgroundColor: darkBlue,
                         child: CircleAvatar(
                           radius: 40,
-                          backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(noUser),
+                          backgroundImage: snapshot.data!.get("image_url") == noUser ? null : const CachedNetworkImageProvider(noUser),
                           backgroundColor: grey.withOpacity(.2),
-                          child: snapshot.data!.get("image_url") == noUser ? Icon(FontAwesomeIcons.user, size: 30, color: grey) : null,
+                          child: snapshot.data!.get("image_url") == noUser ? const Icon(FontAwesomeIcons.user, size: 30, color: grey) : null,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -72,7 +72,7 @@ class AboutDoctor extends StatelessWidget {
                           const SizedBox(width: 10),
                           Stack(
                             alignment: AlignmentDirectional.center,
-                            children: <Widget>[
+                            children: const <Widget>[
                               Icon(FontAwesomeIcons.certificate, color: blue, size: 18),
                               Icon(FontAwesomeIcons.check, color: darkBlue, size: 10),
                             ],
@@ -95,9 +95,9 @@ class AboutDoctor extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Icon(FontAwesomeIcons.phoneVolume, color: blue, size: 15),
-                                  const SizedBox(width: 5),
+                                  SizedBox(width: 5),
                                   CustomizedText(text: "Audio", fontSize: 16, color: blue, fontWeight: FontWeight.bold),
                                 ],
                               ),
@@ -146,7 +146,7 @@ class AboutDoctor extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Icon(FontAwesomeIcons.heartPulse, color: red, size: 15),
+                          const Icon(FontAwesomeIcons.heartPulse, color: red, size: 15),
                           const SizedBox(width: 5),
                           CustomizedText(text: "${snapshot.data!.get("rating")} Positive Rating", fontSize: 14, color: white),
                         ],
@@ -170,11 +170,11 @@ class AboutDoctor extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               const SizedBox(height: 20),
-                              CustomizedText(text: "Information", color: white, fontSize: 20, fontWeight: FontWeight.bold),
+                              const CustomizedText(text: "Information", color: white, fontSize: 20, fontWeight: FontWeight.bold),
                               const SizedBox(height: 20),
                               Row(
                                 children: <Widget>[
-                                  CustomizedText(text: "Years of experience", color: white, fontSize: 18),
+                                  const CustomizedText(text: "Years of experience", color: white, fontSize: 18),
                                   const Spacer(),
                                   CustomizedText(text: "${snapshot.data!.get('years_of_experience')} Years", color: white, fontSize: 18, fontWeight: FontWeight.bold),
                                 ],
@@ -182,13 +182,13 @@ class AboutDoctor extends StatelessWidget {
                               const SizedBox(height: 15),
                               Row(
                                 children: <Widget>[
-                                  CustomizedText(text: "Patients checked", color: white, fontSize: 18),
+                                  const CustomizedText(text: "Patients checked", color: white, fontSize: 18),
                                   const Spacer(),
                                   CustomizedText(text: "${snapshot.data!.get('patients_checked_list').length}+", color: white, fontSize: 18, fontWeight: FontWeight.bold),
                                 ],
                               ),
                               const SizedBox(height: 20),
-                              CustomizedText(text: "Schedules", color: white, fontSize: 20, fontWeight: FontWeight.bold),
+                              const CustomizedText(text: "Schedules", color: white, fontSize: 20, fontWeight: FontWeight.bold),
                               const SizedBox(height: 20),
                               SingleChildScrollView(
                                 padding: EdgeInsets.zero,
@@ -218,7 +218,7 @@ class AboutDoctor extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 20),
-                              CustomizedText(text: "Available Time", color: white, fontSize: 20, fontWeight: FontWeight.bold),
+                              const CustomizedText(text: "Available Time", color: white, fontSize: 20, fontWeight: FontWeight.bold),
                               const SizedBox(height: 10),
                               SingleChildScrollView(
                                 padding: EdgeInsets.zero,
@@ -277,7 +277,7 @@ class AboutDoctor extends StatelessWidget {
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           mainAxisAlignment: MainAxisAlignment.center,
-                                          children: <Widget>[
+                                          children: const <Widget>[
                                             CustomizedText(text: "Book an Appointment", color: darkBlue, fontSize: 17, fontWeight: FontWeight.bold),
                                           ],
                                         ),

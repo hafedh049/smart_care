@@ -60,11 +60,11 @@ class _BookAppointmentState extends State<BookAppointment> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                child: Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey),
+                child: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey),
               ),
             ),
             const SizedBox(height: 10),
-            CustomizedText(text: "Add Schedule", fontSize: 30, fontWeight: FontWeight.bold, color: white),
+            const CustomizedText(text: "Add Schedule", fontSize: 30, fontWeight: FontWeight.bold, color: white),
             const SizedBox(height: 30),
             StatefulBuilder(
               key: _stepKey,
@@ -88,9 +88,9 @@ class _BookAppointmentState extends State<BookAppointment> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      CustomizedText(text: "Select Time", fontSize: 18, color: white, fontWeight: FontWeight.bold),
+                      const CustomizedText(text: "Select Time", fontSize: 18, color: white, fontWeight: FontWeight.bold),
                       const SizedBox(height: 40),
-                      CustomizedText(text: "Start", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                      const CustomizedText(text: "Start", fontSize: 16, color: white, fontWeight: FontWeight.bold),
                       const SizedBox(height: 20),
                       StatefulBuilder(
                         builder: (context, void Function(void Function()) _) {
@@ -130,7 +130,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       CustomizedText(text: _time.hour.toString().length == 1 ? "0${_time.hour.toString()}" : _time.hour.toString(), fontWeight: FontWeight.bold, fontSize: 16, color: blue),
-                                      CustomizedText(text: ":", fontWeight: FontWeight.bold, fontSize: 16, color: blue),
+                                      const CustomizedText(text: ":", fontWeight: FontWeight.bold, fontSize: 16, color: blue),
                                       CustomizedText(text: _time.minute.toString().length == 1 ? "0${_time.minute.toString()}" : _time.minute.toString(), fontWeight: FontWeight.bold, fontSize: 16, color: blue),
                                     ],
                                   ),
@@ -145,7 +145,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                     color: _time.period.name.toLowerCase() == "am" ? blue : grey.withOpacity(.2),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: Center(child: CustomizedText(text: "AM", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
+                                  child: const Center(child: CustomizedText(text: "AM", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
                                 ),
                                 const SizedBox(width: 20),
                                 AnimatedContainer(
@@ -157,7 +157,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                     color: _time.period.name.toLowerCase() == "pm" ? blue : grey.withOpacity(.2),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: Center(child: CustomizedText(text: "PM", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
+                                  child: const Center(child: CustomizedText(text: "PM", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
                                 ),
                                 const SizedBox(width: 10),
                                 Container(
@@ -169,7 +169,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                     borderRadius: BorderRadius.circular(5),
                                     border: Border.all(color: blue),
                                   ),
-                                  child: Center(child: Icon(FontAwesomeIcons.pen, size: 15, color: white)),
+                                  child: const Center(child: Icon(FontAwesomeIcons.pen, size: 15, color: white)),
                                 ),
                               ],
                             ),
@@ -177,7 +177,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                         },
                       ),
                       const SizedBox(height: 20),
-                      CustomizedText(text: "Duration", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                      const CustomizedText(text: "Duration", fontSize: 16, color: white, fontWeight: FontWeight.bold),
                       const SizedBox(height: 20),
                       StatefulBuilder(
                         builder: (context, void Function(void Function()) _) {
@@ -199,7 +199,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                     color: _duration == 1 ? blue : grey.withOpacity(.2),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: Center(child: CustomizedText(text: "5 min", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
+                                  child: const Center(child: CustomizedText(text: "5 min", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
                                 ),
                               ),
                               const SizedBox(width: 20),
@@ -219,7 +219,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                     color: _duration == 2 ? blue : grey.withOpacity(.2),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: Center(child: CustomizedText(text: "15 min", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
+                                  child: const Center(child: CustomizedText(text: "15 min", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
                                 ),
                               ),
                               const SizedBox(width: 20),
@@ -239,7 +239,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                     color: _duration == 3 ? blue : grey.withOpacity(.2),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: Center(child: CustomizedText(text: "30 min", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
+                                  child: const Center(child: CustomizedText(text: "30 min", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
                                 ),
                               ),
                             ],
@@ -251,7 +251,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      CustomizedText(text: "Select Date", fontSize: 18, color: white, fontWeight: FontWeight.bold),
+                      const CustomizedText(text: "Select Date", fontSize: 18, color: white, fontWeight: FontWeight.bold),
                       const SizedBox(height: 40),
                       StatefulBuilder(
                         builder: (context, void Function(void Function()) _) {
@@ -313,7 +313,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                     borderRadius: BorderRadius.circular(5),
                                     border: Border.all(color: blue),
                                   ),
-                                  child: Center(child: Icon(FontAwesomeIcons.pen, size: 15, color: white)),
+                                  child: const Center(child: Icon(FontAwesomeIcons.pen, size: 15, color: white)),
                                 ),
                               ],
                             ),
@@ -321,7 +321,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                         },
                       ),
                       const SizedBox(height: 60),
-                      CustomizedText(text: "Appointment Type", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                      const CustomizedText(text: "Appointment Type", fontSize: 16, color: white, fontWeight: FontWeight.bold),
                       const SizedBox(height: 40),
                       StatefulBuilder(
                         builder: (context, void Function(void Function()) _) {
@@ -342,7 +342,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                     color: _appointmentType == 1 ? blue : grey.withOpacity(.2),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: Center(child: CustomizedText(text: "Online", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
+                                  child: const Center(child: CustomizedText(text: "Online", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
                                 ),
                               ),
                               const SizedBox(width: 20),
@@ -361,7 +361,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                     color: _appointmentType == 2 ? blue : grey.withOpacity(.2),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: Center(child: CustomizedText(text: "In Person", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
+                                  child: const Center(child: CustomizedText(text: "In Person", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
                                 ),
                               ),
                             ],
@@ -385,7 +385,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                           message: item["name"],
                                           showDuration: 3.seconds,
                                           triggerMode: TooltipTriggerMode.tap,
-                                          child: Icon(FontAwesomeIcons.locationCrosshairs, color: blue, size: 20),
+                                          child: const Icon(FontAwesomeIcons.locationCrosshairs, color: blue, size: 20),
                                         ),
                                       ),
                                     )

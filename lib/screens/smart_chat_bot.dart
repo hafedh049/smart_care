@@ -30,8 +30,10 @@ class _SmartChatBotState extends State<SmartChatBot> {
   bool _botWriting = false;
   final ChatGPT _smartChatBot = ChatGPT.builder(token: apiKey);
   final GlobalKey _dancingDotsKey = GlobalKey();
+  final ScrollController _scrollController = ScrollController();
   @override
   void dispose() {
+    _scrollController.dispose();
     _messagesController.dispose();
     super.dispose();
   }
@@ -57,11 +59,11 @@ class _SmartChatBotState extends State<SmartChatBot> {
                 child: CachedNetworkImage(
                   imageUrl: chatBot,
                   fit: BoxFit.cover,
-                  placeholder: (BuildContext context, String url) => Center(child: Icon(FontAwesomeIcons.user, color: grey, size: 15)),
+                  placeholder: (BuildContext context, String url) => const Center(child: Icon(FontAwesomeIcons.user, color: grey, size: 15)),
                 ),
               ),
               const SizedBox(width: 10),
-              CustomizedText(text: "Quark", fontSize: 16, color: blue, fontWeight: FontWeight.bold),
+              const CustomizedText(text: "Quark", fontSize: 16, color: blue, fontWeight: FontWeight.bold),
             ],
           ),
           actions: <Widget>[
@@ -85,24 +87,21 @@ class _SmartChatBotState extends State<SmartChatBot> {
         body: Column(
           children: <Widget>[
             StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: FirebaseFirestore.instance
-                  .collection("quark")
-                  .doc(FirebaseAuth.instance.currentUser!.uid)
-                  .collection("messages")
-                  .orderBy(
-                    "timestamp",
-                  )
-                  .snapshots(),
+              stream: FirebaseFirestore.instance.collection("quark").doc(FirebaseAuth.instance.currentUser!.uid).collection("messages").orderBy("timestamp").snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                 if (snapshot.hasData) {
                   final List<QueryDocumentSnapshot> messages = snapshot.data!.docs;
                   return messages.isEmpty
-                      ? Expanded(child: Center(child: CustomizedText(text: "No Messages Yet", color: blue, fontSize: 20, fontWeight: FontWeight.bold)))
+                      ? const Expanded(child: Center(child: CustomizedText(text: "No Messages Yet", color: blue, fontSize: 20, fontWeight: FontWeight.bold)))
                       : Expanded(
                           child: ListView.builder(
+                            controller: _scrollController,
                             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
                             itemCount: messages.length,
                             itemBuilder: (BuildContext context, int index) {
+                              WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
+                                _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: 100.ms, curve: Curves.linear);
+                              });
                               return Row(
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: messages[index].get("me") ? MainAxisAlignment.end : MainAxisAlignment.start,
@@ -117,7 +116,7 @@ class _SmartChatBotState extends State<SmartChatBot> {
                                         child: CachedNetworkImage(
                                           imageUrl: chatBot,
                                           fit: BoxFit.cover,
-                                          placeholder: (BuildContext context, String url) => Center(child: Icon(FontAwesomeIcons.user, color: grey, size: 15)),
+                                          placeholder: (BuildContext context, String url) => const Center(child: Icon(FontAwesomeIcons.user, color: grey, size: 15)),
                                         ),
                                       ),
                                     ),
@@ -164,8 +163,8 @@ class _SmartChatBotState extends State<SmartChatBot> {
                       alignment: AlignmentDirectional.topCenter,
                       child: Row(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 4.0),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 4.0),
                             child: Icon(FontAwesomeIcons.keyboard, color: grey, size: 25),
                           ),
                           const SizedBox(width: 10),
@@ -255,7 +254,7 @@ class MessageTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          if (!me) CustomizedText(text: "Quark", fontSize: 16, color: blue, fontWeight: FontWeight.bold),
+          if (!me) const CustomizedText(text: "Quark", fontSize: 16, color: blue, fontWeight: FontWeight.bold),
           rewrite && !me
               ? AnimatedTextKit(
                   repeatForever: false,

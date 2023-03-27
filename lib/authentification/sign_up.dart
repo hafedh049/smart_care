@@ -86,8 +86,8 @@ class _SignUpState extends State<SignUp> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-                Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
-                Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
+                Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), const CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
+                Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(right: 8.0),
@@ -167,7 +167,7 @@ class _SignUpState extends State<SignUp> {
                             return CircleAvatar(
                               backgroundColor: grey.withOpacity(.2),
                               radius: 40,
-                              child: _profilePicture == null ? Icon(FontAwesomeIcons.user, color: grey, size: 35) : CircleAvatar(radius: 40, backgroundColor: Colors.transparent, backgroundImage: FileImage(_profilePicture!)),
+                              child: _profilePicture == null ? const Icon(FontAwesomeIcons.user, color: grey, size: 35) : CircleAvatar(radius: 40, backgroundColor: Colors.transparent, backgroundImage: FileImage(_profilePicture!)),
                             );
                           },
                         ),
@@ -202,7 +202,7 @@ class _SignUpState extends State<SignUp> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomizedText(text: "What is your name?", color: white, fontSize: 18),
+                          const CustomizedText(text: "What is your name?", color: white, fontSize: 18),
                           const SizedBox(height: 20),
                           CustomTextField(validator: fieldsValidatorsFunction("username", context), controller: _usernameController, hint: AppLocalizations.of(context)!.username, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name),
                         ],
@@ -211,7 +211,7 @@ class _SignUpState extends State<SignUp> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomizedText(text: "Can you provide me with your employee ID or matricule?", color: white, fontSize: 18),
+                          const CustomizedText(text: "Can you provide me with your employee ID or matricule?", color: white, fontSize: 18),
                           const SizedBox(height: 20),
                           CustomTextField(validator: fieldsValidatorsFunction("id", context), controller: _idController, hint: AppLocalizations.of(context)!.id, prefix: FontAwesomeIcons.userSecret),
                         ],
@@ -220,7 +220,7 @@ class _SignUpState extends State<SignUp> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomizedText(text: "Would you mind sharing your email address with me?", color: white, fontSize: 18),
+                          const CustomizedText(text: "Would you mind sharing your email address with me?", color: white, fontSize: 18),
                           const SizedBox(height: 20),
                           CustomTextField(validator: fieldsValidatorsFunction("email", context), controller: _emailController, hint: AppLocalizations.of(context)!.e_mail, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
                         ],
@@ -229,7 +229,7 @@ class _SignUpState extends State<SignUp> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomizedText(text: "You will need to set up a password for your account.", color: white, fontSize: 18),
+                          const CustomizedText(text: "You will need to set up a password for your account.", color: white, fontSize: 18),
                           const SizedBox(height: 20),
                           CustomTextField(func: (String text) => _passwordStrenghtKey.currentState!.setState(() {}), validator: fieldsValidatorsFunction("password", context), controller: _passwordController, hint: AppLocalizations.of(context)!.password, prefix: FontAwesomeIcons.lock, obscured: true),
                           const SizedBox(height: 10),
@@ -271,7 +271,7 @@ class _SignUpState extends State<SignUp> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomizedText(text: "May I have your phone number, please?", color: white, fontSize: 18),
+                          const CustomizedText(text: "May I have your phone number, please?", color: white, fontSize: 18),
                           const SizedBox(height: 20),
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
@@ -279,16 +279,16 @@ class _SignUpState extends State<SignUp> {
                               searchBoxDecoration: InputDecoration(
                                 labelText: AppLocalizations.of(context)!.country,
                                 labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
-                                prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.flag, size: 15, color: blue)),
-                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                                prefix: const Padding(padding: EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.flag, size: 15, color: blue)),
+                                enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                                focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
                               ),
                               autoValidateMode: AutovalidateMode.always,
                               focusNode: _phoneNode,
                               cursorColor: blue,
                               initialValue: PhoneNumber(isoCode: "TN", dialCode: "+216"),
                               errorMessage: AppLocalizations.of(context)!.not_valid_number,
-                              inputBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                              inputBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
                               onInputChanged: (PhoneNumber value) {
                                 _countryCode = value.dialCode!;
                               },
@@ -302,9 +302,9 @@ class _SignUpState extends State<SignUp> {
                               inputDecoration: InputDecoration(
                                 labelText: AppLocalizations.of(context)!.phone_number,
                                 labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
-                                prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.phone, size: 15, color: blue)),
-                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                                prefix: const Padding(padding: EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.phone, size: 15, color: blue)),
+                                enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                                focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
                               ),
                             ),
                           ),
@@ -316,12 +316,12 @@ class _SignUpState extends State<SignUp> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              CustomizedText(text: "Please select your role from the following options.", color: white, fontSize: 18),
+                              const CustomizedText(text: "Please select your role from the following options.", color: white, fontSize: 18),
                               const SizedBox(height: 40),
                               CheckboxListTile(
                                 activeColor: blue,
                                 value: _rolesList[0],
-                                title: CustomizedText(text: "Doctor", fontSize: 16, color: white),
+                                title: const CustomizedText(text: "Doctor", fontSize: 16, color: white),
                                 onChanged: (bool? value) {
                                   setState(() {
                                     if (!_rolesList[0]) {
@@ -336,7 +336,7 @@ class _SignUpState extends State<SignUp> {
                               CheckboxListTile(
                                 activeColor: blue,
                                 value: _rolesList[1],
-                                title: CustomizedText(text: "Patient", fontSize: 16, color: white),
+                                title: const CustomizedText(text: "Patient", fontSize: 16, color: white),
                                 onChanged: (bool? value) {
                                   setState(() {
                                     if (!_rolesList[1]) {
@@ -351,7 +351,7 @@ class _SignUpState extends State<SignUp> {
                               CheckboxListTile(
                                 activeColor: blue,
                                 value: _rolesList[2],
-                                title: CustomizedText(text: "Laboratory", fontSize: 16, color: white),
+                                title: const CustomizedText(text: "Laboratory", fontSize: 16, color: white),
                                 onChanged: (bool? value) {
                                   setState(() {
                                     if (!_rolesList[2]) {
@@ -431,6 +431,7 @@ class _SignUpState extends State<SignUp> {
                                         "schedules_list": [],
                                         "available_time": ["--", "--"],
                                         "age": "35",
+                                        "date_of_birth": DateTime.now(),
                                         "gender": "m",
                                         "about": "",
                                         "geolocation": [0, 0 /*position.longitude, position.latitude, position.altitude*/],
@@ -497,7 +498,7 @@ class _SignUpState extends State<SignUp> {
                                 const Spacer(),
                                 CustomizedText(text: _next ? "Continue" : AppLocalizations.of(context)!.sign_in, color: black, fontWeight: FontWeight.bold, fontSize: 20),
                                 const Spacer(),
-                                Icon(FontAwesomeIcons.chevronRight, size: 15, color: black),
+                                const Icon(FontAwesomeIcons.chevronRight, size: 15, color: black),
                               ],
                             ),
                           ),
@@ -538,11 +539,11 @@ class _SignUpState extends State<SignUp> {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
+                              children: const <Widget>[
                                 Icon(FontAwesomeIcons.chevronLeft, size: 15, color: black),
-                                const Spacer(),
+                                Spacer(),
                                 CustomizedText(text: "Back", color: black, fontWeight: FontWeight.bold, fontSize: 20),
-                                const Spacer(),
+                                Spacer(),
                               ],
                             ),
                           ),

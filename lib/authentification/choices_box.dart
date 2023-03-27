@@ -37,7 +37,7 @@ class ChoicesBox extends StatelessWidget {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            CustomizedText(text: "Continue As", fontSize: 25, color: blue, fontWeight: FontWeight.bold),
+                            const CustomizedText(text: "Continue As", fontSize: 25, color: blue, fontWeight: FontWeight.bold),
                             const SizedBox(height: 10),
                             for (int role = 0; role < roles.length; role++)
                               IgnorePointer(
@@ -68,7 +68,7 @@ class ChoicesBox extends StatelessWidget {
             );
           }
         } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator(color: blue));
+          return const Center(child: CircularProgressIndicator(color: blue));
         } else {
           return ErrorRoom(error: snapshot.error.toString());
         }

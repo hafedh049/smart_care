@@ -109,7 +109,7 @@ class _ScreensState extends State<Screens> {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                            child: Icon(FontAwesomeIcons.ellipsisVertical, size: 15, color: grey),
+                            child: const Icon(FontAwesomeIcons.ellipsisVertical, size: 15, color: grey),
                           ),
                         ),
                       ),
@@ -151,7 +151,7 @@ class _ScreensState extends State<Screens> {
                 ],
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(color: blue),
               );
             } else {

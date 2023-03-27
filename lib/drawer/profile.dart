@@ -25,7 +25,7 @@ class Profile extends StatelessWidget {
               return Container();
             }
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator(color: blue);
+            return const CircularProgressIndicator(color: blue);
           } else {
             return ErrorRoom(error: snapshot.error.toString());
           }

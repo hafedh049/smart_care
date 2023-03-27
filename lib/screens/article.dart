@@ -73,7 +73,7 @@ class Article extends StatelessWidget {
                             const SizedBox(width: 10),
                             Stack(
                               alignment: AlignmentDirectional.center,
-                              children: <Widget>[
+                              children: const <Widget>[
                                 Icon(FontAwesomeIcons.certificate, color: blue, size: 20),
                                 Icon(FontAwesomeIcons.check, color: white, size: 12),
                               ],

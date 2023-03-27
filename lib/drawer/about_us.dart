@@ -31,11 +31,11 @@ class AboutUs extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                child: Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey),
+                child: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey),
               ),
             ),
             const SizedBox(height: 30),
-            Center(child: CustomizedText(text: "About Us", fontSize: 35, color: blue, fontWeight: FontWeight.bold)),
+            const Center(child: CustomizedText(text: "About Us", fontSize: 35, color: blue, fontWeight: FontWeight.bold)),
             const SizedBox(height: 30),
             AnimatedTextKit(
               totalRepeatCount: 1,

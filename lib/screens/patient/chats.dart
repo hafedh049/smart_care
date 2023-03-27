@@ -50,8 +50,8 @@ class _ChatsState extends State<Chats> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-              Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
-              Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
+              Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
+              Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
               const SizedBox(height: 10),
               Container(
                 height: 50,
@@ -60,7 +60,7 @@ class _ChatsState extends State<Chats> {
                 child: Row(
                   children: [
                     const SizedBox(width: 10),
-                    Icon(Icons.search, color: grey),
+                    const Icon(Icons.search, color: grey),
                     const SizedBox(width: 10),
                     Expanded(
                       child: StatefulBuilder(
@@ -91,7 +91,7 @@ class _ChatsState extends State<Chats> {
                         return Visibility(
                           visible: _deleteVisibility,
                           child: IconButton(
-                            icon: Icon(Icons.close, color: grey),
+                            icon: const Icon(Icons.close, color: grey),
                             onPressed: () => _searchController.clear(),
                           ),
                         );
@@ -107,7 +107,7 @@ class _ChatsState extends State<Chats> {
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> chatSnapshot) {
                     if (chatSnapshot.hasData) {
                       if (chatSnapshot.data!.docs.isEmpty) {
-                        return Center(child: CustomizedText(text: "No Doctors Available", color: blue, fontSize: 20));
+                        return const Center(child: CustomizedText(text: "No Doctors Available", color: blue, fontSize: 20));
                       } else {
                         Future.delayed(500.ms, () => _textFieldKey.currentState!.setState(() => _disabled = false));
                         return StatefulBuilder(
@@ -122,7 +122,7 @@ class _ChatsState extends State<Chats> {
                                 ;
 
                             return doctorsList.isEmpty
-                                ? Center(child: CustomizedText(text: "No Chats Until Now", fontSize: 20, color: white))
+                                ? const Center(child: CustomizedText(text: "No Chats Until Now", fontSize: 20, color: white))
                                 : ListView.builder(
                                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     itemCount: doctorsList.length,
@@ -146,7 +146,7 @@ class _ChatsState extends State<Chats> {
                                                     radius: 30,
                                                     backgroundImage: tileSnapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(tileSnapshot.data!.get("image_url")),
                                                     backgroundColor: grey.withOpacity(.2),
-                                                    child: tileSnapshot.data!.get("image_url") != noUser ? null : Icon(FontAwesomeIcons.user, color: grey, size: 25),
+                                                    child: tileSnapshot.data!.get("image_url") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 25),
                                                   ),
                                                   CircleAvatar(radius: 5, backgroundColor: tileSnapshot.data!.get("status") ? green : red),
                                                 ],

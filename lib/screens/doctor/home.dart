@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
                       radius: 50,
                       backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")),
                       backgroundColor: grey.withOpacity(.2),
-                      child: snapshot.data!.get("image_url") != noUser ? null : Icon(FontAwesomeIcons.user, color: grey, size: 35),
+                      child: snapshot.data!.get("image_url") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 35),
                     ),
                     title: CustomizedText(text: AppLocalizations.of(context)!.welcome, color: white.withOpacity(.7), fontSize: 14),
                     subtitle: CustomizedText(text: snapshot.data!.get("medical_professional_name"), color: white, fontSize: 18),
@@ -66,8 +66,8 @@ class _HomeState extends State<Home> {
               },
             ),
             const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.only(left: 12.0),
+            const Padding(
+              padding: EdgeInsets.only(left: 12.0),
               child: CustomizedText(text: "Appointments", color: white, fontSize: 25, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
@@ -77,7 +77,7 @@ class _HomeState extends State<Home> {
                 controller: _searchController,
                 decoration: InputDecoration(
                   labelText: 'Search Appointments',
-                  prefixIcon: Icon(Icons.search, color: grey, size: 15),
+                  prefixIcon: const Icon(Icons.search, color: grey, size: 15),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(25.0),
                   ),
@@ -116,14 +116,14 @@ class _HomeState extends State<Home> {
                                             child: CommentTreeWidget<Tree, Tree>(
                                               Tree(text: data[index].get("patientName"), icon: null),
                                               <Tree>[Tree(text: "Filled Form", icon: FontAwesomeIcons.table), Tree(text: "Patient Folder", icon: FontAwesomeIcons.folder)],
-                                              treeThemeData: TreeThemeData(lineColor: grey, lineWidth: 1),
+                                              treeThemeData: const TreeThemeData(lineColor: grey, lineWidth: 1),
                                               avatarRoot: (BuildContext context, Tree _) => PreferredSize(
                                                 preferredSize: const Size.fromRadius(18),
                                                 child: CircleAvatar(
                                                   radius: 20,
                                                   backgroundImage: data[index].get("patientImageUrl") == noUser ? null : CachedNetworkImageProvider(data[index].get("patientImageUrl")),
                                                   backgroundColor: grey.withOpacity(.2),
-                                                  child: data[index].get("patientImageUrl") != noUser ? null : Icon(FontAwesomeIcons.user, color: grey, size: 15),
+                                                  child: data[index].get("patientImageUrl") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 15),
                                                 ),
                                               ),
                                               avatarChild: (BuildContext context, Tree value) => PreferredSize(
@@ -162,7 +162,7 @@ class _HomeState extends State<Home> {
                                               child: Container(
                                                 padding: const EdgeInsets.all(8.0),
                                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: grey),
-                                                child: CustomizedText(text: "Cancel", color: white, fontSize: 16),
+                                                child: const CustomizedText(text: "Cancel", color: white, fontSize: 16),
                                               ),
                                             ),
                                             const SizedBox(width: 10),
@@ -171,7 +171,7 @@ class _HomeState extends State<Home> {
                                               child: Container(
                                                 padding: const EdgeInsets.all(8.0),
                                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
-                                                child: CustomizedText(text: "Close Folder Permanently", color: white, fontSize: 16),
+                                                child: const CustomizedText(text: "Close Folder Permanently", color: white, fontSize: 16),
                                               ),
                                             ),
                                           ],
@@ -194,7 +194,7 @@ class _HomeState extends State<Home> {
                                     radius: 30,
                                     backgroundColor: grey.withOpacity(.2),
                                     backgroundImage: data[index].get("patientImageUrl") == noUser ? null : CachedNetworkImageProvider(data[index].get("patientImageUrl")),
-                                    child: data[index].get("patientImageUrl") == noUser ? Icon(FontAwesomeIcons.user, color: grey, size: 25) : null,
+                                    child: data[index].get("patientImageUrl") == noUser ? const Icon(FontAwesomeIcons.user, color: grey, size: 25) : null,
                                   ),
                                   const SizedBox(width: 10),
                                   Container(width: 1, height: 80, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2))),
@@ -207,7 +207,7 @@ class _HomeState extends State<Home> {
                                           children: <Widget>[
                                             CustomizedText(text: data[index].get("patientName"), color: white, fontSize: 18, fontWeight: FontWeight.bold),
                                             const Spacer(),
-                                            Icon(FontAwesomeIcons.ellipsis, color: grey, size: 22),
+                                            const Icon(FontAwesomeIcons.ellipsis, color: grey, size: 22),
                                           ],
                                         ),
                                         const SizedBox(height: 10),
@@ -243,10 +243,10 @@ class _HomeState extends State<Home> {
                         separatorBuilder: (BuildContext context, int index) => Row(children: <Widget>[Expanded(child: Container(height: 1, color: white))]),
                       );
                     } else {
-                      return Center(child: CustomizedText(text: "No Appointments From Patients Yet.", color: white, fontSize: 18, fontWeight: FontWeight.bold));
+                      return const Center(child: CustomizedText(text: "No Appointments From Patients Yet.", color: white, fontSize: 18, fontWeight: FontWeight.bold));
                     }
                   } else if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator(color: blue));
+                    return const Center(child: CircularProgressIndicator(color: blue));
                   } else {
                     return ErrorRoom(error: snapshot.error.toString());
                   }
@@ -260,11 +260,11 @@ class _HomeState extends State<Home> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      CustomizedText(text: "Articles", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                      const CustomizedText(text: "Articles", fontSize: 16, color: white, fontWeight: FontWeight.bold),
                       const Spacer(),
                       GestureDetector(
                         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Articles())),
-                        child: CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold),
+                        child: const CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -330,7 +330,7 @@ class _HomeState extends State<Home> {
                                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
                                   height: 20,
                                   width: 20,
-                                  child: Center(child: Icon(FontAwesomeIcons.chevronRight, size: 10, color: white)),
+                                  child: const Center(child: Icon(FontAwesomeIcons.chevronRight, size: 10, color: white)),
                                 ),
                               ],
                             ),
@@ -339,7 +339,7 @@ class _HomeState extends State<Home> {
                           return Container(
                             height: 80,
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
-                            child: Center(child: CustomizedText(text: 'No Articles.', fontSize: 16, color: white, fontWeight: FontWeight.bold)),
+                            child: const Center(child: CustomizedText(text: 'No Articles.', fontSize: 16, color: white, fontWeight: FontWeight.bold)),
                           );
                         }
                       } else if (snapshot.connectionState == ConnectionState.waiting) {

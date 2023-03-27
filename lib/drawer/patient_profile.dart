@@ -41,7 +41,7 @@ class PatientProfile extends StatelessWidget {
                                 child: InteractiveViewer(
                                     child: CachedNetworkImage(
                                   imageUrl: snapshot.data!.get("image_url"),
-                                  placeholder: (BuildContext context, String url) => Center(child: Icon(FontAwesomeIcons.user, color: grey, size: 80)),
+                                  placeholder: (BuildContext context, String url) => const Center(child: Icon(FontAwesomeIcons.user, color: grey, size: 80)),
                                 )),
                               ),
                             ),
@@ -57,7 +57,7 @@ class PatientProfile extends StatelessWidget {
                     ),
                     child: Stack(
                       children: <Widget>[
-                        if (snapshot.data!.get("image_url") == noUser) Center(child: Icon(FontAwesomeIcons.user, color: grey, size: 80)),
+                        if (snapshot.data!.get("image_url") == noUser) const Center(child: Icon(FontAwesomeIcons.user, color: grey, size: 80)),
                         Align(
                           alignment: AlignmentDirectional.topStart,
                           child: GestureDetector(
@@ -69,7 +69,7 @@ class PatientProfile extends StatelessWidget {
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(color: darkBlue, borderRadius: BorderRadius.circular(5)),
-                              child: Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white),
+                              child: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white),
                             ),
                           ),
                         ),
@@ -87,7 +87,7 @@ class PatientProfile extends StatelessWidget {
                         const SizedBox(height: 10),
                         Row(
                           children: <Widget>[
-                            Icon(FontAwesomeIcons.tooth, size: 15, color: blue),
+                            const Icon(FontAwesomeIcons.tooth, size: 15, color: blue),
                             const SizedBox(width: 10),
                             CustomizedText(text: snapshot.data!.get("speciality"), fontSize: 14, color: white.withOpacity(.8)),
                           ],
@@ -95,7 +95,7 @@ class PatientProfile extends StatelessWidget {
                         const SizedBox(height: 10),
                         Row(
                           children: <Widget>[
-                            Icon(Icons.numbers, size: 15, color: blue),
+                            const Icon(Icons.numbers, size: 15, color: blue),
                             const SizedBox(width: 10),
                             CustomizedText(text: 'Age ( ${snapshot.data!.get("age")} )', fontSize: 14, color: white.withOpacity(.8)),
                           ],
@@ -103,7 +103,7 @@ class PatientProfile extends StatelessWidget {
                         const SizedBox(height: 10),
                         Row(
                           children: <Widget>[
-                            Icon(FontAwesomeIcons.locationPinLock, size: 15, color: blue),
+                            const Icon(FontAwesomeIcons.locationPinLock, size: 15, color: blue),
                             const SizedBox(width: 10),
                             CustomizedText(text: 'Location ( ${snapshot.data!.get("location").isEmpty ? "Monastir, Tunisia" : snapshot.data!.get("location")} )', fontSize: 14, color: white.withOpacity(.8)),
                           ],
@@ -111,7 +111,7 @@ class PatientProfile extends StatelessWidget {
                         const SizedBox(height: 10),
                         Row(
                           children: <Widget>[
-                            Icon(FontAwesomeIcons.envelope, size: 15, color: blue),
+                            const Icon(FontAwesomeIcons.envelope, size: 15, color: blue),
                             const SizedBox(width: 10),
                             CustomizedText(text: 'E-mail ( ${snapshot.data!.get("email")} )', fontSize: 14, color: white.withOpacity(.8)),
                           ],
@@ -119,13 +119,13 @@ class PatientProfile extends StatelessWidget {
                         const SizedBox(height: 10),
                         Row(
                           children: <Widget>[
-                            Icon(Icons.phone, size: 15, color: blue),
+                            const Icon(Icons.phone, size: 15, color: blue),
                             const SizedBox(width: 10),
                             CustomizedText(text: 'Phone ( ${snapshot.data!.get("phone_number")} )', fontSize: 14, color: white.withOpacity(.8)),
                           ],
                         ),
                         const SizedBox(height: 20),
-                        CustomizedText(text: "About", fontSize: 20, fontWeight: FontWeight.bold, color: white),
+                        const CustomizedText(text: "About", fontSize: 20, fontWeight: FontWeight.bold, color: white),
                         const SizedBox(height: 10),
                         Expanded(
                           child: SingleChildScrollView(
@@ -146,7 +146,7 @@ class PatientProfile extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             height: 60,
                             width: MediaQuery.of(context).size.width,
-                            child: Center(child: CustomizedText(text: "View your history", color: white, fontSize: 18, fontWeight: FontWeight.bold)),
+                            child: const Center(child: CustomizedText(text: "View your history", color: white, fontSize: 18, fontWeight: FontWeight.bold)),
                           ),
                         ),
                         const SizedBox(height: 20),

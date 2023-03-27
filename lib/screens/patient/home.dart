@@ -13,7 +13,6 @@ import 'package:smart_care/screens/patient/filter.dart';
 import 'package:smart_care/screens/patient/summary.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../stuff/functions.dart';
 import '../article.dart';
@@ -50,7 +49,7 @@ class Home extends StatelessWidget {
                               radius: 30,
                               backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")),
                               backgroundColor: grey.withOpacity(.2),
-                              child: snapshot.data!.get("image_url") != noUser ? null : Icon(FontAwesomeIcons.user, color: grey, size: 25),
+                              child: snapshot.data!.get("image_url") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 25),
                             ),
                           ),
                           const SizedBox(height: 15),
@@ -67,7 +66,7 @@ class Home extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              Icon(FontAwesomeIcons.locationPin, size: 15, color: blue),
+                              const Icon(FontAwesomeIcons.locationPin, size: 15, color: blue),
                               const SizedBox(width: 10),
                               CustomizedText(text: snapshot.data!.get("location").isNotEmpty ? snapshot.data!.get("location") : "Monastir, Tunisie", fontSize: 16, color: grey),
                             ],
@@ -98,9 +97,9 @@ class Home extends StatelessWidget {
                   child: Row(
                     children: <Widget>[
                       const Padding(padding: EdgeInsets.only(left: 8, right: 8), child: Icon(Icons.search)),
-                      CustomizedText(text: 'Search For Doctors', fontSize: 16, color: grey),
+                      const CustomizedText(text: 'Search For Doctors', fontSize: 16, color: grey),
                       const Spacer(),
-                      Container(width: 5, height: 48, decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(35)), color: blue)),
+                      Container(width: 5, height: 48, decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(35)), color: blue)),
                     ],
                   ),
                 ),
@@ -118,14 +117,14 @@ class Home extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            CustomizedText(text: "Online Consultation", fontSize: 25, color: white),
+                            const CustomizedText(text: "Online Consultation", fontSize: 25, color: white),
                             const SizedBox(height: 20),
                             Center(
                               child: Container(
                                 padding: const EdgeInsets.all(8.0),
                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
                                 margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                                child: CustomizedText(text: "Find Doctor", fontSize: 16, color: darkBlue),
+                                child: const CustomizedText(text: "Find Doctor", fontSize: 16, color: darkBlue),
                               ),
                             ),
                           ],
@@ -140,14 +139,14 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.amber.shade900.withOpacity(.7)),
                         child: Column(
                           children: <Widget>[
-                            CustomizedText(text: "Visit A Doctor Offline", fontSize: 25, color: white),
+                            const CustomizedText(text: "Visit A Doctor Offline", fontSize: 25, color: white),
                             const SizedBox(height: 20),
                             Center(
                               child: Container(
                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
                                 padding: const EdgeInsets.all(8.0),
                                 margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                                child: CustomizedText(text: "Appointment", fontSize: 16, color: darkBlue),
+                                child: const CustomizedText(text: "Appointment", fontSize: 16, color: darkBlue),
                               ),
                             ),
                           ],
@@ -164,13 +163,13 @@ class Home extends StatelessWidget {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        CustomizedText(text: "Upcoming Appointment", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                        const CustomizedText(text: "Upcoming Appointment", fontSize: 16, color: white, fontWeight: FontWeight.bold),
                         const Spacer(),
                         GestureDetector(
                             onTap: () {
                               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const FetchAllAppointments()));
                             },
-                            child: CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold)),
+                            child: const CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const SizedBox(height: 10),
@@ -186,7 +185,7 @@ class Home extends StatelessWidget {
                                   return Container(
                                     height: 180,
                                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
-                                    child: Center(child: CustomizedText(text: 'No Appointments Yet.', fontSize: 16, color: white, fontWeight: FontWeight.bold)),
+                                    child: const Center(child: CustomizedText(text: 'No Appointments Yet.', fontSize: 16, color: white, fontWeight: FontWeight.bold)),
                                   );
                                 } else {
                                   final QueryDocumentSnapshot<Map<String, dynamic>> firstAppointment = snapshot.data!.docs.first;
@@ -215,9 +214,9 @@ class Home extends StatelessWidget {
                                                   color: darkBlue.withOpacity(.2),
                                                   border: Border.all(color: blue),
                                                   borderRadius: BorderRadius.circular(15),
-                                                  image: firstAppointment.get("doctorImageUrl") == noUser ? null : DecorationImage(image: CachedNetworkImageProvider(noUser), fit: BoxFit.cover),
+                                                  image: firstAppointment.get("doctorImageUrl") == noUser ? null : const DecorationImage(image: CachedNetworkImageProvider(noUser), fit: BoxFit.cover),
                                                 ),
-                                                child: firstAppointment.get("doctorImageUrl") == noUser ? Center(child: Icon(FontAwesomeIcons.user, size: 60, color: grey)) : null,
+                                                child: firstAppointment.get("doctorImageUrl") == noUser ? const Center(child: Icon(FontAwesomeIcons.user, size: 60, color: grey)) : null,
                                               ),
                                               const SizedBox(width: 10),
                                               Flexible(
@@ -255,7 +254,7 @@ class Home extends StatelessWidget {
                                   );
                                 }
                               } else if (snapshot.connectionState == ConnectionState.waiting) {
-                                return Center(child: CircularProgressIndicator(color: blue));
+                                return const Center(child: CircularProgressIndicator(color: blue));
                               } else {
                                 return ErrorRoom(error: snapshot.error.toString());
                               }
@@ -275,7 +274,7 @@ class Home extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 16.0),
                             width: 40,
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
-                            child: Center(child: RotatedBox(quarterTurns: 3, child: CustomizedText(text: 'Make A New', fontSize: 16, color: white, fontWeight: FontWeight.bold))),
+                            child: const Center(child: RotatedBox(quarterTurns: 3, child: CustomizedText(text: 'Make A New', fontSize: 16, color: white, fontWeight: FontWeight.bold))),
                           ),
                         ),
                       ],
@@ -290,11 +289,11 @@ class Home extends StatelessWidget {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        CustomizedText(text: "Articles", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                        const CustomizedText(text: "Articles", fontSize: 16, color: white, fontWeight: FontWeight.bold),
                         const Spacer(),
                         GestureDetector(
                           onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Articles())),
-                          child: CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold),
+                          child: const CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -322,7 +321,7 @@ class Home extends StatelessWidget {
                                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
                                     height: 20,
                                     width: 20,
-                                    child: Center(child: Icon(FontAwesomeIcons.chevronRight, size: 10, color: white)),
+                                    child: const Center(child: Icon(FontAwesomeIcons.chevronRight, size: 10, color: white)),
                                   ),
                                 ],
                               ),
@@ -331,7 +330,7 @@ class Home extends StatelessWidget {
                             return Container(
                               height: 80,
                               decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
-                              child: Center(child: CustomizedText(text: 'No Articles.', fontSize: 16, color: white, fontWeight: FontWeight.bold)),
+                              child: const Center(child: CustomizedText(text: 'No Articles.', fontSize: 16, color: white, fontWeight: FontWeight.bold)),
                             );
                           }
                         } else if (snapshot.connectionState == ConnectionState.waiting) {

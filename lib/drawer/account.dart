@@ -105,10 +105,10 @@ class _AccountState extends State<Account> {
                         }
                         Navigator.pop(context);
                       },
-                      child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.x, size: 15, color: grey)),
+                      child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.x, size: 15, color: grey)),
                     ),
                     const SizedBox(height: 10),
-                    CustomizedText(text: "Account", fontSize: 40, fontWeight: FontWeight.bold, color: white),
+                    const CustomizedText(text: "Account", fontSize: 40, fontWeight: FontWeight.bold, color: white),
                     const SizedBox(height: 60),
                     GestureDetector(
                       onTap: () {
@@ -173,7 +173,7 @@ class _AccountState extends State<Account> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          CustomizedText(text: "Photo", fontSize: 14, color: grey),
+                          const CustomizedText(text: "Photo", fontSize: 14, color: grey),
                           const SizedBox(width: 80),
                           Column(
                             mainAxisSize: MainAxisSize.min,
@@ -185,12 +185,12 @@ class _AccountState extends State<Account> {
                                     radius: 50,
                                     backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")),
                                     backgroundColor: grey.withOpacity(.2),
-                                    child: snapshot.data!.get("image_url") != noUser ? null : Icon(FontAwesomeIcons.user, color: grey, size: 35),
+                                    child: snapshot.data!.get("image_url") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 35),
                                   );
                                 },
                               ),
                               const SizedBox(height: 10),
-                              CustomizedText(text: "Upload Picture", fontSize: 14, color: blue),
+                              const CustomizedText(text: "Upload Picture", fontSize: 14, color: blue),
                             ],
                           ),
                         ],
@@ -206,7 +206,7 @@ class _AccountState extends State<Account> {
                       },
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: "Name", fontSize: 14, color: grey),
+                          const CustomizedText(text: "Name", fontSize: 14, color: grey),
                           const SizedBox(width: 80),
                           Expanded(
                             child: Column(
@@ -220,14 +220,14 @@ class _AccountState extends State<Account> {
                             ),
                           ),
                           const SizedBox(width: 25),
-                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
                     const SizedBox(height: 40),
                     Row(
                       children: <Widget>[
-                        CustomizedText(text: "Gender", fontSize: 14, color: grey),
+                        const CustomizedText(text: "Gender", fontSize: 14, color: grey),
                         const SizedBox(width: 72),
                         GestureDetector(
                           onTap: () async {
@@ -260,7 +260,7 @@ class _AccountState extends State<Account> {
                       },
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: "Age", fontSize: 14, color: grey),
+                          const CustomizedText(text: "Age", fontSize: 14, color: grey),
                           const SizedBox(width: 90),
                           Expanded(
                             child: Column(
@@ -274,7 +274,7 @@ class _AccountState extends State<Account> {
                             ),
                           ),
                           const SizedBox(width: 25),
-                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
@@ -283,7 +283,7 @@ class _AccountState extends State<Account> {
                       onTap: null,
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: "E-mail", fontSize: 14, color: grey),
+                          const CustomizedText(text: "E-mail", fontSize: 14, color: grey),
                           const SizedBox(width: 75),
                           Expanded(
                             child: Column(
@@ -297,7 +297,7 @@ class _AccountState extends State<Account> {
                             ),
                           ),
                           const SizedBox(width: 25),
-                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
@@ -306,7 +306,7 @@ class _AccountState extends State<Account> {
                       onTap: null,
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: "Password", fontSize: 14, color: grey),
+                          const CustomizedText(text: "Password", fontSize: 14, color: grey),
                           const SizedBox(width: 55),
                           Expanded(
                             child: Column(
@@ -320,7 +320,7 @@ class _AccountState extends State<Account> {
                             ),
                           ),
                           const SizedBox(width: 25),
-                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
@@ -397,7 +397,7 @@ class _AccountState extends State<Account> {
                         },
                         child: Row(
                           children: <Widget>[
-                            CustomizedText(text: "Speciality", fontSize: 14, color: grey),
+                            const CustomizedText(text: "Speciality", fontSize: 14, color: grey),
                             const SizedBox(width: 55),
                             Expanded(
                               child: Column(
@@ -411,7 +411,7 @@ class _AccountState extends State<Account> {
                               ),
                             ),
                             const SizedBox(width: 25),
-                            Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
+                            Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                           ],
                         ),
                       ),
@@ -426,7 +426,7 @@ class _AccountState extends State<Account> {
                         },
                         child: Row(
                           children: <Widget>[
-                            CustomizedText(text: "Years of Experience", fontSize: 14, color: grey),
+                            const CustomizedText(text: "Years of Experience", fontSize: 14, color: grey),
                             const SizedBox(width: 55),
                             Expanded(
                               child: Column(
@@ -440,7 +440,7 @@ class _AccountState extends State<Account> {
                               ),
                             ),
                             const SizedBox(width: 25),
-                            Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
+                            Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                           ],
                         ),
                       ),
@@ -472,19 +472,19 @@ class _AccountState extends State<Account> {
                         },
                         child: Row(
                           children: <Widget>[
-                            CustomizedText(text: "Available Time", fontSize: 14, color: grey),
+                            const CustomizedText(text: "Available Time", fontSize: 14, color: grey),
                             const SizedBox(width: 55),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  if (snapshot.data!.get("available_time").isEmpty) CustomizedText(text: "Full Time.", fontSize: 16, color: white),
+                                  if (snapshot.data!.get("available_time").isEmpty) const CustomizedText(text: "Full Time.", fontSize: 16, color: white),
                                   if (snapshot.data!.get("available_time").isNotEmpty)
                                     Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        Icon(FontAwesomeIcons.clockRotateLeft, color: blue, size: 10),
+                                        const Icon(FontAwesomeIcons.clockRotateLeft, color: blue, size: 10),
                                         const SizedBox(width: 5),
                                         CustomizedText(text: snapshot.data!.get("available_time")[0], fontSize: 14, color: white),
                                       ],
@@ -494,7 +494,7 @@ class _AccountState extends State<Account> {
                                     Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        Icon(FontAwesomeIcons.clockRotateLeft, color: blue, size: 10),
+                                        const Icon(FontAwesomeIcons.clockRotateLeft, color: blue, size: 10),
                                         const SizedBox(width: 5),
                                         CustomizedText(text: snapshot.data!.get("available_time")[1], fontSize: 14, color: white),
                                       ],
@@ -505,7 +505,7 @@ class _AccountState extends State<Account> {
                               ),
                             ),
                             const SizedBox(width: 25),
-                            Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
+                            Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                           ],
                         ),
                       ),
@@ -519,7 +519,7 @@ class _AccountState extends State<Account> {
                       },
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: "About", fontSize: 14, color: grey),
+                          const CustomizedText(text: "About", fontSize: 14, color: grey),
                           const SizedBox(width: 55),
                           Expanded(
                             child: Column(
@@ -533,7 +533,7 @@ class _AccountState extends State<Account> {
                             ),
                           ),
                           const SizedBox(width: 25),
-                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
@@ -547,7 +547,7 @@ class _AccountState extends State<Account> {
                       },
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: "Location", fontSize: 14, color: grey),
+                          const CustomizedText(text: "Location", fontSize: 14, color: grey),
                           const SizedBox(width: 55),
                           Expanded(
                             child: Column(
@@ -561,7 +561,7 @@ class _AccountState extends State<Account> {
                             ),
                           ),
                           const SizedBox(width: 25),
-                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
@@ -570,7 +570,7 @@ class _AccountState extends State<Account> {
                       onTap: null,
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: "Phone", fontSize: 14, color: grey),
+                          const CustomizedText(text: "Phone", fontSize: 14, color: grey),
                           const SizedBox(width: 55),
                           Expanded(
                             child: Column(
@@ -584,14 +584,14 @@ class _AccountState extends State<Account> {
                             ),
                           ),
                           const SizedBox(width: 25),
-                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
+                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
                       ),
                     ),
                     const SizedBox(height: 40),
                     Row(
                       children: <Widget>[
-                        CustomizedText(text: "Role", fontSize: 14, color: grey),
+                        const CustomizedText(text: "Role", fontSize: 14, color: grey),
                         const SizedBox(width: 60),
                         CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("patient") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.hospitalUser, color: snapshot.data!.get("roles_list").contains("patient") ? white : grey, size: 20)),
                         const SizedBox(width: 10),

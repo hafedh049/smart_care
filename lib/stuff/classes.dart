@@ -78,10 +78,10 @@ class CustomTextField extends StatelessWidget {
               labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
               prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(prefix, size: 15, color: blue)),
               suffixIcon: obscured ? IconButton(splashColor: blue.withOpacity(.3), highlightColor: blue.withOpacity(.3), focusColor: blue.withOpacity(.3), onPressed: () => _(() => obscure = !obscure), icon: Icon(!obscure ? Icons.visibility_off : Icons.visibility, color: blue, size: 15)) : null,
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-              disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-              errorBorder: OutlineInputBorder(borderSide: BorderSide(color: red)),
+              enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
+              disabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
+              focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
+              errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: red)),
               errorStyle: GoogleFonts.abel(color: red, fontSize: 14),
             ),
           ),
@@ -137,7 +137,7 @@ class GoogleAuth extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Image.asset("assets/google.png"),
-              CustomizedText(text: "CONTINUE WITH GOOGLE", fontSize: 16, fontWeight: FontWeight.bold, color: white),
+              const CustomizedText(text: "CONTINUE WITH GOOGLE", fontSize: 16, fontWeight: FontWeight.bold, color: white),
             ],
           ),
         ),
@@ -173,7 +173,7 @@ class OTPAuth extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Image.asset("assets/phone.png"),
-              CustomizedText(text: "CONTINUE WITH PHONE", color: white, fontSize: 16, fontWeight: FontWeight.bold),
+              const CustomizedText(text: "CONTINUE WITH PHONE", color: white, fontSize: 16, fontWeight: FontWeight.bold),
             ],
           ),
         ),
@@ -257,7 +257,7 @@ class HealthDrawer extends StatelessWidget {
                 children: <Widget>[
                   Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
                   const SizedBox(width: 5),
-                  Icon(FontAwesomeIcons.idCard, color: white, size: 20),
+                  const Icon(FontAwesomeIcons.idCard, color: white, size: 20),
                 ],
               ),
               title: CustomizedText(text: "Profile", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
@@ -274,7 +274,7 @@ class HealthDrawer extends StatelessWidget {
                 children: <Widget>[
                   Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
                   const SizedBox(width: 5),
-                  Icon(FontAwesomeIcons.gear, color: white, size: 20),
+                  const Icon(FontAwesomeIcons.gear, color: white, size: 20),
                 ],
               ),
               title: CustomizedText(text: "Settings", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
@@ -291,7 +291,7 @@ class HealthDrawer extends StatelessWidget {
                 children: <Widget>[
                   Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
                   const SizedBox(width: 5),
-                  Icon(FontAwesomeIcons.heartPulse, color: white, size: 20),
+                  const Icon(FontAwesomeIcons.heartPulse, color: white, size: 20),
                 ],
               ),
               title: CustomizedText(text: "About Us", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
@@ -310,7 +310,7 @@ class HealthDrawer extends StatelessWidget {
                 children: <Widget>[
                   Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
                   const SizedBox(width: 5),
-                  Icon(FontAwesomeIcons.bots, color: white, size: 20),
+                  const Icon(FontAwesomeIcons.bots, color: white, size: 20),
                 ],
               ),
               title: CustomizedText(text: "Quark", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
@@ -338,26 +338,26 @@ class HealthDrawer extends StatelessWidget {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {},
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     radius: 22,
                     backgroundColor: white,
-                    child: CircleAvatar(radius: 20, backgroundColor: const Color.fromARGB(255, 36, 35, 42), child: Icon(FontAwesomeIcons.instagram, color: white, size: 25)),
+                    child: CircleAvatar(radius: 20, backgroundColor: Color.fromARGB(255, 36, 35, 42), child: Icon(FontAwesomeIcons.instagram, color: white, size: 25)),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {},
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     radius: 22,
                     backgroundColor: white,
-                    child: CircleAvatar(radius: 20, backgroundColor: const Color.fromARGB(255, 36, 35, 42), child: Icon(FontAwesomeIcons.facebook, color: white, size: 25)),
+                    child: CircleAvatar(radius: 20, backgroundColor: Color.fromARGB(255, 36, 35, 42), child: Icon(FontAwesomeIcons.facebook, color: white, size: 25)),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {},
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     radius: 22,
                     backgroundColor: white,
-                    child: CircleAvatar(radius: 20, backgroundColor: const Color.fromARGB(255, 36, 35, 42), child: Icon(FontAwesomeIcons.twitter, color: white, size: 25)),
+                    child: CircleAvatar(radius: 20, backgroundColor: Color.fromARGB(255, 36, 35, 42), child: Icon(FontAwesomeIcons.twitter, color: white, size: 25)),
                   ),
                 ),
               ],
@@ -426,20 +426,6 @@ class Or extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-class SignUpIcon extends StatelessWidget {
-  const SignUpIcon({super.key, required this.icon, required this.activeState});
-  final IconData icon;
-  final bool activeState;
-  @override
-  Widget build(BuildContext context) {
-    return Icon(icon, size: 20, color: activeState ? blue : white)
-        .animate(
-          target: activeState ? 1 : 0,
-        )
-        .scale(duration: 500.ms, begin: const Offset(1, 1), end: const Offset(1.5, 1.5));
   }
 }
 

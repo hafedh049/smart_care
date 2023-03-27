@@ -89,7 +89,7 @@ class _FilterListState extends State<FilterList> {
                   );
                 },
               ),
-              Container(width: 5, height: 48, decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(35)), color: blue)),
+              Container(width: 5, height: 48, decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(35)), color: blue)),
             ],
           ),
           const SizedBox(height: 10),
@@ -125,7 +125,7 @@ class _FilterListState extends State<FilterList> {
                                     radius: 25,
                                     backgroundColor: grey.withOpacity(.2),
                                     backgroundImage: doctorsList[index].get("image_url") == noUser ? null : CachedNetworkImageProvider(doctorsList[index].get("image_url")),
-                                    child: doctorsList[index].get("image_url") == noUser ? Icon(FontAwesomeIcons.user, size: 15, color: grey) : null,
+                                    child: doctorsList[index].get("image_url") == noUser ? const Icon(FontAwesomeIcons.user, size: 15, color: grey) : null,
                                   ),
                                 ),
                                 CircleAvatar(radius: 5, backgroundColor: doctorsList[index].get("status") ? green : red),
@@ -136,7 +136,7 @@ class _FilterListState extends State<FilterList> {
                         ),
                       );
                     } else {
-                      return Expanded(child: Center(child: CustomizedText(text: "No Doctors Available", color: white, fontSize: 25, fontWeight: FontWeight.bold)));
+                      return const Expanded(child: Center(child: CustomizedText(text: "No Doctors Available", color: white, fontSize: 25, fontWeight: FontWeight.bold)));
                     }
                   } else if (snapshot.connectionState == ConnectionState.waiting) {
                     return Expanded(child: ListView.builder(itemCount: 30, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()));

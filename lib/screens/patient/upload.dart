@@ -32,8 +32,8 @@ class _UploadState extends State<Upload> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-            Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
-            Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
+            Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
+            Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
             const Spacer(),
             Center(
               child: Column(
@@ -45,9 +45,6 @@ class _UploadState extends State<Upload> {
                     children: <Widget>[
                       GestureDetector(
                         onTap: () async {
-                          if (play == 1) {
-                            playNote("tap.wav");
-                          }
                           final String imagePath = await takesFromCameraOrGallery(true);
                           if (imagePath.isNotEmpty) {
                             showToast("Bilan Loaded");
@@ -83,11 +80,10 @@ class _UploadState extends State<Upload> {
                             color: const Color.fromARGB(255, 255, 85, 0),
                           ),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Image.asset("assets/camera.png", width: 40, height: 40),
-                              CustomizedText(text: "Camera.", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                              const CustomizedText(text: "Camera.", fontSize: 16, color: white, fontWeight: FontWeight.bold),
                             ],
                           ),
                         ),
@@ -95,9 +91,6 @@ class _UploadState extends State<Upload> {
                       const SizedBox(width: 20),
                       GestureDetector(
                         onTap: () async {
-                          if (play == 1) {
-                            playNote("tap.wav");
-                          }
                           final String imagePath = await takesFromCameraOrGallery(false);
                           if (imagePath.isNotEmpty) {
                             showToast("Bilan Loaded");
@@ -133,11 +126,10 @@ class _UploadState extends State<Upload> {
                             color: grey,
                           ),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Image.asset("assets/gallery.png", width: 40, height: 40),
-                              CustomizedText(text: "Gallery.", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                              const CustomizedText(text: "Gallery.", fontSize: 16, color: white, fontWeight: FontWeight.bold),
                             ],
                           ),
                         ),
@@ -147,9 +139,6 @@ class _UploadState extends State<Upload> {
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () async {
-                      if (play == 1) {
-                        playNote("tap.wav");
-                      }
                       FilePickerResult? result = await FilePicker.platform.pickFiles(
                         allowCompression: true,
                         allowedExtensions: <String>["pdf"],
@@ -193,11 +182,10 @@ class _UploadState extends State<Upload> {
                         color: blue,
                       ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Image.asset("assets/pdf.png", width: 30, height: 30),
-                          CustomizedText(text: "PDF.", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                          const CustomizedText(text: "PDF.", fontSize: 16, color: white, fontWeight: FontWeight.bold),
                         ],
                       ),
                     ),

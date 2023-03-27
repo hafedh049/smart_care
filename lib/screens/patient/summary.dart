@@ -33,25 +33,25 @@ class Summary extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                child: Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey),
+                child: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey),
               ),
             ),
             const SizedBox(height: 20),
-            CustomizedText(text: "Summary", fontSize: 30, fontWeight: FontWeight.bold, color: white),
+            const CustomizedText(text: "Summary", fontSize: 30, fontWeight: FontWeight.bold, color: white),
             const SizedBox(height: 40),
-            CustomizedText(text: "Booking Info", fontSize: 18, fontWeight: FontWeight.bold, color: white),
+            const CustomizedText(text: "Booking Info", fontSize: 18, fontWeight: FontWeight.bold, color: white),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(
                 children: <Widget>[
-                  CircleAvatar(radius: 20, backgroundColor: grey.withOpacity(.2), child: Icon(FontAwesomeIcons.calendar, size: 15, color: grey)),
+                  CircleAvatar(radius: 20, backgroundColor: grey.withOpacity(.2), child: const Icon(FontAwesomeIcons.calendar, size: 15, color: grey)),
                   const SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      CustomizedText(text: "Date & Time", fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                      const CustomizedText(text: "Date & Time", fontSize: 16, fontWeight: FontWeight.bold, color: white),
                       const SizedBox(height: 5),
                       CustomizedText(text: getDateRepresentation(data["appointmentDate"].toDate()), fontSize: 14, color: white.withOpacity(.6)),
                       const SizedBox(height: 5),
@@ -71,13 +71,13 @@ class Summary extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(
                 children: <Widget>[
-                  CircleAvatar(radius: 20, backgroundColor: grey.withOpacity(.2), child: Icon(FontAwesomeIcons.dna, size: 15, color: grey)),
+                  CircleAvatar(radius: 20, backgroundColor: grey.withOpacity(.2), child: const Icon(FontAwesomeIcons.dna, size: 15, color: grey)),
                   const SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      CustomizedText(text: "Appointment Type", fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                      const CustomizedText(text: "Appointment Type", fontSize: 16, fontWeight: FontWeight.bold, color: white),
                       const SizedBox(height: 5),
                       CustomizedText(text: getDateRepresentation(data["appointmentDate"].toDate()), fontSize: 14, color: white.withOpacity(.6)),
                       const SizedBox(height: 5),
@@ -97,13 +97,13 @@ class Summary extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(
                 children: <Widget>[
-                  CircleAvatar(radius: 20, backgroundColor: grey.withOpacity(.2), child: Icon(FontAwesomeIcons.clock, size: 15, color: grey)),
+                  CircleAvatar(radius: 20, backgroundColor: grey.withOpacity(.2), child: const Icon(FontAwesomeIcons.clock, size: 15, color: grey)),
                   const SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      CustomizedText(text: "Duration", fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                      const CustomizedText(text: "Duration", fontSize: 16, fontWeight: FontWeight.bold, color: white),
                       const SizedBox(height: 5),
                       CustomizedText(text: data["duration"], fontSize: 14, color: white.withOpacity(.6)),
                     ],
@@ -117,7 +117,7 @@ class Summary extends StatelessWidget {
               child: Container(color: white.withOpacity(.2), height: .8, width: MediaQuery.of(context).size.width),
             ),
             const SizedBox(height: 40),
-            CustomizedText(text: "Doctor Info", fontSize: 18, fontWeight: FontWeight.bold, color: white),
+            const CustomizedText(text: "Doctor Info", fontSize: 18, fontWeight: FontWeight.bold, color: white),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -127,7 +127,7 @@ class Summary extends StatelessWidget {
                     radius: 20,
                     backgroundColor: grey.withOpacity(.2),
                     backgroundImage: data["doctorImageUrl"] == noUser ? null : CachedNetworkImageProvider(data["doctorImageUrl"]),
-                    child: data["doctorImageUrl"] == noUser ? Icon(FontAwesomeIcons.user, size: 15, color: grey) : null,
+                    child: data["doctorImageUrl"] == noUser ? const Icon(FontAwesomeIcons.user, size: 15, color: grey) : null,
                   ),
                   const SizedBox(width: 10),
                   Column(

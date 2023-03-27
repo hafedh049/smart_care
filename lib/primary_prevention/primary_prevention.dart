@@ -3,6 +3,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
@@ -55,6 +56,7 @@ class PrimaryPrevention extends StatelessWidget {
                     },
                     carouselController: _carouselController,
                     options: CarouselOptions(
+                      autoPlayAnimationDuration: 200.ms,
                       autoPlay: true,
                       viewportFraction: 1,
                       onPageChanged: (int index, CarouselPageChangedReason reason) {
@@ -108,7 +110,7 @@ class PrimaryPrevention extends StatelessWidget {
                       onDotClicked: (int index) {
                         _carouselController.animateToPage(index);
                       },
-                      effect: ExpandingDotsEffect(
+                      effect: const ExpandingDotsEffect(
                         activeDotColor: blue,
                         dotColor: white,
                         dotHeight: 10,

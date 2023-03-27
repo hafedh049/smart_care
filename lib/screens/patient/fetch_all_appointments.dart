@@ -95,7 +95,7 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                       );
                     },
                   ),
-                  Container(width: 5, height: 48, decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(35)), color: blue)),
+                  Container(width: 5, height: 48, decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(35)), color: blue)),
                 ],
               ),
               const SizedBox(height: 10),
@@ -119,7 +119,7 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Container(width: 5, height: 175, decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(15)), color: blue)),
+                                      Container(width: 5, height: 175, decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(15)), color: blue)),
                                       const SizedBox(width: 10),
                                       Flexible(
                                         child: Column(
@@ -136,7 +136,7 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                                                     }
                                                     await FirebaseFirestore.instance.collection("appointments").doc(appointmentList[index].id.trim()).delete().then((void value) => showToast("Appointment is Canceled."));
                                                   },
-                                                  child: Icon(Icons.delete, size: 20, color: white),
+                                                  child: const Icon(Icons.delete, size: 20, color: white),
                                                 ),
                                               ],
                                             ),
@@ -146,7 +146,7 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                                               decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(15)), color: blue.withOpacity(.1)),
                                               child: Row(
                                                 children: <Widget>[
-                                                  Icon(FontAwesomeIcons.clock, size: 15, color: white),
+                                                  const Icon(FontAwesomeIcons.clock, size: 15, color: white),
                                                   const SizedBox(width: 10),
                                                   CustomizedText(text: getDateRepresentation(appointmentList[index].get("appointmentDate").toDate()), fontSize: 14, color: white.withOpacity(.6)),
                                                   const SizedBox(width: 5),
@@ -166,7 +166,7 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                                                   radius: 30,
                                                   backgroundColor: grey.withOpacity(.2),
                                                   backgroundImage: appointmentList[index].get("doctorImageUrl") == noUser ? null : CachedNetworkImageProvider(appointmentList[index].get("doctorImageUrl")),
-                                                  child: appointmentList[index].get("doctorImageUrl") == noUser ? Icon(FontAwesomeIcons.user, size: 20, color: grey) : null,
+                                                  child: appointmentList[index].get("doctorImageUrl") == noUser ? const Icon(FontAwesomeIcons.user, size: 20, color: grey) : null,
                                                 ),
                                                 const SizedBox(width: 10),
                                                 Column(
@@ -182,7 +182,7 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                                                       decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(5)), color: blue.withOpacity(.1)),
                                                       child: Row(
                                                         children: <Widget>[
-                                                          Icon(FontAwesomeIcons.mapLocation, size: 15, color: white),
+                                                          const Icon(FontAwesomeIcons.mapLocation, size: 15, color: white),
                                                           const SizedBox(width: 10),
                                                           SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: appointmentList[index].get("workLocation"), fontSize: 14, color: white.withOpacity(.6))),
                                                         ],
@@ -211,7 +211,7 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                               ),
                             );
                           } else {
-                            return Expanded(child: Center(child: CustomizedText(text: "No Appointments Yet.", color: white, fontSize: 25, fontWeight: FontWeight.bold)));
+                            return const Expanded(child: Center(child: CustomizedText(text: "No Appointments Yet.", color: white, fontSize: 25, fontWeight: FontWeight.bold)));
                           }
                         } else if (snapshot.connectionState == ConnectionState.waiting) {
                           return Expanded(child: ListView.builder(itemCount: 30, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()));

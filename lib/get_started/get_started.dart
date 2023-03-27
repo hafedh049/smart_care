@@ -36,9 +36,10 @@ class GetStarted extends StatelessWidget {
                 },
                 child: Container(
                   height: 60,
+                  width: MediaQuery.of(context).size.width * .6,
                   margin: const EdgeInsets.only(right: 8.0),
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
-                  child: Center(child: CustomizedText(text: "Continue", color: black, fontWeight: FontWeight.bold, fontSize: 25)),
+                  child: const Center(child: CustomizedText(text: "Continue", color: black, fontWeight: FontWeight.bold, fontSize: 25)),
                 ),
               ),
               const SizedBox(height: 40),

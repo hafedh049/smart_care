@@ -39,11 +39,11 @@ class _ArticlesState extends State<Articles> {
               child: Container(
                 margin: const EdgeInsets.only(top: 36.0),
                 decoration: BoxDecoration(color: dark, borderRadius: BorderRadius.circular(5)),
-                child: Icon(FontAwesomeIcons.chevronLeft, size: 25, color: white),
+                child: const Icon(FontAwesomeIcons.chevronLeft, size: 25, color: white),
               ),
             ),
             const SizedBox(height: 30),
-            CustomizedText(text: "Discover", color: white, fontSize: 24, fontWeight: FontWeight.bold),
+            const CustomizedText(text: "Discover", color: white, fontSize: 24, fontWeight: FontWeight.bold),
             const SizedBox(height: 10),
             CustomizedText(text: "News from all arround the world.", color: white.withOpacity(.6), fontSize: 14),
             const SizedBox(height: 10),
@@ -124,10 +124,10 @@ class _ArticlesState extends State<Articles> {
                             ),
                           );
                         } else {
-                          return Center(child: CustomizedText(text: "No Articles Yet.", color: white, fontSize: 18, fontWeight: FontWeight.bold));
+                          return const Center(child: CustomizedText(text: "No Articles Yet.", color: white, fontSize: 18, fontWeight: FontWeight.bold));
                         }
                       } else if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator(color: blue));
+                        return const Center(child: CircularProgressIndicator(color: blue));
                       } else {
                         return ErrorRoom(error: snapshot.error.toString());
                       }

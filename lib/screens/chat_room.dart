@@ -74,7 +74,7 @@ class _ChatRoomState extends State<ChatRoom> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white),
+            icon: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white),
           ),
           actions: [
             IconButton(
@@ -82,14 +82,14 @@ class _ChatRoomState extends State<ChatRoom> {
               splashColor: Colors.transparent,
               focusColor: Colors.transparent,
               onPressed: () {},
-              icon: Icon(FontAwesomeIcons.video, size: 15, color: white),
+              icon: const Icon(FontAwesomeIcons.video, size: 15, color: white),
             ),
             IconButton(
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               focusColor: Colors.transparent,
               onPressed: () {},
-              icon: Icon(FontAwesomeIcons.phone, size: 15, color: white),
+              icon: const Icon(FontAwesomeIcons.phone, size: 15, color: white),
             ),
           ],
           title: Row(
@@ -100,7 +100,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 radius: 20,
                 backgroundImage: widget.talkTo["image_url"] == noUser ? null : CachedNetworkImageProvider(widget.talkTo["image_url"]),
                 backgroundColor: grey.withOpacity(.2),
-                child: widget.talkTo["image_url"] != noUser ? null : Icon(FontAwesomeIcons.user, color: grey, size: 15),
+                child: widget.talkTo["image_url"] != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 15),
               ),
               const SizedBox(width: 5),
               Column(
@@ -290,7 +290,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   Navigator.pop(context);
                   _handleImageSelection();
                 },
-                icon: Icon(FontAwesomeIcons.photoFilm, color: white, size: 20),
+                icon: const Icon(FontAwesomeIcons.photoFilm, color: white, size: 20),
               ),
               Container(color: Colors.grey, width: .5, height: 50),
               IconButton(
@@ -298,7 +298,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   Navigator.pop(context);
                   _handleFileSelection();
                 },
-                icon: Icon(FontAwesomeIcons.fileImport, color: white, size: 20),
+                icon: const Icon(FontAwesomeIcons.fileImport, color: white, size: 20),
               ),
             ],
           ),

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/chat_room.dart';
@@ -49,8 +50,8 @@ class _ChatsState extends State<Chats> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-              Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
-              Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), const SizedBox(width: 30)]),
+              Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
+              Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
               const SizedBox(height: 10),
               Container(
                 height: 50,
@@ -59,7 +60,7 @@ class _ChatsState extends State<Chats> {
                 child: Row(
                   children: [
                     const SizedBox(width: 10),
-                    Icon(Icons.search, color: grey),
+                    const Icon(Icons.search, color: grey),
                     const SizedBox(width: 10),
                     Expanded(
                       child: StatefulBuilder(
@@ -90,7 +91,7 @@ class _ChatsState extends State<Chats> {
                         return Visibility(
                           visible: _deleteVisibility,
                           child: IconButton(
-                            icon: Icon(Icons.close, color: grey),
+                            icon: const Icon(Icons.close, color: grey),
                             onPressed: () => _searchController.clear(),
                           ),
                         );
@@ -106,7 +107,7 @@ class _ChatsState extends State<Chats> {
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> chatSnapshot) {
                     if (chatSnapshot.hasData) {
                       if (chatSnapshot.data!.docs.isEmpty) {
-                        return Center(child: CustomizedText(text: "No Patients Available", color: blue, fontSize: 20));
+                        return const Center(child: CustomizedText(text: "No Patients Available", color: blue, fontSize: 20));
                       } else {
                         Future.delayed(500.ms, () => _textFieldKey.currentState!.setState(() => _disabled = false));
                         return StatefulBuilder(
@@ -121,7 +122,7 @@ class _ChatsState extends State<Chats> {
                                 ;
 
                             return patientsList.isEmpty
-                                ? Center(child: CustomizedText(text: "No Chats Until Now", fontSize: 20, color: white))
+                                ? const Center(child: CustomizedText(text: "No Chats Until Now", fontSize: 20, color: white))
                                 : ListView.builder(
                                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     itemCount: patientsList.length,
@@ -133,15 +134,17 @@ class _ChatsState extends State<Chats> {
                                             return ListTile(
                                               contentPadding: EdgeInsets.zero,
                                               onTap: () {
-                                                if (play == 1) {
-                                                  playNote("tap.wav");
-                                                }
                                                 Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: tileSnapshot.data!.data()!)));
                                               },
                                               leading: Stack(
                                                 alignment: AlignmentDirectional.bottomEnd,
                                                 children: <Widget>[
-                                                  CircleAvatar(radius: 25, backgroundImage: CachedNetworkImageProvider(tileSnapshot.data!.get("image_url"))),
+                                                  CircleAvatar(
+                                                    radius: 25,
+                                                    backgroundColor: grey.withOpacity(.2),
+                                                    backgroundImage: tileSnapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(tileSnapshot.data!.get("image_url")),
+                                                    child: tileSnapshot.data!.get("image_url") == noUser ? const Icon(FontAwesomeIcons.user, size: 18, color: grey) : null,
+                                                  ),
                                                   CircleAvatar(radius: 5, backgroundColor: tileSnapshot.data!.get("status") ? green : red),
                                                 ],
                                               ),

@@ -24,8 +24,8 @@ class DoctorProfile extends StatelessWidget {
               const SizedBox(height: 250),
               Expanded(
                 child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(35), topRight: Radius.circular(35)),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(35), topRight: Radius.circular(35)),
                     color: blue,
                   ),
                 ),
@@ -35,7 +35,7 @@ class DoctorProfile extends StatelessWidget {
           Column(
             children: <Widget>[
               const SizedBox(height: 550),
-              Expanded(child: Container(decoration: BoxDecoration(borderRadius: const BorderRadius.only(topLeft: Radius.circular(35), topRight: Radius.circular(35)), color: darkBlue))),
+              Expanded(child: Container(decoration: const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(35), topRight: Radius.circular(35)), color: darkBlue))),
             ],
           ),
           Padding(
@@ -59,17 +59,17 @@ class DoctorProfile extends StatelessWidget {
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                              child: Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey),
+                              child: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey),
                             ),
                           ),
-                          CustomizedText(text: "Doctor Profile", fontSize: 18, fontWeight: FontWeight.bold, color: white),
+                          const CustomizedText(text: "Doctor Profile", fontSize: 18, fontWeight: FontWeight.bold, color: white),
                           GestureDetector(
                             onTap: () {},
                             child: Container(
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                              child: Icon(FontAwesomeIcons.ellipsisVertical, size: 15, color: grey),
+                              child: const Icon(FontAwesomeIcons.ellipsisVertical, size: 15, color: grey),
                             ),
                           ),
                         ],
@@ -91,7 +91,7 @@ class DoctorProfile extends StatelessWidget {
                               radius: 50,
                               backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")),
                               backgroundColor: grey.withOpacity(.2),
-                              child: snapshot.data!.get("image_url") != noUser ? null : Icon(FontAwesomeIcons.user, color: grey, size: 35),
+                              child: snapshot.data!.get("image_url") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 35),
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -106,7 +106,7 @@ class DoctorProfile extends StatelessWidget {
                               Row(
                                 children: <Widget>[
                                   RatingBarIndicator(
-                                    itemBuilder: (BuildContext context, int index) => Icon(FontAwesomeIcons.star, color: blue),
+                                    itemBuilder: (BuildContext context, int index) => const Icon(FontAwesomeIcons.star, color: blue),
                                     itemSize: 10,
                                     itemPadding: const EdgeInsets.only(right: 4.0),
                                     rating: double.parse(snapshot.data!.get("rating")) == 0 ? 1 : double.parse(snapshot.data!.get("rating")),
@@ -122,7 +122,7 @@ class DoctorProfile extends StatelessWidget {
                       const SizedBox(height: 30),
                       Center(child: Container(width: 30, height: 3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: white))),
                       const SizedBox(height: 30),
-                      CustomizedText(text: "Calendar", fontSize: 20, fontWeight: FontWeight.bold, color: white),
+                      const CustomizedText(text: "Calendar", fontSize: 20, fontWeight: FontWeight.bold, color: white),
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -138,7 +138,7 @@ class DoctorProfile extends StatelessWidget {
                                         const SizedBox(height: 5),
                                         CustomizedText(text: "${day < 10 ? '0' : ''}$day", fontSize: 20, fontWeight: FontWeight.bold, color: darkBlue),
                                         const SizedBox(height: 5),
-                                        CircleAvatar(radius: 4, backgroundColor: blue),
+                                        const CircleAvatar(radius: 4, backgroundColor: blue),
                                       ],
                                     )
                                   : Column(
@@ -165,7 +165,7 @@ class DoctorProfile extends StatelessWidget {
                                 const SizedBox(height: 5),
                                 CustomizedText(text: snapshot.data!.get("patients_checked_list").length.toString(), fontSize: 20, fontWeight: FontWeight.bold, color: darkBlue),
                                 const SizedBox(height: 5),
-                                CustomizedText(text: "Successful Patients", fontSize: 16, color: darkBlue),
+                                const CustomizedText(text: "Successful Patients", fontSize: 16, color: darkBlue),
                               ],
                             ),
                           ),
@@ -179,7 +179,7 @@ class DoctorProfile extends StatelessWidget {
                                 const SizedBox(height: 5),
                                 CustomizedText(text: "${snapshot.data!.get('years_of_experience')} Years", fontSize: 20, fontWeight: FontWeight.bold, color: darkBlue),
                                 const SizedBox(height: 5),
-                                CustomizedText(text: "Experience", fontSize: 16, color: darkBlue),
+                                const CustomizedText(text: "Experience", fontSize: 16, color: darkBlue),
                               ],
                             ),
                           ),
@@ -188,7 +188,7 @@ class DoctorProfile extends StatelessWidget {
                       const SizedBox(height: 30),
                       Center(child: Container(width: 30, height: 3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: white))),
                       const SizedBox(height: 30),
-                      CustomizedText(text: "About", fontSize: 20, fontWeight: FontWeight.bold, color: white),
+                      const CustomizedText(text: "About", fontSize: 20, fontWeight: FontWeight.bold, color: white),
                       const SizedBox(height: 20),
                       Expanded(
                         child: SizedBox(

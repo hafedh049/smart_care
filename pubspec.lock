@@ -57,6 +57,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
+  barcode:
+    dependency: transitive
+    description:
+      name: barcode
+      sha256: "52570564684bbb0240a9f1fdb6bad12adc5e0540103c1c96d6dd550bd928b1c9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.3"
+  bidi:
+    dependency: transitive
+    description:
+      name: bidi
+      sha256: dc00274c7edabae2ab30c676e736ea1eb0b1b7a1b436cb5fe372e431ccb39ab0
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.6"
   boolean_selector:
     dependency: transitive
     description:
@@ -597,6 +613,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "10.4.0"
+  get_time_ago:
+    dependency: "direct main"
+    description:
+      name: get_time_ago
+      sha256: dbd81c7f508089b72298b1f24e4e3f67d9e6416f0fc4fe84c102f173e2fe64e7
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.8"
   google_fonts:
     dependency: "direct main"
     description:
@@ -941,8 +965,16 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.2"
-  path_provider:
+  path_parsing:
     dependency: transitive
+    description:
+      name: path_parsing
+      sha256: e3e67b1629e6f7e8100b367d3db6ba6af4b1f0bb80f64db18ef1fbabd2fa9ccf
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
+  path_provider:
+    dependency: "direct main"
     description:
       name: path_provider
       sha256: c7edf82217d4b2952b2129a61d3ad60f1075b9299e629e149a8d2e39c2e6aad4
@@ -989,6 +1021,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.5"
+  pdf:
+    dependency: "direct main"
+    description:
+      name: pdf
+      sha256: "6cd57e8e6d052bd1078f18e0dc7cd6701fad6288231c1ce99d66ef5034d14e61"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.9.0"
   pedantic:
     dependency: transitive
     description:
@@ -1053,6 +1093,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  printing:
+    dependency: "direct main"
+    description:
+      name: printing
+      sha256: fe654363cd0114b50a0815b24e96957c7e9a60eb4e3b7ccfe71cf3f2b7114cb2
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.10.1"
   process:
     dependency: transitive
     description:
@@ -1077,6 +1125,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
+  qr:
+    dependency: transitive
+    description:
+      name: qr
+      sha256: "64957a3930367bf97cc211a5af99551d630f2f4625e38af10edd6b19131b64b3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   quiver:
     dependency: transitive
     description:
@@ -1306,6 +1362,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.3"
+  widget_mask:
+    dependency: "direct main"
+    description:
+      name: widget_mask
+      sha256: fa1f5b6b9ac7f7a300a67ae267191b329f3f812cf86ad7a0d03369dc68e5e732
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0+0"
   win32:
     dependency: transitive
     description:
@@ -1348,4 +1412,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.19.2 <3.0.0"
-  flutter: ">=3.3.0"
+  flutter: ">=3.7.0"
