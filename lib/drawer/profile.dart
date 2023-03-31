@@ -14,7 +14,7 @@ class Profile extends StatelessWidget {
     return Scaffold(
       backgroundColor: darkBlue,
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        future: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).get(),
+        future: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.get("role") == "doctor") {

@@ -19,7 +19,7 @@ class PatientProfile extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: darkBlue,
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        stream: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+        stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.hasData) {
             return Column(
@@ -83,7 +83,7 @@ class PatientProfile extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        CustomizedText(text: snapshot.data!.get("medical_professional_name"), fontSize: 20, fontWeight: FontWeight.bold, color: white),
+                        CustomizedText(text: snapshot.data!.get("name"), fontSize: 20, fontWeight: FontWeight.bold, color: white),
                         const SizedBox(height: 10),
                         Row(
                           children: <Widget>[

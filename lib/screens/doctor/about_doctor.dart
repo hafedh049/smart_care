@@ -37,7 +37,7 @@ class AboutDoctor extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              stream: FirebaseFirestore.instance.collection("health_care_professionals").doc(uid.trim()).snapshots(),
+              stream: FirebaseFirestore.instance.collection("users").doc(uid.trim()).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
                 if (snapshot.hasData) {
                   return Column(
@@ -68,7 +68,7 @@ class AboutDoctor extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          CustomizedText(text: "Dr. ${snapshot.data!.get('medical_professional_name')}", fontSize: 18, color: white, fontWeight: FontWeight.bold),
+                          CustomizedText(text: "Dr. ${snapshot.data!.get('name')}", fontSize: 18, color: white, fontWeight: FontWeight.bold),
                           const SizedBox(width: 10),
                           Stack(
                             alignment: AlignmentDirectional.center,
@@ -262,7 +262,7 @@ class AboutDoctor extends StatelessWidget {
                                           MaterialPageRoute(
                                             builder: (BuildContext context) => BookAppointment(
                                               id: uid,
-                                              doctorName: snapshot.data!.get("medical_professional_name"),
+                                              doctorName: snapshot.data!.get("name"),
                                               doctorImageUrl: snapshot.data!.get("image_url"),
                                               speciality: snapshot.data!.get("speciality"),
                                               workLocation: snapshot.data!.get("workLocation"),

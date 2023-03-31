@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/error/error_room.dart';
+import 'package:smart_care/screens/doctor/patient_folder.dart';
+import 'package:smart_care/screens/doctor/prescription.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
@@ -45,7 +47,7 @@ class _HomeState extends State<Home> {
             Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
             const SizedBox(height: 10),
             StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              stream: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+              stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
                 if (snapshot.hasData) {
                   return ListTile(
@@ -56,7 +58,7 @@ class _HomeState extends State<Home> {
                       child: snapshot.data!.get("image_url") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 35),
                     ),
                     title: CustomizedText(text: AppLocalizations.of(context)!.welcome, color: white.withOpacity(.7), fontSize: 14),
-                    subtitle: CustomizedText(text: snapshot.data!.get("medical_professional_name"), color: white, fontSize: 18),
+                    subtitle: CustomizedText(text: snapshot.data!.get("name"), color: white, fontSize: 18),
                   );
                 } else if (snapshot.connectionState == ConnectionState.waiting) {
                   return const ListTileShimmer();
@@ -99,7 +101,6 @@ class _HomeState extends State<Home> {
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             onTap: () async {
-                              //await SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.landscapeLeft]).then(
                               await showDialog(
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
@@ -115,7 +116,7 @@ class _HomeState extends State<Home> {
                                           child: Center(
                                             child: CommentTreeWidget<Tree, Tree>(
                                               Tree(text: data[index].get("patientName"), icon: null),
-                                              <Tree>[Tree(text: "Filled Form", icon: FontAwesomeIcons.table), Tree(text: "Patient Folder", icon: FontAwesomeIcons.folder)],
+                                              <Tree>[Tree(text: "Filled Forms", icon: FontAwesomeIcons.table), Tree(text: "Prescriptions", icon: FontAwesomeIcons.folder), Tree(text: "Blood Tests", icon: FontAwesomeIcons.folder)],
                                               treeThemeData: const TreeThemeData(lineColor: grey, lineWidth: 1),
                                               avatarRoot: (BuildContext context, Tree _) => PreferredSize(
                                                 preferredSize: const Size.fromRadius(18),
@@ -136,10 +137,13 @@ class _HomeState extends State<Home> {
                                               ),
                                               contentChild: (BuildContext context, Tree value) {
                                                 return Center(
-                                                  child: Container(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(15)),
-                                                    child: CustomizedText(text: value.text!, fontSize: 18, fontWeight: FontWeight.bold, color: white),
+                                                  child: GestureDetector(
+                                                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => PatientFolder(collection: value.text!, patientId: data[index].get("patientID"), icon: value.icon!))),
+                                                    child: Container(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(15)),
+                                                      child: CustomizedText(text: value.text!, fontSize: 18, fontWeight: FontWeight.bold, color: white),
+                                                    ),
                                                   ),
                                                 );
                                               },
@@ -175,6 +179,23 @@ class _HomeState extends State<Home> {
                                               ),
                                             ),
                                           ],
+                                        ),
+                                        const SizedBox(height: 10),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Prescription(patientID: data[index].get("patientID"))));
+                                          },
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                                            padding: const EdgeInsets.all(8.0),
+                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: green.withOpacity(.2)),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: const <Widget>[
+                                                CustomizedText(text: "Make Prescription", color: white, fontSize: 16),
+                                              ],
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -240,7 +261,7 @@ class _HomeState extends State<Home> {
                             ),
                           );
                         },
-                        separatorBuilder: (BuildContext context, int index) => Row(children: <Widget>[Expanded(child: Container(height: 1, color: white))]),
+                        separatorBuilder: (BuildContext context, int index) => Row(children: <Widget>[Expanded(child: Container(margin: const EdgeInsets.symmetric(vertical: 8.0), height: .2, color: white))]),
                       );
                     } else {
                       return const Center(child: CustomizedText(text: "No Appointments From Patients Yet.", color: white, fontSize: 18, fontWeight: FontWeight.bold));

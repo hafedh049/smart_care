@@ -393,6 +393,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.25"
+  fl_chart:
+    dependency: "direct main"
+    description:
+      name: fl_chart
+      sha256: e97c5b850ad056e9b3a85d3afeb44c239a83aa994a90723940dac82234f2efaf
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.61.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -686,7 +694,7 @@ packages:
     source: hosted
     version: "0.15.2"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       sha256: "6aa2946395183537c8b880962d935877325d6a09a2867c3970c05c0fed6ac482"
@@ -1093,14 +1101,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  printing:
-    dependency: "direct main"
-    description:
-      name: printing
-      sha256: fe654363cd0114b50a0815b24e96957c7e9a60eb4e3b7ccfe71cf3f2b7114cb2
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.10.1"
   process:
     dependency: transitive
     description:
@@ -1362,14 +1362,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.3"
-  widget_mask:
-    dependency: "direct main"
-    description:
-      name: widget_mask
-      sha256: fa1f5b6b9ac7f7a300a67ae267191b329f3f812cf86ad7a0d03369dc68e5e732
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0+0"
   win32:
     dependency: transitive
     description:
@@ -1412,4 +1404,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.19.2 <3.0.0"
-  flutter: ">=3.7.0"
+  flutter: ">=3.3.0"

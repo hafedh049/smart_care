@@ -414,7 +414,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                       } else {
                         await FirebaseFirestore.instance.collection("appointments").add(
                           <String, dynamic>{
-                            'patientName': me["medical_professional_name"],
+                            'patientName': me["name"],
                             'doctorName': widget.doctorName,
                             'patientID': me["uid"].trim(),
                             'doctorID': widget.id.trim(),

@@ -323,7 +323,7 @@ class HealthDrawer extends StatelessWidget {
                   if (await GoogleSignIn().isSignedIn()) {
                     await GoogleSignIn().signOut();
                   }
-                  await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": false}).then((void value) async {
+                  await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": false}).then((void value) async {
                     await FirebaseAuth.instance.signOut().then((void value) => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => false));
                   });
                 },

@@ -68,7 +68,7 @@ class _AccountState extends State<Account> {
                         playNote("tap.wav");
                       }
                       if (_formKey.currentState!.validate()) {
-                        await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{key: _changerController.text.trim()}).then((void value) => Navigator.pop(context));
+                        await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{key: _changerController.text.trim()}).then((void value) => Navigator.pop(context));
                       }
                     },
                     child: Container(width: 40, height: 40, decoration: BoxDecoration(color: color.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.check, size: 15, color: color)),
@@ -90,7 +90,7 @@ class _AccountState extends State<Account> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+          stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.hasData) {
               return SingleChildScrollView(
@@ -127,7 +127,7 @@ class _AccountState extends State<Account> {
                                   func: () async {
                                     Navigator.pop(context);
                                     if (snapshot.data!.get("image_url") != noUser) {
-                                      await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"image_url": noUser}).then((void value) => showToast("Picture Uploaded"));
+                                      await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"image_url": noUser}).then((void value) => showToast("Picture Uploaded"));
                                       await FirebaseStorage.instance.ref("/profile_pictures/${FirebaseAuth.instance.currentUser!.uid}").delete().then((void value) => showToast("Picture Removed"));
                                     }
                                   },
@@ -144,7 +144,7 @@ class _AccountState extends State<Account> {
                                         showToast("Uploading Picture");
                                         Navigator.pop(context);
                                         await FirebaseStorage.instance.ref("/profile_pictures/${FirebaseAuth.instance.currentUser!.uid}").putFile(File(path)).then((TaskSnapshot task) async {
-                                          await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"image_url": await task.ref.getDownloadURL()});
+                                          await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"image_url": await task.ref.getDownloadURL()});
                                           showToast("Picture Uploaded");
                                         });
                                       },
@@ -157,7 +157,7 @@ class _AccountState extends State<Account> {
                                         showToast("Uploading Picture");
                                         Navigator.pop(context);
                                         await FirebaseStorage.instance.ref("/profile_pictures/${FirebaseAuth.instance.currentUser!.uid}").putFile(File(path)).then((TaskSnapshot task) async {
-                                          await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"image_url": await task.ref.getDownloadURL()});
+                                          await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"image_url": await task.ref.getDownloadURL()});
                                           showToast("Picture Uploaded");
                                         });
                                       },
@@ -202,7 +202,7 @@ class _AccountState extends State<Account> {
                         if (play == 1) {
                           playNote("tap.wav");
                         }
-                        change("Name", FontAwesomeIcons.userDoctor, false, TextInputType.text, fieldsValidatorsFunction("username", context), "medical_professional_name");
+                        change("Name", FontAwesomeIcons.userDoctor, false, TextInputType.text, fieldsValidatorsFunction("username", context), "name");
                       },
                       child: Row(
                         children: <Widget>[
@@ -213,7 +213,7 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: snapshot.data!.get("medical_professional_name"), fontSize: 16, color: white),
+                                CustomizedText(text: snapshot.data!.get("name"), fontSize: 16, color: white),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
@@ -234,7 +234,7 @@ class _AccountState extends State<Account> {
                             if (play == 1) {
                               playNote("tap.wav");
                             }
-                            await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "m"});
+                            await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "m"});
                           },
                           child: CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("gender") == "m" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.mars, color: snapshot.data!.get("gender") == "m" ? white : grey, size: 20)),
                         ),
@@ -244,7 +244,7 @@ class _AccountState extends State<Account> {
                             if (play == 1) {
                               playNote("tap.wav");
                             }
-                            await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "f"});
+                            await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "f"});
                           },
                           child: CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("gender") == "f" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.venus, color: snapshot.data!.get("gender") == "f" ? white : grey, size: 20)),
                         ),
@@ -350,7 +350,7 @@ class _AccountState extends State<Account> {
                                           if (play == 1) {
                                             playNote("tap.wav");
                                           }
-                                          await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"speciality": speciality["speciality"]}).then((void value) {
+                                          await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"speciality": speciality["speciality"]}).then((void value) {
                                             showToast(speciality["speciality"]);
                                             Navigator.pop(context);
                                           });
@@ -456,14 +456,14 @@ class _AccountState extends State<Account> {
                             if (start != null) {
                               time[0] = start.format(context);
                             }
-                            await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({
+                            await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({
                               "available_time": time,
                             }).then((void value) async {
                               await showTimePicker(context: context, initialTime: TimeOfDay.now(), helpText: "Select Finish Time").then((TimeOfDay? finish) async {
                                 if (finish != null) {
                                   time[1] = finish.format(context);
                                 }
-                                await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({
+                                await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({
                                   "available_time": time,
                                 });
                               });
@@ -598,8 +598,6 @@ class _AccountState extends State<Account> {
                         CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("doctor") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.userDoctor, color: snapshot.data!.get("roles_list").contains("doctor") ? white : grey, size: 20)),
                         const SizedBox(width: 10),
                         CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("admin") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.lock, color: snapshot.data!.get("roles_list").contains("admin") ? white : grey, size: 20)),
-                        const SizedBox(width: 10),
-                        CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("laboratory") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.solidHospital, color: snapshot.data!.get("roles_list").contains("laboratory") ? white : grey, size: 20)),
                       ],
                     ),
                     const SizedBox(height: 40),

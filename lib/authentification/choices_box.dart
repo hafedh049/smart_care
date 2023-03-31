@@ -12,7 +12,7 @@ class ChoicesBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-      future: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).get(),
+      future: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get(),
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
         if (snapshot.hasData) {
           final List<dynamic> roles = snapshot.data!.get("roles_list");
@@ -52,7 +52,7 @@ class ChoicesBox extends StatelessWidget {
                                       rolesList[role] = value!;
                                       ignore = true;
                                     });
-                                    await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({"role": roles[role]}).then(
+                                    await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"role": roles[role]}).then(
                                       (void value) async => await Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 0))),
                                     );
                                   },

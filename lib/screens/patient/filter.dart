@@ -97,10 +97,10 @@ class _FilterListState extends State<FilterList> {
             key: _filterKey,
             builder: (BuildContext context, void Function(void Function()) _) {
               return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: FirebaseFirestore.instance.collection("health_care_professionals").where("roles_list", arrayContains: "doctor").snapshots(),
+                stream: FirebaseFirestore.instance.collection("users").where("roles_list", arrayContains: "doctor").snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                   if (snapshot.hasData) {
-                    List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("uid") != me["uid"] && element.get("medical_professional_name").contains(_searchController.text.trim())).toList();
+                    List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("uid") != me["uid"] && element.get("name").contains(_searchController.text.trim())).toList();
                     if (doctorsList.isNotEmpty) {
                       return Expanded(
                         child: ListView.builder(
@@ -131,7 +131,7 @@ class _FilterListState extends State<FilterList> {
                                 CircleAvatar(radius: 5, backgroundColor: doctorsList[index].get("status") ? green : red),
                               ],
                             ),
-                            title: CustomizedText(text: doctorsList[index].get("medical_professional_name"), fontSize: 16, fontWeight: FontWeight.bold),
+                            title: CustomizedText(text: doctorsList[index].get("name"), fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                         ),
                       );

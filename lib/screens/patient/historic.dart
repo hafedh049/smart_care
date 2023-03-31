@@ -8,13 +8,11 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:smart_care/error/error_room.dart';
-import 'package:smart_care/screens/generate_prescription_template.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:http/http.dart';
 
 class Historic extends StatefulWidget {
   const Historic({super.key});
@@ -51,7 +49,7 @@ class _HistoricState extends State<Historic> {
                 Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
                 const SizedBox(height: 10),
                 CommentTreeWidget<String, Map<String, dynamic>>(
-                  me["medical_professional_name"],
+                  me["name"],
                   const <Map<String, dynamic>>[
                     <String, dynamic>{"avatar": FontAwesomeIcons.squareCheck, "child": "Filled Forms"},
                     <String, dynamic>{"avatar": FontAwesomeIcons.prescription, "child": "Prescriptions"},
@@ -69,7 +67,7 @@ class _HistoricState extends State<Historic> {
                   contentRoot: (BuildContext context, String contentRoot) => Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
                     decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                    child: Center(child: CustomizedText(text: me["medical_professional_name"], fontSize: 14, fontWeight: FontWeight.bold, color: white)),
+                    child: Center(child: CustomizedText(text: me["name"], fontSize: 14, fontWeight: FontWeight.bold, color: white)),
                   ),
                   avatarChild: (BuildContext context, Map<String, dynamic> avatarChild) => PreferredSize(
                     preferredSize: const Size.fromRadius(20),
@@ -90,10 +88,9 @@ class _HistoricState extends State<Historic> {
                               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                                 if (snapshot.hasData) {
                                   final List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data!.docs;
-                                  /*if (data.isEmpty) {
+                                  if (data.isEmpty) {
                                     return CustomizedText(text: contentChild["child"]!, fontSize: 16, fontWeight: FontWeight.bold, color: white);
-                                  } else */
-                                  {
+                                  } else {
                                     return Column(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,32 +109,18 @@ class _HistoricState extends State<Historic> {
                                             mainAxisSize: MainAxisSize.min,
                                             children: <Widget>[
                                               const SizedBox(height: 10),
-                                              for (int index = 0; index < /*data.length*/ 5; index++)
+                                              for (int index = 0; index < data.length; index++)
                                                 GestureDetector(
                                                   onTap: () async {
                                                     try {
-                                                      pw.Document pdfDoc = pw.Document(
-                                                          author: me["medical_professional_name"],
-                                                          creator: me["medical_professional_name"],
-                                                          pageMode: PdfPageMode.fullscreen,
-                                                          subject: "Prescription",
-                                                          verbose: true,
-                                                          title: "Title", //data[index].get("title"),
-                                                          version: PdfVersion.pdf_1_5);
-                                                      pdfDoc.addPage(
-                                                        pw.Page(
-                                                          build: (pw.Context context) => PrescriptionTemplate(pageWidth: context.page.pageFormat.width, pageHeight: context.page.pageFormat.height),
-                                                          pageFormat: PdfPageFormat.legal,
-                                                          margin: pw.EdgeInsets.zero,
-                                                          clip: true,
-                                                        ),
-                                                      );
-                                                      final output = await getExternalStorageDirectory();
-                                                      final file = File("${output!.path}/example.pdf");
-                                                      await file.writeAsBytes(await pdfDoc.save());
-                                                      OpenFilex.open(file.path);
-                                                    } catch (_) {
-                                                      showToast(_.toString(), color: red);
+                                                      final bytes = await get(Uri.parse(data[index].get('prescriptionUrl')));
+                                                      final path = await getTemporaryDirectory().then((Directory dir) {
+                                                        final file = File('${dir.path}/example.pdf');
+                                                        return file.writeAsBytes(bytes.bodyBytes).then((void _) => file.path);
+                                                      });
+                                                      await OpenFilex.open(path);
+                                                    } catch (e) {
+                                                      showToast('Error opening PDF: $e', color: red);
                                                     }
                                                   },
                                                   child: Container(
@@ -150,7 +133,7 @@ class _HistoricState extends State<Historic> {
                                                         const SizedBox(width: 10),
                                                         const Icon(FontAwesomeIcons.filePdf, color: white, size: 35),
                                                         const SizedBox(width: 10),
-                                                        /*Expanded(
+                                                        Expanded(
                                                           child: Column(
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             mainAxisSize: MainAxisSize.min,
@@ -160,7 +143,7 @@ class _HistoricState extends State<Historic> {
                                                               Flexible(child: CustomizedText(text: data[index].get("title"), fontSize: 16, fontWeight: FontWeight.bold, color: white)),
                                                             ],
                                                           ),
-                                                        ),*/
+                                                        ),
                                                       ],
                                                     ),
                                                   ),

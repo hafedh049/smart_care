@@ -49,7 +49,7 @@ class _SignUpState extends State<SignUp> {
   String _countryCode = "";
   File? _profilePicture;
   double _stepsCompleted = 0;
-  final List<bool> _rolesList = <bool>[false, true, false];
+  final List<bool> _rolesList = <bool>[false, true];
 
   @override
   void dispose() {
@@ -67,9 +67,6 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (play == 1) {
-          playNote("tap.wav");
-        }
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
@@ -104,9 +101,6 @@ class _SignUpState extends State<SignUp> {
                       const Spacer(),
                       GestureDetector(
                         onTap: () {
-                          if (play == 1) {
-                            playNote("tap.wav");
-                          }
                           showModalBottomSheet(
                             context: context,
                             builder: (BuildContext context) => SizedBox(
@@ -347,21 +341,6 @@ class _SignUpState extends State<SignUp> {
                                   });
                                 },
                               ),
-                              const SizedBox(height: 10),
-                              CheckboxListTile(
-                                activeColor: blue,
-                                value: _rolesList[2],
-                                title: const CustomizedText(text: "Laboratory", fontSize: 16, color: white),
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    if (!_rolesList[2]) {
-                                      _rolesList[2] = true;
-                                    } else {
-                                      _rolesList[2] = false;
-                                    }
-                                  });
-                                },
-                              ),
                             ],
                           );
                         },
@@ -406,15 +385,11 @@ class _SignUpState extends State<SignUp> {
                                         showToast("Picture Uploaded");
                                       }
                                       //final Position position = await determinePosition();
-                                      await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).set({
+                                      await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).set({
                                         "account_creation_date": Timestamp.now(),
-                                        "medical_professional_name": _usernameController.text.trim(),
+                                        "name": _usernameController.text.trim(),
                                         "id": _idController.text.trim(),
-                                        "role": _rolesList[0]
-                                            ? "doctor"
-                                            : _rolesList[1]
-                                                ? "patient"
-                                                : "laboratory",
+                                        "role": _rolesList[0] ? "doctor" : "patient",
                                         "roles_list": <String>[if (_rolesList[0]) "doctor", if (_rolesList[1]) "patient"],
                                         "uid": FirebaseAuth.instance.currentUser!.uid,
                                         "image_url": profilePictureUrl,
@@ -430,11 +405,10 @@ class _SignUpState extends State<SignUp> {
                                         "rating": "0",
                                         "schedules_list": [],
                                         "available_time": ["--", "--"],
-                                        "age": "35",
                                         "date_of_birth": DateTime.now(),
                                         "gender": "m",
                                         "about": "",
-                                        "geolocation": [0, 0 /*position.longitude, position.latitude, position.altitude*/],
+                                        //"geolocation": [0, 0 /*position.longitude, position.latitude, position.altitude*/],
                                       }).then((void value) async {
                                         showToast("Data Stored");
                                         // Obtain the Google sign-in credentials
@@ -468,7 +442,7 @@ class _SignUpState extends State<SignUp> {
                                             ClipboardListener.removeListener(() {});
                                             await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
                                               showToast("Signed-In Using E-mail & Password");
-                                              await FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true}).then((void value) async {
+                                              await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true}).then((void value) async {
                                                 await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
                                               });
                                             });

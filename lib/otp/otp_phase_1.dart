@@ -104,7 +104,7 @@ class _OTPViewState extends State<OTPView> {
                             onTap: () async {
                               try {
                                 if (_formKey.currentState!.validate()) {
-                                  QuerySnapshot<Map<String, dynamic>> samples = await FirebaseFirestore.instance.collection("health_care_professionals").where("phone_number", isEqualTo: "$countryCode${_phoneController.text.trim().replaceAll(RegExp(r' '), '')}").get();
+                                  QuerySnapshot<Map<String, dynamic>> samples = await FirebaseFirestore.instance.collection("users").where("phone_number", isEqualTo: "$countryCode${_phoneController.text.trim().replaceAll(RegExp(r' '), '')}").get();
                                   if (samples.docs.isNotEmpty) {
                                     setS(() => wait = true);
                                     await FirebaseAuth.instance.verifyPhoneNumber(

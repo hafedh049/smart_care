@@ -41,16 +41,16 @@ class _ChatRoomState extends State<ChatRoom> {
     _user = types.User(
       id: FirebaseAuth.instance.currentUser!.uid,
       createdAt: me["account_creation_date"].toDate().millisecond,
-      firstName: me["medical_professional_name"].split(" ").length == 2 ? me["medical_professional_name"].split(" ")[0] : me["medical_professional_name"],
+      firstName: me["name"].split(" ").length == 2 ? me["name"].split(" ")[0] : me["name"],
       imageUrl: me["image_url"],
-      lastName: me["medical_professional_name"].split(" ").length == 2 ? me["medical_professional_name"].split(" ")[1] : "",
+      lastName: me["name"].split(" ").length == 2 ? me["name"].split(" ")[1] : "",
     );
     _remoteUser = types.User(
       id: widget.talkTo["uid"],
       createdAt: widget.talkTo["account_creation_date"].toDate().millisecond,
-      firstName: widget.talkTo["medical_professional_name"].split(" ").length == 2 ? me["medical_professional_name"].split(" ")[0] : me["medical_professional_name"],
+      firstName: widget.talkTo["name"].split(" ").length == 2 ? me["name"].split(" ")[0] : me["name"],
       imageUrl: widget.talkTo["image_url"],
-      lastName: widget.talkTo["medical_professional_name"].split(" ").length == 2 ? me["medical_professional_name"].split(" ")[1] : "",
+      lastName: widget.talkTo["name"].split(" ").length == 2 ? me["name"].split(" ")[1] : "",
     );
   }
 
@@ -106,7 +106,7 @@ class _ChatRoomState extends State<ChatRoom> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomizedText(text: widget.talkTo["medical_professional_name"], fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                  CustomizedText(text: widget.talkTo["name"], fontSize: 16, fontWeight: FontWeight.bold, color: white),
                   CustomizedText(text: widget.talkTo["status"] ? "Online" : "Offline", fontSize: 14, color: blue),
                 ],
               ),

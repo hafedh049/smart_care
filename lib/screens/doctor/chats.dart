@@ -117,7 +117,7 @@ class _ChatsState extends State<Chats> {
                                 /*.where((
                                   QueryDocumentSnapshot<Map<String, dynamic>> item,
                                 ) =>
-                                    item.get("medical_professional_name").toLowerCase().contains(_searchController.text.trim().toLowerCase()))
+                                    item.get("name").toLowerCase().contains(_searchController.text.trim().toLowerCase()))
                                 .toList()*/
                                 ;
 
@@ -128,7 +128,7 @@ class _ChatsState extends State<Chats> {
                                     itemCount: patientsList.length,
                                     itemBuilder: (BuildContext context, int index) {
                                       return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                                        stream: FirebaseFirestore.instance.collection("health_care_professionals").doc(patientsList[index].id.replaceAll(" ", "")).snapshots(),
+                                        stream: FirebaseFirestore.instance.collection("users").doc(patientsList[index].id.replaceAll(" ", "")).snapshots(),
                                         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> tileSnapshot) {
                                           if (tileSnapshot.hasData) {
                                             return ListTile(
@@ -148,7 +148,7 @@ class _ChatsState extends State<Chats> {
                                                   CircleAvatar(radius: 5, backgroundColor: tileSnapshot.data!.get("status") ? green : red),
                                                 ],
                                               ),
-                                              title: CustomizedText(text: tileSnapshot.data!.get("medical_professional_name"), fontSize: 16, fontWeight: FontWeight.bold),
+                                              title: CustomizedText(text: tileSnapshot.data!.get("name"), fontSize: 16, fontWeight: FontWeight.bold),
                                               subtitle: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                                                 stream: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(patientsList[index].id).snapshots(),
                                                 builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {

@@ -63,10 +63,10 @@ class SmartSettings extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                        stream: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+                        stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
                         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
                           if (snapshot.hasData) {
-                            return CustomizedText(text: snapshot.data!.get("medical_professional_name"), fontSize: 18, color: white);
+                            return CustomizedText(text: snapshot.data!.get("name"), fontSize: 18, color: white);
                           } else if (snapshot.connectionState == ConnectionState.waiting) {
                             return Container(width: 120, height: 9, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white)).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white, grey]);
                           } else {

@@ -36,7 +36,7 @@ class Home extends StatelessWidget {
               Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
               Center(
                 child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                  stream: FirebaseFirestore.instance.collection("health_care_professionals").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+                  stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
                   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
                     if (snapshot.hasData) {
                       return Column(
@@ -58,7 +58,7 @@ class Home extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               const CustomizedText(text: "Hello, ", fontSize: 22),
-                              CustomizedText(text: snapshot.data!.get("medical_professional_name"), fontSize: 22, fontWeight: FontWeight.bold),
+                              CustomizedText(text: snapshot.data!.get("name"), fontSize: 22, fontWeight: FontWeight.bold),
                             ],
                           ),
                           const SizedBox(height: 10),
