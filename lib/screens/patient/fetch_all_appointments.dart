@@ -59,8 +59,8 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: GestureDetector(
                       onTap: () {
-                        if (play == 1) {
-                          playNote("tap.wav");
+                        {
+                          ;
                         }
                         Navigator.pop(context);
                       },
@@ -84,8 +84,8 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                         visible: _showClearButton,
                         child: GestureDetector(
                           onTap: () => setS(() {
-                            if (play == 1) {
-                              playNote("tap.wav");
+                            {
+                              ;
                             }
                             _searchController.clear();
                             _showClearButton = false;
@@ -131,8 +131,8 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                                                 const Spacer(),
                                                 GestureDetector(
                                                   onTap: () async {
-                                                    if (play == 1) {
-                                                      playNote("tap.wav");
+                                                    {
+                                                      ;
                                                     }
                                                     await FirebaseFirestore.instance.collection("appointments").doc(appointmentList[index].id.trim()).delete().then((void value) => showToast("Appointment is Canceled."));
                                                   },

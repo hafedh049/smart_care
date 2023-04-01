@@ -34,8 +34,8 @@ class _ChatsState extends State<Chats> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (play == 1) {
-          playNote("tap.wav");
+        {
+          ;
         }
         FocusScope.of(context).unfocus();
       },
@@ -134,8 +134,8 @@ class _ChatsState extends State<Chats> {
                                             return ListTile(
                                               contentPadding: EdgeInsets.zero,
                                               onTap: () {
-                                                if (play == 1) {
-                                                  playNote("tap.wav");
+                                                {
+                                                  ;
                                                 }
                                                 Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: tileSnapshot.data!.data()!)));
                                               },

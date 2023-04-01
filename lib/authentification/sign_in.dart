@@ -63,8 +63,8 @@ class _SignInState extends State<SignIn> {
                       const Spacer(),
                       GestureDetector(
                         onTap: () {
-                          if (play == 1) {
-                            playNote("tap.wav");
+                          {
+                            ;
                           }
                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Recovery()));
                         },
@@ -136,8 +136,8 @@ class _SignInState extends State<SignIn> {
                   Center(
                     child: GestureDetector(
                       onTap: () {
-                        if (play == 1) {
-                          playNote("tap.wav");
+                        {
+                          ;
                         }
                         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const SignUp()));
                       },

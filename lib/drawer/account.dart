@@ -64,9 +64,6 @@ class _AccountState extends State<Account> {
                   const SizedBox(width: 10),
                   GestureDetector(
                     onTap: () async {
-                      if (play == 1) {
-                        playNote("tap.wav");
-                      }
                       if (_formKey.currentState!.validate()) {
                         await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{key: _changerController.text.trim()}).then((void value) => Navigator.pop(context));
                       }
@@ -96,13 +93,11 @@ class _AccountState extends State<Account> {
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     const SizedBox(height: 20),
                     GestureDetector(
                       onTap: () {
-                        if (play == 1) {
-                          playNote("tap.wav");
-                        }
                         Navigator.pop(context);
                       },
                       child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.x, size: 15, color: grey)),
@@ -112,9 +107,6 @@ class _AccountState extends State<Account> {
                     const SizedBox(height: 60),
                     GestureDetector(
                       onTap: () {
-                        if (play == 1) {
-                          playNote("tap.wav");
-                        }
                         showModalBottomSheet(
                           context: context,
                           builder: (BuildContext context) => SizedBox(
@@ -199,9 +191,6 @@ class _AccountState extends State<Account> {
                     const SizedBox(height: 40),
                     GestureDetector(
                       onTap: () {
-                        if (play == 1) {
-                          playNote("tap.wav");
-                        }
                         change("Name", FontAwesomeIcons.userDoctor, false, TextInputType.text, fieldsValidatorsFunction("username", context), "name");
                       },
                       child: Row(
@@ -231,9 +220,6 @@ class _AccountState extends State<Account> {
                         const SizedBox(width: 72),
                         GestureDetector(
                           onTap: () async {
-                            if (play == 1) {
-                              playNote("tap.wav");
-                            }
                             await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "m"});
                           },
                           child: CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("gender") == "m" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.mars, color: snapshot.data!.get("gender") == "m" ? white : grey, size: 20)),
@@ -241,9 +227,6 @@ class _AccountState extends State<Account> {
                         const SizedBox(width: 10),
                         GestureDetector(
                           onTap: () async {
-                            if (play == 1) {
-                              playNote("tap.wav");
-                            }
                             await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "f"});
                           },
                           child: CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("gender") == "f" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.venus, color: snapshot.data!.get("gender") == "f" ? white : grey, size: 20)),
@@ -252,11 +235,12 @@ class _AccountState extends State<Account> {
                     ),
                     const SizedBox(height: 40),
                     GestureDetector(
-                      onTap: () {
-                        if (play == 1) {
-                          playNote("tap.wav");
-                        }
-                        change("Age", FontAwesomeIcons.zero, false, TextInputType.number, fieldsValidatorsFunction("age", context), "age");
+                      onTap: () async {
+                        await showDatePicker(context: context, initialDate: DateTime(1968), firstDate: DateTime(1968), lastDate: DateTime(1998), helpText: "Pick your birthdate").then((DateTime? pickedDateOfBirth) async {
+                          if (pickedDateOfBirth != null) {
+                            await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"date_of_birth": pickedDateOfBirth}).then((void value) => Navigator.pop(context));
+                          }
+                        });
                       },
                       child: Row(
                         children: <Widget>[
@@ -267,7 +251,7 @@ class _AccountState extends State<Account> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: snapshot.data!.get("age"), fontSize: 16, color: white),
+                                CustomizedText(text: "${DateTime.now().difference(snapshot.data!.get("date_of_birth").toDate()).inDays ~/ 365}", fontSize: 16, color: white),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
@@ -328,9 +312,6 @@ class _AccountState extends State<Account> {
                     if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin")
                       GestureDetector(
                         onTap: () {
-                          if (play == 1) {
-                            playNote("tap.wav");
-                          }
                           showToast("Tap if you want to select otherwise swipe in any direction.");
                           showDialog(
                             context: context,
@@ -347,9 +328,6 @@ class _AccountState extends State<Account> {
                                     for (Map<String, dynamic> speciality in specialityListFunction(context))
                                       GestureDetector(
                                         onTap: () async {
-                                          if (play == 1) {
-                                            playNote("tap.wav");
-                                          }
                                           await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"speciality": speciality["speciality"]}).then((void value) {
                                             showToast(speciality["speciality"]);
                                             Navigator.pop(context);
@@ -419,9 +397,6 @@ class _AccountState extends State<Account> {
                     if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin")
                       GestureDetector(
                         onTap: () {
-                          if (play == 1) {
-                            playNote("tap.wav");
-                          }
                           change("Years of Experience", FontAwesomeIcons.zero, false, TextInputType.number, fieldsValidatorsFunction("age", context), "years_of_experience");
                         },
                         child: Row(
@@ -448,9 +423,6 @@ class _AccountState extends State<Account> {
                     if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin")
                       GestureDetector(
                         onTap: () async {
-                          if (play == 1) {
-                            playNote("tap.wav");
-                          }
                           final List<String> time = <String>["--", "--"];
                           await showTimePicker(context: context, initialTime: TimeOfDay.now(), helpText: "Select Start Time").then((TimeOfDay? start) async {
                             if (start != null) {
@@ -512,9 +484,6 @@ class _AccountState extends State<Account> {
                     const SizedBox(height: 40),
                     GestureDetector(
                       onTap: () {
-                        if (play == 1) {
-                          playNote("tap.wav");
-                        }
                         change("About", FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidatorsFunction("about", context), "about");
                       },
                       child: Row(
@@ -540,9 +509,6 @@ class _AccountState extends State<Account> {
                     const SizedBox(height: 40),
                     GestureDetector(
                       onTap: () {
-                        if (play == 1) {
-                          playNote("tap.wav");
-                        }
                         change("Location", FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidatorsFunction("job location", context), "location");
                       },
                       child: Row(
@@ -605,7 +571,11 @@ class _AccountState extends State<Account> {
                 ),
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return Expanded(child: ListView.builder(padding: EdgeInsets.zero, itemCount: 10, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()));
+              return SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: ListView.builder(padding: EdgeInsets.zero, itemCount: 3, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()),
+              );
             } else {
               return ErrorRoom(error: snapshot.error.toString());
             }

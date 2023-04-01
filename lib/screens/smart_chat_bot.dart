@@ -42,8 +42,8 @@ class _SmartChatBotState extends State<SmartChatBot> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (play == 1) {
-          playNote("tap.wav");
+        {
+          ;
         }
         FocusScope.of(context).unfocus();
       },
@@ -76,8 +76,8 @@ class _SmartChatBotState extends State<SmartChatBot> {
           ],
           leading: CustomIcon(
             func: () {
-              if (play == 1) {
-                playNote("tap.wav");
+              {
+                ;
               }
               Navigator.pop(context);
             },

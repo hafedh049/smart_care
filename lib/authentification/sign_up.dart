@@ -386,7 +386,6 @@ class _SignUpState extends State<SignUp> {
                                       }
                                       //final Position position = await determinePosition();
                                       await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).set({
-                                        "account_creation_date": Timestamp.now(),
                                         "name": _usernameController.text.trim(),
                                         "id": _idController.text.trim(),
                                         "role": _rolesList[0] ? "doctor" : "patient",
@@ -400,7 +399,7 @@ class _SignUpState extends State<SignUp> {
                                         "years_of_experience": "20",
                                         "patients_checked_list": [],
                                         "location": "",
-                                        'workLocation': "Faculté de Médecine de Monastir",
+                                        'work_location': "Faculté de Médecine de Monastir",
                                         "speciality": "Chiropractors and massage therapists",
                                         "rating": "0",
                                         "schedules_list": [],
@@ -408,7 +407,7 @@ class _SignUpState extends State<SignUp> {
                                         "date_of_birth": DateTime.now(),
                                         "gender": "m",
                                         "about": "",
-                                        //"geolocation": [0, 0 /*position.longitude, position.latitude, position.altitude*/],
+                                        "geolocation": [0, 0 /*position.longitude, position.latitude, position.altitude*/],
                                       }).then((void value) async {
                                         showToast("Data Stored");
                                         // Obtain the Google sign-in credentials

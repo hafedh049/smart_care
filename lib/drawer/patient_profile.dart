@@ -4,11 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/error/error_room.dart';
-import 'package:smart_care/screens/screens.dart';
+import 'package:smart_care/screens/patient/historic.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
-
-import '../stuff/functions.dart';
 
 class PatientProfile extends StatelessWidget {
   const PatientProfile({super.key});
@@ -29,9 +27,6 @@ class PatientProfile extends StatelessWidget {
                   onTap: snapshot.data!.get("image_url") == noUser
                       ? null
                       : () {
-                          if (play == 1) {
-                            playNote("tap.wav");
-                          }
                           showDialog(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
@@ -97,7 +92,7 @@ class PatientProfile extends StatelessWidget {
                           children: <Widget>[
                             const Icon(Icons.numbers, size: 15, color: blue),
                             const SizedBox(width: 10),
-                            CustomizedText(text: 'Age ( ${snapshot.data!.get("age")} )', fontSize: 14, color: white.withOpacity(.8)),
+                            CustomizedText(text: 'Age ( ${DateTime.now().difference(snapshot.data!.get("date_of_birth").toDate()).inDays ~/ 365} )', fontSize: 14, color: white.withOpacity(.8)),
                           ],
                         ),
                         const SizedBox(height: 10),
@@ -135,10 +130,7 @@ class PatientProfile extends StatelessWidget {
                         const SizedBox(height: 20),
                         GestureDetector(
                           onTap: () {
-                            if (play == 1) {
-                              playNote("tap.wav");
-                            }
-                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 4)), (Route route) => false);
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Historic()));
                           },
                           child: Container(
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue),

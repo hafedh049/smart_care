@@ -34,8 +34,8 @@ class _ChatsState extends State<Chats> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (play == 1) {
-          playNote("tap.wav");
+        {
+          ;
         }
         FocusScope.of(context).unfocus();
       },

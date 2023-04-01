@@ -22,8 +22,8 @@ class AboutUs extends StatelessWidget {
             const SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-                if (play == 1) {
-                  playNote("tap.wav");
+                {
+                  ;
                 }
                 Navigator.pop(context);
               },

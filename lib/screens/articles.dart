@@ -20,7 +20,7 @@ class Articles extends StatefulWidget {
 
 class _ArticlesState extends State<Articles> {
   final GlobalKey _typeKey = GlobalKey();
-  final List<String> _types = const <String>["All", "Politic", "Sport", "Education", "Health", "World"];
+  final List<String> _types = const <String>["All", "Politics", "Sport", "Education", "Health", "World", "Gaming", "Astronomy"];
   String _type = "All";
   @override
   Widget build(BuildContext context) {
@@ -75,14 +75,14 @@ class _ArticlesState extends State<Articles> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: StatefulBuilder(
-                key: _typeKey,
-                builder: (BuildContext context, void Function(void Function()) _) {
-                  return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                    stream: _type == "All" ? FirebaseFirestore.instance.collection("articles").orderBy("timestamp", descending: true).snapshots() : FirebaseFirestore.instance.collection("articles").where("type", isEqualTo: _type).orderBy("timestamp", descending: true).snapshots(),
-                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-                      if (snapshot.hasData) {
-                        final List<QueryDocumentSnapshot<Map<String, dynamic>>> articles = snapshot.data!.docs;
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: FirebaseFirestore.instance.collection("articles").orderBy("publishedAt", descending: true).snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                  if (snapshot.hasData) {
+                    return StatefulBuilder(
+                      key: _typeKey,
+                      builder: (BuildContext context, void Function(void Function()) _) {
+                        final List<QueryDocumentSnapshot<Map<String, dynamic>>> articles = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> article) => article.get("topic").contains(_type == "All" ? "" : _type)).toList();
                         if (articles.isNotEmpty) {
                           return ListView.builder(
                             padding: EdgeInsets.zero,
@@ -99,7 +99,7 @@ class _ArticlesState extends State<Articles> {
                                       height: 100,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
-                                        image: DecorationImage(image: CachedNetworkImageProvider(articles[index].get("image_url")), fit: BoxFit.cover),
+                                        image: DecorationImage(image: CachedNetworkImageProvider(articles[index].get("urlToImage")), fit: BoxFit.cover),
                                       ),
                                     ),
                                     const SizedBox(width: 10),
@@ -111,10 +111,10 @@ class _ArticlesState extends State<Articles> {
                                           Container(
                                             padding: const EdgeInsets.all(4.0),
                                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue.withOpacity(.2)),
-                                            child: CustomizedText(text: articles[index].get("type"), color: white, fontSize: 16, fontWeight: FontWeight.bold),
+                                            child: CustomizedText(text: articles[index].get("topic"), color: white, fontSize: 16, fontWeight: FontWeight.bold),
                                           ),
                                           CustomizedText(text: articles[index].get("title"), color: white, fontSize: 18, fontWeight: FontWeight.bold),
-                                          CustomizedText(text: getDateRepresentation(articles[index].get("timestamp").toDate()), color: white.withOpacity(.8), fontSize: 14),
+                                          CustomizedText(text: getDateRepresentation(DateTime.parse(articles[index].get("publishedAt"))), color: white.withOpacity(.8), fontSize: 14),
                                         ],
                                       ),
                                     ),
@@ -126,13 +126,13 @@ class _ArticlesState extends State<Articles> {
                         } else {
                           return const Center(child: CustomizedText(text: "No Articles Yet.", color: white, fontSize: 18, fontWeight: FontWeight.bold));
                         }
-                      } else if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator(color: blue));
-                      } else {
-                        return ErrorRoom(error: snapshot.error.toString());
-                      }
-                    },
-                  );
+                      },
+                    );
+                  } else if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator(color: blue));
+                  } else {
+                    return ErrorRoom(error: snapshot.error.toString());
+                  }
                 },
               ),
             )

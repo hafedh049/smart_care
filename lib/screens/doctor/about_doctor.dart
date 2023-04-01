@@ -254,8 +254,8 @@ class AboutDoctor extends StatelessWidget {
                                   Expanded(
                                     child: GestureDetector(
                                       onTap: () async {
-                                        if (play == 1) {
-                                          playNote("tap.wav");
+                                        {
+                                          ;
                                         }
                                         Navigator.push(
                                           context,

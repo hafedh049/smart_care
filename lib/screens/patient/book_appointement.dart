@@ -51,8 +51,8 @@ class _BookAppointmentState extends State<BookAppointment> {
             const SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-                if (play == 1) {
-                  playNote("tap.wav");
+                {
+                  ;
                 }
                 Navigator.pop(context);
               },
@@ -185,8 +185,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () {
-                                  if (play == 1) {
-                                    playNote("tap.wav");
+                                  {
+                                    ;
                                   }
                                   _(() => _duration = 1);
                                 },
@@ -205,8 +205,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                               const SizedBox(width: 20),
                               GestureDetector(
                                 onTap: () {
-                                  if (play == 1) {
-                                    playNote("tap.wav");
+                                  {
+                                    ;
                                   }
                                   _(() => _duration = 2);
                                 },
@@ -225,8 +225,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                               const SizedBox(width: 20),
                               GestureDetector(
                                 onTap: () {
-                                  if (play == 1) {
-                                    playNote("tap.wav");
+                                  {
+                                    ;
                                   }
                                   _(() => _duration = 3);
                                 },
@@ -329,8 +329,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () {
-                                  if (play == 1) {
-                                    playNote("tap.wav");
+                                  {
+                                    ;
                                   }
                                   _(() => _appointmentType = 1);
                                 },
@@ -348,8 +348,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                               const SizedBox(width: 20),
                               GestureDetector(
                                 onTap: () {
-                                  if (play == 1) {
-                                    playNote("tap.wav");
+                                  {
+                                    ;
                                   }
                                   _(() => _appointmentType = 2);
                                 },
@@ -406,8 +406,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () async {
-                      if (play == 1) {
-                        playNote("tap.wav");
+                      {
+                        ;
                       }
                       if (_step == 1) {
                         _pageController.animateToPage(1, duration: 400.ms, curve: Curves.linear);

@@ -98,9 +98,6 @@ class _ScreensState extends State<Screens> {
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
                           onTap: () {
-                            if (play == 1) {
-                              playNote("tap.wav");
-                            }
                             drawerScaffoldKey.currentState!.openDrawer();
                           },
                           child: Container(

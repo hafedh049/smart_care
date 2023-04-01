@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_time_ago/get_time_ago.dart';
 import 'package:smart_care/stuff/globals.dart';
 
 import '../stuff/classes.dart';
@@ -20,7 +21,7 @@ class Article extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(bottomRight: Radius.circular(25), bottomLeft: Radius.circular(35)),
-              image: DecorationImage(image: CachedNetworkImageProvider(article["image_url"]!), fit: BoxFit.cover),
+              image: DecorationImage(image: CachedNetworkImageProvider(article["urlToImage"]!), fit: BoxFit.cover),
             ),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -38,12 +39,12 @@ class Article extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(15)),
-                    child: CustomizedText(text: article["type"], color: white, fontSize: 14, fontWeight: FontWeight.bold),
+                    child: CustomizedText(text: article["topic"], color: white, fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
                   CustomizedText(text: article["title"], color: white, fontSize: 24, fontWeight: FontWeight.bold),
                   const SizedBox(height: 10),
-                  CustomizedText(text: "Trending ° ${DateTime.now().difference(article["timestamp"].toDate()).inHours} Hours ago", color: white, fontSize: 14),
+                  CustomizedText(text: "Trending >> ${GetTimeAgo.parse(DateTime.parse(article["publishedAt"]))}", color: white, fontSize: 14),
                   const SizedBox(height: 80),
                 ],
               ),
@@ -66,10 +67,10 @@ class Article extends StatelessWidget {
                             CircleAvatar(
                               radius: 20,
                               backgroundColor: grey.withOpacity(.2),
-                              backgroundImage: CachedNetworkImageProvider(article["channel_url"]),
+                              backgroundImage: CachedNetworkImageProvider(article["sourceUrl"]),
                             ),
                             const SizedBox(width: 10),
-                            CustomizedText(text: article["channel"], color: white, fontSize: 24, fontWeight: FontWeight.bold),
+                            CustomizedText(text: article["source"]["name"], color: white, fontSize: 24, fontWeight: FontWeight.bold),
                             const SizedBox(width: 10),
                             Stack(
                               alignment: AlignmentDirectional.center,
@@ -80,10 +81,31 @@ class Article extends StatelessWidget {
                             ),
                           ],
                         ),
+                        const SizedBox(height: 10),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            const CustomizedText(text: "Author", color: white, fontSize: 18, fontWeight: FontWeight.bold),
+                            const SizedBox(width: 10),
+                            Flexible(child: CustomizedText(text: '"${article["author"]}"', color: white, fontSize: 18, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
                         const SizedBox(height: 20),
                         Expanded(
                           child: SingleChildScrollView(
-                            child: CustomizedText(text: article["description"], color: white, fontSize: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                if (article["description"].isNotEmpty) const CustomizedText(text: "Description", color: white, fontSize: 16),
+                                if (article["description"].isNotEmpty) const SizedBox(height: 5),
+                                if (article["description"].isNotEmpty) CustomizedText(text: article["description"], color: white, fontSize: 16),
+                                if (article["description"].isNotEmpty) const SizedBox(height: 10),
+                                const CustomizedText(text: "Content", color: white, fontSize: 16),
+                                const SizedBox(height: 5),
+                                CustomizedText(text: article["content"], color: white, fontSize: 16),
+                              ],
+                            ),
                           ),
                         ),
                       ],

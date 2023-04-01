@@ -8,7 +8,6 @@ import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/stuff/globals.dart';
 
 import '../stuff/classes.dart';
-import '../stuff/functions.dart';
 
 class SmartSettings extends StatelessWidget {
   const SmartSettings({super.key});
@@ -26,9 +25,6 @@ class SmartSettings extends StatelessWidget {
             const SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-                if (play == 1) {
-                  playNote("tap.wav");
-                }
                 Navigator.pop(context);
               },
               child: Container(
@@ -45,9 +41,6 @@ class SmartSettings extends StatelessWidget {
             const SizedBox(height: 40),
             GestureDetector(
               onTap: () {
-                if (play == 1) {
-                  playNote("tap.wav");
-                }
                 Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Account()));
               },
               child: Row(
@@ -110,8 +103,8 @@ class SmartSettings extends StatelessWidget {
             const SizedBox(height: 40),
             GestureDetector(
               onTap: () {
-                if (play == 1) {
-                  playNote("tap.wav");
+                {
+                  ;
                 }
               },
               child: StatefulBuilder(builder: (BuildContext context, void Function(void Function()) _) {
@@ -148,8 +141,8 @@ class SmartSettings extends StatelessWidget {
             const SizedBox(height: 40),
             GestureDetector(
               onTap: () {
-                if (play == 1) {
-                  playNote("tap.wav");
+                {
+                  ;
                 }
               },
               child: Row(
@@ -177,8 +170,8 @@ class SmartSettings extends StatelessWidget {
             const SizedBox(height: 40),
             GestureDetector(
               onTap: () {
-                if (play == 1) {
-                  playNote("tap.wav");
+                {
+                  ;
                 }
               },
               child: Row(

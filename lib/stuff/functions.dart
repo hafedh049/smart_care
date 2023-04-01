@@ -1,11 +1,20 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+//import 'dart:io';
+
+//import 'package:ansi_styles/extension.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_care/stuff/article_modal_class.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -106,7 +115,7 @@ void playNote(String note) {
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
-      if (play == 1) {
+       {
         playNote("error.wav");
       }
       showToast("Location permissions are denied", color: red);
@@ -115,15 +124,71 @@ void playNote(String note) {
   }
 
   if (permission == LocationPermission.deniedForever) {
-    if (play == 1) {
+     {
       playNote("error.wav");
     }
     showToast("Location permissions are denied", color: red);
     return Future.error('Location permissions are permanently denied, we cannot request permissions.');
   }
-  if (play == 1) {
-    playNote("tap.wav");
+   {
+    ;
   }
   showToast("Permission granted");
   return await Geolocator.getCurrentPosition();
 }*/
+
+Future<void> userstoFirestore() async {
+  final List<dynamic> userData = json.decode(await rootBundle.loadString("assets/users_file.json"));
+  for (int index = 493; index < userData.length; index++) {
+    try {
+      if ((const <int>[520, 540, 560, 580]).contains(index)) {
+        /*if (Platform.isWindows) {
+        Process.runSync('cls', []);
+      } else {
+        Process.runSync('clear', []);
+      }*/
+        debugPrint("Paused");
+        await Future.delayed(3.minutes);
+      } else {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(email: userData[index]["email"], password: userData[index]["password"]).then(
+          (UserCredential userCredential) async {
+            userData[index].update("uid", (dynamic value) => userCredential.user!.uid.trim());
+            userData[index].update(
+              "date_of_birth",
+              (dynamic value) {
+                final List<dynamic> date = value.split("-").map((dynamic e) => int.parse(e)).toList();
+                return DateTime(date[0], date[1], date[2]);
+              },
+            );
+            debugPrint("Added");
+            await FirebaseFirestore.instance.collection("users").doc(userCredential.user!.uid.trim()).set(userData[index]);
+          },
+        );
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      debugPrint(index.toString());
+      //break;
+    }
+  }
+}
+
+Future<void> articlesToFirestore() async {
+  final List<dynamic> userData = json.decode(await rootBundle.loadString("assets/articles_file.json")); //.map((dynamic e) => ArticleModalClass.fromMap(e)).toList();
+  for (int index = 0; index < userData.length; index++) {
+    try {
+      if ((const <int>[20, 40, 80, 120, 160]).contains(index)) {
+        debugPrint("Paused");
+        await Future.delayed(3.minutes);
+      } else {
+        userData[index].update("author", (dynamic value) => value ?? "Unknown");
+        await FirebaseFirestore.instance.collection("articles").add(userData[index]);
+        debugPrint("Added" /*.bold.cyan*/);
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      debugPrint(index.toString());
+      break;
+    }
+  }
+}

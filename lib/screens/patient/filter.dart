@@ -53,8 +53,8 @@ class _FilterListState extends State<FilterList> {
                 padding: const EdgeInsets.only(left: 8, right: 8),
                 child: GestureDetector(
                   onTap: () {
-                    if (play == 1) {
-                      playNote("tap.wav");
+                    {
+                      ;
                     }
                     Navigator.pop(context);
                   },
@@ -78,8 +78,8 @@ class _FilterListState extends State<FilterList> {
                     visible: _showClearButton,
                     child: GestureDetector(
                       onTap: () => setS(() {
-                        if (play == 1) {
-                          playNote("tap.wav");
+                        {
+                          ;
                         }
                         _searchController.clear();
                         _showClearButton = false;
@@ -116,8 +116,8 @@ class _FilterListState extends State<FilterList> {
                               children: <Widget>[
                                 GestureDetector(
                                   onTap: () {
-                                    if (play == 1) {
-                                      playNote("tap.wav");
+                                    {
+                                      ;
                                     }
                                     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutDoctor(uid: doctorsList[index].get("uid"))));
                                   },

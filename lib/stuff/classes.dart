@@ -100,8 +100,8 @@ class GoogleAuth extends StatelessWidget {
       child: GestureDetector(
         onTap: () async {
           try {
-            if (play == 1) {
-              playNote("tap.wav");
+            {
+              ;
             }
             await GoogleSignIn().signIn().then((GoogleSignInAccount? googleAccount) async {
               if (googleAccount != null) {
@@ -154,8 +154,8 @@ class OTPAuth extends StatelessWidget {
     return Center(
       child: GestureDetector(
         onTap: () {
-          if (play == 1) {
-            playNote("tap.wav");
+          {
+            ;
           }
           Navigator.push(context, MaterialPageRoute(builder: (context) => const OTPView()));
         },
@@ -247,8 +247,8 @@ class HealthDrawer extends StatelessWidget {
             const SizedBox(height: 10),
             ListTile(
               onTap: () {
-                if (play == 1) {
-                  playNote("tap.wav");
+                {
+                  ;
                 }
                 Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Profile()));
               },
@@ -264,8 +264,8 @@ class HealthDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                if (play == 1) {
-                  playNote("tap.wav");
+                {
+                  ;
                 }
                 Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartSettings()));
               },
@@ -281,8 +281,8 @@ class HealthDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                if (play == 1) {
-                  playNote("tap.wav");
+                {
+                  ;
                 }
                 Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const AboutUs()));
               },
@@ -300,8 +300,8 @@ class HealthDrawer extends StatelessWidget {
             Container(width: 267, height: .1, color: white),
             ListTile(
               onTap: () {
-                if (play == 1) {
-                  playNote("tap.wav");
+                {
+                  ;
                 }
                 Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartChatBot()));
               },

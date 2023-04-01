@@ -84,8 +84,8 @@ class Home extends StatelessWidget {
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
-                  if (play == 1) {
-                    playNote("tap.wav");
+                  {
+                    ;
                   }
                   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const FilterList()));
                 },
@@ -191,8 +191,8 @@ class Home extends StatelessWidget {
                                   final QueryDocumentSnapshot<Map<String, dynamic>> firstAppointment = snapshot.data!.docs.first;
                                   return GestureDetector(
                                     onTap: () {
-                                      if (play == 1) {
-                                        playNote("tap.wav");
+                                      {
+                                        ;
                                       }
                                       Navigator.push(context, MaterialPageRoute(builder: (context) => Summary(data: firstAppointment.data())));
                                     },
@@ -264,8 +264,8 @@ class Home extends StatelessWidget {
                         const SizedBox(width: 10),
                         GestureDetector(
                           onTap: () {
-                            if (play == 1) {
-                              playNote("tap.wav");
+                            {
+                              ;
                             }
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const FilterList()));
                           },
