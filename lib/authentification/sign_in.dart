@@ -63,9 +63,6 @@ class _SignInState extends State<SignIn> {
                       const Spacer(),
                       GestureDetector(
                         onTap: () {
-                          {
-                            ;
-                          }
                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Recovery()));
                         },
                         child: Container(
@@ -136,9 +133,6 @@ class _SignInState extends State<SignIn> {
                   Center(
                     child: GestureDetector(
                       onTap: () {
-                        {
-                          ;
-                        }
                         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const SignUp()));
                       },
                       child: Container(

@@ -24,9 +24,6 @@ class Summary extends StatelessWidget {
             const SizedBox(height: 30),
             GestureDetector(
               onTap: () {
-                {
-                  ;
-                }
                 Navigator.pop(context);
               },
               child: Container(

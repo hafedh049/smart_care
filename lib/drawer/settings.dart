@@ -102,11 +102,7 @@ class SmartSettings extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             GestureDetector(
-              onTap: () {
-                {
-                  ;
-                }
-              },
+              onTap: () {},
               child: StatefulBuilder(builder: (BuildContext context, void Function(void Function()) _) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -140,11 +136,7 @@ class SmartSettings extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             GestureDetector(
-              onTap: () {
-                {
-                  ;
-                }
-              },
+              onTap: () {},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -169,11 +161,7 @@ class SmartSettings extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             GestureDetector(
-              onTap: () {
-                {
-                  ;
-                }
-              },
+              onTap: () {},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[

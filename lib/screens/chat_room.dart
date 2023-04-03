@@ -58,9 +58,6 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        {
-          ;
-        }
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(

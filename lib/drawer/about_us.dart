@@ -5,8 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
 
-import '../stuff/functions.dart';
-
 class AboutUs extends StatelessWidget {
   const AboutUs({super.key});
 
@@ -22,9 +20,6 @@ class AboutUs extends StatelessWidget {
             const SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-                {
-                  ;
-                }
                 Navigator.pop(context);
               },
               child: Container(

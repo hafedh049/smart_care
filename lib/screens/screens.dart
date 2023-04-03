@@ -15,7 +15,6 @@ import 'package:smart_care/screens/patient/workflow.dart' as patient_workflow;
 import 'package:smart_care/screens/admin/dashboard.dart' as admin_dashboard;
 import 'package:smart_care/stuff/classes.dart';
 
-import '../stuff/functions.dart';
 import '../stuff/globals.dart';
 
 class Screens extends StatefulWidget {

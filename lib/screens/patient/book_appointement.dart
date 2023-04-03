@@ -51,9 +51,6 @@ class _BookAppointmentState extends State<BookAppointment> {
             const SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-                {
-                  ;
-                }
                 Navigator.pop(context);
               },
               child: Container(
@@ -185,9 +182,6 @@ class _BookAppointmentState extends State<BookAppointment> {
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () {
-                                  {
-                                    ;
-                                  }
                                   _(() => _duration = 1);
                                 },
                                 child: AnimatedContainer(
@@ -205,9 +199,6 @@ class _BookAppointmentState extends State<BookAppointment> {
                               const SizedBox(width: 20),
                               GestureDetector(
                                 onTap: () {
-                                  {
-                                    ;
-                                  }
                                   _(() => _duration = 2);
                                 },
                                 child: AnimatedContainer(
@@ -225,9 +216,6 @@ class _BookAppointmentState extends State<BookAppointment> {
                               const SizedBox(width: 20),
                               GestureDetector(
                                 onTap: () {
-                                  {
-                                    ;
-                                  }
                                   _(() => _duration = 3);
                                 },
                                 child: AnimatedContainer(
@@ -329,9 +317,6 @@ class _BookAppointmentState extends State<BookAppointment> {
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () {
-                                  {
-                                    ;
-                                  }
                                   _(() => _appointmentType = 1);
                                 },
                                 child: AnimatedContainer(
@@ -348,9 +333,6 @@ class _BookAppointmentState extends State<BookAppointment> {
                               const SizedBox(width: 20),
                               GestureDetector(
                                 onTap: () {
-                                  {
-                                    ;
-                                  }
                                   _(() => _appointmentType = 2);
                                 },
                                 child: AnimatedContainer(
@@ -406,9 +388,6 @@ class _BookAppointmentState extends State<BookAppointment> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () async {
-                      {
-                        ;
-                      }
                       if (_step == 1) {
                         _pageController.animateToPage(1, duration: 400.ms, curve: Curves.linear);
                       } else {

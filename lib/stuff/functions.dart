@@ -14,7 +14,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smart_care/stuff/article_modal_class.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:sqflite/sqflite.dart';
 

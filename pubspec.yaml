@@ -69,6 +69,7 @@ dependencies:
   #ansicolor: ^2.0.1
   #widget_mask: ^1.0.0+0
   #printing: ^5.10.1
+  #beautiful_soup_dart 0.3.0 
 
 dev_dependencies:
   flutter_test:

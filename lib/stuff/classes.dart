@@ -100,9 +100,6 @@ class GoogleAuth extends StatelessWidget {
       child: GestureDetector(
         onTap: () async {
           try {
-            {
-              ;
-            }
             await GoogleSignIn().signIn().then((GoogleSignInAccount? googleAccount) async {
               if (googleAccount != null) {
                 List<String> signInMethods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(googleAccount.email);
@@ -154,9 +151,6 @@ class OTPAuth extends StatelessWidget {
     return Center(
       child: GestureDetector(
         onTap: () {
-          {
-            ;
-          }
           Navigator.push(context, MaterialPageRoute(builder: (context) => const OTPView()));
         },
         child: Container(
@@ -247,9 +241,6 @@ class HealthDrawer extends StatelessWidget {
             const SizedBox(height: 10),
             ListTile(
               onTap: () {
-                {
-                  ;
-                }
                 Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Profile()));
               },
               leading: Row(
@@ -264,9 +255,6 @@ class HealthDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                {
-                  ;
-                }
                 Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartSettings()));
               },
               leading: Row(
@@ -281,9 +269,6 @@ class HealthDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                {
-                  ;
-                }
                 Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const AboutUs()));
               },
               leading: Row(
@@ -300,9 +285,6 @@ class HealthDrawer extends StatelessWidget {
             Container(width: 267, height: .1, color: white),
             ListTile(
               onTap: () {
-                {
-                  ;
-                }
                 Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartChatBot()));
               },
               leading: Row(

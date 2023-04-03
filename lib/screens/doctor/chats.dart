@@ -34,9 +34,6 @@ class _ChatsState extends State<Chats> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        {
-          ;
-        }
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(

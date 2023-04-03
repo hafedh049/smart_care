@@ -8,7 +8,6 @@ import 'package:smart_care/screens/doctor/about_doctor.dart';
 import 'package:smart_care/stuff/globals.dart';
 
 import '../../stuff/classes.dart';
-import '../../stuff/functions.dart';
 
 class FilterList extends StatefulWidget {
   const FilterList({super.key});
@@ -53,9 +52,6 @@ class _FilterListState extends State<FilterList> {
                 padding: const EdgeInsets.only(left: 8, right: 8),
                 child: GestureDetector(
                   onTap: () {
-                    {
-                      ;
-                    }
                     Navigator.pop(context);
                   },
                   child: const Icon(FontAwesomeIcons.chevronLeft, size: 20),
@@ -78,9 +74,6 @@ class _FilterListState extends State<FilterList> {
                     visible: _showClearButton,
                     child: GestureDetector(
                       onTap: () => setS(() {
-                        {
-                          ;
-                        }
                         _searchController.clear();
                         _showClearButton = false;
                       }),
@@ -116,9 +109,6 @@ class _FilterListState extends State<FilterList> {
                               children: <Widget>[
                                 GestureDetector(
                                   onTap: () {
-                                    {
-                                      ;
-                                    }
                                     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutDoctor(uid: doctorsList[index].get("uid"))));
                                   },
                                   child: CircleAvatar(

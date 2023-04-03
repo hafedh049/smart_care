@@ -254,9 +254,6 @@ class AboutDoctor extends StatelessWidget {
                                   Expanded(
                                     child: GestureDetector(
                                       onTap: () async {
-                                        {
-                                          ;
-                                        }
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(

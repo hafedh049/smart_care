@@ -59,9 +59,6 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: GestureDetector(
                       onTap: () {
-                        {
-                          ;
-                        }
                         Navigator.pop(context);
                       },
                       child: const Icon(FontAwesomeIcons.chevronLeft, size: 20),
@@ -84,9 +81,6 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                         visible: _showClearButton,
                         child: GestureDetector(
                           onTap: () => setS(() {
-                            {
-                              ;
-                            }
                             _searchController.clear();
                             _showClearButton = false;
                           }),
@@ -131,9 +125,6 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                                                 const Spacer(),
                                                 GestureDetector(
                                                   onTap: () async {
-                                                    {
-                                                      ;
-                                                    }
                                                     await FirebaseFirestore.instance.collection("appointments").doc(appointmentList[index].id.trim()).delete().then((void value) => showToast("Appointment is Canceled."));
                                                   },
                                                   child: const Icon(Icons.delete, size: 20, color: white),

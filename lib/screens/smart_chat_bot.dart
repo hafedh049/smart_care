@@ -42,9 +42,6 @@ class _SmartChatBotState extends State<SmartChatBot> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        {
-          ;
-        }
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
@@ -76,9 +73,6 @@ class _SmartChatBotState extends State<SmartChatBot> {
           ],
           leading: CustomIcon(
             func: () {
-              {
-                ;
-              }
               Navigator.pop(context);
             },
             icon: FontAwesomeIcons.chevronLeft,
