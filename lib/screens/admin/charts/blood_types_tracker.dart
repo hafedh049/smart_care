@@ -39,7 +39,6 @@ class _BloodTypeTrackerState extends State<BloodTypeTracker> {
   void dispose() {
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]);
     _timer.cancel();
-    Future.delayed(500.ms);
     super.dispose();
   }
 

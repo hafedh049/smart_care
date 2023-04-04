@@ -5,6 +5,7 @@ import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChoicesBox extends StatelessWidget {
   const ChoicesBox({super.key});
@@ -37,7 +38,7 @@ class ChoicesBox extends StatelessWidget {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            const CustomizedText(text: "Continue As", fontSize: 25, color: blue, fontWeight: FontWeight.bold),
+                            CustomizedText(text: AppLocalizations.of(context)!.continueAs, fontSize: 25, color: blue, fontWeight: FontWeight.bold),
                             const SizedBox(height: 10),
                             for (int role = 0; role < roles.length; role++)
                               IgnorePointer(

@@ -11,6 +11,7 @@ import 'package:open_filex/open_filex.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../error/error_room.dart';
 import '../../stuff/classes.dart';
@@ -113,7 +114,7 @@ class _PatientFolderState extends State<PatientFolder> {
                                 children: [
                                   CustomizedText(text: widget.collection, fontSize: 16, fontWeight: FontWeight.bold, color: white),
                                   const Spacer(),
-                                  const CustomizedText(text: "( Empty )", fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                                  CustomizedText(text: "( ${AppLocalizations.of(context)!.empty} )", fontSize: 16, fontWeight: FontWeight.bold, color: white),
                                 ],
                               );
                             } else {
@@ -134,7 +135,7 @@ class _PatientFolderState extends State<PatientFolder> {
                                           });
                                           await OpenFilex.open(path);
                                         } catch (e) {
-                                          showToast('Error opening PDF: $e', color: red);
+                                          showToast(text: 'Error opening PDF: $e', color: red);
                                         }
                                       },
                                       child: Container(

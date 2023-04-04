@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:smart_care/screens/doctor/generate_prescription_template.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../stuff/classes.dart';
 import '../../stuff/globals.dart';
@@ -88,14 +91,14 @@ class _PrescriptionState extends State<Prescription> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        const Flexible(child: CustomizedText(text: "Describe the medical diagnosis", color: blue, fontSize: 18)),
+                        Flexible(child: CustomizedText(text: AppLocalizations.of(context)!.describethemedicaldiagnosis, color: blue, fontSize: 18)),
                         Expanded(
                           child: TextField(
                             focusNode: _diagnosisNode,
                             controller: _diagnosisController,
                             maxLines: 4,
                             decoration: InputDecoration(
-                              hintText: 'Diagnosis',
+                              hintText: AppLocalizations.of(context)!.diagnosis,
                               contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
                               border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(16.0)),
                               focusedBorder: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(16.0)),
@@ -108,11 +111,11 @@ class _PrescriptionState extends State<Prescription> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        const Flexible(child: CustomizedText(text: "What should the patient takes as medicaments?", color: blue, fontSize: 18)),
+                        Flexible(child: CustomizedText(text: AppLocalizations.of(context)!.whatshouldthepatienttakesasmedicaments, color: blue, fontSize: 18)),
                         TextField(
                           controller: _takesController,
                           decoration: InputDecoration(
-                            hintText: 'Take',
+                            hintText: AppLocalizations.of(context)!.take,
                             contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
                             border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(16.0)),
                             focusedBorder: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(16.0)),
@@ -124,19 +127,19 @@ class _PrescriptionState extends State<Prescription> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        const CustomizedText(text: "How many times?", color: blue, fontSize: 18),
+                        CustomizedText(text: AppLocalizations.of(context)!.howmanytimes, color: blue, fontSize: 18),
                         TextField(
                           controller: _timesController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            hintText: 'Times',
+                            hintText: AppLocalizations.of(context)!.times,
                             contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
                             border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(16.0)),
                             focusedBorder: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(16.0)),
                           ),
                         ),
                         const SizedBox(height: 10),
-                        const CustomizedText(text: "Per", color: blue, fontSize: 18),
+                        CustomizedText(text: AppLocalizations.of(context)!.per, color: blue, fontSize: 18),
                         const SizedBox(height: 20),
                         StatefulBuilder(builder: (BuildContext context, void Function(void Function()) _) {
                           return Row(
@@ -150,7 +153,7 @@ class _PrescriptionState extends State<Prescription> {
                                   duration: 500.ms,
                                   padding: const EdgeInsets.all(8.0),
                                   decoration: BoxDecoration(color: _perDay ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                                  child: Center(child: CustomizedText(text: "DAY", color: _perDay ? white : grey, fontSize: 16)),
+                                  child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.dAY, color: _perDay ? white : grey, fontSize: 16)),
                                 ),
                               ),
                               const SizedBox(width: 10),
@@ -163,7 +166,7 @@ class _PrescriptionState extends State<Prescription> {
                                   duration: 500.ms,
                                   padding: const EdgeInsets.all(8.0),
                                   decoration: BoxDecoration(color: _perWeek ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                                  child: Center(child: CustomizedText(text: "WEEK", color: _perWeek ? white : grey, fontSize: 16)),
+                                  child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.wEEK, color: _perWeek ? white : grey, fontSize: 16)),
                                 ),
                               ),
                             ],
@@ -175,7 +178,7 @@ class _PrescriptionState extends State<Prescription> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        const CustomizedText(text: "Days of the week", color: blue, fontSize: 18),
+                        CustomizedText(text: AppLocalizations.of(context)!.daysoftheweek, color: blue, fontSize: 18),
                         const SizedBox(height: 20),
                         StatefulBuilder(
                           builder: (BuildContext context, void Function(void Function()) _) {
@@ -204,7 +207,7 @@ class _PrescriptionState extends State<Prescription> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        const CustomizedText(text: "Frequency of the cure", color: blue, fontSize: 18),
+                        CustomizedText(text: AppLocalizations.of(context)!.frequencyofthecure, color: blue, fontSize: 18),
                         const SizedBox(height: 20),
                         StatefulBuilder(
                           builder: (BuildContext context, void Function(void Function()) _) {
@@ -249,7 +252,7 @@ class _PrescriptionState extends State<Prescription> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            const CustomizedText(text: "Doctor Name", color: grey, fontSize: 16),
+                            CustomizedText(text: AppLocalizations.of(context)!.doctorName, color: grey, fontSize: 16),
                             Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: CustomizedText(text: me["name"], color: grey, fontSize: 16)),
                           ],
                         ),
@@ -258,7 +261,7 @@ class _PrescriptionState extends State<Prescription> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            const CustomizedText(text: "Speciality", color: grey, fontSize: 16),
+                            CustomizedText(text: AppLocalizations.of(context)!.speciality, color: grey, fontSize: 16),
                             Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: me["speciality"], color: grey, fontSize: 16))),
                           ],
                         ),
@@ -267,7 +270,7 @@ class _PrescriptionState extends State<Prescription> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            const CustomizedText(text: "ID", color: grey, fontSize: 16),
+                            CustomizedText(text: AppLocalizations.of(context)!.iD, color: grey, fontSize: 16),
                             Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: CustomizedText(text: me["id"], color: grey, fontSize: 16)),
                           ],
                         ),
@@ -279,7 +282,7 @@ class _PrescriptionState extends State<Prescription> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                const CustomizedText(text: "S .No", color: grey, fontSize: 16),
+                                CustomizedText(text: AppLocalizations.of(context)!.sNo, color: grey, fontSize: 16),
                                 Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: CustomizedText(text: _serialNumber, color: grey, fontSize: 16)),
                               ],
                             ),
@@ -287,7 +290,7 @@ class _PrescriptionState extends State<Prescription> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                const CustomizedText(text: "Prescription Date", color: grey, fontSize: 16),
+                                CustomizedText(text: AppLocalizations.of(context)!.prescriptionDate, color: grey, fontSize: 16),
                                 Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: CustomizedText(text: "${DateTime.now().year} - ${DateTime.now().month} - ${DateTime.now().day}", color: grey, fontSize: 16)),
                               ],
                             ),
@@ -298,7 +301,7 @@ class _PrescriptionState extends State<Prescription> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            const CustomizedText(text: "Patient Name", color: grey, fontSize: 16),
+                            CustomizedText(text: AppLocalizations.of(context)!.patientName, color: grey, fontSize: 16),
                             Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: CustomizedText(text: snapshot.data!.get("name"), color: grey, fontSize: 16)),
                           ],
                         ),
@@ -310,7 +313,7 @@ class _PrescriptionState extends State<Prescription> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                const CustomizedText(text: "D.O.B", color: grey, fontSize: 16),
+                                CustomizedText(text: AppLocalizations.of(context)!.dOB, color: grey, fontSize: 16),
                                 Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: CustomizedText(text: "${snapshot.data!.get("date_of_birth").toDate().year} - ${snapshot.data!.get("date_of_birth").toDate().month} - ${snapshot.data!.get("date_of_birth").toDate().day}", color: grey, fontSize: 16)),
                               ],
                             ),
@@ -318,7 +321,7 @@ class _PrescriptionState extends State<Prescription> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                const CustomizedText(text: "Age", color: grey, fontSize: 16),
+                                CustomizedText(text: AppLocalizations.of(context)!.age, color: grey, fontSize: 16),
                                 Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: CustomizedText(text: (DateTime.now().difference(snapshot.data!.get("date_of_birth").toDate()).inDays ~/ 365).toString(), color: grey, fontSize: 16)),
                               ],
                             ),
@@ -326,8 +329,8 @@ class _PrescriptionState extends State<Prescription> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                const CustomizedText(text: "Gender", color: grey, fontSize: 16),
-                                Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: CustomizedText(text: snapshot.data!.get("gender") == "m" ? "Male" : "Female", color: grey, fontSize: 16)),
+                                CustomizedText(text: AppLocalizations.of(context)!.gender, color: grey, fontSize: 16),
+                                Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: CustomizedText(text: snapshot.data!.get("gender") == "m" ? AppLocalizations.of(context)!.male : AppLocalizations.of(context)!.female, color: grey, fontSize: 16)),
                               ],
                             ),
                           ],
@@ -363,41 +366,41 @@ class _PrescriptionState extends State<Prescription> {
                             width: 100,
                             padding: const EdgeInsets.all(8.0),
                             decoration: BoxDecoration(color: _page.round() != 0 ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                            child: const Center(child: CustomizedText(text: "PREV", color: white, fontSize: 16)),
+                            child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.pREV, color: white, fontSize: 16)),
                           ),
                         ),
                         GestureDetector(
                           onTap: () async {
                             if (_pageController.page!.toInt() == 0) {
                               if (_diagnosisController.text.trim().isEmpty) {
-                                showToast("Diagnosis field can't be empty");
+                                showToast(text: AppLocalizations.of(context)!.diagnosisFieldCantBeEmpty);
                               } else {
                                 await _pageController.nextPage(duration: 300.ms, curve: Curves.bounceIn);
                               }
                             } else if (_pageController.page!.toInt() == 1) {
                               if (_takesController.text.trim().isEmpty) {
-                                showToast("You should specify the treatment.");
+                                showToast(text: AppLocalizations.of(context)!.youshouldspecifythetreatment);
                               } else {
                                 await _pageController.nextPage(duration: 300.ms, curve: Curves.bounceIn);
                               }
                             } else if (_pageController.page!.toInt() == 2) {
                               if (_timesController.text.trim().isEmpty || <bool>[_perDay, _perWeek].every((element) => element == false)) {
-                                showToast("How many times the patient should takes the medecin and per week or day ?");
+                                showToast(text: AppLocalizations.of(context)!.howmanytimesthepatientshouldtakesthemedecinandperweekorday);
                               } else {
                                 await _pageController.nextPage(duration: 300.ms, curve: Curves.bounceIn);
                               }
                             } else if (_pageController.page!.toInt() == 3) {
                               if (_listOfDays.values.every((bool element) => element == false)) {
-                                showToast("Pick up at least one day");
+                                showToast(text: AppLocalizations.of(context)!.pickupatleastoneday);
                               } else {
                                 await _pageController.nextPage(duration: 300.ms, curve: Curves.bounceIn);
                               }
                             } else if (_pageController.page!.toInt() == 4) {
                               if (_frequecies.values.every((bool element) => element == false)) {
-                                showToast("At any period the patient should take medecine");
+                                showToast(text: AppLocalizations.of(context)!.atanyperiodthepatientshouldtakemedecine);
                               } else {
                                 try {
-                                  showToast("Printing...");
+                                  showToast(text: AppLocalizations.of(context)!.printing);
                                   pw.Document pdfDoc = pw.Document();
                                   pdfDoc.addPage(pw.Page(
                                       build: (pw.Context context) => PrescriptionTemplate(patientData: <String, dynamic>{
@@ -421,8 +424,8 @@ class _PrescriptionState extends State<Prescription> {
                                   final file = File("${output!.path}/$_serialNumber.pdf");
                                   await file.writeAsBytes(await pdfDoc.save());
 
-                                  await FirebaseStorage.instance.ref().child("prescriptions/").putFile(file).then((TaskSnapshot taskSnapshot) async {
-                                    showToast("Prescription Uploaded");
+                                  await FirebaseStorage.instance.ref().child("prescriptions/${_patientData['uid']}/${DateTime.now()}").putFile(file).then((TaskSnapshot taskSnapshot) async {
+                                    showToast(text: "Prescription Uploaded");
                                     await FirebaseFirestore.instance.collection("prescriptions").add({
                                       "doctorID": me["uid"],
                                       "doctorName": me["name"],
@@ -433,9 +436,9 @@ class _PrescriptionState extends State<Prescription> {
                                       "timestamp": DateTime.now(),
                                     }).then((void value) async => await OpenFilex.open(file.path));
                                   });
-                                  showToast("Printing...");
+                                  showToast(text: AppLocalizations.of(context)!.printing);
                                 } catch (_) {
-                                  showToast(_.toString(), color: red);
+                                  showToast(text: _.toString(), color: red);
                                 }
                               }
                             }
@@ -446,7 +449,7 @@ class _PrescriptionState extends State<Prescription> {
                             width: 100,
                             padding: const EdgeInsets.all(8.0),
                             decoration: BoxDecoration(color: _page.round() < 4 ? blue : green.withOpacity(.7), borderRadius: BorderRadius.circular(5)),
-                            child: Center(child: CustomizedText(text: _page.round() < 4 ? "NEXT" : "Print", color: white, fontSize: 16)),
+                            child: Center(child: CustomizedText(text: _page.round() < 4 ? AppLocalizations.of(context)!.next : AppLocalizations.of(context)!.print, color: white, fontSize: 16)),
                           ),
                         ),
                       ],

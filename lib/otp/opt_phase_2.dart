@@ -65,9 +65,9 @@ class _OTPState extends State<OTP> {
                 Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
                 Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
                 const SizedBox(height: 40),
-                CustomizedText(text: AppLocalizations.of(context)!.wait_for, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                CustomizedText(text: AppLocalizations.of(context)!.sms_notification, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                CustomizedText(text: AppLocalizations.of(context)!.the_pin_fields, fontSize: 16).animate().fadeIn(duration: 500.ms),
+                CustomizedText(text: AppLocalizations.of(context)!.waitFor, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                CustomizedText(text: AppLocalizations.of(context)!.sMSNotification, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                CustomizedText(text: AppLocalizations.of(context)!.thepinfieldswillautomaticallybefilledwhensmsisintercepted, fontSize: 16).animate().fadeIn(duration: 500.ms),
                 const SizedBox(height: 40),
                 IgnorePointer(
                   ignoring: true,
@@ -108,7 +108,7 @@ class _OTPState extends State<OTP> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Visibility(visible: !wait, child: const Spacer()),
-                                CustomizedText(text: wait ? AppLocalizations.of(context)!.signing_in : AppLocalizations.of(context)!.sign_in, color: black, fontWeight: FontWeight.bold, fontSize: 20),
+                                CustomizedText(text: wait ? "Signing-In ..." : "Sign-In", color: black, fontWeight: FontWeight.bold, fontSize: 20),
                                 Visibility(visible: !wait, child: const Spacer()),
                                 Visibility(visible: !wait, child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: black)),
                               ],

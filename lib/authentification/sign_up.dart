@@ -94,7 +94,7 @@ class _SignUpState extends State<SignUp> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.sign_up, color: blue, fontWeight: FontWeight.bold),
+                          CustomizedText(text: AppLocalizations.of(context)!.signUp, color: blue, fontWeight: FontWeight.bold),
                           CustomizedText(text: AppLocalizations.of(context)!.form, fontWeight: FontWeight.bold),
                         ],
                       ),
@@ -196,34 +196,34 @@ class _SignUpState extends State<SignUp> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const CustomizedText(text: "What is your name?", color: white, fontSize: 18),
+                          CustomizedText(text: AppLocalizations.of(context)!.whatisyourname, color: white, fontSize: 18),
                           const SizedBox(height: 20),
-                          CustomTextField(validator: fieldsValidatorsFunction("username", context), controller: _usernameController, hint: AppLocalizations.of(context)!.username, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name),
+                          CustomTextField(validator: fieldsValidatorsFunction("username", context), controller: _usernameController, hint: AppLocalizations.of(context)!.name, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name),
                         ],
                       ),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const CustomizedText(text: "Can you provide me with your employee ID or matricule?", color: white, fontSize: 18),
+                          CustomizedText(text: AppLocalizations.of(context)!.canyouprovidemewithyouremployeeIDormatricule, color: white, fontSize: 18),
                           const SizedBox(height: 20),
-                          CustomTextField(validator: fieldsValidatorsFunction("id", context), controller: _idController, hint: AppLocalizations.of(context)!.id, prefix: FontAwesomeIcons.userSecret),
+                          CustomTextField(validator: fieldsValidatorsFunction("id", context), controller: _idController, hint: AppLocalizations.of(context)!.iD, prefix: FontAwesomeIcons.userSecret),
                         ],
                       ),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const CustomizedText(text: "Would you mind sharing your email address with me?", color: white, fontSize: 18),
+                          CustomizedText(text: AppLocalizations.of(context)!.wouldyoumindsharingyouremailaddresswithme, color: white, fontSize: 18),
                           const SizedBox(height: 20),
-                          CustomTextField(validator: fieldsValidatorsFunction("email", context), controller: _emailController, hint: AppLocalizations.of(context)!.e_mail, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
+                          CustomTextField(validator: fieldsValidatorsFunction("email", context), controller: _emailController, hint: AppLocalizations.of(context)!.email, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
                         ],
                       ),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const CustomizedText(text: "You will need to set up a password for your account.", color: white, fontSize: 18),
+                          CustomizedText(text: AppLocalizations.of(context)!.youwillneedtosetupapasswordforyouraccount, color: white, fontSize: 18),
                           const SizedBox(height: 20),
                           CustomTextField(func: (String text) => _passwordStrenghtKey.currentState!.setState(() {}), validator: fieldsValidatorsFunction("password", context), controller: _passwordController, hint: AppLocalizations.of(context)!.password, prefix: FontAwesomeIcons.lock, obscured: true),
                           const SizedBox(height: 10),
@@ -238,11 +238,11 @@ class _SignUpState extends State<SignUp> {
                                         300.ms,
                                         () => _passwordStrenghtTextKey.currentState!.setState(() {
                                               if (strength >= 0 && strength < .2) {
-                                                _text = "Weak";
+                                                _text = AppLocalizations.of(context)!.weak;
                                               } else if (strength > .2 && strength < .8) {
-                                                _text = "Medium";
+                                                _text = AppLocalizations.of(context)!.medium;
                                               } else {
-                                                _text = "Strong";
+                                                _text = AppLocalizations.of(context)!.strong;
                                               }
                                             }));
                                   },
@@ -265,7 +265,7 @@ class _SignUpState extends State<SignUp> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const CustomizedText(text: "May I have your phone number, please?", color: white, fontSize: 18),
+                          CustomizedText(text: AppLocalizations.of(context)!.mayIhaveyourphonenumberplease, color: white, fontSize: 18),
                           const SizedBox(height: 20),
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
@@ -281,7 +281,7 @@ class _SignUpState extends State<SignUp> {
                               focusNode: _phoneNode,
                               cursorColor: blue,
                               initialValue: PhoneNumber(isoCode: "TN", dialCode: "+216"),
-                              errorMessage: AppLocalizations.of(context)!.not_valid_number,
+                              errorMessage: AppLocalizations.of(context)!.notAValidNumber,
                               inputBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
                               onInputChanged: (PhoneNumber value) {
                                 _countryCode = value.dialCode!;
@@ -294,7 +294,7 @@ class _SignUpState extends State<SignUp> {
                               onInputValidated: (bool value) => value ? _phoneNode.unfocus() : null,
                               selectorConfig: const SelectorConfig(leadingPadding: 8.0, selectorType: PhoneInputSelectorType.BOTTOM_SHEET, trailingSpace: false, useEmoji: true, setSelectorButtonAsPrefixIcon: true),
                               inputDecoration: InputDecoration(
-                                labelText: AppLocalizations.of(context)!.phone_number,
+                                labelText: AppLocalizations.of(context)!.phoneNumber,
                                 labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
                                 prefix: const Padding(padding: EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.phone, size: 15, color: blue)),
                                 enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
@@ -310,12 +310,12 @@ class _SignUpState extends State<SignUp> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const CustomizedText(text: "Please select your role from the following options.", color: white, fontSize: 18),
+                              CustomizedText(text: AppLocalizations.of(context)!.pleaseselectyourrolefromthefollowingoptions, color: white, fontSize: 18),
                               const SizedBox(height: 40),
                               CheckboxListTile(
                                 activeColor: blue,
                                 value: _rolesList[0],
-                                title: const CustomizedText(text: "Doctor", fontSize: 16, color: white),
+                                title: CustomizedText(text: AppLocalizations.of(context)!.doctor, fontSize: 16, color: white),
                                 onChanged: (bool? value) {
                                   setState(() {
                                     if (!_rolesList[0]) {
@@ -330,7 +330,7 @@ class _SignUpState extends State<SignUp> {
                               CheckboxListTile(
                                 activeColor: blue,
                                 value: _rolesList[1],
-                                title: const CustomizedText(text: "Patient", fontSize: 16, color: white),
+                                title: CustomizedText(text: AppLocalizations.of(context)!.patient, fontSize: 16, color: white),
                                 onChanged: (bool? value) {
                                   setState(() {
                                     if (!_rolesList[1]) {
@@ -376,13 +376,13 @@ class _SignUpState extends State<SignUp> {
                                 try {
                                   if (_rolesList.any((bool element) => element == true)) {
                                     await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential userCredential) async {
-                                      showToast(AppLocalizations.of(context)!.account_created);
+                                      showToast(text: AppLocalizations.of(context)!.accountCreated);
                                       String profilePictureUrl = noUser;
                                       if (_profilePicture != null) {
                                         await FirebaseStorage.instance.ref().child("profile_pictures/${userCredential.user!.uid}").putFile(_profilePicture!).then((TaskSnapshot task) async {
                                           profilePictureUrl = await task.ref.getDownloadURL();
                                         });
-                                        showToast("Picture Uploaded");
+                                        showToast(text: AppLocalizations.of(context)!.pictureUploaded);
                                       }
                                       //final Position position = await determinePosition();
                                       await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).set({
@@ -409,7 +409,7 @@ class _SignUpState extends State<SignUp> {
                                         "about": "",
                                         "geolocation": [0, 0 /*position.longitude, position.latitude, position.altitude*/],
                                       }).then((void value) async {
-                                        showToast("Data Stored");
+                                        showToast(text: AppLocalizations.of(context)!.dataStored);
                                         // Obtain the Google sign-in credentials
                                         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
                                         final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
@@ -417,10 +417,10 @@ class _SignUpState extends State<SignUp> {
                                           accessToken: googleAuth.accessToken,
                                           idToken: googleAuth.idToken,
                                         );
-                                        showToast("Signed With Google");
+                                        showToast(text: AppLocalizations.of(context)!.signedWithGoogle);
                                         // Link the email/password account with the Google account
                                         await userCredential.user!.linkWithCredential(googleCredential);
-                                        showToast("Account Linked With Google");
+                                        showToast(text: AppLocalizations.of(context)!.accountLinkedWithGoogle);
 
                                         await FirebaseAuth.instance.verifyPhoneNumber(
                                           forceResendingToken: 1,
@@ -435,12 +435,12 @@ class _SignUpState extends State<SignUp> {
                                                 String sms = clipboard.text!;
                                                 PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: sms);
                                                 await userCredential.user!.linkWithCredential(credential);
-                                                showToast("Account Linked With Phone Number");
+                                                showToast(text: AppLocalizations.of(context)!.accountLinkedWithPhoneNumber);
                                               }
                                             });
                                             ClipboardListener.removeListener(() {});
                                             await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
-                                              showToast("Signed-In Using E-mail & Password");
+                                              showToast(text: AppLocalizations.of(context)!.signedInUsingEmailPassword);
                                               await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true}).then((void value) async {
                                                 await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
                                               });
@@ -451,11 +451,11 @@ class _SignUpState extends State<SignUp> {
                                       });
                                     });
                                   } else {
-                                    showToast(AppLocalizations.of(context)!.verify_fields_please);
+                                    showToast(text: AppLocalizations.of(context)!.verifyfieldsplease);
                                   }
                                 } catch (_) {
                                   setS(() => _next = false);
-                                  showToast(_.toString());
+                                  showToast(text: _.toString());
                                 }
                               },
                         child: AnimatedContainer(
@@ -469,7 +469,7 @@ class _SignUpState extends State<SignUp> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 const Spacer(),
-                                CustomizedText(text: _next ? "Continue" : AppLocalizations.of(context)!.sign_in, color: black, fontWeight: FontWeight.bold, fontSize: 20),
+                                CustomizedText(text: _next ? "Continue" : "Sign-In", color: black, fontWeight: FontWeight.bold, fontSize: 20),
                                 const Spacer(),
                                 const Icon(FontAwesomeIcons.chevronRight, size: 15, color: black),
                               ],
@@ -512,11 +512,11 @@ class _SignUpState extends State<SignUp> {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
-                                Icon(FontAwesomeIcons.chevronLeft, size: 15, color: black),
-                                Spacer(),
-                                CustomizedText(text: "Back", color: black, fontWeight: FontWeight.bold, fontSize: 20),
-                                Spacer(),
+                              children: <Widget>[
+                                const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: black),
+                                const Spacer(),
+                                CustomizedText(text: AppLocalizations.of(context)!.back, color: black, fontWeight: FontWeight.bold, fontSize: 20),
+                                const Spacer(),
                               ],
                             ),
                           ),

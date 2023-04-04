@@ -7,6 +7,7 @@ import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/patient/historic.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PatientProfile extends StatelessWidget {
   const PatientProfile({super.key});
@@ -92,7 +93,7 @@ class PatientProfile extends StatelessWidget {
                           children: <Widget>[
                             const Icon(Icons.numbers, size: 15, color: blue),
                             const SizedBox(width: 10),
-                            CustomizedText(text: 'Age ( ${DateTime.now().difference(snapshot.data!.get("date_of_birth").toDate()).inDays ~/ 365} )', fontSize: 14, color: white.withOpacity(.8)),
+                            CustomizedText(text: "Age ( ${DateTime.now().difference(snapshot.data!.get('date_of_birth').toDate()).inDays ~/ 365} )", fontSize: 14, color: white.withOpacity(.8)),
                           ],
                         ),
                         const SizedBox(height: 10),
@@ -120,7 +121,7 @@ class PatientProfile extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 20),
-                        const CustomizedText(text: "About", fontSize: 20, fontWeight: FontWeight.bold, color: white),
+                        CustomizedText(text: AppLocalizations.of(context)!.about, fontSize: 20, fontWeight: FontWeight.bold, color: white),
                         const SizedBox(height: 10),
                         Expanded(
                           child: SingleChildScrollView(
@@ -138,7 +139,7 @@ class PatientProfile extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             height: 60,
                             width: MediaQuery.of(context).size.width,
-                            child: const Center(child: CustomizedText(text: "View your history", color: white, fontSize: 18, fontWeight: FontWeight.bold)),
+                            child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.viewyourhistory, color: white, fontSize: 18, fontWeight: FontWeight.bold)),
                           ),
                         ),
                         const SizedBox(height: 20),

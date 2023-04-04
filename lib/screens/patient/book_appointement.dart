@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../stuff/classes.dart';
 import '../../stuff/functions.dart';
@@ -61,12 +62,12 @@ class _BookAppointmentState extends State<BookAppointment> {
               ),
             ),
             const SizedBox(height: 10),
-            const CustomizedText(text: "Add Schedule", fontSize: 30, fontWeight: FontWeight.bold, color: white),
+            CustomizedText(text: AppLocalizations.of(context)!.addSchedule, fontSize: 30, fontWeight: FontWeight.bold, color: white),
             const SizedBox(height: 30),
             StatefulBuilder(
               key: _stepKey,
               builder: (BuildContext context, void Function(void Function()) _) {
-                return CustomizedText(text: "Step $_step : 2", fontSize: 18, color: blue, fontWeight: FontWeight.bold);
+                return CustomizedText(text: "${AppLocalizations.of(context)!.step} $_step : 2", fontSize: 18, color: blue, fontWeight: FontWeight.bold);
               },
             ),
             const SizedBox(height: 40),
@@ -85,9 +86,9 @@ class _BookAppointmentState extends State<BookAppointment> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const CustomizedText(text: "Select Time", fontSize: 18, color: white, fontWeight: FontWeight.bold),
+                      CustomizedText(text: AppLocalizations.of(context)!.selectTime, fontSize: 18, color: white, fontWeight: FontWeight.bold),
                       const SizedBox(height: 40),
-                      const CustomizedText(text: "Start", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                      CustomizedText(text: AppLocalizations.of(context)!.start, fontSize: 16, color: white, fontWeight: FontWeight.bold),
                       const SizedBox(height: 20),
                       StatefulBuilder(
                         builder: (context, void Function(void Function()) _) {
@@ -105,9 +106,9 @@ class _BookAppointmentState extends State<BookAppointment> {
                                   blurredBackground: true,
                                   elevation: 0,
                                   iosStylePicker: true,
-                                  hourLabel: "Hour",
-                                  minuteLabel: "Minute",
-                                  okText: "OK",
+                                  hourLabel: AppLocalizations.of(context)!.hour,
+                                  minuteLabel: AppLocalizations.of(context)!.minutes,
+                                  okText: AppLocalizations.of(context)!.ok,
                                 ),
                               );
                             },
@@ -174,7 +175,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                         },
                       ),
                       const SizedBox(height: 20),
-                      const CustomizedText(text: "Duration", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                      CustomizedText(text: AppLocalizations.of(context)!.duration, fontSize: 16, color: white, fontWeight: FontWeight.bold),
                       const SizedBox(height: 20),
                       StatefulBuilder(
                         builder: (context, void Function(void Function()) _) {
@@ -239,7 +240,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const CustomizedText(text: "Select Date", fontSize: 18, color: white, fontWeight: FontWeight.bold),
+                      CustomizedText(text: AppLocalizations.of(context)!.selectDate, fontSize: 18, color: white, fontWeight: FontWeight.bold),
                       const SizedBox(height: 40),
                       StatefulBuilder(
                         builder: (context, void Function(void Function()) _) {
@@ -309,7 +310,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                         },
                       ),
                       const SizedBox(height: 60),
-                      const CustomizedText(text: "Appointment Type", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                      CustomizedText(text: AppLocalizations.of(context)!.appointmentType, fontSize: 16, color: white, fontWeight: FontWeight.bold),
                       const SizedBox(height: 40),
                       StatefulBuilder(
                         builder: (context, void Function(void Function()) _) {
@@ -327,7 +328,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                     color: _appointmentType == 1 ? blue : grey.withOpacity(.2),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: const Center(child: CustomizedText(text: "Online", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
+                                  child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.online, fontWeight: FontWeight.bold, fontSize: 16, color: white)),
                                 ),
                               ),
                               const SizedBox(width: 20),
@@ -343,7 +344,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                     color: _appointmentType == 2 ? blue : grey.withOpacity(.2),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: const Center(child: CustomizedText(text: "In Person", fontWeight: FontWeight.bold, fontSize: 16, color: white)),
+                                  child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.inPerson, fontWeight: FontWeight.bold, fontSize: 16, color: white)),
                                 ),
                               ),
                             ],
@@ -408,7 +409,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                             'workLocation': widget.workLocation,
                           },
                         ).then((value) async {
-                          showToast("Appointment Booked");
+                          showToast(text: AppLocalizations.of(context)!.appointmentBooked);
                           Navigator.pop(context);
                           Navigator.pop(context);
                           Navigator.pop(context);
@@ -426,7 +427,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                           StatefulBuilder(
                             key: _navigationKey,
                             builder: (BuildContext context, void Function(void Function()) _) {
-                              return CustomizedText(text: _step == 1 ? "Next" : "Book Appointement", color: darkBlue, fontSize: 17, fontWeight: FontWeight.bold);
+                              return CustomizedText(text: _step == 1 ? AppLocalizations.of(context)!.next : AppLocalizations.of(context)!.bookanAppointment, color: darkBlue, fontSize: 17, fontWeight: FontWeight.bold);
                             },
                           ),
                         ],
@@ -436,9 +437,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                 ),
               ],
             ),
-            LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints boxConstraints) => MediaQuery.of(context).padding.bottom > 0 ? const SizedBox(height: 40) : const SizedBox(),
-            ),
+            LayoutBuilder(builder: (BuildContext context, BoxConstraints boxConstraints) => MediaQuery.of(context).padding.bottom > 0 ? const SizedBox(height: 40) : const SizedBox()),
           ],
         ),
       ),

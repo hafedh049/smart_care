@@ -15,37 +15,9 @@
     "@account": {
         "description": "Account"
     },
-    "weak": "Weak",
-    "@weak": {
-        "description": "Weak"
-    },
-    "medium": "Medium",
-    "@medium": {
-        "description": "Medium"
-    },
-    "strong": "Strong",
-    "@strong": {
-        "description": "Strong"
-    },
-    "enabled": "Enabled",
-    "@enabled": {
-        "description": "Enabled"
-    },
-    "disabled": "Disabled",
-    "@disabled": {
-        "description": "Disabled"
-    },
     "recovery": "Recovery",
     "@recovery": {
         "description": "Recovery"
-    },
-    "pickYourBirthday": "Pick Your Birthdate",
-    "@pickYourBirthday": {
-        "description": "Pick Your Birthdate"
-    },
-    "notAValidNumber": "Not A Valid Number",
-    "@notAValidNumber": {
-        "description": "Not A Valid Number"
     },
     "aftercontinuingyouwillrecieveamailthatcontainsalinktorecoveryouraccountintheinbox": "After continuing you will recieve a mail that contains a link to recover your account in the inbox",
     "@aftercontinuingyouwillrecieveamailthatcontainsalinktorecoveryouraccountintheinbox": {
@@ -271,25 +243,9 @@
     "@sounds": {
         "description": "Sounds"
     },
-    "done": "Done",
-    "@done": {
-        "description": "Done"
-    },
     "darkMode": "Dark Mode",
     "@darkMode": {
         "description": "Dark Mode"
-    },
-    "sendEmail": "Send E-mail",
-    "@sendEmail": {
-        "description": "Send E-mail"
-    },
-    "connecting___": "Connecting ...",
-    "@connecting___": {
-        "description": "Connecting ..."
-    },
-    "signIn": "Sign-In",
-    "@signIn": {
-        "description": "Sign-In"
     },
     "on": "On",
     "@on": {
@@ -311,37 +267,9 @@
     "@specializedhealthcareonasingletechplatformsimplifyingaccesstoanyoneanywhere": {
         "description": "Specialized healthcare, on a single tech platform, simplifying access to anyone, anywhere."
     },
-    "continue_": "Continue",
-    "@continue_": {
+    "continue": "Continue",
+    "@continue": {
         "description": "Continue"
-    },
-    "empty": "Empty",
-    "@empty": {
-        "description": "Empty"
-    },
-    "diagnosis": "Diagnosis",
-    "@diagnosis": {
-        "description": "Diagnosis"
-    },
-    "prescriptions": "Prescriptions",
-    "@prescriptions": {
-        "description": "Continue"
-    },
-    "bloodTests": "Blood Tests",
-    "@bloodTests": {
-        "description": "Blood Tests"
-    },
-    "sending": "Sending ...",
-    "@sending": {
-        "description": "Sending ..."
-    },
-    "searchForADoctor": "Search for a doctor",
-    "@searchForADoctor": {
-        "description": "Search for a doctor"
-    },
-    "sendSms": "SEND SMS",
-    "@sendSms": {
-        "description": "SEND SMS"
     },
     "getStarted": "Get Started",
     "@getStarted": {
@@ -355,9 +283,9 @@
     "@sMSNotification": {
         "description": "SMS Notification."
     },
-    "thepinfieldswillautomaticallybefilledwhensmsisintercepted": "The pin fields will automatically be filled when sms is intercepted.",
-    "@thepinfieldswillautomaticallybefilledwhensmsisintercepted": {
-        "description": "The pin fields will automatically be filled when sms is intercepted."
+    "hepinfieldswillautomaticallybefilledwhensmsisintercepted": "he pin fields will automatically be filled when sms is intercepted.",
+    "@hepinfieldswillautomaticallybefilledwhensmsisintercepted": {
+        "description": "he pin fields will automatically be filled when sms is intercepted."
     },
     "oTPRecovery": "OTP Recovery",
     "@oTPRecovery": {
@@ -599,86 +527,6 @@
     "@sNo": {
         "description": "S .No"
     },
-    "surgeonsAndSurgicalAssistants": "Surgeons and surgical assistants",
-    "@surgeonsAndSurgicalAssistants": {
-        "description": "Surgeons and surgical assistants"
-    },
-    "surgeonsAndSurgicalAssistantsDescription": "Surgeons are specialized medical doctors who perform invasive procedures to treat injuries and diseases. Surgical assistants work under the surgeon's direction to support various aspects of the surgical procedure. Their tasks include preparing the operating room, positioning the patient, handing surgical instruments to the surgeon, and providing other support services.",
-    "@surgeonsAndSurgicalAssistantsDescription": {
-        "description": "Surgeons are specialized medical doctors who perform invasive procedures to treat injuries and diseases. Surgical assistants work under the surgeon's direction to support various aspects of the surgical procedure. Their tasks include preparing the operating room, positioning the patient, handing surgical instruments to the surgeon, and providing other support services."
-    },
-    "anesthesiologistsAndAnesthesiologyAssistants": "Anesthesiologists and anesthesiology assistants",
-    "@anesthesiologistsAndAnesthesiologyAssistants": {
-        "description": "Anesthesiologists and anesthesiology assistants"
-    },
-    "anesthesiologistsAndAnesthesiologyAssistantsDescription": "Anesthesiologists are medical doctors who specialize in administering anesthesia to patients during surgical or medical procedures. They are responsible for monitoring the patient's vital signs and adjusting the anesthesia as needed during the procedure. Anesthesiology assistants are healthcare professionals who work under the supervision of anesthesiologists to assist in administering anesthesia and monitoring patients.",
-    "@anesthesiologistsAndAnesthesiologyAssistantsDescription": {
-        "description": "Anesthesiologists are medical doctors who specialize in administering anesthesia to patients during surgical or medical procedures. They are responsible for monitoring the patient's vital signs and adjusting the anesthesia as needed during the procedure. Anesthesiology assistants are healthcare professionals who work under the supervision of anesthesiologists to assist in administering anesthesia and monitoring patients."
-    },
-    "nursesAndNursePractitioners": "Nurses and nurse practitioners",
-    "@nursesAndNursePractitioners": {
-        "description": "Nurses and nurse practitioners"
-    },
-    "nursesAndNursePractitionersDescription": "Nurses are healthcare professionals who are responsible for providing care and support to patients in a variety of settings, such as hospitals, clinics, nursing homes, and community health centers. They work under the direction of physicians and other healthcare professionals to assess, diagnose, and treat patients.",
-    "@nursesAndNursePractitionersDescription": {
-        "description": "Nurses are healthcare professionals who are responsible for providing care and support to patients in a variety of settings, such as hospitals, clinics, nursing homes, and community health centers. They work under the direction of physicians and other healthcare professionals to assess, diagnose, and treat patients."
-    },
-    "phlebotomists": "Phlebotomists",
-    "@phlebotomists": {
-        "description": "Phlebotomists"
-    },
-    "phlebotomistsDescription": "Phlebotomists are healthcare professionals who specialize in drawing blood from patients for medical testing and donation. They are responsible for properly identifying patients, selecting appropriate venipuncture sites, collecting blood specimens, labeling samples, and transporting them to the laboratory for analysis. Phlebotomists may work in hospitals, clinics, blood banks, or other healthcare settings.",
-    "@phlebotomistsDescription": {
-        "description": "Phlebotomists are healthcare professionals who specialize in drawing blood from patients for medical testing and donation. They are responsible for properly identifying patients, selecting appropriate venipuncture sites, collecting blood specimens, labeling samples, and transporting them to the laboratory for analysis. Phlebotomists may work in hospitals, clinics, blood banks, or other healthcare settings."
-    },
-    "medicalLaboratoryTechniciansAndTechnologists": "Medical laboratory technicians and technologists",
-    "@medicalLaboratoryTechniciansAndTechnologists": {
-        "description": "Medical laboratory technicians and technologists"
-    },
-    "medicalLaboratoryTechniciansAndTechnologistsDescription": "Medical laboratory technicians and technologists are healthcare professionals who perform laboratory tests and analyze results to diagnose and treat diseases. They are responsible for preparing and analyzing specimens such as blood, urine, tissue, and other bodily fluids, and for operating and maintaining laboratory equipment. Medical laboratory technicians typically have a two-year associate degree, while medical laboratory technologists usually have a four-year bachelor's degree in medical technology or a related field.",
-    "@medicalLaboratoryTechniciansAndTechnologistsDescription": {
-        "description": "Medical laboratory technicians and technologists are healthcare professionals who perform laboratory tests and analyze results to diagnose and treat diseases. They are responsible for preparing and analyzing specimens such as blood, urine, tissue, and other bodily fluids, and for operating and maintaining laboratory equipment. Medical laboratory technicians typically have a two-year associate degree, while medical laboratory technologists usually have a four-year bachelor's degree in medical technology or a related field.."
-    },
-    "eMTsAndParamedics": "EMTs and paramedics",
-    "@eMTsAndParamedics": {
-        "description": "EMTs and paramedics"
-    },
-    "eMTsAndParamedicsDescription": "EMTs (Emergency Medical Technicians) and paramedics are healthcare professionals who respond to emergency situations and provide medical care and transportation to patients in need. EMTs and paramedics are trained to provide basic life support (BLS) and advanced life support (ALS) interventions such as administering medications, performing CPR, and using defibrillators. They may work for ambulance services, fire departments, or hospitals.",
-    "@eMTsAndParamedicsDescription": {
-        "description": "EMTs (Emergency Medical Technicians) and paramedics are healthcare professionals who respond to emergency situations and provide medical care and transportation to patients in need. EMTs and paramedics are trained to provide basic life support (BLS) and advanced life support (ALS) interventions such as administering medications, performing CPR, and using defibrillators. They may work for ambulance services, fire departments, or hospitals."
-    },
-    "dentistsAndDentalHygienists": "Dentists and dental hygienists",
-    "@dentistsAndDentalHygienists": {
-        "description": "Dentists and dental hygienists"
-    },
-    "dentistsAndDentalHygienistsDescription": "Dentists are healthcare professionals who diagnose, treat, and prevent oral diseases and conditions, as well as maintain the overall health of their patients' teeth and gums. Dental hygienists are licensed oral health professionals who work alongside dentists to provide preventive care, such as cleaning teeth, taking x-rays, and educating patients on proper oral hygiene practices. They may work in private dental offices, clinics, or other healthcare settings.",
-    "@dentistsAndDentalHygienistsDescription": {
-        "description": "Dentists are healthcare professionals who diagnose, treat, and prevent oral diseases and conditions, as well as maintain the overall health of their patients' teeth and gums. Dental hygienists are licensed oral health professionals who work alongside dentists to provide preventive care, such as cleaning teeth, taking x-rays, and educating patients on proper oral hygiene practices. They may work in private dental offices, clinics, or other healthcare settings."
-    },
-    "ophthalmologistsAndOptometrists": "Ophthalmologists and optometrists",
-    "@ophthalmologistsAndOptometrists": {
-        "description": "Ophthalmologists and optometrists"
-    },
-    "ophthalmologistsAndOptometristsDescription": "Ophthalmologists are medical doctors who specialize in diagnosing and treating eye conditions, such as glaucoma, cataracts, and macular degeneration. Optometrists are healthcare professionals who specialize in providing vision care, such as prescribing glasses and contact lenses.",
-    "@ophthalmologistsAndOptometristsDescription": {
-        "description": "Ophthalmologists are medical doctors who specialize in diagnosing and treating eye conditions, such as glaucoma, cataracts, and macular degeneration. Optometrists are healthcare professionals who specialize in providing vision care, such as prescribing glasses and contact lenses."
-    },
-    "physicalTherapistsAndOccupationalTherapists": "Physical therapists and occupational therapists",
-    "@physicalTherapistsAndOccupationalTherapists": {
-        "description": "Physical therapists and occupational therapists"
-    },
-    "physicalTherapistsAndOccupationalTherapistsDescription": "Physical therapists are healthcare professionals who help patients recover from injuries or illnesses by providing exercises and other therapies to improve mobility and strength. Occupational therapists are healthcare professionals who help patients recover from injuries or illnesses by providing exercises and other therapies to improve their ability to perform daily tasks.",
-    "@physicalTherapistsAndOccupationalTherapistsDescription": {
-        "description": "Physical therapists are healthcare professionals who help patients recover from injuries or illnesses by providing exercises and other therapies to improve mobility and strength. Occupational therapists are healthcare professionals who help patients recover from injuries or illnesses by providing exercises and other therapies to improve their ability to perform daily tasks."
-    },
-    "chiropractorsAndMassageTherapists": "Chiropractors and massage therapists",
-    "@chiropractorsAndMassageTherapists": {
-        "description": "Chiropractors and massage therapists"
-    },
-    "chiropractorsAndMassageTherapistsDescription": "Chiropractors are healthcare professionals who specialize in diagnosing and treating musculoskeletal conditions, such as back pain and neck pain, using spinal manipulation and other techniques. Massage therapists use manual manipulation of muscles and soft tissues to promote relaxation, relieve pain, and improve circulation.",
-    "@chiropractorsAndMassageTherapistsDescription": {
-        "description": "Chiropractors are healthcare professionals who specialize in diagnosing and treating musculoskeletal conditions, such as back pain and neck pain, using spinal manipulation and other techniques. Massage therapists use manual manipulation of muscles and soft tissues to promote relaxation, relieve pain, and improve circulation."
-    },
     "prescriptionDate": "Prescription Date",
     "@prescriptionDate": {
         "description": "Prescription Date"
@@ -691,73 +539,13 @@
     "@dOB": {
         "description": "D.O.B"
     },
-    "times": "Times",
-    "@times": {
-        "description": "Times"
-    },
-    "patientsList": "Patients List",
-    "@patientsList": {
-        "description": "Patients List"
-    },
-    "doctorsList": "doctorsList",
-    "@doctorsList": {
-        "description": "doctorsList"
-    },
-    "ageTracker": "Age Tracker",
-    "@ageTracker": {
-        "description": "Age Tracker"
-    },
-    "diseaseTracker": "Disease Tracker",
-    "@diseaseTracker": {
-        "description": "Disease Tracker"
-    },
-    "bloodTypes": "Blood Types",
-    "@bloodTypes": {
-        "description": "Blood Types"
-    },
-    "specialities": "Specialities",
-    "@specialities": {
-        "description": "Specialities"
-    },
-    "hour": "Hours",
-    "@hour": {
-        "description": "Hours"
-    },
-    "minutes": "Minutes",
-    "@minutes": {
-        "description": "Minutes"
-    },
-    "ok": "OK",
-    "@ok": {
-        "description": "OK"
-    },
-    "take": "Take",
-    "@take": {
-        "description": "Take"
-    },
-    "male": "Male",
-    "@male": {
-        "description": "Male"
-    },
-    "female": "Female",
-    "@female": {
-        "description": "Female"
-    },
     "pREV": "PREV",
     "@pREV": {
         "description": "PREV"
     },
-    "print": "Print",
-    "@print": {
-        "description": "Print"
-    },
-    "next": "NEXT",
-    "@next": {
-        "description": "NEXT"
-    },
-    "diagnosisFieldCantBeEmpty": "Diagnosis field can't be empty.",
-    "@diagnosisFieldCantBeEmpty": {
-        "description": "Diagnosis field can't be empty."
+    "diagnosisfieldcan": "Diagnosis field can",
+    "@diagnosisfieldcan": {
+        "description": "Diagnosis field can"
     },
     "youshouldspecifythetreatment": "You should specify the treatment.",
     "@youshouldspecifythetreatment": {
@@ -819,18 +607,6 @@
     "@appointmentType": {
         "description": "Appointment Type"
     },
-    "selectBloodTest": "Select Blood Test",
-    "@selectBloodTest": {
-        "description": "Select Blood Test"
-    },
-    "isYourAssistant": "is your assistant for managing BloodBorne Pathogen Exposure.\n\nWe appreciate your contribution.\nYou can help us here.",
-    "@isYourAssistant": {
-        "description": "Select Blood Test"
-    },
-    "bloodstestlinkstoredsuccessfully": "Blood's Test Link Stored Successfully",
-    "@bloodstestlinkstoredsuccessfully": {
-        "description": "Blood's Test Link Stored Successfully"
-    },
     "inPerson": "In Person",
     "@inPerson": {
         "description": "In Person"
@@ -839,9 +615,9 @@
     "@appointmentBooked": {
         "description": "Appointment Booked"
     },
-    "noDoctorsAvailable": "NoA vailable Doctors",
+    "noDoctorsAvailable": "No Doctors Available",
     "@noDoctorsAvailable": {
-        "description": "No Available Doctors"
+        "description": "No Doctors Available"
     },
     "appointmentDate": "Appointment Date",
     "@appointmentDate": {
@@ -1018,15 +794,18 @@
     "trending": "Trending ",
     "@trending": {
         "description": "Trending"
-    },
+    }
+    ,
     "step": "Step ",
     "@step": {
         "description": "Step"
-    },
+    }
+    ,
     "at": "At ",
     "@at": {
         "description": "At"
-    },
+    }
+    ,
     "erroropeningPDF": "Error opening PDF: ",
     "@erroropeningPDF": {
         "description": "Error opening PDF: "

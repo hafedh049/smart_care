@@ -21,10 +21,10 @@ class PrimaryPrevention extends StatelessWidget {
   final GlobalKey _textKey = GlobalKey();
   int _activeIndex = 0;
   final List<Map<String, String>> _preventions = <Map<String, String>>[
-    {"image": "1.jfif", "tag": '⬛ Lavage avec eau savonneuse.'},
-    {"image": "2.jfif", "tag": '⬛ Trempage / Eau de Javel, Dakin, Bétadine... Pendant 5 minutes.'},
-    {"image": "3.jfif", "tag": '⬛ Rinçage abondamment à l’eau pendant 10 minutes (en cas de projection sur une muqueuse).'},
-    {"image": "4.jfif", "tag": '⬛ Ne pas re-capuchonner les aiguilles.'},
+    {"image": "1.jfif", "tag": '🟦⬛ Lavage avec eau savonneuse.'},
+    {"image": "2.jfif", "tag": '⬛🟦Trempage / Eau de Javel, Dakin, Bétadine... Pendant 5 minutes.'},
+    {"image": "3.jfif", "tag": '🟦⬛ Rinçage abondamment à l’eau pendant 10 minutes (en cas de projection sur une muqueuse).'},
+    {"image": "4.jfif", "tag": '⬛🟦 Ne pas re-capuchonner les aiguilles.'},
   ];
   @override
   Widget build(BuildContext context) {
@@ -135,7 +135,7 @@ class PrimaryPrevention extends StatelessWidget {
                     height: 60,
                     margin: const EdgeInsets.only(right: 8.0),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
-                    child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.get_started, color: black, fontWeight: FontWeight.bold, fontSize: 25)),
+                    child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.getStarted, color: black, fontWeight: FontWeight.bold, fontSize: 25)),
                   ),
                 )
               ],

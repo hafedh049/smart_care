@@ -6,6 +6,7 @@ import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/patient/book_appointement.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../stuff/globals.dart';
 
@@ -48,7 +49,7 @@ class AboutDoctor extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft, size: 20),
-                          const CustomizedText(text: "Doctor Details", fontSize: 18, color: white, fontWeight: FontWeight.bold),
+                          CustomizedText(text: AppLocalizations.of(context)!.doctorDetails, fontSize: 18, color: white, fontWeight: FontWeight.bold),
                           CustomIcon(func: () {}, icon: FontAwesomeIcons.ellipsisVertical, size: 20),
                         ],
                       ),
@@ -95,10 +96,10 @@ class AboutDoctor extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
-                                children: const <Widget>[
-                                  Icon(FontAwesomeIcons.phoneVolume, color: blue, size: 15),
-                                  SizedBox(width: 5),
-                                  CustomizedText(text: "Audio", fontSize: 16, color: blue, fontWeight: FontWeight.bold),
+                                children: <Widget>[
+                                  const Icon(FontAwesomeIcons.phoneVolume, color: blue, size: 15),
+                                  const SizedBox(width: 5),
+                                  CustomizedText(text: AppLocalizations.of(context)!.audio, fontSize: 16, color: blue, fontWeight: FontWeight.bold),
                                 ],
                               ),
                             ),
@@ -113,10 +114,10 @@ class AboutDoctor extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
-                                children: const <Widget>[
-                                  Icon(FontAwesomeIcons.video, color: Colors.amber, size: 15),
-                                  SizedBox(width: 5),
-                                  CustomizedText(text: "Video", fontSize: 16, color: Colors.amber, fontWeight: FontWeight.bold),
+                                children: <Widget>[
+                                  const Icon(FontAwesomeIcons.video, color: Colors.amber, size: 15),
+                                  const SizedBox(width: 5),
+                                  CustomizedText(text: AppLocalizations.of(context)!.video, fontSize: 16, color: Colors.amber, fontWeight: FontWeight.bold),
                                 ],
                               ),
                             ),
@@ -131,10 +132,10 @@ class AboutDoctor extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
-                                children: const <Widget>[
-                                  Icon(FontAwesomeIcons.message, color: Color.fromARGB(255, 217, 0, 255), size: 15),
-                                  SizedBox(width: 5),
-                                  CustomizedText(text: "Chat", fontSize: 16, color: Color.fromARGB(255, 217, 0, 255), fontWeight: FontWeight.bold),
+                                children: <Widget>[
+                                  const Icon(FontAwesomeIcons.message, color: Color.fromARGB(255, 217, 0, 255), size: 15),
+                                  const SizedBox(width: 5),
+                                  CustomizedText(text: AppLocalizations.of(context)!.chat, fontSize: 16, color: const Color.fromARGB(255, 217, 0, 255), fontWeight: FontWeight.bold),
                                 ],
                               ),
                             ),
@@ -170,11 +171,11 @@ class AboutDoctor extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               const SizedBox(height: 20),
-                              const CustomizedText(text: "Information", color: white, fontSize: 20, fontWeight: FontWeight.bold),
+                              CustomizedText(text: AppLocalizations.of(context)!.information, color: white, fontSize: 20, fontWeight: FontWeight.bold),
                               const SizedBox(height: 20),
                               Row(
                                 children: <Widget>[
-                                  const CustomizedText(text: "Years of experience", color: white, fontSize: 18),
+                                  CustomizedText(text: AppLocalizations.of(context)!.yearsofexperience, color: white, fontSize: 18),
                                   const Spacer(),
                                   CustomizedText(text: "${snapshot.data!.get('years_of_experience')} Years", color: white, fontSize: 18, fontWeight: FontWeight.bold),
                                 ],
@@ -182,13 +183,13 @@ class AboutDoctor extends StatelessWidget {
                               const SizedBox(height: 15),
                               Row(
                                 children: <Widget>[
-                                  const CustomizedText(text: "Patients checked", color: white, fontSize: 18),
+                                  CustomizedText(text: AppLocalizations.of(context)!.patientschecked, color: white, fontSize: 18),
                                   const Spacer(),
                                   CustomizedText(text: "${snapshot.data!.get('patients_checked_list').length}+", color: white, fontSize: 18, fontWeight: FontWeight.bold),
                                 ],
                               ),
                               const SizedBox(height: 20),
-                              const CustomizedText(text: "Schedules", color: white, fontSize: 20, fontWeight: FontWeight.bold),
+                              CustomizedText(text: AppLocalizations.of(context)!.schedules, color: white, fontSize: 20, fontWeight: FontWeight.bold),
                               const SizedBox(height: 20),
                               SingleChildScrollView(
                                 padding: EdgeInsets.zero,
@@ -218,7 +219,7 @@ class AboutDoctor extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 20),
-                              const CustomizedText(text: "Available Time", color: white, fontSize: 20, fontWeight: FontWeight.bold),
+                              CustomizedText(text: AppLocalizations.of(context)!.availableTime, color: white, fontSize: 20, fontWeight: FontWeight.bold),
                               const SizedBox(height: 10),
                               SingleChildScrollView(
                                 padding: EdgeInsets.zero,
@@ -274,8 +275,8 @@ class AboutDoctor extends StatelessWidget {
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           mainAxisAlignment: MainAxisAlignment.center,
-                                          children: const <Widget>[
-                                            CustomizedText(text: "Book an Appointment", color: darkBlue, fontSize: 17, fontWeight: FontWeight.bold),
+                                          children: <Widget>[
+                                            CustomizedText(text: AppLocalizations.of(context)!.bookanAppointment, color: darkBlue, fontSize: 17, fontWeight: FontWeight.bold),
                                           ],
                                         ),
                                       ),

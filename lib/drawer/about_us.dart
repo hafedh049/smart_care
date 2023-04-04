@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AboutUs extends StatelessWidget {
   const AboutUs({super.key});
@@ -30,7 +31,7 @@ class AboutUs extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-            const Center(child: CustomizedText(text: "About Us", fontSize: 35, color: blue, fontWeight: FontWeight.bold)),
+            Center(child: CustomizedText(text: AppLocalizations.of(context)!.aboutUs, fontSize: 35, color: blue, fontWeight: FontWeight.bold)),
             const SizedBox(height: 30),
             AnimatedTextKit(
               totalRepeatCount: 1,

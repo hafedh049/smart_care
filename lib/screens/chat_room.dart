@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
 
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -260,7 +260,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 ),
               );
             } else {
-              Fluttertoast.showToast(msg: snapshot.error.toString());
+              showToast(text: snapshot.error.toString());
               return ErrorRoom(error: snapshot.error.toString());
             }
           },
@@ -309,7 +309,7 @@ class _ChatRoomState extends State<ChatRoom> {
     if (result != null && result.files.single.path != null) {
       Timestamp now = Timestamp.now();
       Uint8List bytes = await File(result.files.first.path!).readAsBytes();
-      showToast("Uploading ...");
+      showToast(text: AppLocalizations.of(context)!.uploading);
       await FirebaseStorage.instance.ref("chats/").child(now.toString()).putData(bytes).then(
         (TaskSnapshot ref) async {
           String uri = await ref.ref.getDownloadURL();
@@ -371,7 +371,7 @@ class _ChatRoomState extends State<ChatRoom> {
     if (result != null) {
       Uint8List bytes = await result.readAsBytes();
       Timestamp now = Timestamp.now();
-      Fluttertoast.showToast(msg: "Uploading ...");
+      showToast(text: AppLocalizations.of(context)!.uploading);
       await FirebaseStorage.instance.ref("chats_files/").child(now.toString()).putData(bytes).then(
         (TaskSnapshot ref) async {
           String uri = await ref.ref.getDownloadURL();
@@ -497,7 +497,7 @@ class _ChatRoomState extends State<ChatRoom> {
           _messages[index] = updatedMessage;
         }
       }
-      Fluttertoast.showToast(msg: "Opening file ...");
+      showToast(text: AppLocalizations.of(context)!.openingfile);
       await OpenFilex.open(localPath);
     }
   }

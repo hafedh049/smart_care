@@ -13,6 +13,7 @@ import 'package:smart_care/screens/patient/filter.dart';
 import 'package:smart_care/screens/patient/summary.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../stuff/functions.dart';
 import '../article.dart';
@@ -57,7 +58,7 @@ class Home extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              const CustomizedText(text: "Hello, ", fontSize: 22),
+                              CustomizedText(text: AppLocalizations.of(context)!.hello, fontSize: 22),
                               CustomizedText(text: snapshot.data!.get("name"), fontSize: 22, fontWeight: FontWeight.bold),
                             ],
                           ),
@@ -114,14 +115,14 @@ class Home extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            const CustomizedText(text: "Online Consultation", fontSize: 25, color: white),
+                            CustomizedText(text: AppLocalizations.of(context)!.onlineConsultation, fontSize: 25, color: white),
                             const SizedBox(height: 20),
                             Center(
                               child: Container(
                                 padding: const EdgeInsets.all(8.0),
                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
                                 margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                                child: const CustomizedText(text: "Find Doctor", fontSize: 16, color: darkBlue),
+                                child: CustomizedText(text: AppLocalizations.of(context)!.findDoctor, fontSize: 16, color: darkBlue),
                               ),
                             ),
                           ],
@@ -136,14 +137,14 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.amber.shade900.withOpacity(.7)),
                         child: Column(
                           children: <Widget>[
-                            const CustomizedText(text: "Visit A Doctor Offline", fontSize: 25, color: white),
+                            CustomizedText(text: AppLocalizations.of(context)!.visitADoctorOffline, fontSize: 25, color: white),
                             const SizedBox(height: 20),
                             Center(
                               child: Container(
                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
                                 padding: const EdgeInsets.all(8.0),
                                 margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                                child: const CustomizedText(text: "Appointment", fontSize: 16, color: darkBlue),
+                                child: CustomizedText(text: AppLocalizations.of(context)!.appointment, fontSize: 16, color: darkBlue),
                               ),
                             ),
                           ],
@@ -160,13 +161,13 @@ class Home extends StatelessWidget {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        const CustomizedText(text: "Upcoming Appointment", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                        CustomizedText(text: AppLocalizations.of(context)!.upcomingAppointment, fontSize: 16, color: white, fontWeight: FontWeight.bold),
                         const Spacer(),
                         GestureDetector(
                             onTap: () {
                               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const FetchAllAppointments()));
                             },
-                            child: const CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold)),
+                            child: CustomizedText(text: AppLocalizations.of(context)!.seeAll, fontSize: 14, color: blue, fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const SizedBox(height: 10),
@@ -238,7 +239,7 @@ class Home extends StatelessWidget {
                                                 const Spacer(),
                                                 Icon(FontAwesomeIcons.clock, size: 12, color: white.withOpacity(.6)),
                                                 const SizedBox(width: 10),
-                                                CustomizedText(text: "At ${firstAppointment.get('appointmentTime')}", fontSize: 14, color: white.withOpacity(.6)),
+                                                CustomizedText(text: "${AppLocalizations.of(context)!.at} ${firstAppointment.get('appointmentTime')}", fontSize: 14, color: white.withOpacity(.6)),
                                               ],
                                             ),
                                           ),
@@ -265,7 +266,7 @@ class Home extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 16.0),
                             width: 40,
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
-                            child: const Center(child: RotatedBox(quarterTurns: 3, child: CustomizedText(text: 'Make A New', fontSize: 16, color: white, fontWeight: FontWeight.bold))),
+                            child: Center(child: RotatedBox(quarterTurns: 3, child: CustomizedText(text: AppLocalizations.of(context)!.makeANew, fontSize: 16, color: white, fontWeight: FontWeight.bold))),
                           ),
                         ),
                       ],
@@ -280,11 +281,11 @@ class Home extends StatelessWidget {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        const CustomizedText(text: "Articles", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                        CustomizedText(text: AppLocalizations.of(context)!.articles, fontSize: 16, color: white, fontWeight: FontWeight.bold),
                         const Spacer(),
                         GestureDetector(
                           onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Articles())),
-                          child: const CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold),
+                          child: CustomizedText(text: AppLocalizations.of(context)!.seeAll, fontSize: 14, color: blue, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -321,7 +322,7 @@ class Home extends StatelessWidget {
                             return Container(
                               height: 80,
                               decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
-                              child: const Center(child: CustomizedText(text: 'No Articles.', fontSize: 16, color: white, fontWeight: FontWeight.bold)),
+                              child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.noArticles, fontSize: 16, color: white, fontWeight: FontWeight.bold)),
                             );
                           }
                         } else if (snapshot.connectionState == ConnectionState.waiting) {

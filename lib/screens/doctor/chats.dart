@@ -9,6 +9,7 @@ import 'package:smart_care/screens/chat_room.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Chats extends StatefulWidget {
   const Chats({super.key});
@@ -77,7 +78,7 @@ class _ChatsState extends State<Chats> {
                             },
                             controller: _searchController,
                             style: GoogleFonts.roboto(color: white),
-                            decoration: InputDecoration(hintText: 'Search for a doctor', hintStyle: GoogleFonts.roboto(color: grey), border: InputBorder.none),
+                            decoration: InputDecoration(hintText: AppLocalizations.of(context)!.searchForADoctor, hintStyle: GoogleFonts.roboto(color: grey), border: InputBorder.none),
                           );
                         },
                       ),
@@ -104,7 +105,7 @@ class _ChatsState extends State<Chats> {
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> chatSnapshot) {
                     if (chatSnapshot.hasData) {
                       if (chatSnapshot.data!.docs.isEmpty) {
-                        return const Center(child: CustomizedText(text: "No Patients Available", color: blue, fontSize: 20));
+                        return Center(child: CustomizedText(text: AppLocalizations.of(context)!.noPatientsAvailable, color: blue, fontSize: 20));
                       } else {
                         Future.delayed(500.ms, () => _textFieldKey.currentState!.setState(() => _disabled = false));
                         return StatefulBuilder(
@@ -119,7 +120,7 @@ class _ChatsState extends State<Chats> {
                                 ;
 
                             return patientsList.isEmpty
-                                ? const Center(child: CustomizedText(text: "No Chats Until Now", fontSize: 20, color: white))
+                                ? Center(child: CustomizedText(text: AppLocalizations.of(context)!.noChatsUntilNow, fontSize: 20, color: white))
                                 : ListView.builder(
                                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     itemCount: patientsList.length,

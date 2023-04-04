@@ -112,12 +112,12 @@ class GoogleAuth extends StatelessWidget {
                   });
                 } else {
                   // Google provider is not linked with email/password provider
-                  showToast(AppLocalizations.of(context)!.no_user_linked, color: red);
+                  showToast(text: AppLocalizations.of(context)!.nouserlinkedtothisaccountpleasecreateone, color: red);
                 }
               }
             });
           } catch (_) {
-            showToast(_.toString(), color: red);
+            showToast(text: _.toString(), color: red);
           }
         },
         child: Container(
@@ -134,7 +134,7 @@ class GoogleAuth extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Image.asset("assets/google.png"),
-              const CustomizedText(text: "CONTINUE WITH GOOGLE", fontSize: 16, fontWeight: FontWeight.bold, color: white),
+              CustomizedText(text: AppLocalizations.of(context)!.cONTINUEWITHGOOGLE, fontSize: 16, fontWeight: FontWeight.bold, color: white),
             ],
           ),
         ),
@@ -167,7 +167,7 @@ class OTPAuth extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Image.asset("assets/phone.png"),
-              const CustomizedText(text: "CONTINUE WITH PHONE", color: white, fontSize: 16, fontWeight: FontWeight.bold),
+              CustomizedText(text: AppLocalizations.of(context)!.cONTINUEWITHPHONE, color: white, fontSize: 16, fontWeight: FontWeight.bold),
             ],
           ),
         ),
@@ -218,7 +218,7 @@ class HealthDrawer extends StatelessWidget {
                 const SizedBox(height: 40),
                 Row(
                   children: <Widget>[
-                    CircleAvatar(
+                    const CircleAvatar(
                       backgroundColor: blue,
                       radius: 35,
                       backgroundImage: CachedNetworkImageProvider(appIcon),
@@ -227,9 +227,9 @@ class HealthDrawer extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        CustomizedText(text: appTitle, color: white, fontSize: 20, fontWeight: FontWeight.bold),
+                        const CustomizedText(text: appTitle, color: white, fontSize: 20, fontWeight: FontWeight.bold),
                         const SizedBox(width: 10),
-                        CustomizedText(text: "You make world better !.", color: white.withOpacity(.7), fontSize: 16),
+                        CustomizedText(text: AppLocalizations.of(context)!.youmakeworldbetter, color: white.withOpacity(.7), fontSize: 16),
                       ],
                     ),
                   ],
@@ -251,7 +251,7 @@ class HealthDrawer extends StatelessWidget {
                   const Icon(FontAwesomeIcons.idCard, color: white, size: 20),
                 ],
               ),
-              title: CustomizedText(text: "Profile", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+              title: CustomizedText(text: AppLocalizations.of(context)!.profile, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ListTile(
               onTap: () {
@@ -265,7 +265,7 @@ class HealthDrawer extends StatelessWidget {
                   const Icon(FontAwesomeIcons.gear, color: white, size: 20),
                 ],
               ),
-              title: CustomizedText(text: "Settings", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+              title: CustomizedText(text: AppLocalizations.of(context)!.settings, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ListTile(
               onTap: () {
@@ -279,7 +279,7 @@ class HealthDrawer extends StatelessWidget {
                   const Icon(FontAwesomeIcons.heartPulse, color: white, size: 20),
                 ],
               ),
-              title: CustomizedText(text: "About Us", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+              title: CustomizedText(text: AppLocalizations.of(context)!.aboutUs, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const Spacer(),
             Container(width: 267, height: .1, color: white),
@@ -301,7 +301,7 @@ class HealthDrawer extends StatelessWidget {
             const SizedBox(height: 10),
             GestureDetector(
                 onTap: () async {
-                  showToast(AppLocalizations.of(context)!.signing_out);
+                  showToast(text: AppLocalizations.of(context)!.signingOut);
                   if (await GoogleSignIn().isSignedIn()) {
                     await GoogleSignIn().signOut();
                   }
@@ -309,11 +309,11 @@ class HealthDrawer extends StatelessWidget {
                     await FirebaseAuth.instance.signOut().then((void value) => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => false));
                   });
                 },
-                child: CustomizedText(text: AppLocalizations.of(context)!.sign_out, fontSize: 18, fontWeight: FontWeight.bold)),
+                child: CustomizedText(text: AppLocalizations.of(context)!.signOut, fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             Container(width: 267, height: .1, color: white),
             const SizedBox(height: 10),
-            CustomizedText(text: "'Smart Care' is your assistant for managing BloodBorne Pathogen Exposure.\n\nWe appreciate your contribution.\nYou can help us here.", fontSize: 14, color: white.withOpacity(.7)),
+            CustomizedText(text: "'Smart Care' ${AppLocalizations.of(context)!.isYourAssistant}", fontSize: 14, color: white.withOpacity(.7)),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -400,7 +400,7 @@ class Or extends StatelessWidget {
       children: <Widget>[
         Container(height: .5, width: MediaQuery.of(context).size.width * .4, decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(25))),
         const SizedBox(width: 10),
-        CustomizedText(text: AppLocalizations.of(context)!.or, fontSize: 20, fontWeight: FontWeight.bold),
+        CustomizedText(text: AppLocalizations.of(context)!.oR, fontSize: 20, fontWeight: FontWeight.bold),
         const SizedBox(width: 10),
         Padding(
           padding: const EdgeInsets.only(right: 8.0),

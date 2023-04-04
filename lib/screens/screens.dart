@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/doctor/chats.dart' as doctor_chat;
@@ -45,7 +46,6 @@ class _ScreensState extends State<Screens> {
   @override
   void dispose() {
     _screensController.dispose();
-    //drawerScaffoldKey.currentState!.closeDrawer();
     super.dispose();
   }
 
@@ -108,38 +108,36 @@ class _ScreensState extends State<Screens> {
                         ),
                       ),
                       const Spacer(),
-                      LayoutBuilder(
-                        builder: (BuildContext context, BoxConstraints constraints) {
-                          return Center(
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom > 0 ? 48.0 : 10.0, left: 8.0, right: 8.0),
-                              decoration: BoxDecoration(color: const Color.fromARGB(255, 41, 41, 41), borderRadius: BorderRadius.circular(25)),
-                              height: 60,
-                              child: StatefulBuilder(
-                                key: _screensKey,
-                                builder: (BuildContext context, void Function(void Function()) setS) {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      for (int screen = 0; screen < _filteredScreens.length; screen++)
-                                        CustomIcon(
-                                          clicked: _activeIndex == screen ? true : false,
-                                          func: () {
-                                            setS(() {
-                                              _activeIndex = screen;
-                                              _screensController.jumpToPage(screen);
-                                            });
-                                          },
-                                          icon: _filteredScreens[screen]["icon"],
-                                        ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                      )
+                      Center(
+                        child: Container(
+                          decoration: BoxDecoration(color: const Color.fromARGB(255, 41, 41, 41), borderRadius: BorderRadius.circular(25)),
+                          height: 60,
+                          padding: const EdgeInsets.all(8.0),
+                          child: StatefulBuilder(
+                            key: _screensKey,
+                            builder: (BuildContext context, void Function(void Function()) setS) {
+                              return Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  for (int screen = 0; screen < _filteredScreens.length; screen++)
+                                    CustomIcon(
+                                      clicked: _activeIndex == screen ? true : false,
+                                      func: () {
+                                        setS(() {
+                                          _activeIndex = screen;
+                                          _screensController.jumpToPage(screen);
+                                        });
+                                      },
+                                      icon: _filteredScreens[screen]["icon"],
+                                    ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) => AnimatedContainer(duration: 700.ms, height: MediaQuery.of(context).padding.bottom > 0 ? 40 : 20)),
                     ],
                   ),
                 ],

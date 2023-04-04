@@ -29,7 +29,7 @@ dependencies:
   fl_chart: ^0.61.0
   firebase_auth: ^4.2.2
   firebase_core: ^2.7.0
-  cloud_firestore: ^4.4.3
+  cloud_firestore: ^4.4.5
   firebase_storage: ^11.0.14
   flutter_native_splash: ^2.2.18
   otp_text_field: ^1.1.3

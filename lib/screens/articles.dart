@@ -8,6 +8,7 @@ import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/article.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../stuff/classes.dart';
 
@@ -43,9 +44,9 @@ class _ArticlesState extends State<Articles> {
               ),
             ),
             const SizedBox(height: 30),
-            const CustomizedText(text: "Discover", color: white, fontSize: 24, fontWeight: FontWeight.bold),
+            CustomizedText(text: AppLocalizations.of(context)!.discover, color: white, fontSize: 24, fontWeight: FontWeight.bold),
             const SizedBox(height: 10),
-            CustomizedText(text: "News from all arround the world.", color: white.withOpacity(.6), fontSize: 14),
+            CustomizedText(text: AppLocalizations.of(context)!.newsfromallarroundtheworld, color: white.withOpacity(.6), fontSize: 14),
             const SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -124,7 +125,7 @@ class _ArticlesState extends State<Articles> {
                             ),
                           );
                         } else {
-                          return const Center(child: CustomizedText(text: "No Articles Yet.", color: white, fontSize: 18, fontWeight: FontWeight.bold));
+                          return Center(child: CustomizedText(text: AppLocalizations.of(context)!.noArticlesYet, color: white, fontSize: 18, fontWeight: FontWeight.bold));
                         }
                       },
                     );

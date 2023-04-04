@@ -68,9 +68,9 @@ class _HomeState extends State<Home> {
               },
             ),
             const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.only(left: 12.0),
-              child: CustomizedText(text: "Appointments", color: white, fontSize: 25, fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.only(left: 12.0),
+              child: CustomizedText(text: AppLocalizations.of(context)!.appointments, color: white, fontSize: 25, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Padding(
@@ -116,7 +116,7 @@ class _HomeState extends State<Home> {
                                           child: Center(
                                             child: CommentTreeWidget<Tree, Tree>(
                                               Tree(text: data[index].get("patientName"), icon: null),
-                                              <Tree>[Tree(text: "Filled Forms", icon: FontAwesomeIcons.table), Tree(text: "Prescriptions", icon: FontAwesomeIcons.folder), Tree(text: "Blood Tests", icon: FontAwesomeIcons.folder)],
+                                              <Tree>[Tree(text: AppLocalizations.of(context)!.filledForms, icon: FontAwesomeIcons.table), Tree(text: AppLocalizations.of(context)!.prescriptions, icon: FontAwesomeIcons.folder), Tree(text: AppLocalizations.of(context)!.bloodTests, icon: FontAwesomeIcons.folder)],
                                               treeThemeData: const TreeThemeData(lineColor: grey, lineWidth: 1),
                                               avatarRoot: (BuildContext context, Tree _) => PreferredSize(
                                                 preferredSize: const Size.fromRadius(18),
@@ -166,7 +166,7 @@ class _HomeState extends State<Home> {
                                               child: Container(
                                                 padding: const EdgeInsets.all(8.0),
                                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: grey),
-                                                child: const CustomizedText(text: "Cancel", color: white, fontSize: 16),
+                                                child: CustomizedText(text: AppLocalizations.of(context)!.cancel, color: white, fontSize: 16),
                                               ),
                                             ),
                                             const SizedBox(width: 10),
@@ -175,7 +175,7 @@ class _HomeState extends State<Home> {
                                               child: Container(
                                                 padding: const EdgeInsets.all(8.0),
                                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
-                                                child: const CustomizedText(text: "Close Folder Permanently", color: white, fontSize: 16),
+                                                child: CustomizedText(text: AppLocalizations.of(context)!.closeFolderPermanently, color: white, fontSize: 16),
                                               ),
                                             ),
                                           ],
@@ -191,8 +191,8 @@ class _HomeState extends State<Home> {
                                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: green.withOpacity(.2)),
                                             child: Row(
                                               mainAxisAlignment: MainAxisAlignment.center,
-                                              children: const <Widget>[
-                                                CustomizedText(text: "Make Prescription", color: white, fontSize: 16),
+                                              children: <Widget>[
+                                                CustomizedText(text: AppLocalizations.of(context)!.makePrescription, color: white, fontSize: 16),
                                               ],
                                             ),
                                           ),
@@ -264,7 +264,7 @@ class _HomeState extends State<Home> {
                         separatorBuilder: (BuildContext context, int index) => Row(children: <Widget>[Expanded(child: Container(margin: const EdgeInsets.symmetric(vertical: 8.0), height: .2, color: white))]),
                       );
                     } else {
-                      return const Center(child: CustomizedText(text: "No Appointments From Patients Yet.", color: white, fontSize: 18, fontWeight: FontWeight.bold));
+                      return Center(child: CustomizedText(text: AppLocalizations.of(context)!.noAppointmentsFromPatientsYet, color: white, fontSize: 18, fontWeight: FontWeight.bold));
                     }
                   } else if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator(color: blue));
@@ -281,11 +281,11 @@ class _HomeState extends State<Home> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      const CustomizedText(text: "Articles", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                      CustomizedText(text: AppLocalizations.of(context)!.articles, fontSize: 16, color: white, fontWeight: FontWeight.bold),
                       const Spacer(),
                       GestureDetector(
                         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Articles())),
-                        child: const CustomizedText(text: "See All", fontSize: 14, color: blue, fontWeight: FontWeight.bold),
+                        child: CustomizedText(text: AppLocalizations.of(context)!.seeAll, fontSize: 14, color: blue, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

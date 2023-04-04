@@ -120,7 +120,7 @@ class _HistoricState extends State<Historic> {
                                                       });
                                                       await OpenFilex.open(path);
                                                     } catch (e) {
-                                                      showToast('Error opening PDF: $e', color: red);
+                                                      showToast(text: 'Error opening PDF: $e', color: red);
                                                     }
                                                   },
                                                   child: Container(

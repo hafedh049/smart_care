@@ -16,6 +16,7 @@ import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SmartChatBot extends StatefulWidget {
   const SmartChatBot({super.key});
@@ -86,7 +87,7 @@ class _SmartChatBotState extends State<SmartChatBot> {
                 if (snapshot.hasData) {
                   final List<QueryDocumentSnapshot> messages = snapshot.data!.docs;
                   return messages.isEmpty
-                      ? const Expanded(child: Center(child: CustomizedText(text: "No Messages Yet", color: blue, fontSize: 20, fontWeight: FontWeight.bold)))
+                      ? Expanded(child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.noMessagesYet, color: blue, fontSize: 20, fontWeight: FontWeight.bold)))
                       : Expanded(
                           child: ListView.builder(
                             controller: _scrollController,

@@ -9,6 +9,7 @@ import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DoctorProfile extends StatelessWidget {
   const DoctorProfile({super.key});
@@ -62,7 +63,7 @@ class DoctorProfile extends StatelessWidget {
                               child: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey),
                             ),
                           ),
-                          const CustomizedText(text: "Doctor Profile", fontSize: 18, fontWeight: FontWeight.bold, color: white),
+                          CustomizedText(text: AppLocalizations.of(context)!.doctorProfile, fontSize: 18, fontWeight: FontWeight.bold, color: white),
                           GestureDetector(
                             onTap: () {},
                             child: Container(
@@ -165,7 +166,7 @@ class DoctorProfile extends StatelessWidget {
                                 const SizedBox(height: 5),
                                 CustomizedText(text: snapshot.data!.get("patients_checked_list").length.toString(), fontSize: 20, fontWeight: FontWeight.bold, color: darkBlue),
                                 const SizedBox(height: 5),
-                                const CustomizedText(text: "Successful Patients", fontSize: 16, color: darkBlue),
+                                CustomizedText(text: AppLocalizations.of(context)!.successfulPatients, fontSize: 16, color: darkBlue),
                               ],
                             ),
                           ),
@@ -179,7 +180,7 @@ class DoctorProfile extends StatelessWidget {
                                 const SizedBox(height: 5),
                                 CustomizedText(text: "${snapshot.data!.get('years_of_experience')} Years", fontSize: 20, fontWeight: FontWeight.bold, color: darkBlue),
                                 const SizedBox(height: 5),
-                                const CustomizedText(text: "Experience", fontSize: 16, color: darkBlue),
+                                CustomizedText(text: AppLocalizations.of(context)!.experience, fontSize: 16, color: darkBlue),
                               ],
                             ),
                           ),
@@ -188,7 +189,7 @@ class DoctorProfile extends StatelessWidget {
                       const SizedBox(height: 30),
                       Center(child: Container(width: 30, height: 3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: white))),
                       const SizedBox(height: 30),
-                      const CustomizedText(text: "About", fontSize: 20, fontWeight: FontWeight.bold, color: white),
+                      CustomizedText(text: AppLocalizations.of(context)!.about, fontSize: 20, fontWeight: FontWeight.bold, color: white),
                       const SizedBox(height: 20),
                       Expanded(
                         child: SizedBox(

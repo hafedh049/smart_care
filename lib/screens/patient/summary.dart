@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../stuff/classes.dart';
 import '../../stuff/functions.dart';
@@ -34,9 +35,9 @@ class Summary extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            const CustomizedText(text: "Summary", fontSize: 30, fontWeight: FontWeight.bold, color: white),
+            CustomizedText(text: AppLocalizations.of(context)!.summary, fontSize: 30, fontWeight: FontWeight.bold, color: white),
             const SizedBox(height: 40),
-            const CustomizedText(text: "Booking Info", fontSize: 18, fontWeight: FontWeight.bold, color: white),
+            CustomizedText(text: AppLocalizations.of(context)!.bookingInfo, fontSize: 18, fontWeight: FontWeight.bold, color: white),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -48,7 +49,7 @@ class Summary extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      const CustomizedText(text: "Date & Time", fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                      CustomizedText(text: AppLocalizations.of(context)!.dateTime, fontSize: 16, fontWeight: FontWeight.bold, color: white),
                       const SizedBox(height: 5),
                       CustomizedText(text: getDateRepresentation(data["appointmentDate"].toDate()), fontSize: 14, color: white.withOpacity(.6)),
                       const SizedBox(height: 5),
@@ -74,7 +75,7 @@ class Summary extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      const CustomizedText(text: "Appointment Type", fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                      CustomizedText(text: AppLocalizations.of(context)!.appointmentType, fontSize: 16, fontWeight: FontWeight.bold, color: white),
                       const SizedBox(height: 5),
                       CustomizedText(text: getDateRepresentation(data["appointmentDate"].toDate()), fontSize: 14, color: white.withOpacity(.6)),
                       const SizedBox(height: 5),
@@ -100,7 +101,7 @@ class Summary extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      const CustomizedText(text: "Duration", fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                      CustomizedText(text: AppLocalizations.of(context)!.duration, fontSize: 16, fontWeight: FontWeight.bold, color: white),
                       const SizedBox(height: 5),
                       CustomizedText(text: data["duration"], fontSize: 14, color: white.withOpacity(.6)),
                     ],
@@ -114,7 +115,7 @@ class Summary extends StatelessWidget {
               child: Container(color: white.withOpacity(.2), height: .8, width: MediaQuery.of(context).size.width),
             ),
             const SizedBox(height: 40),
-            const CustomizedText(text: "Doctor Info", fontSize: 18, fontWeight: FontWeight.bold, color: white),
+            CustomizedText(text: AppLocalizations.of(context)!.doctorInfo, fontSize: 18, fontWeight: FontWeight.bold, color: white),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),

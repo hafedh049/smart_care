@@ -4,6 +4,7 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../stuff/classes.dart';
 
@@ -44,7 +45,7 @@ class Article extends StatelessWidget {
                   const SizedBox(height: 10),
                   CustomizedText(text: article["title"], color: white, fontSize: 24, fontWeight: FontWeight.bold),
                   const SizedBox(height: 10),
-                  CustomizedText(text: "Trending >> ${GetTimeAgo.parse(DateTime.parse(article["publishedAt"]))}", color: white, fontSize: 14),
+                  CustomizedText(text: "${AppLocalizations.of(context)!.trending} >> ${GetTimeAgo.parse(DateTime.parse(article["publishedAt"]))}", color: white, fontSize: 14),
                   const SizedBox(height: 80),
                 ],
               ),
@@ -85,7 +86,7 @@ class Article extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            const CustomizedText(text: "Author", color: white, fontSize: 18, fontWeight: FontWeight.bold),
+                            CustomizedText(text: AppLocalizations.of(context)!.author, color: white, fontSize: 18, fontWeight: FontWeight.bold),
                             const SizedBox(width: 10),
                             Flexible(child: CustomizedText(text: '"${article["author"]}"', color: white, fontSize: 18, fontWeight: FontWeight.bold)),
                           ],
@@ -97,7 +98,7 @@ class Article extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                if (article["description"].isNotEmpty) const CustomizedText(text: "Description", color: white, fontSize: 16),
+                                if (article["description"].isNotEmpty) CustomizedText(text: AppLocalizations.of(context)!.description, color: white, fontSize: 16),
                                 if (article["description"].isNotEmpty) const SizedBox(height: 5),
                                 if (article["description"].isNotEmpty) CustomizedText(text: article["description"], color: white, fontSize: 16),
                                 if (article["description"].isNotEmpty) const SizedBox(height: 10),

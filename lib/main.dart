@@ -27,9 +27,9 @@ void main() async {
   play = userData["AUDIO"] as int?;
   Connectivity().onConnectivityChanged.listen((ConnectivityResult event) async {
     if (await InternetConnectionChecker().hasConnection) {
-      showToast("Online", color: blue);
+      showToast(text: "Online", color: blue);
     } else {
-      showToast("Offline", color: red);
+      showToast(text: "Offline", color: red);
     }
   });
   runApp(const Main());

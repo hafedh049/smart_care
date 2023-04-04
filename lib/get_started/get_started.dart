@@ -23,7 +23,7 @@ class GetStarted extends StatelessWidget {
               const SizedBox(height: 170),
               CustomizedText(text: AppLocalizations.of(context)!.virtual, color: blue, fontWeight: FontWeight.bold),
               CustomizedText(text: AppLocalizations.of(context)!.ecosystem, color: darkBlue, fontWeight: FontWeight.bold),
-              CustomizedText(text: AppLocalizations.of(context)!.specialized_healthcare, color: black, fontSize: 16),
+              CustomizedText(text: AppLocalizations.of(context)!.specializedhealthcareonasingletechplatformsimplifyingaccesstoanyoneanywhere, color: black, fontSize: 16),
               const Spacer(),
               Center(
                 child: GestureDetector(
@@ -35,7 +35,7 @@ class GetStarted extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * .6,
                     margin: const EdgeInsets.only(right: 8.0),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
-                    child: const Center(child: CustomizedText(text: "Continue", color: black, fontWeight: FontWeight.bold, fontSize: 25)),
+                    child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.continue_, color: black, fontWeight: FontWeight.bold, fontSize: 25)),
                   ),
                 ),
               ),

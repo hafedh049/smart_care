@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../error/error_room.dart';
 import '../../stuff/classes.dart';
@@ -71,7 +72,7 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                       onChanged: (String value) {
                         _xKey.currentState!.setState(() => _filterKey.currentState!.setState(() => _showClearButton = value.isEmpty ? false : true));
                       },
-                      decoration: const InputDecoration(hintText: 'Search For Appointments', border: InputBorder.none, contentPadding: EdgeInsets.only(left: 8, right: 8)),
+                      decoration: InputDecoration(hintText: AppLocalizations.of(context)!.searchAppointments, border: InputBorder.none, contentPadding: const EdgeInsets.only(left: 8, right: 8)),
                     ),
                   ),
                   StatefulBuilder(
@@ -121,11 +122,11 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                                           children: <Widget>[
                                             Row(
                                               children: <Widget>[
-                                                CustomizedText(text: "Appointment Date", fontSize: 16, color: white.withOpacity(.6), fontWeight: FontWeight.bold),
+                                                CustomizedText(text: AppLocalizations.of(context)!.appointmentDate, fontSize: 16, color: white.withOpacity(.6), fontWeight: FontWeight.bold),
                                                 const Spacer(),
                                                 GestureDetector(
                                                   onTap: () async {
-                                                    await FirebaseFirestore.instance.collection("appointments").doc(appointmentList[index].id.trim()).delete().then((void value) => showToast("Appointment is Canceled."));
+                                                    await FirebaseFirestore.instance.collection("appointments").doc(appointmentList[index].id.trim()).delete().then((void value) => showToast(text: AppLocalizations.of(context)!.appointmentisCanceled));
                                                   },
                                                   child: const Icon(Icons.delete, size: 20, color: white),
                                                 ),
@@ -202,7 +203,7 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                               ),
                             );
                           } else {
-                            return const Expanded(child: Center(child: CustomizedText(text: "No Appointments Yet.", color: white, fontSize: 25, fontWeight: FontWeight.bold)));
+                            return Expanded(child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.noAppointmentsYet, color: white, fontSize: 25, fontWeight: FontWeight.bold)));
                           }
                         } else if (snapshot.connectionState == ConnectionState.waiting) {
                           return Expanded(child: ListView.builder(itemCount: 30, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()));

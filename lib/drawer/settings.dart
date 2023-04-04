@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/drawer/account.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../stuff/classes.dart';
 
@@ -35,9 +36,9 @@ class SmartSettings extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            const CustomizedText(text: "Settings", fontSize: 40, fontWeight: FontWeight.bold, color: white),
+            CustomizedText(text: AppLocalizations.of(context)!.settings, fontSize: 40, fontWeight: FontWeight.bold, color: white),
             const SizedBox(height: 60),
-            const CustomizedText(text: "Account", fontSize: 20, fontWeight: FontWeight.bold, color: white),
+            CustomizedText(text: AppLocalizations.of(context)!.account, fontSize: 20, fontWeight: FontWeight.bold, color: white),
             const SizedBox(height: 40),
             GestureDetector(
               onTap: () {
@@ -67,7 +68,7 @@ class SmartSettings extends StatelessWidget {
                           }
                         },
                       ),
-                      CustomizedText(text: "Personal Info", fontSize: 12, color: white.withOpacity(.6)),
+                      CustomizedText(text: AppLocalizations.of(context)!.personalInfo, fontSize: 12, color: white.withOpacity(.6)),
                     ],
                   ),
                   Container(
@@ -80,7 +81,7 @@ class SmartSettings extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40),
-            const CustomizedText(text: "Settings", fontSize: 20, fontWeight: FontWeight.bold, color: white),
+            CustomizedText(text: AppLocalizations.of(context)!.settings, fontSize: 20, fontWeight: FontWeight.bold, color: white),
             const SizedBox(height: 40),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -90,8 +91,8 @@ class SmartSettings extends StatelessWidget {
                   backgroundColor: Colors.blue.shade900.withOpacity(.2),
                   child: Icon(FontAwesomeIcons.user, color: Colors.blue.shade900, size: 15),
                 ),
-                const CustomizedText(text: "Language", fontSize: 18, color: white),
-                CustomizedText(text: "English", fontSize: 12, color: white.withOpacity(.6)),
+                CustomizedText(text: AppLocalizations.of(context)!.language, fontSize: 18, color: white),
+                CustomizedText(text: AppLocalizations.of(context)!.english, fontSize: 12, color: white.withOpacity(.6)),
                 Container(
                   width: 40,
                   height: 40,
@@ -112,8 +113,8 @@ class SmartSettings extends StatelessWidget {
                       backgroundColor: Colors.orange.withOpacity(.2),
                       child: const Icon(FontAwesomeIcons.bell, color: Colors.orange, size: 15),
                     ),
-                    const CustomizedText(text: "Sounds", fontSize: 18, color: white),
-                    CustomizedText(text: play == 1 ? "Enabled" : "Disabled", fontSize: 12, color: white.withOpacity(.6)),
+                    CustomizedText(text: AppLocalizations.of(context)!.sounds, fontSize: 18, color: white),
+                    CustomizedText(text: play == 1 ? AppLocalizations.of(context)!.enabled : AppLocalizations.of(context)!.disabled, fontSize: 12, color: white.withOpacity(.6)),
                     Switch(
                       activeThumbImage: const AssetImage("assets/play.png"),
                       inactiveThumbImage: const AssetImage("assets/mute.png"),
@@ -145,8 +146,8 @@ class SmartSettings extends StatelessWidget {
                     backgroundColor: blue.withOpacity(.2),
                     child: const Icon(FontAwesomeIcons.moon, color: blue, size: 15),
                   ),
-                  const CustomizedText(text: "Dark Mode", fontSize: 18, color: white),
-                  CustomizedText(text: "On", fontSize: 12, color: white.withOpacity(.6)),
+                  CustomizedText(text: AppLocalizations.of(context)!.darkMode, fontSize: 18, color: white),
+                  CustomizedText(text: AppLocalizations.of(context)!.on, fontSize: 12, color: white.withOpacity(.6)),
                   Switch(
                     activeThumbImage: const AssetImage("assets/moon.png"),
                     inactiveThumbImage: const AssetImage("assets/sun.png"),
@@ -170,7 +171,7 @@ class SmartSettings extends StatelessWidget {
                     backgroundColor: Colors.pink.withOpacity(.2),
                     child: const Icon(FontAwesomeIcons.earthAfrica, color: Colors.pink, size: 15),
                   ),
-                  const CustomizedText(text: "Help", fontSize: 18, color: white),
+                  CustomizedText(text: AppLocalizations.of(context)!.help, fontSize: 18, color: white),
                   Container(
                     width: 40,
                     height: 40,

@@ -6,6 +6,7 @@ import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/chat_room.dart';
 import 'package:smart_care/screens/doctor/about_doctor.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../stuff/classes.dart';
 
@@ -86,55 +87,59 @@ class _FilterListState extends State<FilterList> {
             ],
           ),
           const SizedBox(height: 10),
-          StatefulBuilder(
-            key: _filterKey,
-            builder: (BuildContext context, void Function(void Function()) _) {
-              return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: FirebaseFirestore.instance.collection("users").where("roles_list", arrayContains: "doctor").snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-                  if (snapshot.hasData) {
-                    List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("uid") != me["uid"] && element.get("name").contains(_searchController.text.trim())).toList();
-                    if (doctorsList.isNotEmpty) {
-                      return Expanded(
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 8.0),
-                          itemCount: doctorsList.length,
-                          itemBuilder: (BuildContext context, int index) => ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: doctorsList[index].data())));
-                            },
-                            leading: Stack(
-                              alignment: AlignmentDirectional.bottomEnd,
-                              children: <Widget>[
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutDoctor(uid: doctorsList[index].get("uid"))));
-                                  },
-                                  child: CircleAvatar(
-                                    radius: 25,
-                                    backgroundColor: grey.withOpacity(.2),
-                                    backgroundImage: doctorsList[index].get("image_url") == noUser ? null : CachedNetworkImageProvider(doctorsList[index].get("image_url")),
-                                    child: doctorsList[index].get("image_url") == noUser ? const Icon(FontAwesomeIcons.user, size: 15, color: grey) : null,
+          StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            stream: FirebaseFirestore.instance.collection("users").where("roles_list", arrayContains: "doctor").snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data!.docs.isNotEmpty) {
+                  return Expanded(
+                    child: StatefulBuilder(
+                      key: _filterKey,
+                      builder: (BuildContext context, void Function(void Function()) _) {
+                        List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("uid") != me["uid"] && element.get("name").toLowerCase().contains(_searchController.text.trim().toLowerCase())).toList();
+                        if (doctorsList.isNotEmpty) {
+                          return ListView.builder(
+                            padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 8.0),
+                            itemCount: doctorsList.length,
+                            itemBuilder: (BuildContext context, int index) => ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: doctorsList[index].data())));
+                              },
+                              leading: Stack(
+                                alignment: AlignmentDirectional.bottomEnd,
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutDoctor(uid: doctorsList[index].get("uid"))));
+                                    },
+                                    child: CircleAvatar(
+                                      radius: 25,
+                                      backgroundColor: grey.withOpacity(.2),
+                                      backgroundImage: doctorsList[index].get("image_url") == noUser ? null : CachedNetworkImageProvider(doctorsList[index].get("image_url")),
+                                      child: doctorsList[index].get("image_url") == noUser ? const Icon(FontAwesomeIcons.user, size: 15, color: grey) : null,
+                                    ),
                                   ),
-                                ),
-                                CircleAvatar(radius: 5, backgroundColor: doctorsList[index].get("status") ? green : red),
-                              ],
+                                  CircleAvatar(radius: 5, backgroundColor: doctorsList[index].get("status") ? green : red),
+                                ],
+                              ),
+                              title: CustomizedText(text: doctorsList[index].get("name"), fontSize: 16, fontWeight: FontWeight.bold),
                             ),
-                            title: CustomizedText(text: doctorsList[index].get("name"), fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      );
-                    } else {
-                      return const Expanded(child: Center(child: CustomizedText(text: "No Doctors Available", color: white, fontSize: 25, fontWeight: FontWeight.bold)));
-                    }
-                  } else if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Expanded(child: ListView.builder(itemCount: 30, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()));
-                  } else {
-                    return ErrorRoom(error: snapshot.error.toString());
-                  }
-                },
-              );
+                          );
+                        } else {
+                          return Center(child: CustomizedText(text: AppLocalizations.of(context)!.nodoctormatchesthissearch, color: white, fontSize: 25, fontWeight: FontWeight.bold));
+                        }
+                      },
+                    ),
+                  );
+                } else {
+                  return Expanded(child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.noDoctorsAvailable, color: white, fontSize: 25, fontWeight: FontWeight.bold)));
+                }
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return Expanded(child: ListView.builder(itemCount: 30, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()));
+              } else {
+                return ErrorRoom(error: snapshot.error.toString());
+              }
             },
           )
         ],

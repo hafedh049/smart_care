@@ -55,9 +55,9 @@ class _OTPViewState extends State<OTPView> {
                   Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), const CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                   Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
                   const SizedBox(height: 40),
-                  CustomizedText(text: AppLocalizations.of(context)!.otp_recovery, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                  CustomizedText(text: AppLocalizations.of(context)!.first_phase, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                  CustomizedText(text: AppLocalizations.of(context)!.enter_phone_number, fontSize: 16).animate().fadeIn(duration: 500.ms),
+                  CustomizedText(text: AppLocalizations.of(context)!.oTPRecovery, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                  CustomizedText(text: AppLocalizations.of(context)!.firstPhase, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                  CustomizedText(text: AppLocalizations.of(context)!.pleaseenteryourphonenumbertosendOTPcode, fontSize: 16).animate().fadeIn(duration: 500.ms),
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
@@ -73,7 +73,7 @@ class _OTPViewState extends State<OTPView> {
                       autoValidateMode: AutovalidateMode.always,
                       focusNode: _phoneNode,
                       cursorColor: blue,
-                      errorMessage: AppLocalizations.of(context)!.not_valid_number,
+                      errorMessage: AppLocalizations.of(context)!.notAValidNumber,
                       inputBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
                       onInputChanged: (PhoneNumber value) {
                         countryCode = value.dialCode!;
@@ -86,7 +86,7 @@ class _OTPViewState extends State<OTPView> {
                       onInputValidated: (bool value) => value ? _phoneNode.unfocus() : null,
                       selectorConfig: const SelectorConfig(leadingPadding: 8.0, selectorType: PhoneInputSelectorType.BOTTOM_SHEET, trailingSpace: false, useEmoji: true, setSelectorButtonAsPrefixIcon: true),
                       inputDecoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.phone_number,
+                        labelText: AppLocalizations.of(context)!.phoneNumber,
                         labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
                         prefix: const Padding(padding: EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.phone, size: 15, color: blue)),
                         enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
@@ -112,26 +112,26 @@ class _OTPViewState extends State<OTPView> {
                                       verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {},
                                       verificationFailed: (FirebaseAuthException error) {
                                         setS(() => wait = false);
-                                        showToast(error.message!, color: red);
+                                        showToast(text: error.message!, color: red);
                                       },
                                       timeout: 1.minutes,
                                       forceResendingToken: 1,
                                       codeSent: (String verificationId, int? forceResendingToken) async {
                                         setS(() => wait = false);
-                                        showToast("SMS Sent", color: blue);
+                                        showToast(text: "SMS Sent", color: blue);
                                         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OTP(verification: verificationId)));
                                       },
                                       codeAutoRetrievalTimeout: (String verificationId) {},
                                     );
                                   } else {
-                                    showToast(AppLocalizations.of(context)!.no_user_linked, color: red);
+                                    showToast(text: AppLocalizations.of(context)!.nouserlinkedtothisaccountpleasecreateone, color: red);
                                   }
                                 } else {
-                                  showToast(AppLocalizations.of(context)!.verify_fields_please, color: red);
+                                  showToast(text: AppLocalizations.of(context)!.verifyfieldsplease, color: red);
                                 }
                               } catch (_) {
                                 setS(() => wait = false);
-                                showToast(_.toString());
+                                showToast(text: _.toString());
                               }
                             },
                             child: AnimatedContainer(
@@ -145,7 +145,7 @@ class _OTPViewState extends State<OTPView> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Visibility(visible: !wait, child: const Spacer()),
-                                    CustomizedText(text: wait ? AppLocalizations.of(context)!.sending : AppLocalizations.of(context)!.send_sms, color: black, fontWeight: FontWeight.bold, fontSize: 20),
+                                    CustomizedText(text: wait ? AppLocalizations.of(context)!.sending : AppLocalizations.of(context)!.sendSms, color: black, fontWeight: FontWeight.bold, fontSize: 20),
                                     Visibility(visible: !wait, child: const Spacer()),
                                     Visibility(visible: !wait, child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: black)),
                                   ],

@@ -55,8 +55,8 @@ class _SignInState extends State<SignIn> {
                   Row(children: <Widget>[const Spacer(), CircleAvatar(radius: 4, backgroundColor: blue.withOpacity(.5)), const SizedBox(width: 30)]),
                   const SizedBox(height: 20),
                   CustomizedText(text: AppLocalizations.of(context)!.welcome, fontWeight: FontWeight.bold, color: blue).animate().fadeIn(duration: 500.ms),
-                  CustomizedText(text: AppLocalizations.of(context)!.sign_in_now, fontWeight: FontWeight.bold, fontSize: 35).animate().fadeIn(duration: 500.ms),
-                  CustomizedText(text: AppLocalizations.of(context)!.welcome_back, fontSize: 16).animate().fadeIn(duration: 500.ms),
+                  CustomizedText(text: AppLocalizations.of(context)!.signInnow, fontWeight: FontWeight.bold, fontSize: 35).animate().fadeIn(duration: 500.ms),
+                  CustomizedText(text: AppLocalizations.of(context)!.welcomebackpleasefilltheformtosigninandcontinue, fontSize: 16).animate().fadeIn(duration: 500.ms),
                   const SizedBox(height: 20),
                   Row(
                     children: <Widget>[
@@ -71,7 +71,7 @@ class _SignInState extends State<SignIn> {
                           decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.recover_account, fontSize: 16, color: black, fontWeight: FontWeight.bold)),
+                            child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.recoverAccount, fontSize: 16, color: black, fontWeight: FontWeight.bold)),
                           ),
                         ),
                       ),
@@ -79,7 +79,7 @@ class _SignInState extends State<SignIn> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  CustomTextField(validator: fieldsValidatorsFunction("email", context), controller: _emailController, hint: AppLocalizations.of(context)!.e_mail, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
+                  CustomTextField(validator: fieldsValidatorsFunction("email", context), controller: _emailController, hint: AppLocalizations.of(context)!.email, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
                   const SizedBox(height: 10),
                   CustomTextField(validator: fieldsValidatorsFunction("password", context), controller: _passwordController, hint: AppLocalizations.of(context)!.password, obscured: true, prefix: FontAwesomeIcons.lock),
                   const SizedBox(height: 20),
@@ -99,11 +99,11 @@ class _SignInState extends State<SignIn> {
                                     });
                                   });
                                 } else {
-                                  showToast(AppLocalizations.of(context)!.verify_fields_please);
+                                  showToast(text: AppLocalizations.of(context)!.verifyfieldsplease);
                                 }
                               } catch (_) {
                                 setS(() => wait = false);
-                                showToast(_.toString(), color: red);
+                                showToast(text: _.toString(), color: red);
                               }
                             },
                             child: AnimatedContainer(
@@ -117,7 +117,7 @@ class _SignInState extends State<SignIn> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Visibility(visible: !wait, child: const Spacer()),
-                                    CustomizedText(text: wait ? AppLocalizations.of(context)!.connecting : AppLocalizations.of(context)!.sign_in, fontWeight: FontWeight.bold, fontSize: 20, color: black),
+                                    CustomizedText(text: wait ? AppLocalizations.of(context)!.connecting___ : AppLocalizations.of(context)!.signIn, fontWeight: FontWeight.bold, fontSize: 20, color: black),
                                     Visibility(visible: !wait, child: const Spacer()),
                                     Visibility(visible: !wait, child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: black)),
                                   ],
@@ -139,7 +139,7 @@ class _SignInState extends State<SignIn> {
                         width: MediaQuery.of(context).size.width * .6,
                         padding: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: blue)),
-                        child: const Center(child: CustomizedText(text: "Create Account", fontWeight: FontWeight.bold, fontSize: 20, color: blue)),
+                        child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.createAccount, fontWeight: FontWeight.bold, fontSize: 20, color: blue)),
                       ),
                     ),
                   ),

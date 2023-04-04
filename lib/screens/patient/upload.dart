@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, use_build_context_synchronously
 
 import 'dart:io';
 
@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Upload extends StatefulWidget {
   const Upload({super.key});
@@ -47,14 +48,14 @@ class _UploadState extends State<Upload> {
                         onTap: () async {
                           final String imagePath = await takesFromCameraOrGallery(true);
                           if (imagePath.isNotEmpty) {
-                            showToast("Bilan Loaded");
+                            showToast(text: AppLocalizations.of(context)!.bilanLoaded);
                             final String now = DateTime.now().toString();
                             String url = "";
                             FirebaseStorage.instance.ref().child("bilans/${FirebaseAuth.instance.currentUser!.uid}/$now").putFile(File(imagePath)).then((
                               TaskSnapshot taskSnapshot,
                             ) async {
                               url = await taskSnapshot.ref.getDownloadURL();
-                              showToast("Bilan Uploaded");
+                              showToast(text: AppLocalizations.of(context)!.bilanUploaded);
                               await FirebaseFirestore.instance.collection("bilan").doc(FirebaseAuth.instance.currentUser!.uid).set(
                                 {
                                   "bilan_list": FieldValue.arrayUnion(
@@ -67,7 +68,7 @@ class _UploadState extends State<Upload> {
                                   ),
                                 },
                                 SetOptions(merge: true),
-                              ).then((void value) => showToast("Bilan's Link Stored Successfully"));
+                              ).then((void value) => showToast(text: AppLocalizations.of(context)!.bloodstestlinkstoredsuccessfully));
                             });
                           }
                         },
@@ -83,7 +84,7 @@ class _UploadState extends State<Upload> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Image.asset("assets/camera.png", width: 40, height: 40),
-                              const CustomizedText(text: "Camera.", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                              CustomizedText(text: AppLocalizations.of(context)!.camera, fontSize: 16, color: white, fontWeight: FontWeight.bold),
                             ],
                           ),
                         ),
@@ -93,14 +94,14 @@ class _UploadState extends State<Upload> {
                         onTap: () async {
                           final String imagePath = await takesFromCameraOrGallery(false);
                           if (imagePath.isNotEmpty) {
-                            showToast("Bilan Loaded");
+                            showToast(text: AppLocalizations.of(context)!.bilanLoaded);
                             final String now = DateTime.now().toString();
                             String url = "";
                             FirebaseStorage.instance.ref().child("bilans/${FirebaseAuth.instance.currentUser!.uid}/$now").putFile(File(imagePath)).then((
                               TaskSnapshot taskSnapshot,
                             ) async {
                               url = await taskSnapshot.ref.getDownloadURL();
-                              showToast("Bilan Uploaded");
+                              showToast(text: AppLocalizations.of(context)!.bilanUploaded);
                               await FirebaseFirestore.instance.collection("bilan").doc(FirebaseAuth.instance.currentUser!.uid).set(
                                 {
                                   "bilan_list": FieldValue.arrayUnion(
@@ -113,7 +114,7 @@ class _UploadState extends State<Upload> {
                                   ),
                                 },
                                 SetOptions(merge: true),
-                              ).then((void value) => showToast("Bilan's Link Stored Successfully"));
+                              ).then((void value) => showToast(text: AppLocalizations.of(context)!.bloodstestlinkstoredsuccessfully));
                             });
                           }
                         },
@@ -129,7 +130,7 @@ class _UploadState extends State<Upload> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Image.asset("assets/gallery.png", width: 40, height: 40),
-                              const CustomizedText(text: "Gallery.", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                              CustomizedText(text: AppLocalizations.of(context)!.gallery, fontSize: 16, color: white, fontWeight: FontWeight.bold),
                             ],
                           ),
                         ),
@@ -142,21 +143,21 @@ class _UploadState extends State<Upload> {
                       FilePickerResult? result = await FilePicker.platform.pickFiles(
                         allowCompression: true,
                         allowedExtensions: <String>["pdf"],
-                        dialogTitle: "Select Bilan",
+                        dialogTitle: AppLocalizations.of(context)!.selectBloodTest,
                         lockParentWindow: true,
-                        onFileLoading: (FilePickerStatus filePickerStatus) => showToast("Bilan Is Loading ..."),
+                        onFileLoading: (FilePickerStatus filePickerStatus) => showToast(text: AppLocalizations.of(context)!.bilanIsLoading),
                         type: FileType.custom,
                       );
                       if (result != null) {
                         File pdf = File(result.paths.first!);
-                        showToast("Bilan Loaded");
+                        showToast(text: AppLocalizations.of(context)!.bilanLoaded);
                         final String now = DateTime.now().toString();
                         String url = "";
                         FirebaseStorage.instance.ref().child("bilans/${FirebaseAuth.instance.currentUser!.uid}/$now").putFile(pdf).then((
                           TaskSnapshot taskSnapshot,
                         ) async {
                           url = await taskSnapshot.ref.getDownloadURL();
-                          showToast("Bilan Uploaded");
+                          showToast(text: AppLocalizations.of(context)!.bilanUploaded);
                           await FirebaseFirestore.instance.collection("bilan").doc(FirebaseAuth.instance.currentUser!.uid).set(
                             {
                               "bilan_list": FieldValue.arrayUnion(
@@ -169,7 +170,7 @@ class _UploadState extends State<Upload> {
                               ),
                             },
                             SetOptions(merge: true),
-                          ).then((void value) => showToast("Bilan's PDF's Link Stored Successfully"));
+                          ).then((void value) => showToast(text: AppLocalizations.of(context)!.bloodstestlinkstoredsuccessfully));
                         });
                       }
                     },
@@ -185,7 +186,7 @@ class _UploadState extends State<Upload> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Image.asset("assets/pdf.png", width: 30, height: 30),
-                          const CustomizedText(text: "PDF.", fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                          CustomizedText(text: AppLocalizations.of(context)!.pDF, fontSize: 16, color: white, fontWeight: FontWeight.bold),
                         ],
                       ),
                     ),

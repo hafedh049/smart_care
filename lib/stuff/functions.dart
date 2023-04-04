@@ -17,9 +17,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:sqflite/sqflite.dart';
 
-void showToast(String content, {Color? color}) {
+void showToast({required String text, Color? color}) {
   Fluttertoast.showToast(
-    msg: content.replaceAll(RegExp(r'\[.+\] '), ''),
+    msg: text.replaceAll(RegExp(r'\[.+\] '), ''),
     backgroundColor: color ?? blue.withOpacity(.3),
     fontSize: 14,
     gravity: ToastGravity.TOP,
@@ -48,7 +48,7 @@ Future<String> takesFromCameraOrGallery(bool camera) async {
     }
     return "";
   } catch (_) {
-    showToast(_.toString(), color: red);
+    showToast(text: _.toString(), color: red);
     return "";
   }
 }
@@ -61,7 +61,7 @@ Future<String> cropImage(String imagePath) async {
     }
     return "";
   } catch (_) {
-    showToast(_.toString(), color: red);
+    showToast(text: _.toString(), color: red);
     return "";
   }
 }
@@ -117,7 +117,7 @@ void playNote(String note) {
        {
         playNote("error.wav");
       }
-      showToast("Location permissions are denied", color: red);
+      showToast(text:"Location permissions are denied", color: red);
       return Future.error('Location permissions are denied');
     }
   }
@@ -126,13 +126,13 @@ void playNote(String note) {
      {
       playNote("error.wav");
     }
-    showToast("Location permissions are denied", color: red);
+    showToast(text:"Location permissions are denied", color: red);
     return Future.error('Location permissions are permanently denied, we cannot request permissions.');
   }
    {
     ;
   }
-  showToast("Permission granted");
+  showToast(text:"Permission granted");
   return await Geolocator.getCurrentPosition();
 }*/
 
