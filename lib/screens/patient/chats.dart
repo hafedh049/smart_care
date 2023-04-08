@@ -132,7 +132,8 @@ class _ChatsState extends State<Chats> {
                                             return ListTile(
                                               contentPadding: EdgeInsets.zero,
                                               onTap: () {
-                                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: tileSnapshot.data!.data()!)));
+                                                goTo(ChatRoom(talkTo: tileSnapshot.data!.data()!));
+                                                //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: tileSnapshot.data!.data()!)));
                                               },
                                               leading: Stack(
                                                 alignment: AlignmentDirectional.bottomEnd,

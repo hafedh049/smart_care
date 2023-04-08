@@ -63,7 +63,8 @@ class _SignInState extends State<SignIn> {
                       const Spacer(),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Recovery()));
+                          goTo(const Recovery());
+                          //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Recovery()));
                         },
                         child: Container(
                           height: 35,
@@ -133,7 +134,8 @@ class _SignInState extends State<SignIn> {
                   Center(
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const SignUp()));
+                        goTo(const SignUp());
+                        //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const SignUp()));
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width * .6,

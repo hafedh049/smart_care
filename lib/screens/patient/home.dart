@@ -44,7 +44,8 @@ class Home extends StatelessWidget {
                         children: <Widget>[
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Profile()));
+                              goTo(const Profile());
+                              //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Profile()));
                             },
                             child: CircleAvatar(
                               radius: 30,
@@ -85,7 +86,8 @@ class Home extends StatelessWidget {
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const FilterList()));
+                  goTo(const FilterList());
+                  //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const FilterList()));
                 },
                 child: Container(
                   height: 50,
@@ -165,7 +167,8 @@ class Home extends StatelessWidget {
                         const Spacer(),
                         GestureDetector(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const FetchAllAppointments()));
+                              goTo(const FetchAllAppointments());
+                              //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const FetchAllAppointments()));
                             },
                             child: CustomizedText(text: AppLocalizations.of(context)!.seeAll, fontSize: 14, color: blue, fontWeight: FontWeight.bold)),
                       ],
@@ -189,7 +192,8 @@ class Home extends StatelessWidget {
                                   final QueryDocumentSnapshot<Map<String, dynamic>> firstAppointment = snapshot.data!.docs.first;
                                   return GestureDetector(
                                     onTap: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Summary(data: firstAppointment.data())));
+                                      goTo(Summary(data: firstAppointment.data()));
+                                      //Navigator.push(context, MaterialPageRoute(builder: (context) => Summary(data: firstAppointment.data())));
                                     },
                                     child: Container(
                                       height: 180,
@@ -259,7 +263,8 @@ class Home extends StatelessWidget {
                         const SizedBox(width: 10),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const FilterList()));
+                            goTo(const FilterList());
+                            //Navigator.push(context, MaterialPageRoute(builder: (context) => const FilterList()));
                           },
                           child: Container(
                             height: 180,
@@ -284,7 +289,10 @@ class Home extends StatelessWidget {
                         CustomizedText(text: AppLocalizations.of(context)!.articles, fontSize: 16, color: white, fontWeight: FontWeight.bold),
                         const Spacer(),
                         GestureDetector(
-                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Articles())),
+                          onTap: () {
+                            goTo(const Articles());
+                            //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Articles()));
+                          },
                           child: CustomizedText(text: AppLocalizations.of(context)!.seeAll, fontSize: 14, color: blue, fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -297,7 +305,10 @@ class Home extends StatelessWidget {
                           if (snapshot.data!.docs.isNotEmpty) {
                             final QueryDocumentSnapshot<Map<String, dynamic>> firstArtical = snapshot.data!.docs[Random().nextInt(snapshot.data!.docs.length)];
                             return GestureDetector(
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Article(article: firstArtical.data()))),
+                              onTap: () {
+                                goTo(Article(article: firstArtical.data()));
+                                //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Article(article: firstArtical.data())));
+                              },
                               child: Row(
                                 children: <Widget>[
                                   Container(

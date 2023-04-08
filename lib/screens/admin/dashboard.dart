@@ -38,12 +38,12 @@ class Dashboard extends StatelessWidget {
                 children: adminCards(context)
                     .map(
                       (Map<String, dynamic> card) => GestureDetector(
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => card["widget"])),
+                        onTap: () async {
+                          goTo(card["widget"]);
+                          //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => card["widget"]));
+                        },
                         child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: card["color"],
-                          ),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: card["color"]),
                           height: 200,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

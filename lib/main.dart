@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get.dart';
 import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/get_started/get_started.dart';
 import 'package:smart_care/l10n/l10n.dart';
@@ -50,7 +51,7 @@ class Main extends StatelessWidget {
   const Main({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       supportedLocales: L10n.all,
       theme: ThemeData.dark(useMaterial3: true),
       debugShowCheckedModeBanner: false,

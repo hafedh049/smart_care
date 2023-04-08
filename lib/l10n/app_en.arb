@@ -699,9 +699,9 @@
     "@patientsList": {
         "description": "Patients List"
     },
-    "doctorsList": "doctorsList",
+    "doctorsList": "Doctors List",
     "@doctorsList": {
-        "description": "doctorsList"
+        "description": "Doctors List"
     },
     "ageTracker": "Age Tracker",
     "@ageTracker": {

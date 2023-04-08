@@ -40,14 +40,12 @@ class _ChatRoomState extends State<ChatRoom> {
     super.initState();
     _user = types.User(
       id: FirebaseAuth.instance.currentUser!.uid,
-      createdAt: me["account_creation_date"].toDate().millisecond,
       firstName: me["name"].split(" ").length == 2 ? me["name"].split(" ")[0] : me["name"],
       imageUrl: me["image_url"],
       lastName: me["name"].split(" ").length == 2 ? me["name"].split(" ")[1] : "",
     );
     _remoteUser = types.User(
       id: widget.talkTo["uid"],
-      createdAt: widget.talkTo["account_creation_date"].toDate().millisecond,
       firstName: widget.talkTo["name"].split(" ").length == 2 ? me["name"].split(" ")[0] : me["name"],
       imageUrl: widget.talkTo["image_url"],
       lastName: widget.talkTo["name"].split(" ").length == 2 ? me["name"].split(" ")[1] : "",
@@ -100,12 +98,14 @@ class _ChatRoomState extends State<ChatRoom> {
                 child: widget.talkTo["image_url"] != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 15),
               ),
               const SizedBox(width: 5),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomizedText(text: widget.talkTo["name"], fontSize: 16, fontWeight: FontWeight.bold, color: white),
-                  CustomizedText(text: widget.talkTo["status"] ? "Online" : "Offline", fontSize: 14, color: blue),
-                ],
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    CustomizedText(text: widget.talkTo["name"], fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                    CustomizedText(text: widget.talkTo["status"] ? "Online" : "Offline", fontSize: 14, color: blue),
+                  ],
+                ),
               ),
             ],
           ),

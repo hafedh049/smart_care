@@ -101,29 +101,33 @@ class _FilterListState extends State<FilterList> {
                           return ListView.builder(
                             padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 8.0),
                             itemCount: doctorsList.length,
-                            itemBuilder: (BuildContext context, int index) => ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: doctorsList[index].data())));
-                              },
-                              leading: Stack(
-                                alignment: AlignmentDirectional.bottomEnd,
-                                children: <Widget>[
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutDoctor(uid: doctorsList[index].get("uid"))));
-                                    },
-                                    child: CircleAvatar(
-                                      radius: 25,
-                                      backgroundColor: grey.withOpacity(.2),
-                                      backgroundImage: doctorsList[index].get("image_url") == noUser ? null : CachedNetworkImageProvider(doctorsList[index].get("image_url")),
-                                      child: doctorsList[index].get("image_url") == noUser ? const Icon(FontAwesomeIcons.user, size: 15, color: grey) : null,
+                            itemBuilder: (BuildContext context, int index) => Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                onTap: () {
+                                  goTo(ChatRoom(talkTo: doctorsList[index].data()));
+                                },
+                                leading: Stack(
+                                  alignment: AlignmentDirectional.bottomEnd,
+                                  children: <Widget>[
+                                    GestureDetector(
+                                      onTap: () {
+                                        goTo(AboutDoctor(uid: doctorsList[index].get("uid")));
+                                        //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutDoctor(uid: doctorsList[index].get("uid"))));
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 25,
+                                        backgroundColor: grey.withOpacity(.2),
+                                        backgroundImage: doctorsList[index].get("image_url") == noUser ? null : CachedNetworkImageProvider(doctorsList[index].get("image_url")),
+                                        child: doctorsList[index].get("image_url") == noUser ? const Icon(FontAwesomeIcons.user, size: 15, color: grey) : null,
+                                      ),
                                     ),
-                                  ),
-                                  CircleAvatar(radius: 5, backgroundColor: doctorsList[index].get("status") ? green : red),
-                                ],
+                                    CircleAvatar(radius: 5, backgroundColor: doctorsList[index].get("status") ? green : red),
+                                  ],
+                                ),
+                                title: CustomizedText(text: doctorsList[index].get("name"), fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              title: CustomizedText(text: doctorsList[index].get("name"), fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                           );
                         } else {

@@ -54,7 +54,9 @@ class ChoicesBox extends StatelessWidget {
                                       ignore = true;
                                     });
                                     await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"role": roles[role]}).then(
-                                      (void value) async => await Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 0))),
+                                      (void value) async {
+                                        await Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 0)));
+                                      },
                                     );
                                   },
                                 ),

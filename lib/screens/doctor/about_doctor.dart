@@ -255,16 +255,13 @@ class AboutDoctor extends StatelessWidget {
                                   Expanded(
                                     child: GestureDetector(
                                       onTap: () async {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) => BookAppointment(
-                                              id: uid,
-                                              doctorName: snapshot.data!.get("name"),
-                                              doctorImageUrl: snapshot.data!.get("image_url"),
-                                              speciality: snapshot.data!.get("speciality"),
-                                              workLocation: snapshot.data!.get("workLocation"),
-                                            ),
+                                        goTo(
+                                          BookAppointment(
+                                            id: uid,
+                                            doctorName: snapshot.data!.get("name"),
+                                            doctorImageUrl: snapshot.data!.get("image_url"),
+                                            speciality: snapshot.data!.get("speciality"),
+                                            workLocation: snapshot.data!.get("work_location"),
                                           ),
                                         );
                                       },

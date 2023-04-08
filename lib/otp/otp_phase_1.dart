@@ -118,8 +118,9 @@ class _OTPViewState extends State<OTPView> {
                                       forceResendingToken: 1,
                                       codeSent: (String verificationId, int? forceResendingToken) async {
                                         setS(() => wait = false);
-                                        showToast(text: "SMS Sent", color: blue);
-                                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OTP(verification: verificationId)));
+                                        showToast(text: AppLocalizations.of(context)!.sendSms, color: blue);
+                                        goTo(OTP(verification: verificationId));
+                                        //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OTP()));
                                       },
                                       codeAutoRetrievalTimeout: (String verificationId) {},
                                     );

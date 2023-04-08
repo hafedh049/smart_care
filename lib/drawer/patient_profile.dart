@@ -79,45 +79,45 @@ class PatientProfile extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        CustomizedText(text: snapshot.data!.get("name"), fontSize: 20, fontWeight: FontWeight.bold, color: white),
+                        CustomizedText(text: snapshot.data!.get("name"), fontSize: 25, fontWeight: FontWeight.bold, color: white),
                         const SizedBox(height: 10),
                         Row(
                           children: <Widget>[
-                            const Icon(FontAwesomeIcons.tooth, size: 15, color: blue),
+                            const Icon(FontAwesomeIcons.tooth, size: 25, color: blue),
                             const SizedBox(width: 10),
-                            CustomizedText(text: snapshot.data!.get("speciality"), fontSize: 14, color: white.withOpacity(.8)),
+                            Flexible(child: CustomizedText(text: snapshot.data!.get("speciality"), fontSize: 18, color: white.withOpacity(.8))),
                           ],
                         ),
                         const SizedBox(height: 10),
                         Row(
                           children: <Widget>[
-                            const Icon(Icons.numbers, size: 15, color: blue),
+                            const Icon(Icons.numbers, size: 25, color: blue),
                             const SizedBox(width: 10),
-                            CustomizedText(text: "Age ( ${DateTime.now().difference(snapshot.data!.get('date_of_birth').toDate()).inDays ~/ 365} )", fontSize: 14, color: white.withOpacity(.8)),
+                            CustomizedText(text: "Age ( ${DateTime.now().difference(snapshot.data!.get('date_of_birth').toDate()).inDays ~/ 365} )", fontSize: 18, color: white.withOpacity(.8)),
                           ],
                         ),
                         const SizedBox(height: 10),
                         Row(
                           children: <Widget>[
-                            const Icon(FontAwesomeIcons.locationPinLock, size: 15, color: blue),
+                            const Icon(FontAwesomeIcons.locationPinLock, size: 25, color: blue),
                             const SizedBox(width: 10),
-                            CustomizedText(text: 'Location ( ${snapshot.data!.get("location").isEmpty ? "Monastir, Tunisia" : snapshot.data!.get("location")} )', fontSize: 14, color: white.withOpacity(.8)),
+                            CustomizedText(text: 'Location ( ${snapshot.data!.get("location").isEmpty ? "Monastir, Tunisia" : snapshot.data!.get("location")} )', fontSize: 18, color: white.withOpacity(.8)),
                           ],
                         ),
                         const SizedBox(height: 10),
                         Row(
                           children: <Widget>[
-                            const Icon(FontAwesomeIcons.envelope, size: 15, color: blue),
+                            const Icon(FontAwesomeIcons.envelope, size: 25, color: blue),
                             const SizedBox(width: 10),
-                            CustomizedText(text: 'E-mail ( ${snapshot.data!.get("email")} )', fontSize: 14, color: white.withOpacity(.8)),
+                            CustomizedText(text: 'E-mail ( ${snapshot.data!.get("email")} )', fontSize: 18, color: white.withOpacity(.8)),
                           ],
                         ),
                         const SizedBox(height: 10),
                         Row(
                           children: <Widget>[
-                            const Icon(Icons.phone, size: 15, color: blue),
+                            const Icon(Icons.phone, size: 20, color: blue),
                             const SizedBox(width: 10),
-                            CustomizedText(text: 'Phone ( ${snapshot.data!.get("phone_number")} )', fontSize: 14, color: white.withOpacity(.8)),
+                            CustomizedText(text: 'Phone ( ${snapshot.data!.get("phone_number")} )', fontSize: 18, color: white.withOpacity(.8)),
                           ],
                         ),
                         const SizedBox(height: 20),
@@ -125,13 +125,14 @@ class PatientProfile extends StatelessWidget {
                         const SizedBox(height: 10),
                         Expanded(
                           child: SingleChildScrollView(
-                            child: CustomizedText(text: snapshot.data!.get("about").isEmpty ? "--" : snapshot.data!.get("about"), fontSize: 14, color: white),
+                            child: CustomizedText(text: snapshot.data!.get("about").isEmpty ? "--" : snapshot.data!.get("about"), fontSize: 18, color: white),
                           ),
                         ),
                         const SizedBox(height: 20),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Historic()));
+                            goTo(const Historic());
+                            //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Historic()));
                           },
                           child: Container(
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue),

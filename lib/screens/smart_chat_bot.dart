@@ -189,7 +189,6 @@ class _SmartChatBotState extends State<SmartChatBot> {
                                     _userWriting = false;
                                   });
                                   String text = _messagesController.text.trim();
-
                                   _messagesController.clear();
                                   FocusScope.of(context).unfocus();
                                   await FirebaseFirestore.instance.collection("quark").doc(FirebaseAuth.instance.currentUser!.uid).collection("messages").doc().set({
@@ -197,8 +196,8 @@ class _SmartChatBotState extends State<SmartChatBot> {
                                     "timestamp": Timestamp.now(),
                                     "me": true,
                                   }).then((void value) async {
-                                    playNote("replying.mp3");
                                     await _smartChatBot.textCompletion(request: CompletionRequest(maxTokens: 1024, prompt: text)).then((Completion? value) async {
+                                      showToast(text: (value == null).toString());
                                       setS(() {
                                         _dancingDotsKey.currentState!.setState(() {
                                           _botWriting = false;

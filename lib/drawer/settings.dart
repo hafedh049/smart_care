@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/drawer/account.dart';
+import 'package:smart_care/drawer/help_and_faq.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -42,7 +43,8 @@ class SmartSettings extends StatelessWidget {
             const SizedBox(height: 40),
             GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Account()));
+                goTo(const Account());
+                //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Account()));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -89,7 +91,7 @@ class SmartSettings extends StatelessWidget {
                 CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.blue.shade900.withOpacity(.2),
-                  child: Icon(FontAwesomeIcons.user, color: Colors.blue.shade900, size: 15),
+                  child: Icon(FontAwesomeIcons.language, color: Colors.blue.shade900, size: 15),
                 ),
                 CustomizedText(text: AppLocalizations.of(context)!.language, fontSize: 18, color: white),
                 CustomizedText(text: AppLocalizations.of(context)!.english, fontSize: 12, color: white.withOpacity(.6)),
@@ -162,7 +164,9 @@ class SmartSettings extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                goTo(const HelpAndFAQ());
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -171,7 +175,7 @@ class SmartSettings extends StatelessWidget {
                     backgroundColor: Colors.pink.withOpacity(.2),
                     child: const Icon(FontAwesomeIcons.earthAfrica, color: Colors.pink, size: 15),
                   ),
-                  CustomizedText(text: AppLocalizations.of(context)!.help, fontSize: 18, color: white),
+                  CustomizedText(text: "${AppLocalizations.of(context)!.help} & FAQ", fontSize: 18, color: white),
                   Container(
                     width: 40,
                     height: 40,

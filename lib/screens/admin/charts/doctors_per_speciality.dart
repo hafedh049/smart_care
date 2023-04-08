@@ -31,18 +31,14 @@ class _DoctorsPerSpecialityState extends State<DoctorsPerSpeciality> {
     [Color(0xFF8BC34A), Color(0xFFCDDC39)],
   ];
 
-  late final List<dynamic> _specs;
+  //late final List<dynamic> _specs;
 
-  Future<List<Map<String, dynamic>>> _load() async {
+  Future<List<Map<String, dynamic>>> _load(BuildContext context) async {
     List<Map<String, dynamic>> specialities = <Map<String, dynamic>>[];
     int counter = 0;
     for (Map<String, dynamic> speciality in specialityListFunction(context)) {
       await FirebaseFirestore.instance.collection("users").where("speciality", isEqualTo: speciality["speciality"]).count().get().then((AggregateQuerySnapshot value) {
-        specialities.add(<String, dynamic>{
-          "speciality": speciality["speciality"],
-          "count": value.count,
-          "gradients": _colorSchemes[counter],
-        });
+        specialities.add(<String, dynamic>{"speciality": speciality["speciality"], "count": value.count, "gradients": _colorSchemes[counter]});
         if (_total < value.count) {
           _total = (value.count.toDouble() / 10).ceil() * 10;
         }
@@ -55,7 +51,6 @@ class _DoctorsPerSpecialityState extends State<DoctorsPerSpeciality> {
 
   @override
   void initState() {
-    _specs = specialityListFunction(context).map((Map<String, dynamic> item) => item["speciality"]).toList();
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.landscapeLeft]);
     super.initState();
   }
@@ -76,13 +71,13 @@ class _DoctorsPerSpecialityState extends State<DoctorsPerSpeciality> {
       body: Padding(
         padding: const EdgeInsets.only(top: 32.0, left: 16.0, right: 36.0, bottom: 16.0),
         child: Center(
-          child: Row(
-            children: <Widget>[
-              FutureBuilder<List<Map<String, dynamic>>>(
-                future: _load(),
-                builder: (BuildContext context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
-                  if (snapshot.hasData) {
-                    return Expanded(
+          child: FutureBuilder<List<Map<String, dynamic>>>(
+            future: _load(context),
+            builder: (BuildContext context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+              if (snapshot.hasData) {
+                return Row(
+                  children: <Widget>[
+                    Expanded(
                       child: BarChart(
                         BarChartData(
                           alignment: BarChartAlignment.spaceAround,
@@ -92,7 +87,7 @@ class _DoctorsPerSpecialityState extends State<DoctorsPerSpeciality> {
                             topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
                             rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
                             show: true,
-                            bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, getTitlesWidget: (double value, TitleMeta meta) => CustomizedText(text: [for (String word in snapshot.data![value.floor().toInt()]["speciality"].split(" ")) word[0]].join(), color: white, fontSize: 12))),
+                            bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, getTitlesWidget: (double value, TitleMeta meta) => CustomizedText(text: [for (String word in snapshot.data![value.floor().toInt()]["speciality"].trim().split(" ")) word[0]].join(), color: white, fontSize: 12))),
                           ),
                           gridData: FlGridData(
                             show: true,
@@ -104,51 +99,43 @@ class _DoctorsPerSpecialityState extends State<DoctorsPerSpeciality> {
                               .map(
                                 (Map<String, dynamic> value) => BarChartGroupData(
                                   x: snapshot.data!.indexOf(value),
-                                  barRods: [
-                                    BarChartRodData(
-                                      toY: value["count"].toDouble(),
-                                      gradient: LinearGradient(
-                                        colors: value["gradients"], /*<Color>[Color(0xFF0F52BA), Color(0xFF00BFFF)],*/
-                                      ),
-                                      borderRadius: BorderRadius.circular(1),
-                                    ),
-                                  ],
+                                  barRods: [BarChartRodData(toY: value["count"].toDouble(), gradient: LinearGradient(colors: value["gradients"]), borderRadius: BorderRadius.circular(1))],
                                 ),
                               )
                               .toList(),
                         ),
                       ),
-                    );
-                  } else if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator(color: blue);
-                  } else {
-                    return ErrorRoom(error: snapshot.error.toString());
-                  }
-                },
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      for (int index = 0; index < _colorSchemes.length; index++)
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
                           children: <Widget>[
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 10.0, right: 10.0, left: 10.0),
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(gradient: LinearGradient(colors: _colorSchemes[index]), borderRadius: BorderRadius.circular(5)),
-                            ),
-                            Expanded(child: SingleChildScrollView(child: Container(margin: const EdgeInsets.only(bottom: 10.0), child: CustomizedText(text: _specs[index], fontSize: 14, fontWeight: FontWeight.bold, color: white)))),
+                            for (int index = 0; index < snapshot.data!.length; index++)
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 10.0, right: 10.0, left: 10.0),
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(gradient: LinearGradient(colors: _colorSchemes[index]), borderRadius: BorderRadius.circular(5)),
+                                  ),
+                                  Expanded(child: SingleChildScrollView(child: Container(margin: const EdgeInsets.only(bottom: 10.0), child: CustomizedText(text: snapshot.data![index]["speciality"], fontSize: 14, fontWeight: FontWeight.bold, color: white)))),
+                                ],
+                              ),
                           ],
                         ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+                      ),
+                    ),
+                  ],
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator(color: blue));
+              } else {
+                return ErrorRoom(error: snapshot.error.toString());
+              }
+            },
           ),
         ),
       ),

@@ -138,7 +138,10 @@ class _HomeState extends State<Home> {
                                               contentChild: (BuildContext context, Tree value) {
                                                 return Center(
                                                   child: GestureDetector(
-                                                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => PatientFolder(collection: value.text!, patientId: data[index].get("patientID"), icon: value.icon!))),
+                                                    onTap: () {
+                                                      goTo(PatientFolder(collection: value.text!, patientId: data[index].get("patientID"), icon: value.icon!));
+                                                      //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => PatientFolder(collection: value.text!, patientId: data[index].get("patientID"), icon: value.icon!)));
+                                                    },
                                                     child: Container(
                                                       padding: const EdgeInsets.all(8.0),
                                                       decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(15)),
@@ -183,7 +186,8 @@ class _HomeState extends State<Home> {
                                         const SizedBox(height: 10),
                                         GestureDetector(
                                           onTap: () {
-                                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Prescription(patientID: data[index].get("patientID"))));
+                                            goTo(Prescription(patientID: data[index].get("patientID")));
+                                            //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Prescription(patientID: data[index].get("patientID"))));
                                           },
                                           child: Container(
                                             margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -284,7 +288,10 @@ class _HomeState extends State<Home> {
                       CustomizedText(text: AppLocalizations.of(context)!.articles, fontSize: 16, color: white, fontWeight: FontWeight.bold),
                       const Spacer(),
                       GestureDetector(
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Articles())),
+                        onTap: () {
+                          goTo(const Articles());
+                          //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Articles()));
+                        },
                         child: CustomizedText(text: AppLocalizations.of(context)!.seeAll, fontSize: 14, color: blue, fontWeight: FontWeight.bold),
                       ),
                     ],

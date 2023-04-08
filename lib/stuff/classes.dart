@@ -18,6 +18,7 @@ import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'dart:math' as math;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../drawer/profile.dart';
 
@@ -151,7 +152,8 @@ class OTPAuth extends StatelessWidget {
     return Center(
       child: GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const OTPView()));
+          goTo(const OTPView());
+          //Navigator.push(context, MaterialPageRoute(builder: (context) => const OTPView()));
         },
         child: Container(
           height: 40,
@@ -240,6 +242,7 @@ class HealthDrawer extends StatelessWidget {
             Container(width: 267, height: .1, color: white),
             const SizedBox(height: 10),
             ListTile(
+              contentPadding: EdgeInsets.zero,
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Profile()));
               },
@@ -254,6 +257,7 @@ class HealthDrawer extends StatelessWidget {
               title: CustomizedText(text: AppLocalizations.of(context)!.profile, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ListTile(
+              contentPadding: EdgeInsets.zero,
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartSettings()));
               },
@@ -268,6 +272,7 @@ class HealthDrawer extends StatelessWidget {
               title: CustomizedText(text: AppLocalizations.of(context)!.settings, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ListTile(
+              contentPadding: EdgeInsets.zero,
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const AboutUs()));
               },
@@ -284,6 +289,7 @@ class HealthDrawer extends StatelessWidget {
             const Spacer(),
             Container(width: 267, height: .1, color: white),
             ListTile(
+              contentPadding: EdgeInsets.zero,
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartChatBot()));
               },
@@ -319,7 +325,9 @@ class HealthDrawer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    launchUrlString("https://www.instagram.com/explore/tags/telemedecine/");
+                  },
                   child: const CircleAvatar(
                     radius: 22,
                     backgroundColor: white,
@@ -327,7 +335,9 @@ class HealthDrawer extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    launchUrlString("https://www.facebook.com/groups/telemedecinec");
+                  },
                   child: const CircleAvatar(
                     radius: 22,
                     backgroundColor: white,
@@ -335,7 +345,9 @@ class HealthDrawer extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    launchUrlString("https://twitter.com/tlm360?lang=ar");
+                  },
                   child: const CircleAvatar(
                     radius: 22,
                     backgroundColor: white,

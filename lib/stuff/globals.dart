@@ -1,6 +1,11 @@
+import 'dart:math';
+
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:smart_care/screens/admin/heart_beats.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -24,7 +29,7 @@ int? firstTime;
 int darkTheme = 1;
 int? play;
 
-const String apiKey = "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";
+const String apiKey = "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";
 
 final AssetsAudioPlayer player = AssetsAudioPlayer.newPlayer();
 
@@ -39,8 +44,7 @@ List<Map<String, dynamic>> specialityListFunction(BuildContext context) {
     {
       'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F1-min.jpg?alt=media&token=e8e0e7eb-e787-4731-8adb-c6d3ae0e5b23",
       "speciality": AppLocalizations.of(context)!.surgeonsAndSurgicalAssistants,
-      "description": AppLocalizations.of(context)!.surgeonsAndSurgicalAssistantsDescription,
-      "color": white,
+      "description": "Surgeons and surgical assistants",
     },
     {
       "color": darkBlue,
@@ -201,6 +205,13 @@ List<Map<String, dynamic>> adminCards(BuildContext context) {
     <String, dynamic>{"name": AppLocalizations.of(context)!.diseaseTracker, "widget": const DiseasesTracker(), "color": const Color.fromARGB(255, 10, 186, 181), "icon": FontAwesomeIcons.chartPie},
     <String, dynamic>{"name": AppLocalizations.of(context)!.bloodTypes, "widget": const BloodTypeTracker(), "color": green, "icon": FontAwesomeIcons.chartLine},
     <String, dynamic>{"name": AppLocalizations.of(context)!.specialities, "widget": const DoctorsPerSpeciality(), "color": const Color.fromARGB(255, 255, 204, 0), "icon": FontAwesomeIcons.chartColumn},
+    <String, dynamic>{"name": "Heart Beats", "widget": const HeartBeats(), "color": const Color.fromARGB(255, 0, 255, 187), "icon": FontAwesomeIcons.heartPulse},
   ];
   return adminCardsList;
+}
+
+const List<Transition> animatedTransitions = Transition.values;
+
+Future<void> goTo(Widget place) async {
+  await Get.to(place, transition: animatedTransitions[Random().nextInt(animatedTransitions.length)], duration: 300.ms);
 }

@@ -91,7 +91,10 @@ class _ArticlesState extends State<Articles> {
                             itemBuilder: (BuildContext context, int index) => Padding(
                               padding: const EdgeInsets.only(bottom: 12.0),
                               child: GestureDetector(
-                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Article(article: articles[index].data()))),
+                                onTap: () {
+                                  goTo(Article(article: articles[index].data()));
+                                  //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Article(article: articles[index].data())));
+                                },
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[

@@ -96,27 +96,29 @@ class DoctorProfile extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              CustomizedText(text: "Dr. ${snapshot.data!.get("name")}", fontSize: 18, fontWeight: FontWeight.bold, color: white),
-                              const SizedBox(height: 5),
-                              CustomizedText(text: snapshot.data!.get("speciality"), fontSize: 14, color: white.withOpacity(.8)),
-                              const SizedBox(height: 5),
-                              Row(
-                                children: <Widget>[
-                                  RatingBarIndicator(
-                                    itemBuilder: (BuildContext context, int index) => const Icon(FontAwesomeIcons.star, color: blue),
-                                    itemSize: 10,
-                                    itemPadding: const EdgeInsets.only(right: 4.0),
-                                    rating: double.parse(snapshot.data!.get("rating")) == 0 ? 1 : double.parse(snapshot.data!.get("rating")),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  CustomizedText(text: '( ${double.parse(snapshot.data!.get('rating')) == 0 ? 1 : snapshot.data!.get('rating')} )', fontSize: 14, color: white.withOpacity(.8)),
-                                ],
-                              ),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                CustomizedText(text: "Dr. ${snapshot.data!.get("name")}", fontSize: 18, fontWeight: FontWeight.bold, color: white),
+                                const SizedBox(height: 5),
+                                Flexible(child: CustomizedText(text: snapshot.data!.get("speciality"), fontSize: 14, color: white.withOpacity(.8))),
+                                const SizedBox(height: 5),
+                                Row(
+                                  children: <Widget>[
+                                    RatingBarIndicator(
+                                      itemBuilder: (BuildContext context, int index) => const Icon(FontAwesomeIcons.star, color: blue),
+                                      itemSize: 10,
+                                      itemPadding: const EdgeInsets.only(right: 4.0),
+                                      rating: double.parse(snapshot.data!.get("rating")) == 0 ? 1 : double.parse(snapshot.data!.get("rating")),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    CustomizedText(text: '( ${double.parse(snapshot.data!.get('rating')) == 0 ? 1 : snapshot.data!.get('rating')} )', fontSize: 14, color: white.withOpacity(.8)),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
