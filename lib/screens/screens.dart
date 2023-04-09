@@ -78,13 +78,19 @@ class _ScreensState extends State<Screens> {
                   Column(
                     children: <Widget>[
                       Expanded(
-                        child: PageView(
-                          onPageChanged: (int page) {
-                            _screensKey.currentState!.setState(() => _activeIndex = page);
-                          },
-                          controller: _screensController,
-                          children: _filteredScreens.map((Map<String, dynamic> page) => page["screen"] as Widget).toList(),
-                        ),
+                        child: StatefulBuilder(builder: (BuildContext context, void Function(void Function()) _) {
+                          return PageView(
+                            physics: _activeIndex == 2 ? const NeverScrollableScrollPhysics() : null,
+                            onPageChanged: (int page) {
+                              _screensKey.currentState!.setState(() => _activeIndex = page);
+                              if (_activeIndex == 2) {
+                                _(() {});
+                              }
+                            },
+                            controller: _screensController,
+                            children: _filteredScreens.map((Map<String, dynamic> page) => page["screen"] as Widget).toList(),
+                          );
+                        }),
                       ),
                     ],
                   ),

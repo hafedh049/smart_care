@@ -215,3 +215,109 @@ const List<Transition> animatedTransitions = Transition.values;
 Future<void> goTo(Widget place) async {
   await Get.to(place, transition: animatedTransitions[Random().nextInt(animatedTransitions.length)], duration: 300.ms);
 }
+
+final List<Map<String, dynamic>> workflow = <Map<String, dynamic>>[
+  <String, dynamic>{
+    'index': 0,
+    "title": "Description De La Lésion",
+    "options": <Map<String, dynamic>>[
+      <String, dynamic>{"content": "Superficielle", "redirectTo": 1},
+      <String, dynamic>{"content": "Profond", "redirectTo": 1},
+    ],
+  },
+  <String, dynamic>{
+    'index': 1,
+    "title": "Mécanisme",
+    "options": <Map<String, dynamic>>[
+      <String, dynamic>{"content": "Piqûre par une aiguille pleine", "redirectTo": 2},
+      <String, dynamic>{"content": "Piqûre par une aiguille creuse", "redirectTo": 2},
+      <String, dynamic>{"content": "Piqûre Non précisée", "redirectTo": 2},
+      <String, dynamic>{"content": "Coupure", "redirectTo": 2},
+      <String, dynamic>{"content": "Projection de sang", "redirectTo": 2},
+      <String, dynamic>{"content": "Projection du liquide biologique", "redirectTo": 2},
+    ],
+  },
+  <String, dynamic>{
+    'index': 2,
+    "title": "Le Malade-Source",
+    "options": <Map<String, dynamic>>[
+      <String, dynamic>{"content": "Inconnu", "redirectTo": 3},
+      <String, dynamic>{"content": "Externe", "redirectTo": 3},
+      <String, dynamic>{"content": "Hospitalisé", "redirectTo": 3},
+    ],
+  },
+  <String, dynamic>{
+    'index': 3,
+    "title": "Quel est le virus avec lequel le patient source est infecté ?",
+    "options": <Map<String, dynamic>>[
+      <String, dynamic>{"content": "VHB", "redirectTo": 4},
+      <String, dynamic>{"content": "VHC", "redirectTo": 9},
+      <String, dynamic>{"content": "HIV", "redirectTo": 12},
+    ],
+  },
+  <String, dynamic>{
+    'index': 4,
+    "title": "VHB",
+    "options": <Map<String, dynamic>>[
+      <String, dynamic>{"content": "Vaccinée immunisée, anticorps anti-hépatite B surface (AntiHBS) positif", "redirectTo": 5},
+      <String, dynamic>{"content": "Vaccination non immunisée : Anticorps Anti-Hépatite B Surface (AntiHBS) inférieurs à 10 unités internationales par litre (UI/L)", "redirectTo": 6},
+    ],
+  },
+  <String, dynamic>{
+    'index': 5,
+    "end": "Pas De Profelaxie",
+  },
+  <String, dynamic>{
+    'index': 6,
+    "title": "Est-ce que le patient source a été testé positif pour l'antigène de surface de l'hépatite B (AgHBS) ou est-ce que son statut est inconnu ? ou bien negatif.",
+    "options": <Map<String, dynamic>>[
+      <String, dynamic>{"content": "Patient source avec l'Antigène Hépatite B Surface (AgHBS) positif ou statut inconnu", "redirectTo": 7},
+      <String, dynamic>{"content": "Patient Source avec l'Antigène Hépatite B Surface (AgHBS) negatif", "redirectTo": 8},
+    ],
+  },
+  <String, dynamic>{
+    'index': 7,
+    "end": "",
+  },
+  <String, dynamic>{
+    'index': 8,
+    "end": "",
+  },
+  <String, dynamic>{
+    'index': 9,
+    "title": "VHC",
+    "options": <Map<String, dynamic>>[
+      <String, dynamic>{"content": "Patient Source positive (+) : Virus de l'Hépatite C (VHC) positif ou statut inconnu.", "redirectTo": 11},
+      <String, dynamic>{"content": "Patient Source negative (-)", "redirectTo": 10},
+    ],
+  },
+  <String, dynamic>{
+    'index': 10,
+    "end": "Pas De Profelaxie",
+  },
+  <String, dynamic>{
+    'index': 11,
+    "end": "Pas De Profelaxie",
+  },
+  <String, dynamic>{
+    'index': 12,
+    "title": "HIV",
+    "options": <Map<String, dynamic>>[
+      <String, dynamic>{"content": "Patient source positive : Virus de l'Immunodéficience Humaine (VIH) positif.", "redirectTo": 13},
+      <String, dynamic>{"content": "Patient source positive : Virus de l'Immunodéficience Humaine (VIH) négatif.", "redirectTo": 14},
+      <String, dynamic>{"content": "Patient source positive : Virus de l'Immunodéficience Humaine (VIH) inconnu.", "redirectTo": 15},
+    ],
+  },
+  <String, dynamic>{
+    'index': 13,
+    "end": "",
+  },
+  <String, dynamic>{
+    'index': 14,
+    "end": "Pas De Profelaxie",
+  },
+  <String, dynamic>{
+    'index': 15,
+    "end": "",
+  },
+];
