@@ -260,24 +260,24 @@ final List<Map<String, dynamic>> workflow = <Map<String, dynamic>>[
     "title": "VHB",
     "options": <Map<String, dynamic>>[
       <String, dynamic>{"content": "Vaccinée immunisée, anticorps anti-hépatite B surface (AntiHBS) positif", "redirectTo": 5},
-      <String, dynamic>{"content": "Vaccination non immunisée : Anticorps Anti-Hépatite B Surface (AntiHBS) inférieurs à 10 unités internationales par litre (UI/L)", "redirectTo": 6},
+      <String, dynamic>{"content": "AC anti HBS > 10 (UI/L)", "redirectTo": 6},
     ],
   },
   <String, dynamic>{
     'index': 5,
-    "end": "Pas De Profelaxie",
+    "end": "Vous n'êtes pas affecté par un virus tant que vous etes immunisées",
   },
   <String, dynamic>{
     'index': 6,
-    "title": "Est-ce que le patient source a été testé positif pour l'antigène de surface de l'hépatite B (AgHBS) ou est-ce que son statut est inconnu ? ou bien negatif.",
+    "title": "",
     "options": <Map<String, dynamic>>[
-      <String, dynamic>{"content": "Patient source avec l'Antigène Hépatite B Surface (AgHBS) positif ou statut inconnu", "redirectTo": 7},
-      <String, dynamic>{"content": "Patient Source avec l'Antigène Hépatite B Surface (AgHBS) negatif", "redirectTo": 8},
+      <String, dynamic>{"content": "Patient source AgHBS +", "redirectTo": 7},
+      <String, dynamic>{"content": "Patient source AgHBS -", "redirectTo": 8},
     ],
   },
   <String, dynamic>{
     'index': 7,
-    "end": "",
+    "end": "vous devez prendre une injection d'immunoglobuline dans un délai de 72 heures",
   },
   <String, dynamic>{
     'index': 8,

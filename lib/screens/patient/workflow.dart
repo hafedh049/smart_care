@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -57,7 +57,7 @@ class _WorkFlowState extends State<WorkFlow> {
                   return StatefulBuilder(
                     builder: (BuildContext context, void Function(void Function()) _) {
                       return !workflow[index].containsKey("title")
-                          ? CustomizedText(text: workflow[index]["end"], fontSize: 18, color: white, fontWeight: FontWeight.bold)
+                          ? Center(child: CustomizedText(text: workflow[index]["end"], fontSize: 18, color: white, fontWeight: FontWeight.bold))
                           : Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
@@ -65,16 +65,16 @@ class _WorkFlowState extends State<WorkFlow> {
                               children: <Widget>[
                                 CustomizedText(text: workflow[index]["title"], fontSize: 25, color: blue, fontWeight: FontWeight.bold),
                                 const SizedBox(height: 20),
-                                for (Map<String, dynamic> option in workflow[index]["options"])
+                                for (int __ = 0; __ < workflow[index]["options"].length; __++)
                                   GestureDetector(
                                     onTap: () {
-                                      _(() => _choices[index] = option["content"]);
+                                      _(() => _choices[index] = workflow[index]["options"][__]["content"]);
                                       Future.delayed(300.ms, () {
-                                        for (int page = _flowController.page!.round(); page <= option["redirectTo"]; page++) {
+                                        for (int page = _flowController.page!.round(); page <= workflow[index]["options"][__]["redirectTo"]; page++) {
                                           _flowController.jumpToPage(page);
                                         }
-                                        if (workflow[option["redirectTo"]].containsKey("end")) {
-                                          _conduiteATenir = workflow[option["redirectTo"]]["end"];
+                                        if (workflow[workflow[index]["options"][__]["redirectTo"]].containsKey("end")) {
+                                          _conduiteATenir = workflow[workflow[index]["options"][__]["redirectTo"]]["end"];
                                         }
                                       });
                                     },
@@ -83,25 +83,25 @@ class _WorkFlowState extends State<WorkFlow> {
                                       child: Row(
                                         children: <Widget>[
                                           Radio<String>(
-                                            value: option["content"],
+                                            value: workflow[index]["options"][__]["content"],
                                             groupValue: _choices[index],
                                             onChanged: (String? value) {
                                               _(() => _choices[index] = value!);
                                               Future.delayed(300.ms, () {
-                                                for (int page = _flowController.page!.round(); page <= option["redirectTo"]; page++) {
+                                                for (int page = _flowController.page!.round(); page <= workflow[index]["options"][__]["redirectTo"]; page++) {
                                                   _flowController.jumpToPage(page);
                                                 }
-                                                if (workflow[option["redirectTo"]].containsKey("end")) {
-                                                  _conduiteATenir = workflow[option["redirectTo"]]["end"];
+                                                if (workflow[workflow[index]["options"][__]["redirectTo"]].containsKey("end")) {
+                                                  _conduiteATenir = workflow[workflow[index]["options"][__]["redirectTo"]]["end"];
                                                 }
                                               });
                                             },
                                             activeColor: blue,
                                           ),
                                           const SizedBox(width: 20),
-                                          Flexible(child: CustomizedText(text: option["content"], fontSize: 18, color: white, fontWeight: FontWeight.bold)),
+                                          Flexible(child: CustomizedText(text: workflow[index]["options"][__]["content"], fontSize: 18, color: white, fontWeight: FontWeight.bold)),
                                         ],
-                                      ),
+                                      ).animate().slideX(begin: 1, end: 0, duration: 200.ms, delay: (30 * __).ms),
                                     ),
                                   ),
                               ],
