@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,6 +28,7 @@ void main() async {
   Map<String, dynamic> userData = (await db!.rawQuery("SELECT FIRST_TIME,AUDIO FROM SMART_CARE WHERE ID = 1;")).first;
   firstTime = userData["FIRST_TIME"] as int;
   play = userData["AUDIO"] as int?;
+  runApp(const Main());
   Connectivity().onConnectivityChanged.listen((ConnectivityResult event) async {
     if (await InternetConnectionChecker().hasConnection) {
       showToast(text: "Online", color: blue);
@@ -33,7 +36,6 @@ void main() async {
       showToast(text: "Offline", color: red);
     }
   });
-  runApp(const Main());
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: <SystemUiOverlay>[SystemUiOverlay.top]);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: transparent,

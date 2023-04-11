@@ -1,15 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
+//import 'dart:convert';
 //import 'dart:io';
 
 //import 'package:ansi_styles/extension.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+//import 'package:flutter_animate/flutter_animate.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -74,21 +74,6 @@ String getTimeFromDate(DateTime date) {
   return '$hours:$minutes $meridian';
 }
 
-final Map<int, dynamic> months = <int, dynamic>{
-  1: "January",
-  2: "February",
-  3: "March",
-  4: "April",
-  5: "May",
-  6: "June",
-  7: "July",
-  8: "August",
-  9: "September",
-  10: "October",
-  11: "November",
-  12: "December",
-};
-
 String getDateRepresentation(DateTime date) {
   return "${showWeekDay(date.weekday)}, ${months[date.month]} ${date.day}";
 }
@@ -136,7 +121,7 @@ void playNote(String note) {
   return await Geolocator.getCurrentPosition();
 }*/
 
-Future<void> userstoFirestore() async {
+/*Future<void> userstoFirestore() async {
   final List<dynamic> userData = json.decode(await rootBundle.loadString("assets/users_file.json"));
   for (int index = 493; index < userData.length; index++) {
     try {
@@ -190,4 +175,4 @@ Future<void> articlesToFirestore() async {
       break;
     }
   }
-}
+}*/

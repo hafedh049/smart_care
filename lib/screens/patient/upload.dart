@@ -83,7 +83,7 @@ class _UploadState extends State<Upload> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Image.asset("assets/camera.png", width: 40, height: 40),
+                              Image.asset("assets/icon/camera.png", width: 40, height: 40),
                               CustomizedText(text: AppLocalizations.of(context)!.camera, fontSize: 16, color: white, fontWeight: FontWeight.bold),
                             ],
                           ),
@@ -129,7 +129,7 @@ class _UploadState extends State<Upload> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Image.asset("assets/gallery.png", width: 40, height: 40),
+                              Image.asset("assets/icon/gallery.png", width: 40, height: 40),
                               CustomizedText(text: AppLocalizations.of(context)!.gallery, fontSize: 16, color: white, fontWeight: FontWeight.bold),
                             ],
                           ),
@@ -185,7 +185,7 @@ class _UploadState extends State<Upload> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Image.asset("assets/pdf.png", width: 30, height: 30),
+                          Image.asset("assets/icon/pdf.png", width: 30, height: 30),
                           CustomizedText(text: AppLocalizations.of(context)!.pDF, fontSize: 16, color: white, fontWeight: FontWeight.bold),
                         ],
                       ),

@@ -47,7 +47,7 @@ class PrimaryPrevention extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index, int realIndex) {
                       return Container(
                         decoration: BoxDecoration(
-                          image: DecorationImage(image: AssetImage("assets/${_preventions[index]['image']}"), fit: BoxFit.cover),
+                          image: DecorationImage(image: AssetImage("assets/primaly_prevention/${_preventions[index]['image']}"), fit: BoxFit.cover),
                           borderRadius: BorderRadius.circular(5),
                         ),
                       );

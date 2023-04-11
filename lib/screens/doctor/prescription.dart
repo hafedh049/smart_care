@@ -425,7 +425,7 @@ class _PrescriptionState extends State<Prescription> {
                                   await file.writeAsBytes(await pdfDoc.save());
 
                                   await FirebaseStorage.instance.ref().child("prescriptions/${_patientData['uid']}/${DateTime.now()}").putFile(file).then((TaskSnapshot taskSnapshot) async {
-                                    showToast(text: "Prescription Uploaded");
+                                    showToast(text: AppLocalizations.of(context)!.prescriptionUploaded);
                                     await FirebaseFirestore.instance.collection("prescriptions").add({
                                       "doctorID": me["uid"],
                                       "doctorName": me["name"],

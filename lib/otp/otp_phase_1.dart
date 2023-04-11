@@ -158,7 +158,7 @@ class _OTPViewState extends State<OTPView> {
                       },
                     ),
                   ),
-                  LottieBuilder.asset("assets/phase_1.json"),
+                  LottieBuilder.asset("assets/lottie/phase_1.json"),
                 ],
               ),
             ),

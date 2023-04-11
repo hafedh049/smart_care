@@ -4,9 +4,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/drawer/profile.dart';
 import 'package:smart_care/error/error_room.dart';
+import 'package:smart_care/screens/patient/heart_beats.dart';
 import 'package:smart_care/screens/articles.dart';
 import 'package:smart_care/screens/patient/fetch_all_appointments.dart';
 import 'package:smart_care/screens/patient/filter.dart';
@@ -107,53 +109,30 @@ class Home extends StatelessWidget {
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.all(8.0),
-                        height: 150,
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue.withOpacity(.7)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            CustomizedText(text: AppLocalizations.of(context)!.onlineConsultation, fontSize: 25, color: white),
-                            const SizedBox(height: 20),
-                            Center(
-                              child: Container(
-                                padding: const EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
-                                margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                                child: CustomizedText(text: AppLocalizations.of(context)!.findDoctor, fontSize: 16, color: darkBlue),
-                              ),
-                            ),
-                          ],
+                child: GestureDetector(
+                  onTap: () {
+                    goTo(const HeartBeats());
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          height: 150,
+                          decoration: BoxDecoration(image: const DecorationImage(image: CachedNetworkImageProvider(heartPulse), fit: BoxFit.cover), borderRadius: BorderRadius.circular(15), color: Colors.yellowAccent.shade100),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Icon(FontAwesomeIcons.heartPulse, color: white, size: 25),
+                              const SizedBox(width: 20),
+                              CustomizedText(text: AppLocalizations.of(context)!.heartPulse, fontSize: 25, color: white),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 5),
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.all(8.0),
-                        height: 150,
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.amber.shade900.withOpacity(.7)),
-                        child: Column(
-                          children: <Widget>[
-                            CustomizedText(text: AppLocalizations.of(context)!.visitADoctorOffline, fontSize: 25, color: white),
-                            const SizedBox(height: 20),
-                            Center(
-                              child: Container(
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
-                                padding: const EdgeInsets.all(8.0),
-                                margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                                child: CustomizedText(text: AppLocalizations.of(context)!.appointment, fontSize: 16, color: darkBlue),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
@@ -168,7 +147,6 @@ class Home extends StatelessWidget {
                         GestureDetector(
                             onTap: () {
                               goTo(const FetchAllAppointments());
-                              //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const FetchAllAppointments()));
                             },
                             child: CustomizedText(text: AppLocalizations.of(context)!.seeAll, fontSize: 14, color: blue, fontWeight: FontWeight.bold)),
                       ],
@@ -185,20 +163,19 @@ class Home extends StatelessWidget {
                                 if (appointments.isEmpty) {
                                   return Container(
                                     height: 180,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
-                                    child: const Center(child: CustomizedText(text: 'No Appointments Yet.', fontSize: 16, color: white, fontWeight: FontWeight.bold)),
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius1), fit: BoxFit.cover)),
+                                    child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.noAppointmentsYet.toUpperCase(), fontSize: 20, color: white, fontWeight: FontWeight.bold)),
                                   );
                                 } else {
                                   final QueryDocumentSnapshot<Map<String, dynamic>> firstAppointment = snapshot.data!.docs.first;
                                   return GestureDetector(
                                     onTap: () {
                                       goTo(Summary(data: firstAppointment.data()));
-                                      //Navigator.push(context, MaterialPageRoute(builder: (context) => Summary(data: firstAppointment.data())));
                                     },
                                     child: Container(
                                       height: 180,
                                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius1), fit: BoxFit.cover)),
                                       child: Column(
                                         children: <Widget>[
                                           const SizedBox(height: 10),
@@ -264,14 +241,13 @@ class Home extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             goTo(const FilterList());
-                            //Navigator.push(context, MaterialPageRoute(builder: (context) => const FilterList()));
                           },
                           child: Container(
                             height: 180,
                             padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 16.0),
                             width: 40,
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
-                            child: Center(child: RotatedBox(quarterTurns: 3, child: CustomizedText(text: AppLocalizations.of(context)!.makeANew, fontSize: 16, color: white, fontWeight: FontWeight.bold))),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius2), fit: BoxFit.cover)),
+                            child: Center(child: RotatedBox(quarterTurns: 3, child: CustomizedText(text: AppLocalizations.of(context)!.makeANew.toUpperCase(), fontSize: 16, color: white, fontWeight: FontWeight.bold))),
                           ),
                         ),
                       ],
@@ -291,7 +267,6 @@ class Home extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             goTo(const Articles());
-                            //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Articles()));
                           },
                           child: CustomizedText(text: AppLocalizations.of(context)!.seeAll, fontSize: 14, color: blue, fontWeight: FontWeight.bold),
                         ),
@@ -307,15 +282,10 @@ class Home extends StatelessWidget {
                             return GestureDetector(
                               onTap: () {
                                 goTo(Article(article: firstArtical.data()));
-                                //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Article(article: firstArtical.data())));
                               },
                               child: Row(
                                 children: <Widget>[
-                                  Container(
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
-                                    height: 20,
-                                    width: 20,
-                                  ),
+                                  Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue), height: 20, width: 20).animate(onComplete: (AnimationController controller) => controller.loop(reverse: true)).shimmer(colors: <Color>[grey.withOpacity(.8), blue], duration: 2.seconds),
                                   const SizedBox(width: 10),
                                   Expanded(child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: firstArtical.get("title"), fontSize: 16, color: white, fontWeight: FontWeight.bold))),
                                   const SizedBox(width: 10),

@@ -118,8 +118,8 @@ class SmartSettings extends StatelessWidget {
                     CustomizedText(text: AppLocalizations.of(context)!.sounds, fontSize: 18, color: white),
                     CustomizedText(text: play == 1 ? AppLocalizations.of(context)!.enabled : AppLocalizations.of(context)!.disabled, fontSize: 12, color: white.withOpacity(.6)),
                     Switch(
-                      activeThumbImage: const AssetImage("assets/play.png"),
-                      inactiveThumbImage: const AssetImage("assets/mute.png"),
+                      activeThumbImage: const AssetImage("assets/icon/play.png"),
+                      inactiveThumbImage: const AssetImage("assets/icon/mute.png"),
                       value: play == 1 ? true : false,
                       onChanged: (bool value) async {
                         if (value) {
@@ -151,8 +151,8 @@ class SmartSettings extends StatelessWidget {
                   CustomizedText(text: AppLocalizations.of(context)!.darkMode, fontSize: 18, color: white),
                   CustomizedText(text: AppLocalizations.of(context)!.on, fontSize: 12, color: white.withOpacity(.6)),
                   Switch(
-                    activeThumbImage: const AssetImage("assets/moon.png"),
-                    inactiveThumbImage: const AssetImage("assets/sun.png"),
+                    activeThumbImage: const AssetImage("assets/icon/moon.png"),
+                    inactiveThumbImage: const AssetImage("assets/icon/sun.png"),
                     value: darkTheme == 1 ? true : false,
                     onChanged: (bool value) => darkTheme = value ? 1 : 0,
                     activeTrackColor: blue,

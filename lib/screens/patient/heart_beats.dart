@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:heart_bpm/chart.dart';
 import 'package:heart_bpm/heart_bpm.dart';
 import 'package:smart_care/stuff/classes.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HeartBeats extends StatefulWidget {
   const HeartBeats({super.key});
@@ -11,8 +12,8 @@ class HeartBeats extends StatefulWidget {
 }
 
 class _HeartBeatsState extends State<HeartBeats> {
-  final List<SensorValue> _data = [];
-  final List<SensorValue> _bpmValues = [];
+  final List<SensorValue> _data = <SensorValue>[];
+  final List<SensorValue> _bpmValues = <SensorValue>[];
 
   bool isBPMEnabled = false;
 
@@ -27,7 +28,7 @@ class _HeartBeatsState extends State<HeartBeats> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Heart Beats Per Minute'),
+        title: Text(AppLocalizations.of(context)!.heartBeatsPerMinute),
       ),
       body: Column(
         children: <Widget>[
@@ -65,16 +66,9 @@ class _HeartBeatsState extends State<HeartBeats> {
           Center(
             child: ElevatedButton.icon(
               icon: const Icon(Icons.favorite_rounded),
-              label: CustomizedText(text: isBPMEnabled ? "Stop measurement" : "Measure BPM", fontSize: 18, color: const Color.fromARGB(255, 159, 121, 199), fontWeight: FontWeight.bold),
+              label: CustomizedText(text: isBPMEnabled ? AppLocalizations.of(context)!.stopMeasurement : AppLocalizations.of(context)!.measureBPM, fontSize: 18, color: const Color.fromARGB(255, 159, 121, 199), fontWeight: FontWeight.bold),
               onPressed: () => setState(
-                () {
-                  if (isBPMEnabled) {
-                    isBPMEnabled = false;
-                    // dialog.
-                  } else {
-                    isBPMEnabled = true;
-                  }
-                },
+                () => isBPMEnabled = !isBPMEnabled,
               ),
             ),
           ),

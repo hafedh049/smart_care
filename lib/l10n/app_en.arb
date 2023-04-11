@@ -855,6 +855,18 @@
     "@noAppointmentsYet": {
         "description": "No Appointments Yet."
     },
+    "heartBeatsPerMinute": "Heart Beats Per Minute",
+    "@heartBeatsPerMinute": {
+        "description": "Heart Beats Per Minute"
+    },
+    "stopMeasurement": "Stop Measurement",
+    "@stopMeasurement": {
+        "description": "Stop Measurement"
+    },
+    "measureBPM": "Measure BPM",
+    "@measureBPM": {
+        "description": "Measure BPM"
+    },
     "nodoctormatchesthissearch": "No doctor matches this search",
     "@nodoctormatchesthissearch": {
         "description": "No doctor matches this search"
@@ -867,18 +879,12 @@
     "@searchForDoctors": {
         "description": "Search For Doctors"
     },
-    "onlineConsultation": "Online Consultation",
-    "@onlineConsultation": {
-        "description": "Online Consultation"
+    
+    "heartPulse": "Heart Beats",
+    "@heartPulse": {
+        "description": "Heart Beats."
     },
-    "findDoctor": "Find Doctor",
-    "@findDoctor": {
-        "description": "Find Doctor"
-    },
-    "visitADoctorOffline": "Visit A Doctor Offline",
-    "@visitADoctorOffline": {
-        "description": "Visit A Doctor Offline"
-    },
+
     "appointment": "Appointment",
     "@appointment": {
         "description": "Appointment"

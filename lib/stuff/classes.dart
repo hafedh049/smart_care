@@ -134,7 +134,7 @@ class GoogleAuth extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Image.asset("assets/google.png"),
+              Image.asset("assets/icon/google.png"),
               CustomizedText(text: AppLocalizations.of(context)!.cONTINUEWITHGOOGLE, fontSize: 16, fontWeight: FontWeight.bold, color: white),
             ],
           ),
@@ -168,7 +168,7 @@ class OTPAuth extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Image.asset("assets/phone.png"),
+              Image.asset("assets/icon/phone.png"),
               CustomizedText(text: AppLocalizations.of(context)!.cONTINUEWITHPHONE, color: white, fontSize: 16, fontWeight: FontWeight.bold),
             ],
           ),

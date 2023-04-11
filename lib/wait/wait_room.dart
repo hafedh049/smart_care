@@ -16,7 +16,7 @@ class WaitRoom extends StatelessWidget {
             padding: const EdgeInsets.only(left: 8.0),
             child: Center(
               child: LottieBuilder.asset(
-                "assets/wait.json",
+                "assets/lottie/wait.json",
               ),
             ),
           ),

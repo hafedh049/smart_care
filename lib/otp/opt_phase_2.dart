@@ -119,7 +119,7 @@ class _OTPState extends State<OTP> {
                     },
                   ),
                 ),
-                Center(child: LottieBuilder.asset("assets/shield.json")),
+                Center(child: LottieBuilder.asset("assets/lottie/shield.json")),
               ],
             ),
           ),

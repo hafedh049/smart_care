@@ -14,7 +14,7 @@ class GetStarted extends StatelessWidget {
       extendBody: true,
       extendBodyBehindAppBar: true,
       body: Container(
-        decoration: const BoxDecoration(image: DecorationImage(image: AssetImage("assets/doctor.jfif"), fit: BoxFit.cover)),
+        decoration: const BoxDecoration(image: DecorationImage(image: AssetImage("assets/primaly_prevention/doctor.jfif"), fit: BoxFit.cover)),
         child: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Column(

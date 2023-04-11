@@ -17,14 +17,12 @@ dependencies:
 
   fluttertoast: ^8.2.1
   http: ^0.13.5
-  #badges: ^3.0.2
   url_launcher: ^6.1.10
   flutter_animate: ^4.1.0
   font_awesome_flutter: ^10.4.0
   flutter_map: ^3.1.0
   latlong2: ^0.8.1
   google_fonts: ^4.0.3
-  #simple_circular_progress_bar: ^1.0.2
   lottie: ^2.2.0
   fl_chart: ^0.61.0
   firebase_auth: ^4.2.2
@@ -58,7 +56,6 @@ dependencies:
   chat_gpt_api: ^1.0.2
   flutter_chat_bubble: ^2.0.2
   flutter_keyboard_visibility: ^5.4.0
-  #geolocator: ^9.0.2
   day_night_time_picker: ^1.2.0+2
   flutter_password_strength: ^0.1.6
   comment_tree: ^0.3.0
@@ -66,11 +63,14 @@ dependencies:
   pdf: ^3.9.0
   path_provider: ^2.0.14
   heart_bpm: ^1.1.1+0
+  #geolocator: ^9.0.2
   #ansi_styles: ^0.3.2+1
   #ansicolor: ^2.0.1
   #widget_mask: ^1.0.0+0
   #printing: ^5.10.1
   #beautiful_soup_dart 0.3.0 
+  #simple_circular_progress_bar: ^1.0.2
+  #badges: ^3.0.2
 
 dev_dependencies:
   flutter_test:
@@ -78,15 +78,15 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter_native_splash:
-  image: assets/health.png
+  image: assets/icon/health.png
   color: "#00191A"
   android: true
   ios: true
-  adaptive_icon_background: "assets/health.png"
-  adaptive_icon_foreground: "assets/health.png"
+  adaptive_icon_background: "assets/icon/health.png"
+  adaptive_icon_foreground: "assets/icon/health.png"
 
 flutter_icons:
-  image_path: assets/health.png
+  image_path: assets/icon/health.png
   android: true
   ios: true
 
@@ -96,3 +96,7 @@ flutter:
 
   assets:
     - assets/
+    - assets/primaly_prevention/
+    - assets/lottie/
+    - assets/icon/
+    - assets/audio/

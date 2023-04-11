@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:smart_care/screens/admin/heart_beats.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -103,7 +102,27 @@ List<Map<String, dynamic>> specialityListFunction(BuildContext context) {
   ];
 }
 
+final Map<int, dynamic> months = <int, dynamic>{
+  1: "January",
+  2: "February",
+  3: "March",
+  4: "April",
+  5: "May",
+  6: "June",
+  7: "July",
+  8: "August",
+  9: "September",
+  10: "October",
+  11: "November",
+  12: "December",
+};
+
 const String noUser = 'https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/doctor-icon.png?alt=media&token=69e755f5-e674-4064-a97e-708f2ec8c25c';
+
+const String rodeOfAsclepius1 = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/WhatsApp%20Image%202023-04-11%20at%2012.15.17%20PM.jpeg?alt=media&token=bb2cf122-d474-404c-bd47-86f8debcd405";
+const String rodeOfAsclepius2 = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/WhatsApp%20Image%202023-04-11%20at%2012.05.55%20PM.jpeg?alt=media&token=223e011e-ab5b-4a3e-8a6f-1b8c1e6d0bf2";
+
+const String doctorRod = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/WallpaperDog-5497244-min.jpg?alt=media&token=d66c6ae6-8b28-4c58-8d1f-2d41106f44b3";
 
 String? Function(String?)? fieldsValidatorsFunction(String text, BuildContext context) {
   Map<String, String? Function(String?)?> fieldsValidators = <String, String? Function(String?)?>{
@@ -174,6 +193,8 @@ const String appIcon = "https://firebasestorage.googleapis.com/v0/b/smart-care-b
 
 const String aboutUs = "Welcome to our telemedicine platform, built using the Flutter cross-platform framework, designed to provide primary prevention and prompt medical assistance in case of an AES (accident d'explosion du sang). Our platform is not only for patients, but it also caters to healthcare professionals who can monitor their patient's health status in real-time. Our platform's primary objective is to assist people in preventing AES by conducting daily and monthly checkups and sending SMS or notification reminders. In case of an AES event, our platform provides a workflow that patients can follow and get the final results from our laboratory experts. We understand the importance of medical assistance during an AES event; hence, we have provided a direct chat option with doctors. In addition, we have integrated a smart chatbot built on top of ChatGPT 3.5 for faster responses to queries when doctors are unavailable. Our telemedicine platform is fully customizable, with two themes - light and dark, and supports eight languages, making it user-friendly for people from diverse backgrounds. You can also enable gesture and message sounds to personalize your experience.Our platform offers a multitude of benefits for both patients and healthcare professionals. Patients can access medical assistance from the comfort of their homes, while healthcare professionals can monitor their patient's health status and offer timely intervention. We believe that our telemedicine platform can help reduce the incidence of AES and save lives.";
 
+const heartPulse = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/WhatsApp%20Image%202023-04-11%20at%2011.20.02%20AM.jpeg?alt=media&token=3f4f584f-7602-41b4-8ad6-435db6489296";
+
 final List<Map<String, dynamic>> healthcareFacilities = <Map<String, dynamic>>[
   {"name": "Centre Hospitalier Universitaire Fattouma Bourguiba de Monastir", "latitude": 35.7611469, "longitude": 10.8125058},
   {"name": "Clinique les Oliviers Monastir", "latitude": 35.7667159, "longitude": 10.8322074},
@@ -205,7 +226,6 @@ List<Map<String, dynamic>> adminCards(BuildContext context) {
     <String, dynamic>{"name": AppLocalizations.of(context)!.diseaseTracker, "widget": const DiseasesTracker(), "color": const Color.fromARGB(255, 10, 186, 181), "icon": FontAwesomeIcons.chartPie},
     <String, dynamic>{"name": AppLocalizations.of(context)!.bloodTypes, "widget": const BloodTypeTracker(), "color": green, "icon": FontAwesomeIcons.chartLine},
     <String, dynamic>{"name": AppLocalizations.of(context)!.specialities, "widget": const DoctorsPerSpeciality(), "color": const Color.fromARGB(255, 255, 204, 0), "icon": FontAwesomeIcons.chartColumn},
-    <String, dynamic>{"name": "Heart Beats", "widget": const HeartBeats(), "color": const Color.fromARGB(255, 0, 255, 187), "icon": FontAwesomeIcons.heartPulse},
   ];
   return adminCardsList;
 }
