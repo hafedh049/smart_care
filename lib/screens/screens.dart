@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +13,7 @@ import 'package:smart_care/screens/patient/upload.dart' as patient_upload;
 import 'package:smart_care/screens/patient/workflow.dart' as patient_workflow;
 import 'package:smart_care/screens/admin/dashboard.dart' as admin_dashboard;
 import 'package:smart_care/stuff/classes.dart';
+import 'package:smart_care/stuff/functions.dart';
 
 import '../stuff/globals.dart';
 
@@ -51,18 +50,22 @@ class _ScreensState extends State<Screens> {
 
   @override
   void initState() {
+    getToken();
     drawerScaffoldKey = GlobalKey<ScaffoldState>();
     _screensController = PageController();
     if (_screensController.hasClients) {
       _screensController.jumpToPage(widget.firstScreen);
     }
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
       child: Scaffold(
         key: drawerScaffoldKey,
         drawer: const HealthDrawer(),
@@ -71,6 +74,7 @@ class _ScreensState extends State<Screens> {
           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.hasData) {
               me = snapshot.data!.data()!;
+              me["token"] = userToken;
               _filteredScreens = _screens.where((Map<String, dynamic> item) => item["role"] == snapshot.data!.get("role")).toList();
               return Stack(
                 alignment: AlignmentDirectional.bottomCenter,

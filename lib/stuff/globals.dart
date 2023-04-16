@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
@@ -15,6 +12,7 @@ import '../screens/admin/charts/doctors_per_speciality.dart';
 import '../screens/admin/doctors_list.dart';
 import '../screens/admin/patients_list.dart';
 
+//colors
 const Color white = Colors.white;
 const Color black = Colors.black;
 const Color darkBlue = Color(0xff272336);
@@ -24,20 +22,38 @@ const Color red = Color.fromARGB(255, 219, 15, 0);
 const Color green = Colors.lightGreenAccent;
 const Color grey = Colors.grey;
 
+//global variables
 int? firstTime;
 int darkTheme = 1;
 int? play;
+String userToken = "";
+const String appTitle = "Smart Care";
+const String aboutUs = "Welcome to our telemedicine platform, built using the Flutter cross-platform framework, designed to provide primary prevention and prompt medical assistance in case of an AES (accident d'explosion du sang). Our platform is not only for patients, but it also caters to healthcare professionals who can monitor their patient's health status in real-time. Our platform's primary objective is to assist people in preventing AES by conducting daily and monthly checkups and sending SMS or notification reminders. In case of an AES event, our platform provides a workflow that patients can follow and get the final results from our laboratory experts. We understand the importance of medical assistance during an AES event; hence, we have provided a direct chat option with doctors. In addition, we have integrated a smart chatbot built on top of ChatGPT 3.5 for faster responses to queries when doctors are unavailable. Our telemedicine platform is fully customizable, with two themes - light and dark, and supports eight languages, making it user-friendly for people from diverse backgrounds. You can also enable gesture and message sounds to personalize your experience.Our platform offers a multitude of benefits for both patients and healthcare professionals. Patients can access medical assistance from the comfort of their homes, while healthcare professionals can monitor their patient's health status and offer timely intervention. We believe that our telemedicine platform can help reduce the incidence of AES and save lives.";
 
+//API-Keys
 const String apiKey = "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";
 
+//Audio Player
 final AssetsAudioPlayer player = AssetsAudioPlayer.newPlayer();
 
+//User Data
 Map<String, dynamic> me = <String, dynamic>{};
 
+//Database Reference
 Database? db;
 
+//Network Images
 const String chatBot = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/smart_bot.png?alt=media&token=99ba8285-3b29-489a-a473-a81cc228e3d3";
+const String noUser = 'https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/doctor-icon.png?alt=media&token=69e755f5-e674-4064-a97e-708f2ec8c25c';
+const String rodeOfAsclepius1 = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/virus.jpg?alt=media&token=0bdcf248-dab6-4e77-a7f5-ce8a9667fc19";
+const String doctorRod = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/WallpaperDog-5497244-min.jpg?alt=media&token=d66c6ae6-8b28-4c58-8d1f-2d41106f44b3";
+const String camera = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/upload%2Fcamera.jpg?alt=media&token=e12d3d0e-d6df-4054-b930-2f0068d26248";
+const String pdf = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/upload%2Fpdf.jpg?alt=media&token=9ecf2100-e5a0-490a-89ff-b30c1b0a5863";
+const String gallery = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/upload%2Fgallery.jpg?alt=media&token=f3a6fa1d-1f66-493a-9feb-c6d9f0037cff";
+const String appIcon = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/health.png?alt=media&token=5b9a461b-bf46-4dfd-bc83-e8ec9a66f990";
+const heartPulse = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/WhatsApp%20Image%202023-04-11%20at%2011.20.02%20AM.jpeg?alt=media&token=3f4f584f-7602-41b4-8ad6-435db6489296";
 
+//Data Structures
 List<Map<String, dynamic>> specialityListFunction(BuildContext context) {
   return <Map<String, dynamic>>[
     {
@@ -102,27 +118,7 @@ List<Map<String, dynamic>> specialityListFunction(BuildContext context) {
   ];
 }
 
-final Map<int, dynamic> months = <int, dynamic>{
-  1: "January",
-  2: "February",
-  3: "March",
-  4: "April",
-  5: "May",
-  6: "June",
-  7: "July",
-  8: "August",
-  9: "September",
-  10: "October",
-  11: "November",
-  12: "December",
-};
-
-const String noUser = 'https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/doctor-icon.png?alt=media&token=69e755f5-e674-4064-a97e-708f2ec8c25c';
-
-const String rodeOfAsclepius1 = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/WhatsApp%20Image%202023-04-11%20at%2012.15.17%20PM.jpeg?alt=media&token=bb2cf122-d474-404c-bd47-86f8debcd405";
-const String rodeOfAsclepius2 = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/WhatsApp%20Image%202023-04-11%20at%2012.05.55%20PM.jpeg?alt=media&token=223e011e-ab5b-4a3e-8a6f-1b8c1e6d0bf2";
-
-const String doctorRod = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/WallpaperDog-5497244-min.jpg?alt=media&token=d66c6ae6-8b28-4c58-8d1f-2d41106f44b3";
+final Map<int, dynamic> months = <int, dynamic>{1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"};
 
 String? Function(String?)? fieldsValidatorsFunction(String text, BuildContext context) {
   Map<String, String? Function(String?)?> fieldsValidators = <String, String? Function(String?)?>{
@@ -188,13 +184,6 @@ String? Function(String?)? fieldsValidatorsFunction(String text, BuildContext co
 
 final Map<int, String> weekDayPredictor = <int, String>{1: "Mon", 2: "Tue", 3: "Wed", 4: "Thu", 5: "Fri", 6: "Sat", 7: "Sun"};
 
-const String appTitle = "Smart Care";
-const String appIcon = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/health.png?alt=media&token=5b9a461b-bf46-4dfd-bc83-e8ec9a66f990";
-
-const String aboutUs = "Welcome to our telemedicine platform, built using the Flutter cross-platform framework, designed to provide primary prevention and prompt medical assistance in case of an AES (accident d'explosion du sang). Our platform is not only for patients, but it also caters to healthcare professionals who can monitor their patient's health status in real-time. Our platform's primary objective is to assist people in preventing AES by conducting daily and monthly checkups and sending SMS or notification reminders. In case of an AES event, our platform provides a workflow that patients can follow and get the final results from our laboratory experts. We understand the importance of medical assistance during an AES event; hence, we have provided a direct chat option with doctors. In addition, we have integrated a smart chatbot built on top of ChatGPT 3.5 for faster responses to queries when doctors are unavailable. Our telemedicine platform is fully customizable, with two themes - light and dark, and supports eight languages, making it user-friendly for people from diverse backgrounds. You can also enable gesture and message sounds to personalize your experience.Our platform offers a multitude of benefits for both patients and healthcare professionals. Patients can access medical assistance from the comfort of their homes, while healthcare professionals can monitor their patient's health status and offer timely intervention. We believe that our telemedicine platform can help reduce the incidence of AES and save lives.";
-
-const heartPulse = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/WhatsApp%20Image%202023-04-11%20at%2011.20.02%20AM.jpeg?alt=media&token=3f4f584f-7602-41b4-8ad6-435db6489296";
-
 final List<Map<String, dynamic>> healthcareFacilities = <Map<String, dynamic>>[
   {"name": "Centre Hospitalier Universitaire Fattouma Bourguiba de Monastir", "latitude": 35.7611469, "longitude": 10.8125058},
   {"name": "Clinique les Oliviers Monastir", "latitude": 35.7667159, "longitude": 10.8322074},
@@ -231,10 +220,6 @@ List<Map<String, dynamic>> adminCards(BuildContext context) {
 }
 
 const List<Transition> animatedTransitions = Transition.values;
-
-Future<void> goTo(Widget place) async {
-  await Get.to(place, transition: animatedTransitions[Random().nextInt(animatedTransitions.length)], duration: 300.ms);
-}
 
 final List<Map<String, dynamic>> workflow = <Map<String, dynamic>>[
   <String, dynamic>{

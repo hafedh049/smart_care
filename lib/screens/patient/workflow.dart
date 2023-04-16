@@ -1,8 +1,10 @@
 // ignore_for_file: unused_field, non_constant_identifier_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
 
 import '../../stuff/classes.dart';
@@ -69,12 +71,23 @@ class _WorkFlowState extends State<WorkFlow> {
                                   GestureDetector(
                                     onTap: () {
                                       _(() => _choices[index] = workflow[index]["options"][__]["content"]);
-                                      Future.delayed(300.ms, () {
+                                      Future.delayed(300.ms, () async {
                                         for (int page = _flowController.page!.round(); page <= workflow[index]["options"][__]["redirectTo"]; page++) {
                                           _flowController.jumpToPage(page);
                                         }
                                         if (workflow[workflow[index]["options"][__]["redirectTo"]].containsKey("end")) {
                                           _conduiteATenir = workflow[workflow[index]["options"][__]["redirectTo"]]["end"];
+                                          try {
+                                            await FirebaseFirestore.instance.collection("filled_forms").add({
+                                              "uid": me["uid"],
+                                              "choices": _choices.values,
+                                              "conduite_a_tenir": _conduiteATenir,
+                                              "timestamp": Timestamp.now(),
+                                            });
+                                            showToast(text: "Data saved successfully");
+                                          } catch (e) {
+                                            showToast(text: e.toString());
+                                          }
                                         }
                                       });
                                     },

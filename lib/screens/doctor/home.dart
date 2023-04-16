@@ -278,7 +278,7 @@ class _HomeState extends State<Home> {
                     } else {
                       return Container(
                         margin: const EdgeInsets.only(right: 8.0),
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(doctorRod), fit: BoxFit.cover)),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
                         child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.noAppointmentsFromPatientsYet.toUpperCase(), color: white, fontSize: 18, fontWeight: FontWeight.bold)),
                       );
                     }
@@ -309,7 +309,7 @@ class _HomeState extends State<Home> {
                   ),
                   const SizedBox(height: 10),
                   StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                    stream: FirebaseFirestore.instance.collection("articles").snapshots(),
+                    stream: FirebaseFirestore.instance.collection("articles").limit(3).snapshots(),
                     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                       if (snapshot.hasData) {
                         if (snapshot.data!.docs.isNotEmpty) {

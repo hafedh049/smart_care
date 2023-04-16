@@ -157,7 +157,7 @@ class _PatientFolderState extends State<PatientFolder> {
                                                   const SizedBox(height: 5),
                                                   Flexible(
                                                     child: CustomizedText(
-                                                      text: data[index].get("title"),
+                                                      text: "$index",
                                                       fontSize: 16,
                                                       fontWeight: FontWeight.bold,
                                                       color: white,

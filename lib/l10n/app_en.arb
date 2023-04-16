@@ -893,10 +893,6 @@
     "@upcomingAppointment": {
         "description": "Upcoming Appointment"
     },
-    "makeANew": "Make A New",
-    "@makeANew": {
-        "description": "Make A New"
-    },
     "summary": "Summary",
     "@summary": {
         "description": "Summary"

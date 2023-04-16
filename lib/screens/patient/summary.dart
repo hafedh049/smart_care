@@ -77,8 +77,6 @@ class Summary extends StatelessWidget {
                     children: <Widget>[
                       CustomizedText(text: AppLocalizations.of(context)!.appointmentType, fontSize: 16, fontWeight: FontWeight.bold, color: white),
                       const SizedBox(height: 5),
-                      CustomizedText(text: getDateRepresentation(data["appointmentDate"].toDate()), fontSize: 14, color: white.withOpacity(.6)),
-                      const SizedBox(height: 5),
                       CustomizedText(text: data["type"], fontSize: 14, color: white.withOpacity(.6)),
                     ],
                   ),

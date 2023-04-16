@@ -9,6 +9,8 @@ import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../stuff/functions.dart';
+
 class PatientProfile extends StatelessWidget {
   const PatientProfile({super.key});
 
@@ -132,7 +134,6 @@ class PatientProfile extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             goTo(const Historic());
-                            //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Historic()));
                           },
                           child: Container(
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue),

@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/drawer/profile.dart';
 import 'package:smart_care/error/error_room.dart';
@@ -47,7 +46,6 @@ class Home extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               goTo(const Profile());
-                              //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Profile()));
                             },
                             child: CircleAvatar(
                               radius: 30,
@@ -89,7 +87,6 @@ class Home extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   goTo(const FilterList());
-                  //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const FilterList()));
                 },
                 child: Container(
                   height: 50,
@@ -156,7 +153,7 @@ class Home extends StatelessWidget {
                       children: <Widget>[
                         Expanded(
                           child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                            stream: FirebaseFirestore.instance.collection("appointments").where("patientID", isEqualTo: me["uid"].trim()).snapshots(),
+                            stream: FirebaseFirestore.instance.collection("appointments").where("patientID", isEqualTo: me["uid"].trim()).limit(1).snapshots(),
                             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                               if (snapshot.hasData) {
                                 final List<QueryDocumentSnapshot<Map<String, dynamic>>> appointments = snapshot.data!.docs;
@@ -178,31 +175,30 @@ class Home extends StatelessWidget {
                                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius1), fit: BoxFit.cover)),
                                       child: Column(
                                         children: <Widget>[
-                                          const SizedBox(height: 10),
+                                          const SizedBox(height: 20),
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             mainAxisSize: MainAxisSize.min,
                                             children: <Widget>[
-                                              Container(
-                                                height: 130,
-                                                width: 100,
-                                                decoration: BoxDecoration(
-                                                  color: darkBlue.withOpacity(.2),
-                                                  border: Border.all(color: blue),
-                                                  borderRadius: BorderRadius.circular(15),
-                                                  image: firstAppointment.get("doctorImageUrl") == noUser ? null : const DecorationImage(image: CachedNetworkImageProvider(noUser), fit: BoxFit.cover),
-                                                ),
-                                                child: firstAppointment.get("doctorImageUrl") == noUser ? const Center(child: Icon(FontAwesomeIcons.user, size: 60, color: grey)) : null,
+                                              CircleAvatar(
+                                                radius: 50,
+                                                backgroundImage: firstAppointment.get("doctorImageUrl") == noUser ? null : CachedNetworkImageProvider(firstAppointment.get("doctorImageUrl")),
+                                                backgroundColor: grey.withOpacity(.2),
+                                                child: firstAppointment.get("doctorImageUrl") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 35),
                                               ),
                                               const SizedBox(width: 10),
                                               Flexible(
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    CustomizedText(text: firstAppointment.get("doctorName"), fontSize: 16, color: white, fontWeight: FontWeight.bold),
-                                                    const SizedBox(height: 5),
-                                                    CustomizedText(text: firstAppointment.get("doctorSpeciality").isEmpty ? "--" : firstAppointment.get("doctorSpeciality"), fontSize: 14, color: white.withOpacity(.8)),
-                                                  ],
+                                                child: Container(
+                                                  decoration: BoxDecoration(color: blue.withOpacity(.4), borderRadius: BorderRadius.circular(15)),
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      CustomizedText(text: firstAppointment.get("doctorName"), fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                                                      const SizedBox(height: 5),
+                                                      CustomizedText(text: firstAppointment.get("doctorSpeciality").isEmpty ? "--" : firstAppointment.get("doctorSpeciality"), fontSize: 14, color: white.withOpacity(.8)),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ],
@@ -216,11 +212,11 @@ class Home extends StatelessWidget {
                                               children: <Widget>[
                                                 Icon(FontAwesomeIcons.calendar, size: 12, color: white.withOpacity(.6)),
                                                 const SizedBox(width: 10),
-                                                CustomizedText(text: getDateRepresentation(firstAppointment.get("appointmentDate").toDate()), fontSize: 14, color: white.withOpacity(.6), fontWeight: FontWeight.bold),
+                                                CustomizedText(text: getDateRepresentation(firstAppointment.get("appointmentDate").toDate()), fontSize: 14, color: white, fontWeight: FontWeight.bold),
                                                 const Spacer(),
                                                 Icon(FontAwesomeIcons.clock, size: 12, color: white.withOpacity(.6)),
                                                 const SizedBox(width: 10),
-                                                CustomizedText(text: "${AppLocalizations.of(context)!.at} ${firstAppointment.get('appointmentTime')}", fontSize: 14, color: white.withOpacity(.6)),
+                                                CustomizedText(text: "${AppLocalizations.of(context)!.at} ${firstAppointment.get('appointmentTime')}", fontSize: 14, color: white),
                                               ],
                                             ),
                                           ),
@@ -246,8 +242,8 @@ class Home extends StatelessWidget {
                             height: 180,
                             padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 16.0),
                             width: 40,
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius2), fit: BoxFit.cover)),
-                            child: Center(child: RotatedBox(quarterTurns: 3, child: CustomizedText(text: AppLocalizations.of(context)!.makeANew.toUpperCase(), fontSize: 16, color: white, fontWeight: FontWeight.bold))),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius1), fit: BoxFit.cover)),
+                            child: const Center(child: CustomizedText(text: "+", fontSize: 30, color: white, fontWeight: FontWeight.bold)),
                           ),
                         ),
                       ],
@@ -274,7 +270,7 @@ class Home extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                      stream: FirebaseFirestore.instance.collection("articles").snapshots(),
+                      stream: FirebaseFirestore.instance.collection("articles").limit(3).snapshots(),
                       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                         if (snapshot.hasData) {
                           if (snapshot.data!.docs.isNotEmpty) {
@@ -285,7 +281,7 @@ class Home extends StatelessWidget {
                               },
                               child: Row(
                                 children: <Widget>[
-                                  Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue), height: 20, width: 20).animate(onComplete: (AnimationController controller) => controller.loop(reverse: true)).shimmer(colors: <Color>[grey.withOpacity(.8), blue], duration: 2.seconds),
+                                  Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue), height: 20, width: 20),
                                   const SizedBox(width: 10),
                                   Expanded(child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: firstArtical.get("title"), fontSize: 16, color: white, fontWeight: FontWeight.bold))),
                                   const SizedBox(width: 10),

@@ -10,6 +10,7 @@ import 'package:smart_care/stuff/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../stuff/classes.dart';
+import '../stuff/functions.dart';
 
 class SmartSettings extends StatelessWidget {
   const SmartSettings({super.key});
@@ -44,7 +45,6 @@ class SmartSettings extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 goTo(const Account());
-                //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Account()));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

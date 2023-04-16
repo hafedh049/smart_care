@@ -9,6 +9,7 @@ import 'package:smart_care/stuff/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../stuff/classes.dart';
+import '../../stuff/functions.dart';
 
 class FilterList extends StatefulWidget {
   const FilterList({super.key});
@@ -88,7 +89,7 @@ class _FilterListState extends State<FilterList> {
           ),
           const SizedBox(height: 10),
           StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance.collection("users").where("roles_list", arrayContains: "doctor").snapshots(),
+            stream: FirebaseFirestore.instance.collection("users").where("roles_list", arrayContains: "doctor").limit(5).snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data!.docs.isNotEmpty) {
@@ -96,7 +97,7 @@ class _FilterListState extends State<FilterList> {
                     child: StatefulBuilder(
                       key: _filterKey,
                       builder: (BuildContext context, void Function(void Function()) _) {
-                        List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("uid") != me["uid"] && element.get("name").toLowerCase().contains(_searchController.text.trim().toLowerCase())).toList();
+                        final List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("uid") != me["uid"] && element.get("name").toLowerCase().contains(_searchController.text.trim().toLowerCase())).toList();
                         if (doctorsList.isNotEmpty) {
                           return ListView.builder(
                             padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 8.0),
@@ -114,7 +115,6 @@ class _FilterListState extends State<FilterList> {
                                     GestureDetector(
                                       onTap: () {
                                         goTo(AboutDoctor(uid: doctorsList[index].get("uid")));
-                                        //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutDoctor(uid: doctorsList[index].get("uid"))));
                                       },
                                       child: CircleAvatar(
                                         radius: 25,

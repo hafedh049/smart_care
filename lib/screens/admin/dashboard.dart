@@ -4,6 +4,7 @@ import 'package:smart_care/stuff/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../stuff/classes.dart';
+import '../../stuff/functions.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
@@ -40,7 +41,6 @@ class Dashboard extends StatelessWidget {
                       (Map<String, dynamic> card) => GestureDetector(
                         onTap: () async {
                           goTo(card["widget"]);
-                          //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => card["widget"]));
                         },
                         child: Container(
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: card["color"]),

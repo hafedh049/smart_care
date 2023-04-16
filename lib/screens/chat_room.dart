@@ -458,6 +458,9 @@ class _ChatRoomState extends State<ChatRoom> {
                   },
                   SetOptions(merge: true),
                 );
+                if (widget.talkTo["token"].isNotEmpty) {
+                  sendPushNotificationFCM(token: widget.talkTo["token"], username: me["name"], message: message.text);
+                }
               },
             );
           },

@@ -408,6 +408,7 @@ class _SignUpState extends State<SignUp> {
                                         "gender": "m",
                                         "about": "",
                                         "geolocation": [0, 0 /*position.longitude, position.latitude, position.altitude*/],
+                                        "token": "",
                                       }).then((void value) async {
                                         showToast(text: AppLocalizations.of(context)!.dataStored);
                                         // Obtain the Google sign-in credentials

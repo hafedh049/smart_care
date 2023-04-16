@@ -63,6 +63,9 @@ dependencies:
   pdf: ^3.9.0
   path_provider: ^2.0.14
   heart_bpm: ^1.1.1+0
+  firebase_messaging: ^14.4.0
+  awesome_notifications: ^0.7.4+1
+  #flutter_local_notifications: ^8.2.0
   #geolocator: ^9.0.2
   #ansi_styles: ^0.3.2+1
   #ansicolor: ^2.0.1
