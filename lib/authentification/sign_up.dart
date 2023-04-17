@@ -437,14 +437,15 @@ class _SignUpState extends State<SignUp> {
                                                 PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: sms);
                                                 await userCredential.user!.linkWithCredential(credential);
                                                 showToast(text: AppLocalizations.of(context)!.accountLinkedWithPhoneNumber);
+                                                ClipboardListener.removeListener(() {});
+                                                await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
+                                                  showToast(text: AppLocalizations.of(context)!.signedInUsingEmailPassword);
+                                                  getToken();
+                                                  await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true, "token": userToken}).then((void value) async {
+                                                    await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
+                                                  });
+                                                });
                                               }
-                                            });
-                                            ClipboardListener.removeListener(() {});
-                                            await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
-                                              showToast(text: AppLocalizations.of(context)!.signedInUsingEmailPassword);
-                                              await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true}).then((void value) async {
-                                                await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
-                                              });
                                             });
                                           },
                                           codeAutoRetrievalTimeout: (String verificationId) {},

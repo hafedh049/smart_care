@@ -1,8 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chat_gpt_api/app/chat_gpt.dart';
-import 'package:chat_gpt_api/app/model/data_model/completion/completion.dart';
-import 'package:chat_gpt_api/app/model/data_model/completion/completion_request.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +26,6 @@ class _SmartChatBotState extends State<SmartChatBot> {
   final TextEditingController _messagesController = TextEditingController();
   bool _userWriting = false;
   bool _botWriting = false;
-  final ChatGPT _smartChatBot = ChatGPT.builder(token: apiKey);
   final GlobalKey _dancingDotsKey = GlobalKey();
   final ScrollController _scrollController = ScrollController();
   @override
@@ -196,18 +192,16 @@ class _SmartChatBotState extends State<SmartChatBot> {
                                     "timestamp": Timestamp.now(),
                                     "me": true,
                                   }).then((void value) async {
-                                    await _smartChatBot.textCompletion(request: CompletionRequest(maxTokens: 1024, prompt: text)).then((Completion? value) async {
-                                      showToast(text: (value == null).toString());
-                                      setS(() {
-                                        _dancingDotsKey.currentState!.setState(() {
-                                          _botWriting = false;
-                                        });
+                                    final String req = await getChatResponse(text);
+                                    setS(() {
+                                      _dancingDotsKey.currentState!.setState(() {
+                                        _botWriting = false;
                                       });
-                                      await FirebaseFirestore.instance.collection("quark").doc(FirebaseAuth.instance.currentUser!.uid).collection("messages").doc().set({
-                                        "message": value!.choices!.first.text!.trim(),
-                                        "timestamp": Timestamp.now(),
-                                        "me": false,
-                                      });
+                                    });
+                                    await FirebaseFirestore.instance.collection("quark").doc(FirebaseAuth.instance.currentUser!.uid).collection("messages").doc().set({
+                                      "message": req.trim(),
+                                      "timestamp": Timestamp.now(),
+                                      "me": false,
                                     });
                                   });
                                 }
@@ -275,6 +269,7 @@ class DancingDots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(right: 8.0),
       width: 40,
       decoration: BoxDecoration(color: darkBlue, borderRadius: BorderRadius.circular(5)),
       child: Row(

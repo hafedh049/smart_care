@@ -84,6 +84,7 @@ class _WorkFlowState extends State<WorkFlow> {
                                               "conduite_a_tenir": _conduiteATenir,
                                               "timestamp": Timestamp.now(),
                                             });
+
                                             showToast(text: "Data saved successfully");
                                           } catch (e) {
                                             showToast(text: e.toString());

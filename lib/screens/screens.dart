@@ -13,7 +13,6 @@ import 'package:smart_care/screens/patient/upload.dart' as patient_upload;
 import 'package:smart_care/screens/patient/workflow.dart' as patient_workflow;
 import 'package:smart_care/screens/admin/dashboard.dart' as admin_dashboard;
 import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/functions.dart';
 
 import '../stuff/globals.dart';
 
@@ -50,13 +49,11 @@ class _ScreensState extends State<Screens> {
 
   @override
   void initState() {
-    getToken();
     drawerScaffoldKey = GlobalKey<ScaffoldState>();
     _screensController = PageController();
     if (_screensController.hasClients) {
       _screensController.jumpToPage(widget.firstScreen);
     }
-
     super.initState();
   }
 

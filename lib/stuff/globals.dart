@@ -31,7 +31,8 @@ const String appTitle = "Smart Care";
 const String aboutUs = "Welcome to our telemedicine platform, built using the Flutter cross-platform framework, designed to provide primary prevention and prompt medical assistance in case of an AES (accident d'explosion du sang). Our platform is not only for patients, but it also caters to healthcare professionals who can monitor their patient's health status in real-time. Our platform's primary objective is to assist people in preventing AES by conducting daily and monthly checkups and sending SMS or notification reminders. In case of an AES event, our platform provides a workflow that patients can follow and get the final results from our laboratory experts. We understand the importance of medical assistance during an AES event; hence, we have provided a direct chat option with doctors. In addition, we have integrated a smart chatbot built on top of ChatGPT 3.5 for faster responses to queries when doctors are unavailable. Our telemedicine platform is fully customizable, with two themes - light and dark, and supports eight languages, making it user-friendly for people from diverse backgrounds. You can also enable gesture and message sounds to personalize your experience.Our platform offers a multitude of benefits for both patients and healthcare professionals. Patients can access medical assistance from the comfort of their homes, while healthcare professionals can monitor their patient's health status and offer timely intervention. We believe that our telemedicine platform can help reduce the incidence of AES and save lives.";
 
 //API-Keys
-const String apiKey = "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";
+const String apiKey = "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";
+const String apiUrl = 'https://api.openai.com/v1/engines/text-davinci-003/completions'; //https://api.openai.com/v1/completions
 
 //Audio Player
 final AssetsAudioPlayer player = AssetsAudioPlayer.newPlayer();

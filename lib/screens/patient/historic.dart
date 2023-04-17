@@ -8,11 +8,15 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:http/http.dart';
+
+import 'filled_form_template.dart';
 
 class Historic extends StatefulWidget {
   const Historic({super.key});
@@ -114,15 +118,30 @@ class _HistoricState extends State<Historic> {
                                           for (int index = 0; index < data.length; index++)
                                             GestureDetector(
                                               onTap: () async {
-                                                try {
-                                                  final bytes = await get(Uri.parse(data[index].get('blood_test')));
-                                                  final path = await getTemporaryDirectory().then((Directory dir) {
-                                                    final file = File('${dir.path}/example.pdf');
-                                                    return file.writeAsBytes(bytes.bodyBytes).then((void _) => file.path);
-                                                  });
-                                                  await OpenFilex.open(path, type: bytes.headers['content-type']);
-                                                } catch (e) {
-                                                  showToast(text: 'Error opening PDF: $e', color: red);
+                                                if (contentChild["child"] == "Filled Forms") {
+                                                  try {
+                                                    final pw.Document pdfDoc = pw.Document();
+                                                    pdfDoc.addPage(pw.Page(build: (pw.Context context) => FormTemplate(data: data[index].get("choices")), pageFormat: PdfPageFormat.legal));
+                                                    showToast(text: "Opening File...");
+                                                    final path = await getTemporaryDirectory().then((Directory dir) async {
+                                                      final file = File('${dir.path}/example.pdf');
+                                                      return file.writeAsBytes(await pdfDoc.save()).then((void _) => file.path);
+                                                    });
+                                                    await OpenFilex.open(path);
+                                                  } catch (e) {
+                                                    showToast(text: 'Error opening PDF: $e', color: red);
+                                                  }
+                                                } else {
+                                                  try {
+                                                    final bytes = await get(Uri.parse(data[index].get('url')));
+                                                    final path = await getTemporaryDirectory().then((Directory dir) {
+                                                      final file = File('${dir.path}/example.pdf');
+                                                      return file.writeAsBytes(bytes.bodyBytes).then((void _) => file.path);
+                                                    });
+                                                    await OpenFilex.open(path, type: bytes.headers['content-type']);
+                                                  } catch (e) {
+                                                    showToast(text: 'Error opening PDF: $e', color: red);
+                                                  }
                                                 }
                                               },
                                               child: Container(
@@ -133,14 +152,21 @@ class _HistoricState extends State<Historic> {
                                                   children: <Widget>[
                                                     Container(decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)), width: 1, height: 60),
                                                     const SizedBox(width: 10),
-                                                    const Icon(FontAwesomeIcons.filePdf, color: white, size: 35),
+                                                    Icon(
+                                                        contentChild["child"] == "Blood Tests"
+                                                            ? FontAwesomeIcons.filePdf
+                                                            : contentChild["child"] == "Filled Forms"
+                                                                ? FontAwesomeIcons.f
+                                                                : FontAwesomeIcons.slack,
+                                                        color: white,
+                                                        size: 35),
                                                     const SizedBox(width: 10),
                                                     Expanded(
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisSize: MainAxisSize.min,
                                                         children: <Widget>[
-                                                          CustomizedText(text: "${contentChild["child"]!.substring(0, contentChild["child"]!.length - 1)} $index", fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                                                          CustomizedText(text: "${contentChild["child"]!.substring(0, contentChild["child"]!.length - 1)} ${index + 1}", fontSize: 16, fontWeight: FontWeight.bold, color: white),
                                                           const SizedBox(height: 5),
                                                           CustomizedText(text: getTimeFromDate(data[index].get("timestamp").toDate()), fontSize: 12, color: white.withOpacity(.8)),
                                                         ],

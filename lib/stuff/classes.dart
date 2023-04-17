@@ -306,19 +306,30 @@ class HealthDrawer extends StatelessWidget {
             ),
             Container(width: 267, height: .1, color: white),
             const SizedBox(height: 10),
-            GestureDetector(
-                onTap: () async {
-                  showToast(text: AppLocalizations.of(context)!.signingOut);
-                  if (await GoogleSignIn().isSignedIn()) {
-                    await GoogleSignIn().signOut();
-                  }
-                  await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": false, "token": ""}).then((void value) async {
-                    await FirebaseMessaging.instance.deleteToken().then((void value) async {
-                      await FirebaseAuth.instance.signOut().then((void value) => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => false));
-                    });
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              onTap: () async {
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => false);
+                if (await GoogleSignIn().isSignedIn()) {
+                  await GoogleSignIn().signOut();
+                }
+                await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": false, "token": ""}).then((void value) async {
+                  await FirebaseMessaging.instance.deleteToken().then((void value) async {
+                    await FirebaseAuth.instance.signOut();
                   });
-                },
-                child: CustomizedText(text: AppLocalizations.of(context)!.signOut, fontSize: 18, fontWeight: FontWeight.bold)),
+                });
+              },
+              horizontalTitleGap: 0,
+              leading: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
+                  const SizedBox(width: 5),
+                  const Icon(FontAwesomeIcons.chevronLeft, color: white, size: 20),
+                ],
+              ),
+              title: CustomizedText(text: AppLocalizations.of(context)!.signOut, fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 10),
             Container(width: 267, height: .1, color: white),
             const SizedBox(height: 10),

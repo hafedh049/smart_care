@@ -14,7 +14,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 //import 'package:flutter_animate/flutter_animate.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -187,10 +186,12 @@ Future<void> articlesToFirestore() async {
 }*/
 
 Future<void> getToken() async {
-  await FirebaseMessaging.instance.getToken().then((String? value) async {
-    userToken = value!;
-    await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, String>{'token': userToken});
-  });
+  if (userToken.isEmpty) {
+    await FirebaseMessaging.instance.getToken().then((String? value) async {
+      userToken = value!;
+      await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, String>{'token': userToken});
+    });
+  }
 }
 
 void sendPushNotificationFCM({required String token, required String username, required String message}) async {
@@ -224,4 +225,36 @@ void sendPushNotificationFCM({required String token, required String username, r
 
 Future<void> goTo(Widget place) async {
   await Get.to(place, transition: animatedTransitions[Random().nextInt(animatedTransitions.length)], duration: 300.ms);
+}
+
+Future<String> getChatResponse(String input) async {
+  final headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $apiKey',
+  };
+  final body = {
+    'prompt': input,
+    'temperature': .5,
+    'max_tokens': 50,
+  };
+  final response = await post(Uri.parse(apiUrl), headers: headers, body: json.encode(body));
+  final data = json.decode(response.body);
+  final String chatResponse = data['choices'][0]['text'];
+  return chatResponse;
+}
+
+Future<String> sendScheduledNotification() async {
+  var headers = {'Content-Type': 'application/json'};
+  var body = json.encode({
+    'app_id': 'eb57d64d-3ade-4767-beb4-9a7a7c913a2d',
+    'contents': {'en': 'Scheduled notification content'},
+    'send_after': '2023-04-25 10:00:00 GMT-0700',
+    // Specify the delivery time in UTC time format
+  });
+  var response = await post(Uri.parse('https://onesignal.com/api/v1/notifications'), headers: headers, body: body);
+  if (response.statusCode == 200) {
+    return 'Scheduled notification sent successfully';
+  } else {
+    return 'Failed to send scheduled notification';
+  }
 }

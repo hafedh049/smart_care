@@ -49,7 +49,7 @@ class _UploadState extends State<Upload> {
                     showToast(text: AppLocalizations.of(context)!.bilanUploaded);
                     await FirebaseFirestore.instance.collection("blood_tests").add(
                       {
-                        "blood_test": url,
+                        "url": url,
                         "timestamp": now,
                         "uid": me["uid"],
                       },
@@ -82,7 +82,7 @@ class _UploadState extends State<Upload> {
                     showToast(text: AppLocalizations.of(context)!.bilanUploaded);
                     await FirebaseFirestore.instance.collection("blood_tests").add(
                       {
-                        "blood_test": url,
+                        "url": url,
                         "timestamp": now,
                         "uid": me["uid"],
                       },
@@ -123,7 +123,7 @@ class _UploadState extends State<Upload> {
                     showToast(text: AppLocalizations.of(context)!.bilanUploaded);
                     await FirebaseFirestore.instance.collection("blood_tests").add(
                       {
-                        "blood_test": url,
+                        "url": url,
                         "timestamp": now,
                         "uid": me["uid"],
                       },

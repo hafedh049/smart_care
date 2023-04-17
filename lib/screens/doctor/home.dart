@@ -79,7 +79,9 @@ class _HomeState extends State<Home> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: _searchController,
-                onChanged: (String value) {},
+                onChanged: (String value) {
+                  _filterKey.currentState!.setState(() {});
+                },
                 decoration: InputDecoration(
                   labelText: 'Search Appointments',
                   prefixIcon: const Icon(Icons.search, color: grey, size: 15),
@@ -90,7 +92,7 @@ class _HomeState extends State<Home> {
             const SizedBox(height: 10),
             Expanded(
               child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: FirebaseFirestore.instance.collection("appointments").where("doctorID", isEqualTo: FirebaseAuth.instance.currentUser!.uid).orderBy("createdAt", descending: true).snapshots(),
+                stream: FirebaseFirestore.instance.collection("appointments").where("doctorID", isEqualTo: FirebaseAuth.instance.currentUser!.uid).limit(1).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data!.docs.isNotEmpty) {
@@ -98,6 +100,7 @@ class _HomeState extends State<Home> {
                         key: _filterKey,
                         builder: (BuildContext context, void Function(void Function()) _) {
                           final List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("patientName").contains(_searchController.text.trim())).toList();
+                          data.sort((a, b) => a.get("createdAt") > b.get("createdAt"));
                           if (data.isNotEmpty) {
                             return ListView.separated(
                               padding: const EdgeInsets.all(8.0),
@@ -178,7 +181,7 @@ class _HomeState extends State<Home> {
                                                   ),
                                                   const SizedBox(width: 10),
                                                   GestureDetector(
-                                                    onTap: () {},
+                                                    onTap: () async => await data[index].reference.delete().then((void value) => Navigator.pop(context)),
                                                     child: Container(
                                                       padding: const EdgeInsets.all(8.0),
                                                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),

@@ -429,10 +429,10 @@ class _PrescriptionState extends State<Prescription> {
                                     await FirebaseFirestore.instance.collection("prescriptions").add({
                                       "doctorID": me["uid"],
                                       "doctorName": me["name"],
-                                      "patientID": widget.patientID,
+                                      "uid": widget.patientID,
                                       "patientName": _patientData["name"],
                                       "title": _serialNumber,
-                                      "prescriptionUrl": await taskSnapshot.ref.getDownloadURL(),
+                                      "url": await taskSnapshot.ref.getDownloadURL(),
                                       "timestamp": DateTime.now(),
                                     }).then((void value) async => await OpenFilex.open(file.path));
                                   });

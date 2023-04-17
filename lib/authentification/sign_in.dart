@@ -34,6 +34,12 @@ class _SignInState extends State<SignIn> {
   }
 
   @override
+  void initState() {
+    getToken().then((value) async => FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true, "token": userToken}));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) setS) {
@@ -64,7 +70,6 @@ class _SignInState extends State<SignIn> {
                       GestureDetector(
                         onTap: () {
                           goTo(const Recovery());
-                          //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Recovery()));
                         },
                         child: Container(
                           height: 35,
