@@ -90,19 +90,19 @@ class _HomeState extends State<Home> {
               ),
             ),
             const SizedBox(height: 10),
-            Expanded(
-              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: FirebaseFirestore.instance.collection("appointments").where("doctorID", isEqualTo: FirebaseAuth.instance.currentUser!.uid).limit(1).snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-                  if (snapshot.hasData) {
-                    if (snapshot.data!.docs.isNotEmpty) {
-                      return StatefulBuilder(
-                        key: _filterKey,
-                        builder: (BuildContext context, void Function(void Function()) _) {
-                          final List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("patientName").contains(_searchController.text.trim())).toList();
-                          data.sort((a, b) => a.get("createdAt") > b.get("createdAt"));
-                          if (data.isNotEmpty) {
-                            return ListView.separated(
+            StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream: FirebaseFirestore.instance.collection("appointments").where("doctorID", isEqualTo: FirebaseAuth.instance.currentUser!.uid).limit(1).snapshots(),
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data!.docs.isNotEmpty) {
+                    return StatefulBuilder(
+                      key: _filterKey,
+                      builder: (BuildContext context, void Function(void Function()) _) {
+                        final List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("patientName").contains(_searchController.text.trim())).toList();
+                        data.sort((a, b) => a.get("createdAt") > b.get("createdAt"));
+                        if (data.isNotEmpty) {
+                          return Expanded(
+                            child: ListView.separated(
                               padding: const EdgeInsets.all(8.0),
                               physics: const BouncingScrollPhysics(),
                               itemCount: data.length,
@@ -272,26 +272,22 @@ class _HomeState extends State<Home> {
                                 );
                               },
                               separatorBuilder: (BuildContext context, int index) => Row(children: <Widget>[Expanded(child: Container(margin: const EdgeInsets.symmetric(vertical: 8.0), height: .2, color: white))]),
-                            );
-                          } else {
-                            return Center(child: LottieBuilder.asset("assets/lottie/notFound.json"));
-                          }
-                        },
-                      );
-                    } else {
-                      return Container(
-                        margin: const EdgeInsets.only(right: 8.0),
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
-                        child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.noAppointmentsFromPatientsYet.toUpperCase(), color: white, fontSize: 18, fontWeight: FontWeight.bold)),
-                      );
-                    }
-                  } else if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator(color: blue));
+                            ),
+                          );
+                        } else {
+                          return Center(child: LottieBuilder.asset("assets/lottie/notFound.json"));
+                        }
+                      },
+                    );
                   } else {
-                    return ErrorRoom(error: snapshot.error.toString());
+                    return const SizedBox();
                   }
-                },
-              ),
+                } else if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator(color: blue));
+                } else {
+                  return ErrorRoom(error: snapshot.error.toString());
+                }
+              },
             ),
             const SizedBox(height: 10),
             Padding(

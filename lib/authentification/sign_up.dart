@@ -11,14 +11,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_password_strength/flutter_password_strength.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-//import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:intl_phone_field/countries.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:smart_care/authentification/choices_box.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUp extends StatefulWidget {
@@ -29,10 +30,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final FocusNode _phoneNode = FocusNode();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final PageController _fieldsPageController = PageController();
@@ -46,7 +45,7 @@ class _SignUpState extends State<SignUp> {
   String _text = "Weak";
   bool _next = true;
   bool _previous = false;
-  String _countryCode = "";
+  String _completePhoneNumber = "";
   File? _profilePicture;
   double _stepsCompleted = 0;
   final List<bool> _rolesList = <bool>[false, true];
@@ -54,8 +53,6 @@ class _SignUpState extends State<SignUp> {
   @override
   void dispose() {
     _fieldsPageController.dispose();
-    _phoneNode.dispose();
-    _phoneController.dispose();
     _emailController.dispose();
     _usernameController.dispose();
     _idController.dispose();
@@ -195,7 +192,7 @@ class _SignUpState extends State<SignUp> {
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: <Widget>[
                           CustomizedText(text: AppLocalizations.of(context)!.whatisyourname, color: white, fontSize: 18),
                           const SizedBox(height: 20),
                           CustomTextField(validator: fieldsValidatorsFunction("username", context), controller: _usernameController, hint: AppLocalizations.of(context)!.name, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name),
@@ -204,7 +201,7 @@ class _SignUpState extends State<SignUp> {
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: <Widget>[
                           CustomizedText(text: AppLocalizations.of(context)!.canyouprovidemewithyouremployeeIDormatricule, color: white, fontSize: 18),
                           const SizedBox(height: 20),
                           CustomTextField(validator: fieldsValidatorsFunction("id", context), controller: _idController, hint: AppLocalizations.of(context)!.iD, prefix: FontAwesomeIcons.userSecret),
@@ -213,7 +210,7 @@ class _SignUpState extends State<SignUp> {
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: <Widget>[
                           CustomizedText(text: AppLocalizations.of(context)!.wouldyoumindsharingyouremailaddresswithme, color: white, fontSize: 18),
                           const SizedBox(height: 20),
                           CustomTextField(validator: fieldsValidatorsFunction("email", context), controller: _emailController, hint: AppLocalizations.of(context)!.email, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
@@ -222,7 +219,7 @@ class _SignUpState extends State<SignUp> {
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: <Widget>[
                           CustomizedText(text: AppLocalizations.of(context)!.youwillneedtosetupapasswordforyouraccount, color: white, fontSize: 18),
                           const SizedBox(height: 20),
                           CustomTextField(func: (String text) => _passwordStrenghtKey.currentState!.setState(() {}), validator: fieldsValidatorsFunction("password", context), controller: _passwordController, hint: AppLocalizations.of(context)!.password, prefix: FontAwesomeIcons.lock, obscured: true),
@@ -264,42 +261,30 @@ class _SignUpState extends State<SignUp> {
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: <Widget>[
                           CustomizedText(text: AppLocalizations.of(context)!.mayIhaveyourphonenumberplease, color: white, fontSize: 18),
                           const SizedBox(height: 20),
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
-                            child: InternationalPhoneNumberInput(
-                              searchBoxDecoration: InputDecoration(
-                                labelText: AppLocalizations.of(context)!.country,
-                                labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
-                                prefix: const Padding(padding: EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.flag, size: 15, color: blue)),
-                                enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                                focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                              ),
-                              autoValidateMode: AutovalidateMode.always,
-                              focusNode: _phoneNode,
+                            child: IntlPhoneField(
+                              initialCountryCode: "TN",
                               cursorColor: blue,
-                              initialValue: PhoneNumber(isoCode: "TN", dialCode: "+216"),
-                              errorMessage: AppLocalizations.of(context)!.notAValidNumber,
-                              inputBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                              onInputChanged: (PhoneNumber value) {
-                                _countryCode = value.dialCode!;
-                              },
-                              textStyle: GoogleFonts.abel(fontSize: 16),
-                              spaceBetweenSelectorAndTextField: 0,
-                              textFieldController: _phoneController,
-                              selectorTextStyle: GoogleFonts.abel(fontSize: 16),
-                              selectorButtonOnErrorPadding: 0,
-                              onInputValidated: (bool value) => value ? _phoneNode.unfocus() : null,
-                              selectorConfig: const SelectorConfig(leadingPadding: 8.0, selectorType: PhoneInputSelectorType.BOTTOM_SHEET, trailingSpace: false, useEmoji: true, setSelectorButtonAsPrefixIcon: true),
-                              inputDecoration: InputDecoration(
-                                labelText: AppLocalizations.of(context)!.phoneNumber,
-                                labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
-                                prefix: const Padding(padding: EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.phone, size: 15, color: blue)),
-                                enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                                focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                              decoration: const InputDecoration(
+                                hintText: 'Enter your phone number',
+                                border: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                                disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                                errorBorder: OutlineInputBorder(borderSide: BorderSide(color: red)),
                               ),
+                              initialValue: "eg: +216 23 566 502",
+                              dropdownTextStyle: GoogleFonts.roboto(fontSize: 16),
+                              inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[\d \+]'))],
+                              invalidNumberMessage: AppLocalizations.of(context)!.verifyfieldsplease,
+                              dropdownDecoration: const BoxDecoration(),
+                              textInputAction: TextInputAction.done,
+                              onChanged: (PhoneNumber value) => _completePhoneNumber = value.completeNumber,
+                              onCountryChanged: (Country value) {},
                             ),
                           ),
                         ],
@@ -354,111 +339,9 @@ class _SignUpState extends State<SignUp> {
                     builder: (BuildContext context, void Function(void Function()) setS) {
                       return GestureDetector(
                         onTap: _next
-                            ? () async {
-                                if (_formKey.currentState!.validate()) {
-                                  await _fieldsPageController.nextPage(duration: 200.ms, curve: Curves.linear);
-
-                                  if (_fieldsPageController.page!.toInt() >= 5) {
-                                    _nextKey.currentState!.setState(() {
-                                      _next = false;
-                                    });
-                                  } else {
-                                    _nextKey.currentState!.setState(() {
-                                      _next = true;
-                                    });
-                                    _previousKey.currentState!.setState(() {
-                                      _previous = true;
-                                    });
-                                  }
-                                }
-                              }
-                            : () async {
-                                try {
-                                  if (_rolesList.any((bool element) => element == true)) {
-                                    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential userCredential) async {
-                                      showToast(text: AppLocalizations.of(context)!.accountCreated);
-                                      String profilePictureUrl = noUser;
-                                      if (_profilePicture != null) {
-                                        await FirebaseStorage.instance.ref().child("profile_pictures/${userCredential.user!.uid}").putFile(_profilePicture!).then((TaskSnapshot task) async {
-                                          profilePictureUrl = await task.ref.getDownloadURL();
-                                        });
-                                        showToast(text: AppLocalizations.of(context)!.pictureUploaded);
-                                      }
-                                      //final Position position = await determinePosition();
-                                      await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).set({
-                                        "name": _usernameController.text.trim(),
-                                        "id": _idController.text.trim(),
-                                        "role": _rolesList[0] ? "doctor" : "patient",
-                                        "roles_list": <String>[if (_rolesList[0]) "doctor", if (_rolesList[1]) "patient"],
-                                        "uid": FirebaseAuth.instance.currentUser!.uid,
-                                        "image_url": profilePictureUrl,
-                                        "email": _emailController.text.trim(),
-                                        "password": _passwordController.text.trim(),
-                                        "phone_number": "$_countryCode${_phoneController.text.replaceAll(RegExp(r' '), '').trim()}",
-                                        "status": true,
-                                        "years_of_experience": "20",
-                                        "patients_checked_list": [],
-                                        "location": "",
-                                        'work_location': "Faculté de Médecine de Monastir",
-                                        "speciality": "Chiropractors and massage therapists",
-                                        "rating": "0",
-                                        "schedules_list": [],
-                                        "available_time": ["--", "--"],
-                                        "date_of_birth": DateTime.now(),
-                                        "gender": "m",
-                                        "about": "",
-                                        "geolocation": [0, 0 /*position.longitude, position.latitude, position.altitude*/],
-                                        "token": "",
-                                      }).then((void value) async {
-                                        showToast(text: AppLocalizations.of(context)!.dataStored);
-                                        // Obtain the Google sign-in credentials
-                                        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-                                        final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
-                                        final OAuthCredential googleCredential = GoogleAuthProvider.credential(
-                                          accessToken: googleAuth.accessToken,
-                                          idToken: googleAuth.idToken,
-                                        );
-                                        showToast(text: AppLocalizations.of(context)!.signedWithGoogle);
-                                        // Link the email/password account with the Google account
-                                        await userCredential.user!.linkWithCredential(googleCredential);
-                                        showToast(text: AppLocalizations.of(context)!.accountLinkedWithGoogle);
-
-                                        await FirebaseAuth.instance.verifyPhoneNumber(
-                                          forceResendingToken: 1,
-                                          timeout: 30.ms,
-                                          phoneNumber: "$_countryCode${_phoneController.text.replaceAll(RegExp(r' '), '').trim()}",
-                                          verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
-                                          verificationFailed: (FirebaseAuthException error) {},
-                                          codeSent: (String verificationId, int? forceResendingToken) async {
-                                            ClipboardListener.addListener(() async {
-                                              ClipboardData? clipboard = await Clipboard.getData("text/plain");
-                                              if (clipboard != null && clipboard.text != null && clipboard.text!.isNotEmpty && clipboard.text!.contains(RegExp(r'^\d+$'))) {
-                                                String sms = clipboard.text!;
-                                                PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: sms);
-                                                await userCredential.user!.linkWithCredential(credential);
-                                                showToast(text: AppLocalizations.of(context)!.accountLinkedWithPhoneNumber);
-                                                ClipboardListener.removeListener(() {});
-                                                await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
-                                                  showToast(text: AppLocalizations.of(context)!.signedInUsingEmailPassword);
-                                                  getToken();
-                                                  await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true, "token": userToken}).then((void value) async {
-                                                    await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
-                                                  });
-                                                });
-                                              }
-                                            });
-                                          },
-                                          codeAutoRetrievalTimeout: (String verificationId) {},
-                                        );
-                                      });
-                                    });
-                                  } else {
-                                    showToast(text: AppLocalizations.of(context)!.verifyfieldsplease);
-                                  }
-                                } catch (_) {
-                                  setS(() => _next = false);
-                                  showToast(text: _.toString());
-                                }
+                            ? navigate
+                            : () {
+                                create(setS);
                               },
                         child: AnimatedContainer(
                           duration: 500.ms,
@@ -534,5 +417,112 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+
+  void create(void Function(void Function()) setS) async {
+    try {
+      if (_rolesList.any((bool element) => element == true)) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential userCredential) async {
+          showToast(text: AppLocalizations.of(context)!.accountCreated);
+          String profilePictureUrl = noUser;
+          if (_profilePicture != null) {
+            await FirebaseStorage.instance.ref().child("profile_pictures/${userCredential.user!.uid}").putFile(_profilePicture!).then((TaskSnapshot task) async {
+              profilePictureUrl = await task.ref.getDownloadURL();
+            });
+            showToast(text: AppLocalizations.of(context)!.pictureUploaded);
+          }
+          //final Position position = await determinePosition();
+          await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).set({
+            "name": _usernameController.text.trim(),
+            "id": _idController.text.trim(),
+            "role": _rolesList[0] ? "doctor" : "patient",
+            "roles_list": <String>[if (_rolesList[0]) "doctor", if (_rolesList[1]) "patient"],
+            "uid": FirebaseAuth.instance.currentUser!.uid,
+            "image_url": profilePictureUrl,
+            "email": _emailController.text.trim(),
+            "password": _passwordController.text.trim(),
+            "phone_number": _completePhoneNumber,
+            "status": true,
+            "years_of_experience": "20",
+            "patients_checked_list": <Map<String, dynamic>>[],
+            "location": "Monastir, Tunisia",
+            'work_location': "Faculté de Médecine de Monastir",
+            "speciality": "Chiropractors and massage therapists",
+            "rating": "0",
+            "schedules_list": [],
+            "available_time": ["--", "--"],
+            "date_of_birth": DateTime(1970),
+            "gender": "m",
+            "about": "",
+            "token": "",
+          }).then((void value) async {
+            showToast(text: AppLocalizations.of(context)!.dataStored);
+            // Obtain the Google sign-in credentials
+            final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+            final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+            final OAuthCredential googleCredential = GoogleAuthProvider.credential(
+              accessToken: googleAuth.accessToken,
+              idToken: googleAuth.idToken,
+            );
+            showToast(text: AppLocalizations.of(context)!.signedWithGoogle);
+            // Link the email/password account with the Google account
+            await userCredential.user!.linkWithCredential(googleCredential);
+            showToast(text: AppLocalizations.of(context)!.accountLinkedWithGoogle);
+
+            await FirebaseAuth.instance.verifyPhoneNumber(
+              forceResendingToken: 1,
+              timeout: 30.ms,
+              phoneNumber: _completePhoneNumber,
+              verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
+              verificationFailed: (FirebaseAuthException error) {},
+              codeSent: (String verificationId, int? forceResendingToken) async {
+                ClipboardListener.addListener(() async {
+                  ClipboardData? clipboard = await Clipboard.getData("text/plain");
+                  if (clipboard != null && clipboard.text != null && clipboard.text!.isNotEmpty && clipboard.text!.contains(RegExp(r'^\d+$'))) {
+                    String sms = clipboard.text!;
+                    PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: sms);
+                    await userCredential.user!.linkWithCredential(credential);
+                    showToast(text: AppLocalizations.of(context)!.accountLinkedWithPhoneNumber);
+                    await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
+                      showToast(text: AppLocalizations.of(context)!.signedInUsingEmailPassword);
+                      getToken();
+                      await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true, "token": userToken}).then((void value) async {
+                        await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
+                        ClipboardListener.removeListener(() {});
+                      });
+                    });
+                  }
+                });
+              },
+              codeAutoRetrievalTimeout: (String verificationId) {},
+            );
+          });
+        });
+      } else {
+        showToast(text: AppLocalizations.of(context)!.verifyfieldsplease);
+      }
+    } catch (_) {
+      setS(() => _next = false);
+      showToast(text: _.toString());
+    }
+  }
+
+  void navigate() async {
+    if (_formKey.currentState!.validate()) {
+      await _fieldsPageController.nextPage(duration: 200.ms, curve: Curves.linear);
+
+      if (_fieldsPageController.page!.toInt() >= 5) {
+        _nextKey.currentState!.setState(() {
+          _next = false;
+        });
+      } else {
+        _nextKey.currentState!.setState(() {
+          _next = true;
+        });
+        _previousKey.currentState!.setState(() {
+          _previous = true;
+        });
+      }
+    }
   }
 }

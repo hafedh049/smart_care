@@ -11,16 +11,13 @@ class User {
   String imageUrl;
   bool status;
   String yearsOfExperience;
-  List patientsCheckedList;
   String location;
   String workLocation;
   String speciality;
   String rating;
-  List schedulesList;
   List<String> availableTime;
   DateTime dateOfBirth;
   String about;
-  List<double> geolocation;
 
   User({
     required this.name,
@@ -35,16 +32,13 @@ class User {
     required this.imageUrl,
     required this.status,
     required this.yearsOfExperience,
-    required this.patientsCheckedList,
     required this.location,
     required this.workLocation,
     required this.speciality,
     required this.rating,
-    required this.schedulesList,
     required this.availableTime,
     required this.dateOfBirth,
     required this.about,
-    required this.geolocation,
   });
 
   Map<String, dynamic> toMap() {
@@ -61,16 +55,13 @@ class User {
       'image_url': imageUrl,
       'status': status,
       'years_of_experience': yearsOfExperience,
-      'patients_checked_list': patientsCheckedList,
       'location': location,
       'work_location': workLocation,
       'speciality': speciality,
       'rating': rating,
-      'schedules_list': schedulesList,
       'available_time': availableTime,
       'date_of_birth': dateOfBirth,
       'about': about,
-      'geolocation': geolocation,
     };
   }
 
@@ -89,16 +80,13 @@ class User {
       imageUrl: map['image_url'],
       status: map['status'] ?? false,
       yearsOfExperience: map['years_of_experience'],
-      patientsCheckedList: map['patients_checked_list'],
       location: map['location'],
       workLocation: map['work_location'],
       speciality: map['speciality'],
       rating: map['rating'],
-      schedulesList: map['schedules_list'],
       availableTime: List<String>.from(map['available_time'] ?? []),
       dateOfBirth: map['date_of_birth']?.toDate(),
       about: map['about'],
-      geolocation: List<double>.from(map['geolocation'] ?? []),
     );
   }
 }

@@ -32,9 +32,10 @@ class AboutUs extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             Center(child: CustomizedText(text: AppLocalizations.of(context)!.aboutUs, fontSize: 35, color: blue, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             AnimatedTextKit(
               totalRepeatCount: 1,
+              displayFullTextOnTap: true,
               animatedTexts: <AnimatedText>[
                 TypewriterAnimatedText(
                   aboutUs,

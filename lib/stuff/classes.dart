@@ -43,13 +43,11 @@ class HalfCirclePainter extends CustomPainter {
   bool shouldRepaint(HalfCirclePainter oldDelegate) => false;
 }
 
-// ignore: must_be_immutable
 class CustomTextField extends StatelessWidget {
-  CustomTextField({super.key, this.readonly = false, this.func, this.type = TextInputType.text, required this.controller, this.validator, required this.hint, required this.prefix, this.obscured = false});
+  const CustomTextField({super.key, this.readonly = false, this.func, this.type = TextInputType.text, required this.controller, this.validator, required this.hint, required this.prefix, this.obscured = false});
   final bool obscured;
   final TextEditingController controller;
   final String hint;
-  bool obscure = false;
   final IconData prefix;
   final TextInputType type;
   final String? Function(String?)? validator;
@@ -58,6 +56,7 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool obscure = false;
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) _) {
         return Padding(
@@ -67,6 +66,7 @@ class CustomTextField extends StatelessWidget {
             style: GoogleFonts.abel(fontSize: 16),
             controller: controller,
             cursorColor: blue,
+            onEditingComplete: () => FocusScope.of(context).nextFocus(),
             autocorrect: false,
             readOnly: readonly,
             onChanged: func,
@@ -83,8 +83,8 @@ class CustomTextField extends StatelessWidget {
               enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
               disabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
               focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
-              errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: red)),
-              errorStyle: GoogleFonts.abel(color: red, fontSize: 14),
+              errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color.fromARGB(255, 255, 70, 70))),
+              errorStyle: GoogleFonts.abel(color: const Color.fromARGB(255, 255, 70, 70), fontSize: 14),
             ),
           ),
         );
@@ -288,22 +288,23 @@ class HealthDrawer extends StatelessWidget {
               title: CustomizedText(text: AppLocalizations.of(context)!.aboutUs, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const Spacer(),
-            Container(width: 267, height: .1, color: white),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartChatBot()));
-              },
-              leading: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
-                  const SizedBox(width: 5),
-                  const Icon(FontAwesomeIcons.bots, color: white, size: 20),
-                ],
+            if (me["role"] == "patient") Container(width: 267, height: .1, color: white),
+            if (me["role"] == "patient")
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartChatBot()));
+                },
+                leading: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
+                    const SizedBox(width: 5),
+                    const Icon(FontAwesomeIcons.bots, color: white, size: 20),
+                  ],
+                ),
+                title: CustomizedText(text: "Quark", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              title: CustomizedText(text: "Quark", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
-            ),
             Container(width: 267, height: .1, color: white),
             const SizedBox(height: 10),
             ListTile(

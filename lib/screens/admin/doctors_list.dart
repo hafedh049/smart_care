@@ -1,13 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:comment_tree/widgets/comment_tree_widget.dart';
-import 'package:comment_tree/widgets/tree_theme_data.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:smart_care/error/error_room.dart';
 
 import '../../stuff/classes.dart';
+import '../../stuff/functions.dart';
 import '../../stuff/globals.dart';
 
 class DoctorsList extends StatefulWidget {
@@ -81,40 +81,86 @@ class _DoctorsListState extends State<DoctorsList> {
                 },
               ),
               const SizedBox(height: 20),
+              Row(
+                children: <Widget>[
+                  PreferredSize(
+                    preferredSize: const Size.fromRadius(20),
+                    child: CircleAvatar(backgroundColor: grey.withOpacity(.2), child: const Icon(FontAwesomeIcons.userDoctor, color: grey, size: 18)),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+                      decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
+                      child: const Center(child: CustomizedText(text: "Doctors", fontSize: 14, fontWeight: FontWeight.bold, color: white)),
+                    ),
+                  ),
+                ],
+              ),
               Expanded(
-                child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: FirebaseFirestore.instance.collection("users").where("roles_list", arrayContains: "doctor").limit(10).snapshots(),
+                child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  future: FirebaseFirestore.instance.collection("users").where("roles_list", arrayContains: "doctor").get(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                     if (snapshot.hasData) {
                       final List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data!.docs;
-                      data.sort((QueryDocumentSnapshot<Map<String, dynamic>> a, QueryDocumentSnapshot<Map<String, dynamic>> b) => a.get("name").compareTo(b.get("name")));
                       return StatefulBuilder(
                         key: _doctorsKey,
                         builder: (BuildContext context, void Function(void Function()) _) {
-                          return SingleChildScrollView(
-                            child: CommentTreeWidget<String, Map<String, dynamic>>(
-                              "Patients",
-                              data.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("name").contains(_searchController.text.trim())).map((QueryDocumentSnapshot<Map<String, dynamic>> e) => e.data()).toList(),
-                              treeThemeData: const TreeThemeData(lineColor: blue, lineWidth: 1),
-                              avatarRoot: (BuildContext context, String _) => PreferredSize(preferredSize: const Size.fromRadius(20), child: CircleAvatar(backgroundColor: grey.withOpacity(.2), child: const Icon(FontAwesomeIcons.userInjured, color: grey, size: 18))),
-                              contentRoot: (BuildContext context, String _) => Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
-                                decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                                child: Center(child: CustomizedText(text: _, fontSize: 14, fontWeight: FontWeight.bold, color: white)),
-                              ),
-                              avatarChild: (BuildContext context, Map<String, dynamic> _) => PreferredSize(
-                                preferredSize: const Size.fromRadius(20),
-                                child: CircleAvatar(
-                                  backgroundColor: grey.withOpacity(.2),
-                                  backgroundImage: _["image_url"] == noUser ? null : CachedNetworkImageProvider(_["image_url"]),
-                                  child: _["image_url"] != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 18),
-                                ),
-                              ),
-                              contentChild: (BuildContext context, Map<String, dynamic> _) {
-                                return GestureDetector(onTap: () {}, child: Container(padding: const EdgeInsets.all(8.0), child: CustomizedText(text: _["name"], color: white, fontSize: 18)));
+                          final List<Map<String, dynamic>> users = data.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("name").contains(_searchController.text.trim())).map((QueryDocumentSnapshot<Map<String, dynamic>> e) => e.data()).toList();
+                          users.sort((Map<String, dynamic> a, Map<String, dynamic> b) => a["name"].compareTo(b["name"]));
+                          if (users.isNotEmpty) {
+                            return ListView.builder(
+                              padding: EdgeInsets.zero,
+                              itemCount: users.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Dismissible(
+                                  key: ValueKey<String>(users[index]["uid"]),
+                                  confirmDismiss: (DismissDirection direction) async => direction == DismissDirection.startToEnd ? true : false,
+                                  onDismissed: (DismissDirection direction) async {
+                                    if (direction == DismissDirection.startToEnd) {
+                                      await FirebaseFirestore.instance.collection("users").doc(users[index]["uid"]).delete().then((void value) async {
+                                        await FirebaseStorage.instance.ref().child("/profile_pictures/${users[index]["uid"]}").delete().then((void value) async {
+                                          await FirebaseStorage.instance.ref().child("/prescriptions/${users[index]["uid"]}/").delete().then((void value) async {
+                                            await FirebaseStorage.instance.ref().child("/blood_tests/${users[index]["uid"]}/").delete().then((void value) {
+                                              data.removeAt(index);
+                                              showToast(text: "User Deleted");
+                                              if (data.isEmpty) {
+                                                _(() {});
+                                              }
+                                            });
+                                          });
+                                        });
+                                      });
+                                    }
+                                  },
+                                  secondaryBackground: Container(color: green, child: const Icon(FontAwesomeIcons.idBadge)),
+                                  background: Container(color: red, child: const Icon(FontAwesomeIcons.trash)),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        CircleAvatar(radius: 20, backgroundColor: grey.withOpacity(.3), child: Icon(FontAwesomeIcons.user, size: 15, color: white.withOpacity(.3))),
+                                        const SizedBox(width: 10),
+                                        CustomizedText(text: users[index]["name"], color: white, fontSize: 18),
+                                      ],
+                                    ),
+                                  ),
+                                );
                               },
-                            ),
-                          );
+                            );
+                          } else {
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  LottieBuilder.asset("assets/lottie/notFound.json"),
+                                  const SizedBox(height: 20),
+                                  const Center(child: CustomizedText(text: "No users yet.", fontSize: 16)),
+                                ],
+                              ),
+                            );
+                          }
                         },
                       );
                     } else if (snapshot.connectionState == ConnectionState.waiting) {

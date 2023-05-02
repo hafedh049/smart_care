@@ -18,15 +18,10 @@ import 'package:smart_care/wait/wait_room.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'error/error_room.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FirebaseMessaging.onMessage.listen(
-    (RemoteMessage event) {
-      AwesomeNotifications().createNotification(content: NotificationContent(id: 10, channelKey: "basic_channel", body: event.notification!.body, title: event.notification!.title, actionType: ActionType.KeepOnTop));
-    },
-  );
+  FirebaseMessaging.onMessage.listen((RemoteMessage event) => AwesomeNotifications().createNotification(content: NotificationContent(id: 10, channelKey: "basic_channel", body: event.notification!.body, title: event.notification!.title, actionType: ActionType.KeepOnTop)));
   Animate.restartOnHotReload = true;
   ErrorWidget.builder = (FlutterErrorDetails details) => ErrorRoom(error: details.exceptionAsString());
   SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]);
@@ -40,17 +35,8 @@ void main() async {
       await AwesomeNotifications().requestPermissionToSendNotifications();
     }
   });
+
   runApp(const Main());
-
-  //Remove this method to stop OneSignal Debugging
-  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-
-  OneSignal.shared.setAppId("eb57d64d-3ade-4767-beb4-9a7a7c913a2d");
-
-// The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
-  OneSignal.shared.promptUserForPushNotificationPermission().then((bool accepted) {
-    showToast(text: "Accepted permission: $accepted");
-  });
 
   Connectivity().onConnectivityChanged.listen((ConnectivityResult event) async {
     if (await InternetConnectionChecker().hasConnection) {

@@ -2,6 +2,8 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:smart_care/screens/admin/add_user.dart';
+import 'package:smart_care/screens/admin/create_article.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -161,7 +163,7 @@ String? Function(String?)? fieldsValidatorsFunction(String text, BuildContext co
     "age": (String? text) {
       if (text!.isEmpty) {
         return AppLocalizations.of(context)!.emptyAge;
-      } else if (!text.contains(RegExp(r'^\#[a-z0-9]{4,14}$'))) {
+      } else if (!text.contains(RegExp(r'^\d{1,2}$'))) {
         return AppLocalizations.of(context)!.ageContainsOnlyDigits;
       }
       return null;
@@ -186,30 +188,32 @@ String? Function(String?)? fieldsValidatorsFunction(String text, BuildContext co
 final Map<int, String> weekDayPredictor = <int, String>{1: "Mon", 2: "Tue", 3: "Wed", 4: "Thu", 5: "Fri", 6: "Sat", 7: "Sun"};
 
 final List<Map<String, dynamic>> healthcareFacilities = <Map<String, dynamic>>[
-  {"name": "Centre Hospitalier Universitaire Fattouma Bourguiba de Monastir", "latitude": 35.7611469, "longitude": 10.8125058},
-  {"name": "Clinique les Oliviers Monastir", "latitude": 35.7667159, "longitude": 10.8322074},
-  {"name": "Clinique El Amen Monastir", "latitude": 35.7713949, "longitude": 10.8206096},
-  {"name": "Polyclinique des Palmiers Monastir", "latitude": 35.7604815, "longitude": 10.827065},
-  {"name": "Clinique Internationale Monastir", "latitude": 35.768876, "longitude": 10.8319216},
-  {"name": "Clinique Al Hikma Monastir", "latitude": 35.7701055, "longitude": 10.8300627},
-  {"name": "Clinique Monastir Médical", "latitude": 35.7720048, "longitude": 10.8286933},
-  {"name": "Clinique Al Amana Monastir", "latitude": 35.7712026, "longitude": 10.8256544},
-  {"name": "Polyclinique Al Azhar Monastir", "latitude": 35.7616056, "longitude": 10.8219744},
-  {"name": "Clinique Taoufik Monastir", "latitude": 35.7640652, "longitude": 10.8251672},
-  {"name": "Polyclinique de la Rose Monastir", "latitude": 35.7631194, "longitude": 10.8342604},
-  {"name": "Polyclinique Essafaa Monastir", "latitude": 35.7627449, "longitude": 10.8324411},
-  {"name": "Polyclinique Monastir El Wifak", "latitude": 35.7659385, "longitude": 10.8295595},
-  {"name": "Hôpital de Moknine", "latitude": 35.6078568, "longitude": 10.995835},
-  {"name": "Hôpital de Zéramdine", "latitude": 35.4122763, "longitude": 10.978685},
-  {"name": "Hôpital de Jemmal", "latitude": 35.5655434, "longitude": 10.9052743},
-  {"name": "Hôpital de Ksar Hellal", "latitude": 35.670407, "longitude": 10.877977},
-  {"name": "Hôpital de Sahline", "latitude": 35.7840403, "longitude": 10.6963433},
-  {"name": "Hôpital de Sayada", "latitude": 36.8730225, "longitude": 10.326227},
-  {"name": "Faculté de Médecine de Monastir", "latitude": 35.7763282, "longitude": 10.8267896}
+  <String, dynamic>{"name": "Centre Hospitalier Universitaire Fattouma Bourguiba de Monastir", "latitude": 35.7611469, "longitude": 10.8125058},
+  <String, dynamic>{"name": "Clinique les Oliviers Monastir", "latitude": 35.7667159, "longitude": 10.8322074},
+  <String, dynamic>{"name": "Clinique El Amen Monastir", "latitude": 35.7713949, "longitude": 10.8206096},
+  <String, dynamic>{"name": "Polyclinique des Palmiers Monastir", "latitude": 35.7604815, "longitude": 10.827065},
+  <String, dynamic>{"name": "Clinique Internationale Monastir", "latitude": 35.768876, "longitude": 10.8319216},
+  <String, dynamic>{"name": "Clinique Al Hikma Monastir", "latitude": 35.7701055, "longitude": 10.8300627},
+  <String, dynamic>{"name": "Clinique Monastir Médical", "latitude": 35.7720048, "longitude": 10.8286933},
+  <String, dynamic>{"name": "Clinique Al Amana Monastir", "latitude": 35.7712026, "longitude": 10.8256544},
+  <String, dynamic>{"name": "Polyclinique Al Azhar Monastir", "latitude": 35.7616056, "longitude": 10.8219744},
+  <String, dynamic>{"name": "Clinique Taoufik Monastir", "latitude": 35.7640652, "longitude": 10.8251672},
+  <String, dynamic>{"name": "Polyclinique de la Rose Monastir", "latitude": 35.7631194, "longitude": 10.8342604},
+  <String, dynamic>{"name": "Polyclinique Essafaa Monastir", "latitude": 35.7627449, "longitude": 10.8324411},
+  <String, dynamic>{"name": "Polyclinique Monastir El Wifak", "latitude": 35.7659385, "longitude": 10.8295595},
+  <String, dynamic>{"name": "Hôpital de Moknine", "latitude": 35.6078568, "longitude": 10.995835},
+  <String, dynamic>{"name": "Hôpital de Zéramdine", "latitude": 35.4122763, "longitude": 10.978685},
+  <String, dynamic>{"name": "Hôpital de Jemmal", "latitude": 35.5655434, "longitude": 10.9052743},
+  <String, dynamic>{"name": "Hôpital de Ksar Hellal", "latitude": 35.670407, "longitude": 10.877977},
+  <String, dynamic>{"name": "Hôpital de Sahline", "latitude": 35.7840403, "longitude": 10.6963433},
+  <String, dynamic>{"name": "Hôpital de Sayada", "latitude": 36.8730225, "longitude": 10.326227},
+  <String, dynamic>{"name": "Faculté de Médecine de Monastir", "latitude": 35.7763282, "longitude": 10.8267896}
 ];
 
 List<Map<String, dynamic>> adminCards(BuildContext context) {
   final List<Map<String, dynamic>> adminCardsList = <Map<String, dynamic>>[
+    <String, dynamic>{"name": "Create Article", "widget": const CreateArticle(), "color": const Color.fromARGB(255, 155, 194, 70), "icon": FontAwesomeIcons.artstation},
+    <String, dynamic>{"name": "Add User", "widget": const AddUser(), "color": const Color.fromARGB(255, 0, 255, 242), "icon": FontAwesomeIcons.plus},
     <String, dynamic>{"name": AppLocalizations.of(context)!.patientsList, "widget": const PatientsList(), "color": const Color.fromARGB(255, 246, 206, 206), "icon": FontAwesomeIcons.ellipsis},
     <String, dynamic>{"name": AppLocalizations.of(context)!.doctorsList, "widget": const DoctorsList(), "color": const Color.fromARGB(255, 195, 227, 255), "icon": FontAwesomeIcons.ellipsisVertical},
     <String, dynamic>{"name": AppLocalizations.of(context)!.ageTracker, "widget": const AgeTracker(), "color": const Color.fromARGB(255, 70, 130, 180), "icon": FontAwesomeIcons.chartBar},

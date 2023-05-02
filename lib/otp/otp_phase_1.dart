@@ -3,12 +3,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl_phone_field/countries.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:smart_care/otp/opt_phase_2.dart';
 import 'package:smart_care/stuff/functions.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../stuff/classes.dart';
@@ -61,37 +64,26 @@ class _OTPViewState extends State<OTPView> {
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
-                    child: InternationalPhoneNumberInput(
-                      initialValue: PhoneNumber(isoCode: "TN", dialCode: "+216"),
-                      searchBoxDecoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.country,
-                        labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
-                        prefix: const Padding(padding: EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.flag, size: 15, color: blue)),
-                        enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                        focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                      ),
-                      autoValidateMode: AutovalidateMode.always,
-                      focusNode: _phoneNode,
+                    child: IntlPhoneField(
+                      initialCountryCode: "TN",
+                      controller: _phoneController,
                       cursorColor: blue,
-                      errorMessage: AppLocalizations.of(context)!.notAValidNumber,
-                      inputBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                      onInputChanged: (PhoneNumber value) {
-                        countryCode = value.dialCode!;
-                      },
-                      textStyle: GoogleFonts.abel(fontSize: 16),
-                      spaceBetweenSelectorAndTextField: 0,
-                      textFieldController: _phoneController,
-                      selectorTextStyle: GoogleFonts.abel(fontSize: 16),
-                      selectorButtonOnErrorPadding: 0,
-                      onInputValidated: (bool value) => value ? _phoneNode.unfocus() : null,
-                      selectorConfig: const SelectorConfig(leadingPadding: 8.0, selectorType: PhoneInputSelectorType.BOTTOM_SHEET, trailingSpace: false, useEmoji: true, setSelectorButtonAsPrefixIcon: true),
-                      inputDecoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.phoneNumber,
-                        labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
-                        prefix: const Padding(padding: EdgeInsets.only(right: 8.0), child: Icon(FontAwesomeIcons.phone, size: 15, color: blue)),
-                        enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                        focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                      decoration: const InputDecoration(
+                        hintText: 'Enter your phone number',
+                        border: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                        disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                        errorBorder: OutlineInputBorder(borderSide: BorderSide(color: red)),
                       ),
+                      initialValue: "eg: +216 23 566 502",
+                      dropdownTextStyle: GoogleFonts.roboto(fontSize: 16),
+                      inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[\d \+]'))],
+                      invalidNumberMessage: AppLocalizations.of(context)!.verifyfieldsplease,
+                      dropdownDecoration: const BoxDecoration(),
+                      textInputAction: TextInputAction.done,
+                      onChanged: (PhoneNumber value) {},
+                      onCountryChanged: (Country value) {},
                     ),
                   ),
                   const SizedBox(height: 40),

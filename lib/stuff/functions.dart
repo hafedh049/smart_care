@@ -1,25 +1,14 @@
-// ignore_for_file: use_build_context_synchronously
-
-//import 'dart:convert';
-//import 'dart:io';
-
-//import 'package:ansi_styles/extension.dart';
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-//import 'package:flutter_animate/flutter_animate.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
-//import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_care/stuff/globals.dart';
@@ -74,6 +63,32 @@ Future<String> cropImage(String imagePath) async {
   }
 }
 
+bool isImageUrl(String url) {
+  final List<String> imageExtensions = <String>['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+  final RegExp imageRegex = RegExp('.*(${imageExtensions.join('|')})', caseSensitive: false);
+
+  if (!Uri.parse(url).isAbsolute) {
+    return false;
+  }
+
+  return imageRegex.hasMatch(url);
+}
+
+String formatDateTime(DateTime dateTime, TimeOfDay timeOfDay) {
+  final String day = dateTime.day.toString();
+  final String month = dateTime.month.toString();
+  final String year = dateTime.year.toString();
+  final String hours = timeOfDay.hour.toString().padLeft(2, '0');
+  final String minutes = timeOfDay.minute.toString().padLeft(2, '0');
+  final String amPm = timeOfDay.hour < 12 ? 'AM' : 'PM';
+
+  const List<String> monthNames = <String>['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  final String monthName = monthNames[int.parse(month)];
+
+  return '$day $monthName, $year $hours:$minutes $amPm';
+}
+
 String getTimeFromDate(DateTime date) {
   String hours = date.hour.toString().padLeft(2, '0');
   String minutes = date.minute.toString().padLeft(2, '0');
@@ -89,101 +104,6 @@ String getDateRepresentation(DateTime date) {
 String showWeekDay(int day) {
   return weekDayPredictor[DateTime(DateTime.now().year, DateTime.now().month, day).weekday]!;
 }
-
-void playNote(String note) {
-  player.open(Audio("assets/$note"));
-}
-
-/*Future<Position> determinePosition() async {
-  bool serviceEnabled;
-  LocationPermission permission;
-
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    return Future.error('Location services are disabled.');
-  }
-
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-       {
-        playNote("error.wav");
-      }
-      showToast(text:"Location permissions are denied", color: red);
-      return Future.error('Location permissions are denied');
-    }
-  }
-
-  if (permission == LocationPermission.deniedForever) {
-     {
-      playNote("error.wav");
-    }
-    showToast(text:"Location permissions are denied", color: red);
-    return Future.error('Location permissions are permanently denied, we cannot request permissions.');
-  }
-   {
-    ;
-  }
-  showToast(text:"Permission granted");
-  return await Geolocator.getCurrentPosition();
-}*/
-
-/*Future<void> userstoFirestore() async {
-  final List<dynamic> userData = json.decode(await rootBundle.loadString("assets/users_file.json"));
-  for (int index = 493; index < userData.length; index++) {
-    try {
-      if ((const <int>[520, 540, 560, 580]).contains(index)) {
-        /*if (Platform.isWindows) {
-        Process.runSync('cls', []);
-      } else {
-        Process.runSync('clear', []);
-      }*/
-        debugPrint("Paused");
-        await Future.delayed(3.minutes);
-      } else {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(email: userData[index]["email"], password: userData[index]["password"]).then(
-          (UserCredential userCredential) async {
-            userData[index].update("uid", (dynamic value) => userCredential.user!.uid.trim());
-            userData[index].update(
-              "date_of_birth",
-              (dynamic value) {
-                final List<dynamic> date = value.split("-").map((dynamic e) => int.parse(e)).toList();
-                return DateTime(date[0], date[1], date[2]);
-              },
-            );
-            debugPrint("Added");
-            await FirebaseFirestore.instance.collection("users").doc(userCredential.user!.uid.trim()).set(userData[index]);
-          },
-        );
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-      debugPrint(index.toString());
-      //break;
-    }
-  }
-}
-
-Future<void> articlesToFirestore() async {
-  final List<dynamic> userData = json.decode(await rootBundle.loadString("assets/articles_file.json")); //.map((dynamic e) => ArticleModalClass.fromMap(e)).toList();
-  for (int index = 0; index < userData.length; index++) {
-    try {
-      if ((const <int>[20, 40, 80, 120, 160]).contains(index)) {
-        debugPrint("Paused");
-        await Future.delayed(3.minutes);
-      } else {
-        userData[index].update("author", (dynamic value) => value ?? "Unknown");
-        await FirebaseFirestore.instance.collection("articles").add(userData[index]);
-        debugPrint("Added" /*.bold.cyan*/);
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-      debugPrint(index.toString());
-      break;
-    }
-  }
-}*/
 
 Future<void> getToken() async {
   if (userToken.isEmpty) {
@@ -243,18 +163,53 @@ Future<String> getChatResponse(String input) async {
   return chatResponse;
 }
 
-Future<String> sendScheduledNotification() async {
-  var headers = {'Content-Type': 'application/json'};
-  var body = json.encode({
-    'app_id': 'eb57d64d-3ade-4767-beb4-9a7a7c913a2d',
-    'contents': {'en': 'Scheduled notification content'},
-    'send_after': '2023-04-25 10:00:00 GMT-0700',
-    // Specify the delivery time in UTC time format
-  });
-  var response = await post(Uri.parse('https://onesignal.com/api/v1/notifications'), headers: headers, body: body);
-  if (response.statusCode == 200) {
-    return 'Scheduled notification sent successfully';
+String? Function(String?)? validator(String field) {
+  if (field == "article_title") {
+    return (String? text) {
+      if (text!.isEmpty) {
+        return "You should set the article title";
+      } else if (!text.contains(RegExp(r"^[\w \?\!\,\.\:\<\>]{6,}$"))) {
+        return "Article title contains only alphanumeric characters, spaces and these characters '?,!,.,:,<,>'";
+      }
+      return null;
+    };
+  } else if (field == "content") {
+    return (String? text) {
+      if (text!.isEmpty) {
+        return "Content field is mandatory";
+      } else if (!text.contains(RegExp(r".{10,}"))) {
+        return "write at least 4 or 5 words";
+      }
+      return null;
+    };
+  } else if (field == "channel_name") {
+    return (String? text) {
+      if (text!.isEmpty) {
+        return "You should write the channel name";
+      } else if (!text.contains(RegExp(r"^[\w \,\.]{6,}$"))) {
+        return "Channel name contains only alphabets";
+      }
+      return null;
+    };
+  } else if (field == "author") {
+    return (String? text) {
+      if (text!.isEmpty) {
+        return "Author field should not be empty";
+      } else if (!text.contains(RegExp(r"^[\w \,\.]{6,}$"))) {
+        return "It should be a propre name";
+      }
+      return null;
+    };
+  } else if (field == "description") {
+    return (String? text) {
+      return null;
+    };
   } else {
-    return 'Failed to send scheduled notification';
+    return (String? text) {
+      if (text!.isEmpty) {
+        return "You should put a description to this article.";
+      }
+      return null;
+    };
   }
 }
