@@ -105,7 +105,9 @@ class GoogleAuth extends StatelessWidget {
             await GoogleSignIn().signIn().then((GoogleSignInAccount? googleAccount) async {
               if (googleAccount != null) {
                 List<String> signInMethods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(googleAccount.email);
-                if (signInMethods.contains('google.com')) {
+                if (signInMethods.isEmpty) {
+                  showToast(text: AppLocalizations.of(context)!.nouserlinkedtothisaccountpleasecreateone);
+                } else if (signInMethods.contains('google.com')) {
                   // Google provider is linked with email/password provider
                   await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
                     AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
@@ -113,8 +115,16 @@ class GoogleAuth extends StatelessWidget {
                     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
                   });
                 } else {
-                  // Google provider is not linked with email/password provider
-                  showToast(text: AppLocalizations.of(context)!.nouserlinkedtothisaccountpleasecreateone, color: red);
+                  final GoogleSignInAuthentication googleAuth = await googleAccount.authentication;
+                  final OAuthCredential googleCredential = GoogleAuthProvider.credential(accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+                  showToast(text: AppLocalizations.of(context)!.signedWithGoogle);
+                  await FirebaseAuth.instance.currentUser!.linkWithCredential(googleCredential);
+                  await FirebaseAuth.instance.signInWithCredential(googleCredential);
+                  showToast(text: AppLocalizations.of(context)!.accountLinkedWithGoogle);
+                  await getToken();
+                  await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"token": userToken}).then((void value) async {
+                    await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
+                  });
                 }
               }
             });
@@ -154,7 +164,6 @@ class OTPAuth extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           goTo(const OTPView());
-          //Navigator.push(context, MaterialPageRoute(builder: (context) => const OTPView()));
         },
         child: Container(
           height: 40,
@@ -311,13 +320,9 @@ class HealthDrawer extends StatelessWidget {
               contentPadding: EdgeInsets.zero,
               onTap: () async {
                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => false);
-                if (await GoogleSignIn().isSignedIn()) {
-                  await GoogleSignIn().signOut();
-                }
                 await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": false, "token": ""}).then((void value) async {
-                  await FirebaseMessaging.instance.deleteToken().then((void value) async {
-                    await FirebaseAuth.instance.signOut();
-                  });
+                  await FirebaseMessaging.instance.deleteToken();
+                  await FirebaseAuth.instance.signOut();
                 });
               },
               horizontalTitleGap: 0,

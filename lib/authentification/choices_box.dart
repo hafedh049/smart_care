@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
@@ -61,6 +63,15 @@ class ChoicesBox extends StatelessWidget {
                                   },
                                 ),
                               ),
+                            const SizedBox(height: 10),
+                            GestureDetector(
+                              onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const SignIn())),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)),
+                                child: const Icon(FontAwesomeIcons.chevronLeft, color: white, size: 25),
+                              ),
+                            ),
                           ],
                         );
                       },

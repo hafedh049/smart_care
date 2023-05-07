@@ -105,19 +105,13 @@ class _ChatsState extends State<Chats> {
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> chatSnapshot) {
                     if (chatSnapshot.hasData) {
                       if (chatSnapshot.data!.docs.isEmpty) {
-                        return Center(child: CustomizedText(text: AppLocalizations.of(context)!.noDoctorsAvailable, color: blue, fontSize: 20));
+                        return const Center(child: CustomizedText(text: "No doctors available now.", color: blue, fontSize: 20));
                       } else {
                         Future.delayed(500.ms, () => _textFieldKey.currentState!.setState(() => _disabled = false));
                         return StatefulBuilder(
                           key: _searchKey,
                           builder: (BuildContext context, void Function(void Function()) _) {
-                            final List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = chatSnapshot.data!.docs
-                                /*.where((
-                                  QueryDocumentSnapshot<Map<String, dynamic>> item,
-                                ) =>
-                                    item.get("name").toLowerCase().contains(_searchController.text.trim().toLowerCase()))
-                                .toList()*/
-                                ;
+                            final List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = chatSnapshot.data!.docs;
 
                             return doctorsList.isEmpty
                                 ? Center(child: CustomizedText(text: AppLocalizations.of(context)!.noChatsUntilNow, fontSize: 20, color: white))
@@ -133,7 +127,6 @@ class _ChatsState extends State<Chats> {
                                               contentPadding: EdgeInsets.zero,
                                               onTap: () {
                                                 goTo(ChatRoom(talkTo: tileSnapshot.data!.data()!));
-                                                //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(talkTo: tileSnapshot.data!.data()!)));
                                               },
                                               leading: Stack(
                                                 alignment: AlignmentDirectional.bottomEnd,

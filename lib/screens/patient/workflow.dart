@@ -45,6 +45,31 @@ class _WorkFlowState extends State<WorkFlow> {
             Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
             Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
             const SizedBox(height: 10),
+            StatefulBuilder(
+              key: _nextPrevKey,
+              builder: (BuildContext context, void Function(void Function()) _) {
+                return IgnorePointer(
+                  ignoring: !_left,
+                  child: AnimatedOpacity(
+                    duration: 500.ms,
+                    opacity: _left ? 1 : 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        _choices.removeWhere((int key, String value) => key == _flowController.page!.round());
+                        _flowController.jumpToPage(_choices.keys.lastWhere((int element) => element < _flowController.page!.round(), orElse: () => _flowController.page!.round()));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: _left ? blue.withOpacity(.8) : grey.withOpacity(.8)),
+                        width: MediaQuery.of(context).size.width * .2,
+                        height: 40,
+                        child: const Center(child: Icon(FontAwesomeIcons.chevronLeft, size: 25, color: white)),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 10),
             Expanded(
               child: PageView.builder(
                 itemCount: workflow.length,
@@ -125,34 +150,6 @@ class _WorkFlowState extends State<WorkFlow> {
                 },
               ),
             ),
-            const SizedBox(height: 10),
-            Center(
-              child: StatefulBuilder(
-                key: _nextPrevKey,
-                builder: (BuildContext context, void Function(void Function()) _) {
-                  return IgnorePointer(
-                    ignoring: !_left,
-                    child: AnimatedOpacity(
-                      duration: 500.ms,
-                      opacity: _left ? 1 : 0,
-                      child: GestureDetector(
-                        onTap: () {
-                          _choices.removeWhere((int key, String value) => key == _flowController.page!.round());
-                          _flowController.jumpToPage(_choices.keys.lastWhere((int element) => element < _flowController.page!.round(), orElse: () => _flowController.page!.round()));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: _left ? blue.withOpacity(.8) : grey.withOpacity(.8)),
-                          width: MediaQuery.of(context).size.width * .2,
-                          height: 40,
-                          child: const Center(child: Icon(FontAwesomeIcons.chevronLeft, size: 25, color: white)),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 5),
             LayoutBuilder(builder: (BuildContext __, BoxConstraints _) => AnimatedContainer(duration: 500.ms, height: MediaQuery.of(context).padding.bottom > 0 ? 100 : 80)),
           ],
         ),

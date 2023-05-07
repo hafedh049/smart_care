@@ -7,14 +7,22 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:326479825147:android:b8bf5fa20d1ff010ba485e",
+        "mobilesdk_app_id": "1:326479825147:android:ebdb75917f5865afba485e",
         "android_client_info": {
-          "package_name": "com.example.smart_care"
+          "package_name": "com.example.smartcare"
         }
       },
       "oauth_client": [
         {
-          "client_id": "326479825147-uk5jcin65rd5c1sml9i4rtjnj7249abe.apps.googleusercontent.com",
+          "client_id": "326479825147-vrd6ejh3ftvqp0djr4q667f0uule0cap.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.smartcare",
+            "certificate_hash": "3e5d41ce6c9d2548515efa2ee4962d59df4bf3dc"
+          }
+        },
+        {
+          "client_id": "326479825147-95ce4ngfbcbbr4dctdl54g4qj5oee1av.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +35,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "326479825147-uk5jcin65rd5c1sml9i4rtjnj7249abe.apps.googleusercontent.com",
+              "client_id": "326479825147-95ce4ngfbcbbr4dctdl54g4qj5oee1av.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "326479825147-vitg7o5el9rbnrrr34fn6i7pm517j0cn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.smartcare"
+              }
             }
           ]
         }

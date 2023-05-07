@@ -17,8 +17,9 @@ import '../stuff/classes.dart';
 import '../stuff/globals.dart';
 
 class OTP extends StatefulWidget {
-  const OTP({super.key, required this.verification});
+  const OTP({super.key, required this.verification, required this.email});
   final String verification;
+  final String email;
   @override
   State<OTP> createState() => _OTPState();
 }
@@ -37,13 +38,17 @@ class _OTPState extends State<OTP> {
         data = clipboard.text!;
         _otpFieldController.set(data.split(RegExp(r"")));
         PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: widget.verification, smsCode: data);
+        if (!(await FirebaseAuth.instance.fetchSignInMethodsForEmail(widget.email)).contains(PhoneAuthProvider.PHONE_SIGN_IN_METHOD)) {
+          await FirebaseAuth.instance.currentUser!.linkWithCredential(credential);
+        }
         await FirebaseAuth.instance.signInWithCredential(credential).then((UserCredential value) async {
           _buttonBuilder.currentState!.setState(() => wait = false);
+          ClipboardListener.removeListener(() {});
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
         });
       }
     });
-    ClipboardListener.removeListener(() {});
+
     super.initState();
   }
 
@@ -61,6 +66,7 @@ class _OTPState extends State<OTP> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                const SizedBox(height: 20),
                 Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
                 Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
                 Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
@@ -69,25 +75,22 @@ class _OTPState extends State<OTP> {
                 CustomizedText(text: AppLocalizations.of(context)!.sMSNotification, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
                 CustomizedText(text: AppLocalizations.of(context)!.thepinfieldswillautomaticallybefilledwhensmsisintercepted, fontSize: 16).animate().fadeIn(duration: 500.ms),
                 const SizedBox(height: 40),
-                IgnorePointer(
-                  ignoring: true,
-                  child: OTPTextField(
-                    length: 6,
-                    outlineBorderRadius: 5,
-                    controller: _otpFieldController,
-                    width: MediaQuery.of(context).size.width,
-                    fieldWidth: 40,
-                    style: GoogleFonts.abel(fontSize: 17),
-                    textFieldAlignment: MainAxisAlignment.spaceAround,
-                    fieldStyle: FieldStyle.box,
-                    otpFieldStyle: OtpFieldStyle(
-                      backgroundColor: darkBlue,
-                      borderColor: white,
-                      disabledBorderColor: Colors.white.withOpacity(.5),
-                      enabledBorderColor: white,
-                      errorBorderColor: Colors.red,
-                      focusBorderColor: blue,
-                    ),
+                OTPTextField(
+                  length: 6,
+                  outlineBorderRadius: 5,
+                  controller: _otpFieldController,
+                  width: MediaQuery.of(context).size.width,
+                  fieldWidth: 40,
+                  style: GoogleFonts.abel(fontSize: 17),
+                  textFieldAlignment: MainAxisAlignment.spaceAround,
+                  fieldStyle: FieldStyle.box,
+                  otpFieldStyle: OtpFieldStyle(
+                    backgroundColor: darkBlue,
+                    borderColor: white,
+                    disabledBorderColor: Colors.white.withOpacity(.5),
+                    enabledBorderColor: white,
+                    errorBorderColor: Colors.red,
+                    focusBorderColor: blue,
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -96,7 +99,7 @@ class _OTPState extends State<OTP> {
                     key: _buttonBuilder,
                     builder: (BuildContext context, void Function(void Function()) setS) {
                       return IgnorePointer(
-                        ignoring: wait,
+                        ignoring: true,
                         child: AnimatedContainer(
                           duration: 500.ms,
                           height: 40,
