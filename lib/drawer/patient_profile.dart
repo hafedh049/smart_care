@@ -19,144 +19,129 @@ class PatientProfile extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: darkBlue,
-      body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: snapshot.data!.get("image_url") == noUser
-                      ? null
-                      : () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              contentPadding: EdgeInsets.zero,
-                              content: Container(
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                                child: InteractiveViewer(
-                                    child: CachedNetworkImage(
-                                  imageUrl: snapshot.data!.get("image_url"),
-                                  placeholder: (BuildContext context, String url) => const Center(child: Icon(FontAwesomeIcons.user, color: grey, size: 80)),
-                                )),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 40),
+                  Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft)]),
+                  const SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: snapshot.data!.get("image_url") == noUser
+                        ? null
+                        : () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                contentPadding: EdgeInsets.zero,
+                                content: Container(
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                                  child: InteractiveViewer(
+                                      child: CachedNetworkImage(
+                                    imageUrl: snapshot.data!.get("image_url"),
+                                    placeholder: (BuildContext context, String url) => const Center(child: Icon(FontAwesomeIcons.user, color: grey, size: 80)),
+                                  )),
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 300,
-                    decoration: BoxDecoration(
-                      color: grey.withOpacity(.2),
-                      image: snapshot.data!.get("image_url") == noUser ? null : DecorationImage(image: CachedNetworkImageProvider(snapshot.data!.get("image_url")), fit: BoxFit.cover),
-                      borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(35), bottomRight: Radius.circular(35)),
+                            );
+                          },
+                    child: Center(
+                      child: CircleAvatar(
+                        backgroundColor: grey.withOpacity(.3),
+                        radius: 65,
+                        backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")),
+                        child: snapshot.data!.get("image_url") == noUser ? const Icon(FontAwesomeIcons.user, color: grey, size: 80) : null,
+                      ),
                     ),
-                    child: Stack(
-                      children: <Widget>[
-                        if (snapshot.data!.get("image_url") == noUser) const Center(child: Icon(FontAwesomeIcons.user, color: grey, size: 80)),
-                        Align(
-                          alignment: AlignmentDirectional.topStart,
-                          child: GestureDetector(
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          CustomizedText(text: snapshot.data!.get("name"), fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: <Widget>[
+                              const Icon(FontAwesomeIcons.tooth, size: 15, color: blue),
+                              const SizedBox(width: 10),
+                              Flexible(child: CustomizedText(text: snapshot.data!.get("speciality"), fontSize: 16, color: white.withOpacity(.8))),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: <Widget>[
+                              const Icon(Icons.numbers, size: 18, color: blue),
+                              const SizedBox(width: 10),
+                              CustomizedText(text: "Age ( ${DateTime.now().difference(snapshot.data!.get('date_of_birth').toDate()).inDays ~/ 365} )", fontSize: 16, color: white.withOpacity(.8)),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: <Widget>[
+                              const Icon(FontAwesomeIcons.locationPinLock, size: 15, color: blue),
+                              const SizedBox(width: 10),
+                              CustomizedText(text: 'Location ( ${snapshot.data!.get("location").isEmpty ? "Monastir, Tunisia" : snapshot.data!.get("location")} )', fontSize: 16, color: white.withOpacity(.8)),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: <Widget>[
+                              const Icon(FontAwesomeIcons.envelope, size: 15, color: blue),
+                              const SizedBox(width: 10),
+                              CustomizedText(text: 'E-mail ( ${snapshot.data!.get("email")} )', fontSize: 16, color: white.withOpacity(.8)),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: <Widget>[
+                              const Icon(Icons.phone, size: 14, color: blue),
+                              const SizedBox(width: 10),
+                              CustomizedText(text: 'Phone ( ${snapshot.data!.get("phone_number")} )', fontSize: 16, color: white.withOpacity(.8)),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          CustomizedText(text: AppLocalizations.of(context)!.about, fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                          const SizedBox(height: 10),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: CustomizedText(text: snapshot.data!.get("about").isEmpty ? "--" : snapshot.data!.get("about"), fontSize: 16, color: white),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          GestureDetector(
                             onTap: () {
-                              Navigator.pop(context);
+                              goTo(const Historic());
                             },
                             child: Container(
-                              margin: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(color: darkBlue, borderRadius: BorderRadius.circular(5)),
-                              child: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue),
+                              margin: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(8.0),
+                              height: 60,
+                              width: MediaQuery.of(context).size.width,
+                              child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.viewyourhistory, color: white, fontSize: 16, fontWeight: FontWeight.bold)),
                             ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 20),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        CustomizedText(text: snapshot.data!.get("name"), fontSize: 16, fontWeight: FontWeight.bold, color: white),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: <Widget>[
-                            const Icon(FontAwesomeIcons.tooth, size: 15, color: blue),
-                            const SizedBox(width: 10),
-                            Flexible(child: CustomizedText(text: snapshot.data!.get("speciality"), fontSize: 16, color: white.withOpacity(.8))),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: <Widget>[
-                            const Icon(Icons.numbers, size: 18, color: blue),
-                            const SizedBox(width: 10),
-                            CustomizedText(text: "Age ( ${DateTime.now().difference(snapshot.data!.get('date_of_birth').toDate()).inDays ~/ 365} )", fontSize: 16, color: white.withOpacity(.8)),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: <Widget>[
-                            const Icon(FontAwesomeIcons.locationPinLock, size: 15, color: blue),
-                            const SizedBox(width: 10),
-                            CustomizedText(text: 'Location ( ${snapshot.data!.get("location").isEmpty ? "Monastir, Tunisia" : snapshot.data!.get("location")} )', fontSize: 16, color: white.withOpacity(.8)),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: <Widget>[
-                            const Icon(FontAwesomeIcons.envelope, size: 15, color: blue),
-                            const SizedBox(width: 10),
-                            CustomizedText(text: 'E-mail ( ${snapshot.data!.get("email")} )', fontSize: 16, color: white.withOpacity(.8)),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: <Widget>[
-                            const Icon(Icons.phone, size: 14, color: blue),
-                            const SizedBox(width: 10),
-                            CustomizedText(text: 'Phone ( ${snapshot.data!.get("phone_number")} )', fontSize: 16, color: white.withOpacity(.8)),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        CustomizedText(text: AppLocalizations.of(context)!.about, fontSize: 16, fontWeight: FontWeight.bold, color: white),
-                        const SizedBox(height: 10),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: CustomizedText(text: snapshot.data!.get("about").isEmpty ? "--" : snapshot.data!.get("about"), fontSize: 16, color: white),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        GestureDetector(
-                          onTap: () {
-                            goTo(const Historic());
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue),
-                            margin: const EdgeInsets.all(8.0),
-                            padding: const EdgeInsets.all(8.0),
-                            height: 60,
-                            width: MediaQuery.of(context).size.width,
-                            child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.viewyourhistory, color: white, fontSize: 16, fontWeight: FontWeight.bold)),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            );
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(color: blue));
-          } else {
-            return ErrorRoom(error: snapshot.error.toString());
-          }
-        },
+                ],
+              );
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator(color: blue));
+            } else {
+              return ErrorRoom(error: snapshot.error.toString());
+            }
+          },
+        ),
       ),
     );
   }
