@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_care/drawer/admin_profile.dart';
 import 'package:smart_care/drawer/doctor_profile.dart';
 import 'package:smart_care/drawer/patient_profile.dart';
 import 'package:smart_care/error/error_room.dart';
@@ -22,7 +23,7 @@ class Profile extends StatelessWidget {
             } else if (snapshot.data!.get("role") == "patient") {
               return const PatientProfile();
             } else {
-              return Container();
+              return const AdminProfile();
             }
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator(color: blue);

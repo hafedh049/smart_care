@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:smart_care/screens/admin/add_user.dart';
 import 'package:smart_care/screens/admin/create_article.dart';
+import 'package:smart_care/screens/admin/delete_and_modify_article.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -54,7 +55,6 @@ const String camera = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4
 const String pdf = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/upload%2Fpdf.jpg?alt=media&token=9ecf2100-e5a0-490a-89ff-b30c1b0a5863";
 const String gallery = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/upload%2Fgallery.jpg?alt=media&token=f3a6fa1d-1f66-493a-9feb-c6d9f0037cff";
 const String appIcon = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/health.png?alt=media&token=5b9a461b-bf46-4dfd-bc83-e8ec9a66f990";
-const heartPulse = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/WhatsApp%20Image%202023-04-11%20at%2011.20.02%20AM.jpeg?alt=media&token=3f4f584f-7602-41b4-8ad6-435db6489296";
 
 //Data Structures
 List<Map<String, dynamic>> specialityListFunction(BuildContext context) {
@@ -211,8 +211,9 @@ final List<Map<String, dynamic>> healthcareFacilities = <Map<String, dynamic>>[
 ];
 
 List<Map<String, dynamic>> adminCards(BuildContext context) {
-  final List<Map<String, dynamic>> adminCardsList = <Map<String, dynamic>>[
+  return <Map<String, dynamic>>[
     <String, dynamic>{"name": "Create Article", "widget": const CreateArticle(), "color": const Color.fromARGB(255, 155, 194, 70), "icon": FontAwesomeIcons.artstation},
+    <String, dynamic>{"name": "RUD Article", "widget": const DeleteAndModifyArticles(), "color": const Color.fromARGB(255, 245, 147, 177), "icon": FontAwesomeIcons.xmark},
     <String, dynamic>{"name": "Add User", "widget": const AddUser(), "color": const Color.fromARGB(255, 0, 255, 242), "icon": FontAwesomeIcons.plus},
     <String, dynamic>{"name": AppLocalizations.of(context)!.patientsList, "widget": const PatientsList(), "color": const Color.fromARGB(255, 246, 206, 206), "icon": FontAwesomeIcons.ellipsis},
     <String, dynamic>{"name": AppLocalizations.of(context)!.doctorsList, "widget": const DoctorsList(), "color": const Color.fromARGB(255, 195, 227, 255), "icon": FontAwesomeIcons.ellipsisVertical},
@@ -221,7 +222,6 @@ List<Map<String, dynamic>> adminCards(BuildContext context) {
     <String, dynamic>{"name": AppLocalizations.of(context)!.bloodTypes, "widget": const BloodTypeTracker(), "color": green, "icon": FontAwesomeIcons.chartLine},
     <String, dynamic>{"name": AppLocalizations.of(context)!.specialities, "widget": const DoctorsPerSpeciality(), "color": const Color.fromARGB(255, 255, 204, 0), "icon": FontAwesomeIcons.chartColumn},
   ];
-  return adminCardsList;
 }
 
 const List<Transition> animatedTransitions = Transition.values;

@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/drawer/profile.dart';
 import 'package:smart_care/error/error_room.dart';
-import 'package:smart_care/screens/patient/heart_beats.dart';
 import 'package:smart_care/screens/articles.dart';
 import 'package:smart_care/screens/patient/fetch_all_appointments.dart';
 import 'package:smart_care/screens/patient/filter.dart';
@@ -99,35 +98,6 @@ class Home extends StatelessWidget {
                       const CustomizedText(text: 'Search For Doctors', fontSize: 16, color: grey),
                       const Spacer(),
                       Container(width: 5, height: 48, decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(35)), color: blue)),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    goTo(const HeartBeats());
-                  },
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          height: 150,
-                          decoration: BoxDecoration(image: const DecorationImage(image: CachedNetworkImageProvider(heartPulse), fit: BoxFit.cover), borderRadius: BorderRadius.circular(15), color: Colors.yellowAccent.shade100),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              const Icon(FontAwesomeIcons.heartPulse, color: white, size: 25),
-                              const SizedBox(width: 20),
-                              CustomizedText(text: AppLocalizations.of(context)!.heartPulse, fontSize: 25, color: white),
-                            ],
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),

@@ -33,6 +33,7 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final PageController _fieldsPageController = PageController();
+  //keys houwa eli y5alouna nrebuildiw el widgets mte3na bl statefulbuilder
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey _profilePictureKey = GlobalKey();
   final GlobalKey _stepsCompletedkey = GlobalKey();
@@ -94,6 +95,7 @@ class _SignUpState extends State<SignUp> {
                       const Spacer(),
                       GestureDetector(
                         onTap: () {
+                          //el pop up hadha ta3 e taswira ki el user bch yji ya5tar picutre
                           showModalBottomSheet(
                             context: context,
                             builder: (BuildContext context) => SizedBox(
@@ -365,6 +367,7 @@ class _SignUpState extends State<SignUp> {
                       return GestureDetector(
                         onTap: _previous
                             ? () async {
+                                //rjou3 bitweli
                                 await _fieldsPageController.previousPage(duration: 200.ms, curve: Curves.linear);
                                 if (_fieldsPageController.page!.toInt() == _fieldsPageController.initialPage) {
                                   _previousKey.currentState!.setState(() {
@@ -412,6 +415,7 @@ class _SignUpState extends State<SignUp> {
   }
 
   void create(void Function(void Function()) setS) async {
+    //bch nasna3 beha el user w nconnectih
     try {
       bool phoneExists = false;
       await FirebaseFirestore.instance.collection("users").where("phone_number", isEqualTo: _completePhoneNumber).count().get().then((AggregateQuerySnapshot value) => phoneExists = value.count == 0 ? false : true);
@@ -471,6 +475,7 @@ class _SignUpState extends State<SignUp> {
   }
 
   void navigate() async {
+    //hedhi eli t5alini nit3ada mn page l page
     if (_formKey.currentState!.validate()) {
       await _fieldsPageController.nextPage(duration: 200.ms, curve: Curves.linear);
 

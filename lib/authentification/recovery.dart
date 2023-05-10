@@ -48,11 +48,13 @@ class _RecoveryState extends State<Recovery> {
                 Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
                 Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), const CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                 Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
+                //lottie hia ak el animation
                 LottieBuilder.asset("assets/lottie/recover.json"),
                 CustomizedText(text: AppLocalizations.of(context)!.account, color: blue, fontWeight: FontWeight.bold),
                 CustomizedText(text: AppLocalizations.of(context)!.recovery, fontWeight: FontWeight.bold),
                 CustomizedText(text: AppLocalizations.of(context)!.aftercontinuingyouwillrecieveamailthatcontainsalinktorecoveryouraccountintheinbox, fontSize: 16).animate().fadeIn(duration: 500.ms),
                 const SizedBox(height: 10),
+                //kil 3ada 3malt custom textfield
                 CustomTextField(controller: _emailController, hint: "E-mail", prefix: FontAwesomeIcons.envelope, validator: fieldsValidatorsFunction("email", context), type: TextInputType.emailAddress),
                 const SizedBox(height: 10),
                 Center(
@@ -65,8 +67,11 @@ class _RecoveryState extends State<Recovery> {
                             try {
                               if (_formKey.currentState!.validate()) {
                                 setS(() => wait = false);
+                                //lina bch nab3th reset password link bch ybadel el mdp mte3ou 3al email mte3ou
+                                //mizel feha modification fazet el confirmpasswordreset nchalah ninsahech
                                 await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text.trim()).then((void value) {
                                   showToast(text: "Password reset email sent to ${_emailController.text.trim()} (If not found check the SPAM section)");
+                                  //ki yitb3ath el recovery link 3al email yarja3 lil signin page
                                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => false);
                                 });
                               }

@@ -288,7 +288,7 @@ class AboutDoctor extends StatelessWidget {
                     ],
                   );
                 } else if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const ContainerShimmer();
+                  return const Center(child: CircularProgressIndicator(color: blue));
                 } else {
                   return ErrorRoom(error: snapshot.error.toString());
                 }

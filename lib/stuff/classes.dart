@@ -108,7 +108,6 @@ class GoogleAuth extends StatelessWidget {
                 if (signInMethods.isEmpty) {
                   showToast(text: AppLocalizations.of(context)!.nouserlinkedtothisaccountpleasecreateone);
                 } else if (signInMethods.contains('google.com')) {
-                  // Google provider is linked with email/password provider
                   await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
                     AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
                     await FirebaseAuth.instance.signInWithCredential(credential);
@@ -498,19 +497,6 @@ class CircleShimmer extends StatelessWidget {
   }
 }
 
-class TextShimmer extends StatelessWidget {
-  const TextShimmer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 40,
-      height: 7,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-    ).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white]);
-  }
-}
-
 class AvatarUsernameLocationShimmer extends StatelessWidget {
   const AvatarUsernameLocationShimmer({super.key});
 
@@ -524,32 +510,6 @@ class AvatarUsernameLocationShimmer extends StatelessWidget {
         const SizedBox(height: 10),
         Container(width: 170, height: 7, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white)),
       ],
-    ).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white, grey]);
-  }
-}
-
-class ContainerShimmer extends StatelessWidget {
-  const ContainerShimmer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            for (int tile = 0; tile < 11; tile++)
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                width: MediaQuery.of(context).size.width,
-                height: 10,
-                decoration: const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
-              )
-          ],
-        ),
-      ),
     ).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white, grey]);
   }
 }

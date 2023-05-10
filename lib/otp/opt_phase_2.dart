@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:clipboard_listener/clipboard_listener.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,25 +30,41 @@ class _OTPState extends State<OTP> {
   final GlobalKey _buttonBuilder = GlobalKey();
   @override
   void initState() {
-    ClipboardListener.addListener(() async {
-      _buttonBuilder.currentState!.setState(() => wait = true);
-      ClipboardData? clipboard = await Clipboard.getData("text/plain");
-      if (clipboard != null && clipboard.text != null && clipboard.text!.isNotEmpty && clipboard.text!.contains(RegExp(r'^\d+$'))) {
-        data = clipboard.text!;
-        _otpFieldController.set(data.split(RegExp(r"")));
-        PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: widget.verification, smsCode: data);
-        if (!(await FirebaseAuth.instance.fetchSignInMethodsForEmail(widget.email)).contains(PhoneAuthProvider.PHONE_SIGN_IN_METHOD)) {
-          await FirebaseAuth.instance.currentUser!.linkWithCredential(credential);
-        }
-        await FirebaseAuth.instance.signInWithCredential(credential).then((UserCredential value) async {
-          _buttonBuilder.currentState!.setState(() => wait = false);
-          ClipboardListener.removeListener(() {});
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
-        });
-      }
-    });
+    ClipboardStatusNotifier().addListener(
+      () async {
+        await Future.delayed(
+          1.seconds,
+          () async {
+            _buttonBuilder.currentState!.setState(() => wait = true);
+            ClipboardData? clipboard = await Clipboard.getData("text/plain");
+            if (clipboard != null && clipboard.text != null && clipboard.text!.isNotEmpty && clipboard.text!.contains(RegExp(r'^\d+$'))) {
+              data = clipboard.text!;
+              _otpFieldController.set(data.split(RegExp(r"")));
+              PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: widget.verification, smsCode: data);
+              if (!(await FirebaseAuth.instance.fetchSignInMethodsForEmail(widget.email)).contains(PhoneAuthProvider.PHONE_SIGN_IN_METHOD)) {
+                await FirebaseAuth.instance.currentUser!.linkWithCredential(credential);
+              }
+              await FirebaseAuth.instance.signInWithCredential(credential).then(
+                (UserCredential value) async {
+                  _buttonBuilder.currentState!.setState(() => wait = false);
+
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
+                },
+              );
+            }
+          },
+        );
+      },
+    );
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    ClipboardStatusNotifier().removeListener(() {});
+    ClipboardStatusNotifier().dispose();
+    super.dispose();
   }
 
   @override

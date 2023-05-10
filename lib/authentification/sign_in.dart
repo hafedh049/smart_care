@@ -21,6 +21,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  //controllers njibou behom el data ta3 eli textfield ya3ni el text el maktoub fostou
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -93,8 +94,12 @@ class _SignInState extends State<SignIn> {
                             try {
                               if (_formKey.currentState!.validate()) {
                                 setS(() => wait = true);
+                                //signInWithEmailAndPassword hia eli t5alini nconnecti el user bl email/password provider
                                 await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
+                                  // bch njib el token (token hadha tebe3 talifoun bch ba3ed tji 3lih les notifications)
+                                  // sna3tha fl functions.dart
                                   await getToken();
+                                  //bch nhot statust mte3ou online w bch nsajel token
                                   await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true, "token": userToken}).then((void value) async {
                                     await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
                                   });
@@ -133,10 +138,7 @@ class _SignInState extends State<SignIn> {
                 const SizedBox(height: 20),
                 Center(
                   child: GestureDetector(
-                    onTap: () {
-                      goTo(const SignUp());
-                      //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const SignUp()));
-                    },
+                    onTap: () => goTo(const SignUp()),
                     child: Container(
                       width: MediaQuery.of(context).size.width * .6,
                       padding: const EdgeInsets.all(8.0),

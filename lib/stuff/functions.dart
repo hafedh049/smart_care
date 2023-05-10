@@ -15,15 +15,7 @@ import 'package:smart_care/stuff/globals.dart';
 import 'package:sqflite/sqflite.dart';
 
 void showToast({required String text, Color? color}) {
-  Fluttertoast.showToast(
-    msg: text.replaceAll(RegExp(r'\[.+\] '), ''),
-    backgroundColor: color ?? blue.withOpacity(.3),
-    fontSize: 14,
-    gravity: ToastGravity.TOP,
-    toastLength: Toast.LENGTH_LONG,
-    textColor: white,
-    timeInSecForIosWeb: 3,
-  );
+  Fluttertoast.showToast(msg: text.replaceAll(RegExp(r'\[.+\] '), ''), backgroundColor: color ?? blue.withOpacity(.3), fontSize: 14, gravity: ToastGravity.TOP, toastLength: Toast.LENGTH_LONG, textColor: white, timeInSecForIosWeb: 3);
 }
 
 Future<void> openDB() async {
@@ -124,16 +116,9 @@ void sendPushNotificationFCM({required String token, required String username, r
       },
       body: jsonEncode(
         <String, dynamic>{
-          'notification': <String, dynamic>{
-            'body': message,
-            'title': username,
-          },
+          'notification': <String, dynamic>{'body': message, 'title': username},
           'priority': 'high',
-          'data': <String, dynamic>{
-            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-            'id': '1',
-            'status': "done",
-          },
+          'data': <String, dynamic>{'click_action': 'FLUTTER_NOTIFICATION_CLICK', 'id': '1', 'status': "done"},
           'to': token,
         },
       ),
@@ -148,15 +133,8 @@ Future<void> goTo(Widget place) async {
 }
 
 Future<String> getChatResponse(String input) async {
-  final headers = {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer $apiKey',
-  };
-  final body = {
-    'prompt': input,
-    'temperature': .5,
-    'max_tokens': 50,
-  };
+  final headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $apiKey'};
+  final body = {'prompt': input, 'temperature': .5, 'max_tokens': 50};
   final response = await post(Uri.parse(apiUrl), headers: headers, body: json.encode(body));
   final data = json.decode(response.body);
   final String chatResponse = data['choices'][0]['text'];
