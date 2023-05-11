@@ -35,14 +35,7 @@ class _ArticlesState extends State<Articles> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                margin: const EdgeInsets.only(top: 36.0),
-                decoration: BoxDecoration(color: dark, borderRadius: BorderRadius.circular(5)),
-                child: const Icon(FontAwesomeIcons.chevronLeft, size: 25, color: white),
-              ),
-            ),
+            GestureDetector(onTap: () => Navigator.pop(context), child: Container(margin: const EdgeInsets.only(top: 36.0), decoration: BoxDecoration(color: dark, borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronLeft, size: 25, color: white))),
             const SizedBox(height: 30),
             CustomizedText(text: AppLocalizations.of(context)!.discover, color: white, fontSize: 24, fontWeight: FontWeight.bold),
             const SizedBox(height: 10),
@@ -56,18 +49,8 @@ class _ArticlesState extends State<Articles> {
                     children: <Widget>[
                       for (String type in _types)
                         GestureDetector(
-                          onTap: () {
-                            if (_type != type) {
-                              _(() => _typeKey.currentState!.setState(() => _type = type));
-                            }
-                          },
-                          child: AnimatedContainer(
-                            duration: 500.ms,
-                            margin: const EdgeInsets.only(right: 12.0),
-                            padding: const EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: _type == type ? blue : grey),
-                            child: CustomizedText(text: type, color: white, fontSize: 16),
-                          ),
+                          onTap: () => _type != type ? _(() => _typeKey.currentState!.setState(() => _type = type)) : null,
+                          child: AnimatedContainer(duration: 500.ms, margin: const EdgeInsets.only(right: 12.0), padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: _type == type ? blue : grey), child: CustomizedText(text: type, color: white, fontSize: 16)),
                         ),
                     ],
                   );
@@ -76,8 +59,8 @@ class _ArticlesState extends State<Articles> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: FirebaseFirestore.instance.collection("articles").orderBy("publishedAt", descending: true).snapshots(),
+              child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                future: FirebaseFirestore.instance.collection("articles").orderBy("publishedAt", descending: true).get(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                   if (snapshot.hasData) {
                     return StatefulBuilder(
@@ -91,32 +74,18 @@ class _ArticlesState extends State<Articles> {
                             itemBuilder: (BuildContext context, int index) => Padding(
                               padding: const EdgeInsets.only(bottom: 12.0),
                               child: GestureDetector(
-                                onTap: () {
-                                  goTo(Article(article: articles[index].data()));
-                                  //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Article(article: articles[index].data())));
-                                },
+                                onTap: () => goTo(Article(article: articles[index].data())),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Container(
-                                      width: 90,
-                                      height: 100,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        image: DecorationImage(image: CachedNetworkImageProvider(articles[index].get("urlToImage")), fit: BoxFit.cover),
-                                      ),
-                                    ),
+                                    Container(width: 90, height: 100, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), image: DecorationImage(image: CachedNetworkImageProvider(articles[index].get("urlToImage")), fit: BoxFit.cover))),
                                     const SizedBox(width: 10),
                                     Expanded(
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Container(
-                                            padding: const EdgeInsets.all(4.0),
-                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue.withOpacity(.2)),
-                                            child: CustomizedText(text: articles[index].get("topic"), color: white, fontSize: 16, fontWeight: FontWeight.bold),
-                                          ),
+                                          Container(padding: const EdgeInsets.all(4.0), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue.withOpacity(.2)), child: CustomizedText(text: articles[index].get("topic"), color: white, fontSize: 16, fontWeight: FontWeight.bold)),
                                           CustomizedText(text: articles[index].get("title"), color: white, fontSize: 18, fontWeight: FontWeight.bold),
                                           CustomizedText(text: getDateRepresentation(DateTime.parse(articles[index].get("publishedAt"))), color: white.withOpacity(.8), fontSize: 14),
                                         ],

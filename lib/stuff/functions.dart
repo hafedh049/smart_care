@@ -110,16 +110,13 @@ void sendPushNotificationFCM({required String token, required String username, r
   try {
     await post(
       Uri.parse('https://fcm.googleapis.com/fcm/send'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-        'Authorization': 'key=AAAATAO2yPs:APA91bHBc_S-v6MHnfTRxz1PD60a_Lh0yY4cB-q4FJlFSKR4To97gAb8bGXECJTKVjWTHo_1fAzSer5ae8CcwL7zK24N45y0VuXWkFN1n0aHapTNCV2DyRYUvXbqG0nu4OsBMvnbXRTf',
-      },
+      headers: <String, String>{'Content-Type': 'application/json', 'Authorization': 'key=AAAATAO2yPs:APA91bHBc_S-v6MHnfTRxz1PD60a_Lh0yY4cB-q4FJlFSKR4To97gAb8bGXECJTKVjWTHo_1fAzSer5ae8CcwL7zK24N45y0VuXWkFN1n0aHapTNCV2DyRYUvXbqG0nu4OsBMvnbXRTf'},
       body: jsonEncode(
         <String, dynamic>{
           'notification': <String, dynamic>{'body': message, 'title': username},
           'priority': 'high',
           'data': <String, dynamic>{'click_action': 'FLUTTER_NOTIFICATION_CLICK', 'id': '1', 'status': "done"},
-          'to': token,
+          'to': token
         },
       ),
     );

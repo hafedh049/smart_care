@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,60 +31,28 @@ class ChatRoom extends StatefulWidget {
 }
 
 class _ChatRoomState extends State<ChatRoom> {
-  List<types.Message> _messages = [];
+  List<types.Message> _messages = <types.Message>[];
   late final types.User _user;
   late final types.User _remoteUser;
   @override
   void initState() {
     super.initState();
-    _user = types.User(
-      id: FirebaseAuth.instance.currentUser!.uid,
-      firstName: me["name"].split(" ").length == 2 ? me["name"].split(" ")[0] : me["name"],
-      imageUrl: me["image_url"],
-      lastName: me["name"].split(" ").length == 2 ? me["name"].split(" ")[1] : "",
-    );
-    _remoteUser = types.User(
-      id: widget.talkTo["uid"],
-      firstName: widget.talkTo["name"].split(" ").length == 2 ? me["name"].split(" ")[0] : me["name"],
-      imageUrl: widget.talkTo["image_url"],
-      lastName: widget.talkTo["name"].split(" ").length == 2 ? me["name"].split(" ")[1] : "",
-    );
+    _user = types.User(id: me["uid"], firstName: me["name"].split(" ").length == 2 ? me["name"].split(" ")[0] : me["name"], imageUrl: me["image_url"], lastName: me["name"].split(" ").length == 2 ? me["name"].split(" ")[1] : "");
+    _remoteUser = types.User(id: widget.talkTo["uid"], firstName: widget.talkTo["name"].split(" ").length == 2 ? me["name"].split(" ")[0] : me["name"], imageUrl: widget.talkTo["image_url"], lastName: widget.talkTo["name"].split(" ").length == 2 ? me["name"].split(" ")[1] : "");
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(25))),
           centerTitle: false,
-          leading: IconButton(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            focusColor: Colors.transparent,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white),
-          ),
-          actions: [
-            IconButton(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              focusColor: Colors.transparent,
-              onPressed: () {},
-              icon: const Icon(FontAwesomeIcons.video, size: 15, color: white),
-            ),
-            IconButton(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              focusColor: Colors.transparent,
-              onPressed: () {},
-              icon: const Icon(FontAwesomeIcons.phone, size: 15, color: white),
-            ),
+          leading: IconButton(highlightColor: Colors.transparent, splashColor: Colors.transparent, focusColor: Colors.transparent, onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white)),
+          actions: <Widget>[
+            IconButton(highlightColor: Colors.transparent, splashColor: Colors.transparent, focusColor: Colors.transparent, onPressed: () {}, icon: const Icon(FontAwesomeIcons.video, size: 15, color: white)),
+            IconButton(highlightColor: Colors.transparent, splashColor: Colors.transparent, focusColor: Colors.transparent, onPressed: () {}, icon: const Icon(FontAwesomeIcons.phone, size: 15, color: white)),
           ],
           title: Row(
             mainAxisSize: MainAxisSize.min,
@@ -112,114 +79,37 @@ class _ChatRoomState extends State<ChatRoom> {
           backgroundColor: const Color(0xff2b2250),
         ),
         backgroundColor: const Color(0xff1f1c38),
-        body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").orderBy("created_at", descending: true).snapshots(),
+        body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          future: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").orderBy("created_at", descending: true).get(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.hasData) {
-              List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data == null ? <QueryDocumentSnapshot<Map<String, dynamic>>>[] : snapshot.data!.docs;
+              final List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data == null ? <QueryDocumentSnapshot<Map<String, dynamic>>>[] : snapshot.data!.docs;
               _messages = data.map(
                 (QueryDocumentSnapshot<Map<String, dynamic>> e) {
                   if ("audio" == e["type"]) {
-                    return types.AudioMessage(
-                      uri: e.get("uri"),
-                      size: e.get("size") as num,
-                      duration: e.get("duration").ms,
-                      mimeType: e.get("mimetype"),
-                      waveForm: <double>[for (int i = -100; i <= 100; i++) i / 100],
-                      name: e.get("name"),
-                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
-                      id: e.get("message_id"),
-                      createdAt: e.get("created_at").toDate().millisecond,
-                      showStatus: true,
-                      status: types.Status.delivered,
-                      type: types.MessageType.audio,
-                    );
+                    return types.AudioMessage(uri: e.get("uri"), size: e.get("size") as num, duration: e.get("duration").ms, mimeType: e.get("mimetype"), waveForm: <double>[for (int i = -100; i <= 100; i++) i / 100], name: e.get("name"), author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user, id: e.get("message_id"), createdAt: e.get("created_at").toDate().millisecond, showStatus: true, status: types.Status.delivered, type: types.MessageType.audio);
                   } else if (e.get("type") == "custom") {
-                    return types.CustomMessage(
-                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
-                      id: e.get("message_id"),
-                      createdAt: e.get("created_at").toDate().millisecond,
-                      showStatus: true,
-                      status: types.Status.delivered,
-                      type: types.MessageType.custom,
-                    );
+                    return types.CustomMessage(author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user, id: e.get("message_id"), createdAt: e.get("created_at").toDate().millisecond, showStatus: true, status: types.Status.delivered, type: types.MessageType.custom);
                   } else if (e.get("type") == "file") {
-                    return types.FileMessage(
-                      uri: e.get("file_uri"),
-                      size: e.get("size") as num,
-                      name: e.get("name"),
-                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
-                      id: e.get("file_id"),
-                      createdAt: e.get("created_at").toDate().millisecond,
-                      showStatus: true,
-                      mimeType: e.get("mimeType"),
-                      status: types.Status.delivered,
-                      type: types.MessageType.file,
-                    );
+                    return types.FileMessage(uri: e.get("file_uri"), size: e.get("size") as num, name: e.get("name"), author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user, id: e.get("file_id"), createdAt: e.get("created_at").toDate().millisecond, showStatus: true, mimeType: e.get("mimeType"), status: types.Status.delivered, type: types.MessageType.file);
                   } else if (e.get("type") == "image") {
-                    return types.ImageMessage(
-                      uri: e.get("image_uri"),
-                      size: e.get("size"),
-                      height: 300,
-                      width: 200,
-                      name: e.get("name"),
-                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
-                      id: e.get("image_id"),
-                      createdAt: e.get("created_at").toDate().millisecond,
-                      showStatus: true,
-                      status: types.Status.delivered,
-                      type: types.MessageType.image,
-                    );
+                    return types.ImageMessage(uri: e.get("image_uri"), size: e.get("size"), height: 300, width: 200, name: e.get("name"), author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user, id: e.get("image_id"), createdAt: e.get("created_at").toDate().millisecond, showStatus: true, status: types.Status.delivered, type: types.MessageType.image);
                   } else if (e.get("type") == "system") {
-                    return types.SystemMessage(
-                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
-                      id: e.get("message_id"),
-                      text: e.get("message"),
-                      createdAt: e.get("created_at").toDate().millisecond,
-                      showStatus: true,
-                      status: types.Status.delivered,
-                      type: types.MessageType.system,
-                    );
+                    return types.SystemMessage(author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user, id: e.get("message_id"), text: e.get("message"), createdAt: e.get("created_at").toDate().millisecond, showStatus: true, status: types.Status.delivered, type: types.MessageType.system);
                   } else if (e.get("type") == "text") {
-                    return types.TextMessage(
-                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
-                      id: e.get("message_id"),
-                      text: e.get("message"),
-                      createdAt: e.get("created_at").toDate().millisecond,
-                      showStatus: true,
-                      status: types.Status.delivered,
-                      type: types.MessageType.text,
-                    );
+                    return types.TextMessage(author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user, id: e.get("message_id"), text: e.get("message"), createdAt: e.get("created_at").toDate().millisecond, showStatus: true, status: types.Status.delivered, type: types.MessageType.text);
                   } else if (e.get("type") == "video") {
-                    return types.VideoMessage(
-                      uri: e.get("uri"),
-                      size: e.get("size") as num,
-                      height: 300,
-                      width: 200,
-                      name: e.get("name"),
-                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
-                      id: e.get("message_id"),
-                      createdAt: e.get("created_at").toDate().millisecond,
-                      showStatus: true,
-                      status: types.Status.delivered,
-                      type: types.MessageType.video,
-                    );
+                    return types.VideoMessage(uri: e.get("uri"), size: e.get("size") as num, height: 300, width: 200, name: e.get("name"), author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user, id: e.get("message_id"), createdAt: e.get("created_at").toDate().millisecond, showStatus: true, status: types.Status.delivered, type: types.MessageType.video);
                   } else {
-                    return types.UnsupportedMessage(
-                      author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user,
-                      id: e.get("message_id"),
-                      createdAt: e.get("create_at").toDate().millisecond,
-                    );
+                    return types.UnsupportedMessage(author: e.get("owner_id") == widget.talkTo["uid"] ? _remoteUser : _user, id: e.get("message_id"), createdAt: e.get("create_at").toDate().millisecond);
                   }
                 },
               ).toList();
               return Chat(
                 scrollPhysics: const BouncingScrollPhysics(),
                 isLastPage: true,
-                theme: const DarkChatTheme(
-                  messageInsetsVertical: 10,
-                ),
-                useTopSafeAreaInset: true, bubbleRtlAlignment: BubbleRtlAlignment.left,
+                useTopSafeAreaInset: true,
+                bubbleRtlAlignment: BubbleRtlAlignment.left,
                 messages: _messages,
                 onAttachmentPressed: _handleAttachmentPressed,
                 onMessageTap: _handleMessageTap,
@@ -227,40 +117,12 @@ class _ChatRoomState extends State<ChatRoom> {
                 showUserAvatars: true,
                 showUserNames: true,
                 user: _user,
-                textMessageOptions: TextMessageOptions(
-                  isTextSelectable: true,
-                  onLinkPressed: (String link) async {
-                    await launchUrlString(link);
-                  },
-                  openOnPreviewImageTap: true,
-                  openOnPreviewTitleTap: true,
-                ),
-                hideBackgroundOnEmojiMessages: false,
-                inputOptions: InputOptions(
-                  inputClearMode: InputClearMode.always,
-                  onTextChanged: (String text) {},
-                  onTextFieldTap: () {},
-                  sendButtonVisibilityMode: SendButtonVisibilityMode.editing,
-                  textEditingController: null,
-                ),
-                isAttachmentUploading: false, //true,
-                onMessageVisibilityChanged: (types.Message message, bool visible) {},
-                onMessageStatusTap: (BuildContext context, types.Message message) {},
-                onMessageStatusLongPress: (BuildContext context, types.Message message) {},
-                onMessageLongPress: (BuildContext context, types.Message message) {},
-                onMessageDoubleTap: (BuildContext context, types.Message message) {},
-                onBackgroundTap: () {},
-                onAvatarTap: (types.User user) {},
-                emojiEnlargementBehavior: EmojiEnlargementBehavior.multi,
+                textMessageOptions: TextMessageOptions(isTextSelectable: true, onLinkPressed: (String link) async => await launchUrlString(link), openOnPreviewImageTap: true, openOnPreviewTitleTap: true),
+                isAttachmentUploading: true,
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.blue,
-                ),
-              );
+              return const Center(child: CircularProgressIndicator(color: Colors.blue));
             } else {
-              showToast(text: snapshot.error.toString());
               return ErrorRoom(error: snapshot.error.toString());
             }
           },
@@ -271,8 +133,6 @@ class _ChatRoomState extends State<ChatRoom> {
 
   void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
-      isDismissible: true,
-      enableDrag: true,
       backgroundColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) => SafeArea(
@@ -304,54 +164,37 @@ class _ChatRoomState extends State<ChatRoom> {
     );
   }
 
+  void _addMessage(types.Message message) {
+    setState(() {
+      _messages.insert(0, message);
+    });
+  }
+
   void _handleFileSelection() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowCompression: true, allowedExtensions: const <String>["pdf", "txt", "doc", "xml", "csv"]);
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowCompression: true, allowedExtensions: const <String>["pdf", "txt", "doc", "xml", "csv"]);
     if (result != null && result.files.single.path != null) {
-      Timestamp now = Timestamp.now();
-      Uint8List bytes = await File(result.files.first.path!).readAsBytes();
+      final Timestamp now = Timestamp.now();
+      final Uint8List bytes = await File(result.files.first.path!).readAsBytes();
       showToast(text: AppLocalizations.of(context)!.uploading);
       await FirebaseStorage.instance.ref("chats/").child(now.toString()).putData(bytes).then(
         (TaskSnapshot ref) async {
           String uri = await ref.ref.getDownloadURL();
-          await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").doc().set(
-            {
-              "owner_id": me["uid"],
-              "file_uri": uri,
-              "created_at": now,
-              "file_id": now.toString(),
-              "name": result.files.single.name,
-              "size": bytes.length,
-              "type": "file",
-              "mimeType": lookupMimeType(result.files.single.path!),
-            },
+          await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").add(
+            {"owner_id": me["uid"], "file_uri": uri, "created_at": now, "file_id": now.toString(), "name": result.files.single.name, "size": bytes.length, "type": "file", "mimeType": lookupMimeType(result.files.single.path!)},
           ).then(
             (void value) async {
-              await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set(
-                {
-                  "last_message": {"message": result.files.single.name, "timestamp": now},
-                },
-                SetOptions(merge: true),
-              ).then(
+              await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).update({
+                "last_message": {"message": result.files.single.name, "timestamp": now}
+              }).then(
                 (void value) async {
-                  await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).collection("content").doc().set(
-                    {
-                      "owner_id": me["uid"],
-                      "file_uri": uri,
-                      "created_at": now,
-                      "file_id": now.toString(),
-                      "name": result.files.single.name,
-                      "size": bytes.length,
-                      "type": "file",
-                      "mimeType": lookupMimeType(result.files.single.path!),
-                    },
+                  await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).collection("content").add(
+                    {"owner_id": me["uid"], "file_uri": uri, "created_at": now, "file_id": now.toString(), "name": result.files.single.name, "size": bytes.length, "type": "file", "mimeType": lookupMimeType(result.files.single.path!)},
                   ).then(
                     (void value) async {
-                      await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).set(
-                        {
-                          "last_message": {"message": result.files.single.name, "timestamp": now},
-                        },
-                        SetOptions(merge: true),
-                      );
+                      await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).update({
+                        "last_message": {"message": result.files.single.name, "timestamp": now}
+                      });
+                      _addMessage(types.FileMessage(author: _user, uri: uri, name: result.files.single.name, size: bytes.length, id: now.toString(), createdAt: now.toDate().millisecond));
                     },
                   );
                 },
@@ -364,54 +207,30 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   void _handleImageSelection() async {
-    final result = await ImagePicker().pickImage(
-      imageQuality: 100,
-      source: ImageSource.gallery,
-    );
+    final result = await ImagePicker().pickImage(imageQuality: 100, source: ImageSource.gallery);
     if (result != null) {
-      Uint8List bytes = await result.readAsBytes();
-      Timestamp now = Timestamp.now();
+      final Uint8List bytes = await result.readAsBytes();
+      final Timestamp now = Timestamp.now();
       showToast(text: AppLocalizations.of(context)!.uploading);
       await FirebaseStorage.instance.ref("chats_files/").child(now.toString()).putData(bytes).then(
         (TaskSnapshot ref) async {
-          String uri = await ref.ref.getDownloadURL();
-          await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").doc().set(
-            {
-              "owner_id": me["uid"],
-              "image_uri": uri,
-              "created_at": now,
-              "image_id": now.toString(),
-              "name": result.name,
-              "size": bytes.length,
-              "type": "image",
-            },
+          final String uri = await ref.ref.getDownloadURL();
+          await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").add(
+            {"owner_id": me["uid"], "image_uri": uri, "created_at": now, "image_id": now.toString(), "name": result.name, "size": bytes.length, "type": "image"},
           ).then(
             (void value) async {
-              await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set(
-                {
-                  "last_message": {"message": result.name, "timestamp": now},
-                },
-                SetOptions(merge: true),
-              ).then(
+              await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).update({
+                "last_message": {"message": result.name, "timestamp": now},
+              }).then(
                 (void value) async {
-                  await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).collection("content").doc().set(
-                    {
-                      "owner_id": me["uid"],
-                      "image_uri": uri,
-                      "created_at": now,
-                      "image_id": now.toString(),
-                      "name": result.name,
-                      "size": bytes.length,
-                      "type": "image",
-                    },
+                  await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).collection("content").add(
+                    {"owner_id": me["uid"], "image_uri": uri, "created_at": now, "image_id": now.toString(), "name": result.name, "size": bytes.length, "type": "image"},
                   ).then(
                     (void value) async {
-                      await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).set(
-                        {
-                          "last_message": {"message": result.name, "timestamp": now},
-                        },
-                        SetOptions(merge: true),
-                      );
+                      await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).update({
+                        "last_message": {"message": result.name, "timestamp": now}
+                      });
+                      _addMessage(types.ImageMessage(author: _user, uri: uri, name: result.name, size: bytes.length, id: now.toString(), createdAt: now.toDate().millisecond));
                     },
                   );
                 },
@@ -424,40 +243,19 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   void _handleSendPressed(types.PartialText message) async {
-    Timestamp now = Timestamp.now();
-    await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").doc().set(
-      {
-        "owner_id": me["uid"],
-        "message_id": now.toString(),
-        "message": message.text,
-        "created_at": now,
-        "type": "text",
-      },
-    ).then(
+    final Timestamp now = Timestamp.now();
+    await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").add({"owner_id": me["uid"], "message_id": now.toString(), "message": message.text, "created_at": now, "type": "text"}).then(
       (void value) async {
-        await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set(
-          {
-            "last_message": {"message": message.text, "timestamp": now},
-          },
-          SetOptions(merge: true),
-        ).then(
+        await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).update({
+          "last_message": {"message": message.text, "timestamp": now}
+        }).then(
           (void value) async {
-            await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).collection("content").doc().set(
-              {
-                "owner_id": me["uid"],
-                "message_id": now.toString(),
-                "message": message.text,
-                "created_at": now,
-                "type": "text",
-              },
-            ).then(
+            await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).collection("content").add({"owner_id": me["uid"], "message_id": now.toString(), "message": message.text, "created_at": now, "type": "text"}).then(
               (void value) async {
-                await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).set(
-                  {
-                    "last_message": {"message": message.text, "timestamp": now},
-                  },
-                  SetOptions(merge: true),
-                );
+                await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).update({
+                  "last_message": {"message": message.text, "timestamp": now}
+                });
+                _addMessage(message as types.TextMessage);
                 if (widget.talkTo["token"].isNotEmpty) {
                   sendPushNotificationFCM(token: widget.talkTo["token"], username: me["name"], message: message.text);
                 }
@@ -471,13 +269,11 @@ class _ChatRoomState extends State<ChatRoom> {
 
   void _handleMessageTap(BuildContext _, types.Message message) async {
     if (message is types.FileMessage) {
-      var localPath = message.uri;
+      String localPath = message.uri;
       if (message.uri.startsWith('http')) {
         try {
           final int index = _messages.indexWhere((element) => element.id == message.id);
-          final types.Message updatedMessage = (_messages[index] as types.FileMessage).copyWith(
-            isLoading: true,
-          );
+          final types.Message updatedMessage = (_messages[index] as types.FileMessage).copyWith(isLoading: true);
 
           _messages[index] = updatedMessage;
 
