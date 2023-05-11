@@ -58,29 +58,16 @@ class _ChatRoomState extends State<ChatRoom> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              CircleAvatar(
-                radius: 20,
-                backgroundImage: widget.talkTo["image_url"] == noUser ? null : CachedNetworkImageProvider(widget.talkTo["image_url"]),
-                backgroundColor: grey.withOpacity(.2),
-                child: widget.talkTo["image_url"] != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 15),
-              ),
+              CircleAvatar(radius: 20, backgroundImage: widget.talkTo["image_url"] == noUser ? null : CachedNetworkImageProvider(widget.talkTo["image_url"]), backgroundColor: grey.withOpacity(.2), child: widget.talkTo["image_url"] != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 15)),
               const SizedBox(width: 5),
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    CustomizedText(text: widget.talkTo["name"], fontSize: 16, fontWeight: FontWeight.bold, color: white),
-                    CustomizedText(text: widget.talkTo["status"] ? "Online" : "Offline", fontSize: 14, color: blue),
-                  ],
-                ),
-              ),
+              Flexible(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: widget.talkTo["name"], fontSize: 16, fontWeight: FontWeight.bold, color: white), CustomizedText(text: widget.talkTo["status"] ? "Online" : "Offline", fontSize: 14, color: blue)])),
             ],
           ),
           backgroundColor: const Color(0xff2b2250),
         ),
         backgroundColor: const Color(0xff1f1c38),
         body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          future: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").orderBy("created_at", descending: true).get(),
+          future: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").orderBy("created_at", descending: true).limit(20).get(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.hasData) {
               final List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data == null ? <QueryDocumentSnapshot<Map<String, dynamic>>>[] : snapshot.data!.docs;

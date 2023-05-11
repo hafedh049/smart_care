@@ -271,24 +271,15 @@ class HealthDrawer extends StatelessWidget {
                   const Icon(FontAwesomeIcons.heartPulse, color: white, size: 20),
                 ],
               ),
-              title: CustomizedText(text: aboutUs, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+              title: CustomizedText(text: 'aboutUs'.tr, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const Spacer(),
             if (me["role"] == "patient") Container(width: 267, height: .1, color: white),
             if (me["role"] == "patient")
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartChatBot()));
-                },
-                leading: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
-                    const SizedBox(width: 5),
-                    const Icon(FontAwesomeIcons.bots, color: white, size: 20),
-                  ],
-                ),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartChatBot())),
+                leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))), const SizedBox(width: 5), const Icon(FontAwesomeIcons.bots, color: white, size: 20)]),
                 title: CustomizedText(text: "Quark", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
               ),
             Container(width: 267, height: .1, color: white),
@@ -303,14 +294,7 @@ class HealthDrawer extends StatelessWidget {
                 });
               },
               horizontalTitleGap: 0,
-              leading: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
-                  const SizedBox(width: 5),
-                  const Icon(FontAwesomeIcons.chevronLeft, color: white, size: 20),
-                ],
-              ),
+              leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))), const SizedBox(width: 5), const Icon(FontAwesomeIcons.chevronLeft, color: white, size: 20)]),
               title: CustomizedText(text: 'signOut'.tr, fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
