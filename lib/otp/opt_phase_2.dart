@@ -1,16 +1,14 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smart_care/authentification/choices_box.dart';
 import '../stuff/classes.dart';
 import '../stuff/globals.dart';
@@ -33,7 +31,7 @@ class _OTPState extends State<OTP> {
     ClipboardStatusNotifier().addListener(
       () async {
         await Future.delayed(
-          1.seconds,
+          const Duration(seconds: 1),
           () async {
             _buttonBuilder.currentState!.setState(() => wait = true);
             ClipboardData? clipboard = await Clipboard.getData("text/plain");
@@ -83,12 +81,12 @@ class _OTPState extends State<OTP> {
               children: <Widget>[
                 const SizedBox(height: 20),
                 Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-                Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
-                Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
+                const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
+                const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
                 const SizedBox(height: 40),
-                CustomizedText(text: AppLocalizations.of(context)!.waitFor, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                CustomizedText(text: AppLocalizations.of(context)!.sMSNotification, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                CustomizedText(text: AppLocalizations.of(context)!.thepinfieldswillautomaticallybefilledwhensmsisintercepted, fontSize: 16).animate().fadeIn(duration: 500.ms),
+                CustomizedText(text: 'waitFor'.tr, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                CustomizedText(text: 'sMSNotification'.tr, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                CustomizedText(text: 'thepinfieldswillautomaticallybefilledwhensmsisintercepted'.tr, fontSize: 16).animate().fadeIn(duration: 500.ms),
                 const SizedBox(height: 40),
                 OTPTextField(
                   length: 6,
@@ -99,14 +97,7 @@ class _OTPState extends State<OTP> {
                   style: GoogleFonts.abel(fontSize: 17),
                   textFieldAlignment: MainAxisAlignment.spaceAround,
                   fieldStyle: FieldStyle.box,
-                  otpFieldStyle: OtpFieldStyle(
-                    backgroundColor: darkBlue,
-                    borderColor: white,
-                    disabledBorderColor: Colors.white.withOpacity(.5),
-                    enabledBorderColor: white,
-                    errorBorderColor: Colors.red,
-                    focusBorderColor: blue,
-                  ),
+                  otpFieldStyle: OtpFieldStyle(backgroundColor: darkBlue, borderColor: white, disabledBorderColor: Colors.white.withOpacity(.5), enabledBorderColor: white, errorBorderColor: Colors.red, focusBorderColor: blue),
                 ),
                 const SizedBox(height: 30),
                 Center(

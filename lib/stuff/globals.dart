@@ -6,7 +6,6 @@ import 'package:smart_care/screens/admin/add_user.dart';
 import 'package:smart_care/screens/admin/create_article.dart';
 import 'package:smart_care/screens/admin/delete_and_modify_article.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../screens/admin/charts/ages.dart';
 import '../screens/admin/charts/blood_types_tracker.dart';
@@ -57,133 +56,69 @@ const String gallery = "https://firebasestorage.googleapis.com/v0/b/smart-care-b
 const String appIcon = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/health.png?alt=media&token=5b9a461b-bf46-4dfd-bc83-e8ec9a66f990";
 
 //Data Structures
-List<Map<String, dynamic>> specialityListFunction(BuildContext context) {
-  return <Map<String, dynamic>>[
-    {
-      'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F1-min.jpg?alt=media&token=e8e0e7eb-e787-4731-8adb-c6d3ae0e5b23",
-      "speciality": AppLocalizations.of(context)!.surgeonsAndSurgicalAssistants,
-      "description": "Surgeons and surgical assistants",
-    },
-    {
-      "color": darkBlue,
-      "description": AppLocalizations.of(context)!.anesthesiologistsAndAnesthesiologyAssistantsDescription,
-      'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F2-min.jpg?alt=media&token=5f1050dd-6e82-48ad-b7dd-ad6f9430e967",
-      "speciality": AppLocalizations.of(context)!.anesthesiologistsAndAnesthesiologyAssistants,
-    },
-    {
-      "color": darkBlue,
-      "description": AppLocalizations.of(context)!.nursesAndNursePractitionersDescription,
-      'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F3-min.jpg?alt=media&token=c5d93efb-a3a0-4ef0-9648-669e31ddcde8",
-      "speciality": AppLocalizations.of(context)!.nursesAndNursePractitioners,
-    },
-    {
-      "color": darkBlue,
-      "description": AppLocalizations.of(context)!.phlebotomistsDescription,
-      'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F4-min.jpg?alt=media&token=77a970d6-85fb-4d88-b4a9-85fec5cbf0d4",
-      "speciality": AppLocalizations.of(context)!.phlebotomists,
-    },
-    {
-      "color": white,
-      "description": AppLocalizations.of(context)!.medicalLaboratoryTechniciansAndTechnologistsDescription,
-      'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F5-min.jpg?alt=media&token=92e3fb9b-7de3-4d64-a83c-0125ab2a0af1",
-      "speciality": AppLocalizations.of(context)!.medicalLaboratoryTechniciansAndTechnologists,
-    },
-    {
-      "color": white,
-      "description": AppLocalizations.of(context)!.eMTsAndParamedicsDescription,
-      'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F6-min.jpg?alt=media&token=b59680f2-d007-49a0-b1a9-1946f829ea86",
-      "speciality": AppLocalizations.of(context)!.eMTsAndParamedics,
-    },
-    {
-      "color": darkBlue,
-      "description": AppLocalizations.of(context)!.dentistsAndDentalHygienistsDescription,
-      'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F7-min.jpg?alt=media&token=6e1c68ee-42ae-427a-ae61-c011f4ef2342",
-      "speciality": AppLocalizations.of(context)!.dentistsAndDentalHygienists,
-    },
-    {
-      "color": darkBlue,
-      "description": AppLocalizations.of(context)!.ophthalmologistsAndOptometristsDescription,
-      'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F8-min.jpg?alt=media&token=3a8772cb-cbb5-4ad8-b7d7-7c07a0b05305",
-      "speciality": AppLocalizations.of(context)!.ophthalmologistsAndOptometrists,
-    },
-    {
-      "color": white,
-      "description": AppLocalizations.of(context)!.physicalTherapistsAndOccupationalTherapistsDescription,
-      "speciality": AppLocalizations.of(context)!.physicalTherapistsAndOccupationalTherapists,
-      'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F9-min.jpg?alt=media&token=d038757d-dbc1-4e7d-b47e-6ba5f9b4d332",
-    },
-    {
-      "color": white,
-      "description": AppLocalizations.of(context)!.chiropractorsAndMassageTherapistsDescription,
-      "speciality": AppLocalizations.of(context)!.chiropractorsAndMassageTherapists,
-      'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F10-min.jpg?alt=media&token=7ff8d3e9-5ac1-4939-99ff-d01696e5303a",
-    },
-  ];
-}
+final List<Map<String, dynamic>> specialityList = <Map<String, dynamic>>[
+  {
+    'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F1-min.jpg?alt=media&token=e8e0e7eb-e787-4731-8adb-c6d3ae0e5b23",
+    "speciality": "surgeonsAndSurgicalAssistants".tr,
+    "description": "Surgeons and surgical assistants",
+  },
+  {
+    "color": darkBlue,
+    "description": "anesthesiologistsAndAnesthesiologyAssistantsDescription".tr,
+    'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F2-min.jpg?alt=media&token=5f1050dd-6e82-48ad-b7dd-ad6f9430e967",
+    "speciality": "surgeonsAndSurgicalAssistants".tr,
+  },
+  {
+    "color": darkBlue,
+    "description": "nursesAndNursePractitionersDescription".tr,
+    'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F3-min.jpg?alt=media&token=c5d93efb-a3a0-4ef0-9648-669e31ddcde8",
+    "speciality": "nursesAndNursePractitioners".tr,
+  },
+  {
+    "color": darkBlue,
+    "description": "phlebotomistsDescription".tr,
+    'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F4-min.jpg?alt=media&token=77a970d6-85fb-4d88-b4a9-85fec5cbf0d4",
+    "speciality": "phlebotomists".tr,
+  },
+  {
+    "color": white,
+    "description": "medicalLaboratoryTechniciansAndTechnologistsDescription".tr,
+    'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F5-min.jpg?alt=media&token=92e3fb9b-7de3-4d64-a83c-0125ab2a0af1",
+    "speciality": "medicalLaboratoryTechniciansAndTechnologists".tr,
+  },
+  {
+    "color": white,
+    "description": "eMTsAndParamedicsDescription".tr,
+    'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F6-min.jpg?alt=media&token=b59680f2-d007-49a0-b1a9-1946f829ea86",
+    "speciality": "eMTsAndParamedics".tr,
+  },
+  {
+    "color": darkBlue,
+    "description": "dentistsAndDentalHygienistsDescription".tr,
+    'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F7-min.jpg?alt=media&token=6e1c68ee-42ae-427a-ae61-c011f4ef2342",
+    "speciality": "dentistsAndDentalHygienists".tr,
+  },
+  {
+    "color": darkBlue,
+    "description": "ophthalmologistsAndOptometristsDescription".tr,
+    'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F8-min.jpg?alt=media&token=3a8772cb-cbb5-4ad8-b7d7-7c07a0b05305",
+    "speciality": "ophthalmologistsAndOptometrists".tr,
+  },
+  {
+    "color": white,
+    "description": "physicalTherapistsAndOccupationalTherapistsDescription".tr,
+    "speciality": "physicalTherapistsAndOccupationalTherapists".tr,
+    'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F9-min.jpg?alt=media&token=d038757d-dbc1-4e7d-b47e-6ba5f9b4d332",
+  },
+  {
+    "color": white,
+    "description": "chiropractorsAndMassageTherapistsDescription".tr,
+    "speciality": "chiropractorsAndMassageTherapists".tr,
+    'url': "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/specialities%2F10-min.jpg?alt=media&token=7ff8d3e9-5ac1-4939-99ff-d01696e5303a",
+  },
+];
 
 final Map<int, dynamic> months = <int, dynamic>{1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"};
-
-String? Function(String?)? fieldsValidatorsFunction(String text, BuildContext context) {
-  Map<String, String? Function(String?)?> fieldsValidators = <String, String? Function(String?)?>{
-    "about": (String? text) {
-      return null;
-    },
-    "email": (String? text) {
-      if (text!.isEmpty) {
-        return AppLocalizations.of(context)!.emailismandatory;
-      } else if (!text.contains(RegExp(r'^[\w\.-]+@[\w\.-]+\.\w{2,4}$'))) {
-        return AppLocalizations.of(context)!.pleaseverifyyourEmail;
-      }
-      return null;
-    },
-    "password": (String? text) {
-      if (text!.isEmpty) {
-        return AppLocalizations.of(context)!.passwordshouldnotbeempty;
-      } else if (!text.contains(RegExp(r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$'))) {
-        return AppLocalizations.of(context)!.passwordexpressionshouldbeatleastcharactersmustcontainatleastuppercaseletterlowercaseletterandnumberandcancontainspecialcharacters;
-      }
-      return null;
-    },
-    "username": (String? text) {
-      if (text!.isEmpty) {
-        return AppLocalizations.of(context)!.namefieldisempty;
-      } else if (!text.contains(RegExp(r'^[a-zA-Z][\w ]+$'))) {
-        return AppLocalizations.of(context)!.thisfieldmuststartwithanalphabeticcharacter;
-      }
-      return null;
-    },
-    "id": (String? text) {
-      if (text!.isEmpty) {
-        return AppLocalizations.of(context)!.iDmustnotbeempty;
-      } else if (!text.contains(RegExp(r'^\#[a-z0-9]{4,14}$'))) {
-        return AppLocalizations.of(context)!.wrongformatforIDItmuststartwithandcontainsalphanumericcaracters;
-      }
-      return null;
-    },
-    "age": (String? text) {
-      if (text!.isEmpty) {
-        return AppLocalizations.of(context)!.emptyAge;
-      } else if (!text.contains(RegExp(r'^\d{1,2}$'))) {
-        return AppLocalizations.of(context)!.ageContainsOnlyDigits;
-      }
-      return null;
-    },
-    "job location": (String? text) {
-      if (text!.isEmpty) {
-        return AppLocalizations.of(context)!.youmustprovideyourworklocationplease;
-      }
-      return null;
-    },
-    "speciality": (String? text) {
-      if (text!.isEmpty) {
-        return AppLocalizations.of(context)!.pleasechooseoneofthelistedspecialities;
-      }
-      return null;
-    },
-  };
-
-  return fieldsValidators[text];
-}
 
 final Map<int, String> weekDayPredictor = <int, String>{1: "Mon", 2: "Tue", 3: "Wed", 4: "Thu", 5: "Fri", 6: "Sat", 7: "Sun"};
 
@@ -210,21 +145,77 @@ final List<Map<String, dynamic>> healthcareFacilities = <Map<String, dynamic>>[
   <String, dynamic>{"name": "Faculté de Médecine de Monastir", "latitude": 35.7763282, "longitude": 10.8267896}
 ];
 
-List<Map<String, dynamic>> adminCards(BuildContext context) {
-  return <Map<String, dynamic>>[
-    <String, dynamic>{"name": "Create Article", "widget": const CreateArticle(), "color": const Color.fromARGB(255, 155, 194, 70), "icon": FontAwesomeIcons.artstation},
-    <String, dynamic>{"name": "RUD Article", "widget": const DeleteAndModifyArticles(), "color": const Color.fromARGB(255, 245, 147, 177), "icon": FontAwesomeIcons.xmark},
-    <String, dynamic>{"name": "Add User", "widget": const AddUser(), "color": const Color.fromARGB(255, 0, 255, 242), "icon": FontAwesomeIcons.plus},
-    <String, dynamic>{"name": AppLocalizations.of(context)!.patientsList, "widget": const PatientsList(), "color": const Color.fromARGB(255, 246, 206, 206), "icon": FontAwesomeIcons.ellipsis},
-    <String, dynamic>{"name": AppLocalizations.of(context)!.doctorsList, "widget": const DoctorsList(), "color": const Color.fromARGB(255, 195, 227, 255), "icon": FontAwesomeIcons.ellipsisVertical},
-    <String, dynamic>{"name": AppLocalizations.of(context)!.ageTracker, "widget": const AgeTracker(), "color": const Color.fromARGB(255, 70, 130, 180), "icon": FontAwesomeIcons.chartBar},
-    <String, dynamic>{"name": AppLocalizations.of(context)!.diseaseTracker, "widget": const DiseasesTracker(), "color": const Color.fromARGB(255, 10, 186, 181), "icon": FontAwesomeIcons.chartPie},
-    <String, dynamic>{"name": AppLocalizations.of(context)!.bloodTypes, "widget": const BloodTypeTracker(), "color": green, "icon": FontAwesomeIcons.chartLine},
-    <String, dynamic>{"name": AppLocalizations.of(context)!.specialities, "widget": const DoctorsPerSpeciality(), "color": const Color.fromARGB(255, 255, 204, 0), "icon": FontAwesomeIcons.chartColumn},
-  ];
-}
+final List<Map<String, dynamic>> adminCards = <Map<String, dynamic>>[
+  <String, dynamic>{"name": "Create Article", "widget": const CreateArticle(), "color": const Color.fromARGB(255, 155, 194, 70), "icon": FontAwesomeIcons.artstation},
+  <String, dynamic>{"name": "RUD Article", "widget": const DeleteAndModifyArticles(), "color": const Color.fromARGB(255, 245, 147, 177), "icon": FontAwesomeIcons.xmark},
+  <String, dynamic>{"name": "Add User", "widget": const AddUser(), "color": const Color.fromARGB(255, 0, 255, 242), "icon": FontAwesomeIcons.plus},
+  <String, dynamic>{"name": 'patientsList'.tr, "widget": const PatientsList(), "color": const Color.fromARGB(255, 246, 206, 206), "icon": FontAwesomeIcons.ellipsis},
+  <String, dynamic>{"name": 'doctorsList'.tr, "widget": const DoctorsList(), "color": const Color.fromARGB(255, 195, 227, 255), "icon": FontAwesomeIcons.ellipsisVertical},
+  <String, dynamic>{"name": 'ageTracker'.tr, "widget": const AgeTracker(), "color": const Color.fromARGB(255, 70, 130, 180), "icon": FontAwesomeIcons.chartBar},
+  <String, dynamic>{"name": 'diseaseTracker'.tr, "widget": const DiseasesTracker(), "color": const Color.fromARGB(255, 10, 186, 181), "icon": FontAwesomeIcons.chartPie},
+  <String, dynamic>{"name": 'bloodTypes'.tr, "widget": const BloodTypeTracker(), "color": green, "icon": FontAwesomeIcons.chartLine},
+  <String, dynamic>{"name": 'specialities'.tr, "widget": const DoctorsPerSpeciality(), "color": const Color.fromARGB(255, 255, 204, 0), "icon": FontAwesomeIcons.chartColumn},
+];
 
 const List<Transition> animatedTransitions = Transition.values;
+
+final Map<String, String? Function(String?)?> fieldsValidator = <String, String? Function(String?)?>{
+  "about": (String? text) {
+    return null;
+  },
+  "email": (String? text) {
+    if (text!.isEmpty) {
+      return 'emailismandatory'.tr;
+    } else if (!text.contains(RegExp(r'^[\w\.-]+@[\w\.-]+\.\w{2,4}$'))) {
+      return 'pleaseverifyyourEmail'.tr;
+    }
+    return null;
+  },
+  "password": (String? text) {
+    if (text!.isEmpty) {
+      return 'passwordshouldnotbeempty'.tr;
+    } else if (!text.contains(RegExp(r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$'))) {
+      return 'passwordexpressionshouldbeatleastcharactersmustcontainatleastuppercaseletterlowercaseletterandnumberandcancontainspecialcharacters'.tr;
+    }
+    return null;
+  },
+  "username": (String? text) {
+    if (text!.isEmpty) {
+      return 'namefieldisempty'.tr;
+    } else if (!text.contains(RegExp(r'^[a-zA-Z][\w ]+$'))) {
+      return 'thisfieldmuststartwithanalphabeticcharacter'.tr;
+    }
+    return null;
+  },
+  "id": (String? text) {
+    if (text!.isEmpty) {
+      return 'iDmustnotbeempty'.tr;
+    } else if (!text.contains(RegExp(r'^\#[a-z0-9]{4,14}$'))) {
+      return 'wrongformatforIDItmuststartwithandcontainsalphanumericcaracters'.tr;
+    }
+    return null;
+  },
+  "age": (String? text) {
+    if (text!.isEmpty) {
+      return 'emptyAge'.tr;
+    } else if (!text.contains(RegExp(r'^\d{1,2}$'))) {
+      return 'ageContainsOnlyDigits'.tr;
+    }
+    return null;
+  },
+  "job location": (String? text) {
+    if (text!.isEmpty) {
+      return 'youmustprovideyourworklocationplease'.tr;
+    }
+    return null;
+  },
+  "speciality": (String? text) {
+    if (text!.isEmpty) {
+      return 'pleasechooseoneofthelistedspecialities'.tr;
+    }
+    return null;
+  },
+};
 
 final List<Map<String, dynamic>> workflow = <Map<String, dynamic>>[
   <String, dynamic>{

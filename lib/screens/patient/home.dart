@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:smart_care/drawer/profile.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/articles.dart';
@@ -13,7 +14,6 @@ import 'package:smart_care/screens/patient/filter.dart';
 import 'package:smart_care/screens/patient/summary.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../stuff/functions.dart';
 import '../article.dart';
@@ -42,36 +42,11 @@ class Home extends StatelessWidget {
                     if (snapshot.hasData) {
                       return Column(
                         children: <Widget>[
-                          GestureDetector(
-                            onTap: () {
-                              goTo(const Profile());
-                            },
-                            child: CircleAvatar(
-                              radius: 30,
-                              backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")),
-                              backgroundColor: grey.withOpacity(.2),
-                              child: snapshot.data!.get("image_url") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 25),
-                            ),
-                          ),
+                          GestureDetector(onTap: () => goTo(const Profile()), child: CircleAvatar(radius: 30, backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")), backgroundColor: grey.withOpacity(.2), child: snapshot.data!.get("image_url") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 25))),
                           const SizedBox(height: 15),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              CustomizedText(text: AppLocalizations.of(context)!.hello, fontSize: 22),
-                              CustomizedText(text: snapshot.data!.get("name"), fontSize: 22, fontWeight: FontWeight.bold),
-                            ],
-                          ),
+                          Row(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: <Widget>[CustomizedText(text: 'hello'.tr, fontSize: 22), CustomizedText(text: snapshot.data!.get("name"), fontSize: 22, fontWeight: FontWeight.bold)]),
                           const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              const Icon(FontAwesomeIcons.locationPin, size: 15, color: blue),
-                              const SizedBox(width: 10),
-                              CustomizedText(text: snapshot.data!.get("location").isNotEmpty ? snapshot.data!.get("location") : "Monastir, Tunisie", fontSize: 16, color: grey),
-                            ],
-                          ),
+                          Row(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: <Widget>[const Icon(FontAwesomeIcons.locationPin, size: 15, color: blue), const SizedBox(width: 10), CustomizedText(text: snapshot.data!.get("location").isNotEmpty ? snapshot.data!.get("location") : "Monastir, Tunisie", fontSize: 16, color: grey)]),
                         ],
                       );
                     } else if (snapshot.connectionState == ConnectionState.waiting) {
@@ -84,9 +59,7 @@ class Home extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               GestureDetector(
-                onTap: () {
-                  goTo(const FilterList());
-                },
+                onTap: () => goTo(const FilterList()),
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(color: grey.withOpacity(.5), borderRadius: const BorderRadius.only(topRight: Radius.circular(7), bottomRight: Radius.circular(7), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15))),
@@ -107,17 +80,7 @@ class Home extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 8.0, top: 8.0, right: 8.0),
                 child: Column(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        CustomizedText(text: AppLocalizations.of(context)!.upcomingAppointment, fontSize: 16, color: white, fontWeight: FontWeight.bold),
-                        const Spacer(),
-                        GestureDetector(
-                            onTap: () {
-                              goTo(const FetchAllAppointments());
-                            },
-                            child: CustomizedText(text: AppLocalizations.of(context)!.seeAll, fontSize: 14, color: blue, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
+                    Row(children: <Widget>[CustomizedText(text: 'upcomingAppointment'.tr, fontSize: 16, color: white, fontWeight: FontWeight.bold), const Spacer(), GestureDetector(onTap: () => goTo(const FetchAllAppointments()), child: CustomizedText(text: 'seeAll'.tr, fontSize: 14, color: blue, fontWeight: FontWeight.bold))]),
                     const SizedBox(height: 10),
                     Row(
                       children: <Widget>[
@@ -131,14 +94,12 @@ class Home extends StatelessWidget {
                                   return Container(
                                     height: 180,
                                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius1), fit: BoxFit.cover)),
-                                    child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.noAppointmentsYet.toUpperCase(), fontSize: 20, color: white, fontWeight: FontWeight.bold)),
+                                    child: Center(child: CustomizedText(text: 'noAppointmentsYet'.tr.toUpperCase(), fontSize: 20, color: white, fontWeight: FontWeight.bold)),
                                   );
                                 } else {
                                   final QueryDocumentSnapshot<Map<String, dynamic>> firstAppointment = snapshot.data!.docs.first;
                                   return GestureDetector(
-                                    onTap: () {
-                                      goTo(Summary(data: firstAppointment.data()));
-                                    },
+                                    onTap: () => goTo(Summary(data: firstAppointment.data())),
                                     child: Container(
                                       height: 180,
                                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -150,12 +111,7 @@ class Home extends StatelessWidget {
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             mainAxisSize: MainAxisSize.min,
                                             children: <Widget>[
-                                              CircleAvatar(
-                                                radius: 50,
-                                                backgroundImage: firstAppointment.get("doctorImageUrl") == noUser ? null : CachedNetworkImageProvider(firstAppointment.get("doctorImageUrl")),
-                                                backgroundColor: grey.withOpacity(.2),
-                                                child: firstAppointment.get("doctorImageUrl") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 35),
-                                              ),
+                                              CircleAvatar(radius: 50, backgroundImage: firstAppointment.get("doctorImageUrl") == noUser ? null : CachedNetworkImageProvider(firstAppointment.get("doctorImageUrl")), backgroundColor: grey.withOpacity(.2), child: firstAppointment.get("doctorImageUrl") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 35)),
                                               const SizedBox(width: 10),
                                               Flexible(
                                                 child: Container(
@@ -186,7 +142,7 @@ class Home extends StatelessWidget {
                                                 const Spacer(),
                                                 Icon(FontAwesomeIcons.clock, size: 12, color: white.withOpacity(.6)),
                                                 const SizedBox(width: 10),
-                                                CustomizedText(text: "${AppLocalizations.of(context)!.at} ${firstAppointment.get('appointmentTime')}", fontSize: 14, color: white),
+                                                CustomizedText(text: "${'at'.tr} ${firstAppointment.get('appointmentTime')}", fontSize: 14, color: white),
                                               ],
                                             ),
                                           ),
@@ -205,9 +161,7 @@ class Home extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         GestureDetector(
-                          onTap: () {
-                            goTo(const FilterList());
-                          },
+                          onTap: () => goTo(const FilterList()),
                           child: Container(
                             height: 180,
                             padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 16.0),
@@ -226,18 +180,7 @@ class Home extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 8.0, top: 8.0, right: 8.0),
                 child: Column(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        CustomizedText(text: AppLocalizations.of(context)!.articles, fontSize: 16, color: white, fontWeight: FontWeight.bold),
-                        const Spacer(),
-                        GestureDetector(
-                          onTap: () {
-                            goTo(const Articles());
-                          },
-                          child: CustomizedText(text: AppLocalizations.of(context)!.seeAll, fontSize: 14, color: blue, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
+                    Row(children: <Widget>[CustomizedText(text: 'articles'.tr, fontSize: 16, color: white, fontWeight: FontWeight.bold), const Spacer(), GestureDetector(onTap: () => goTo(const Articles()), child: CustomizedText(text: 'seeAll'.tr, fontSize: 14, color: blue, fontWeight: FontWeight.bold))]),
                     const SizedBox(height: 10),
                     StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                       stream: FirebaseFirestore.instance.collection("articles").limit(3).snapshots(),
@@ -246,31 +189,19 @@ class Home extends StatelessWidget {
                           if (snapshot.data!.docs.isNotEmpty) {
                             final QueryDocumentSnapshot<Map<String, dynamic>> firstArtical = snapshot.data!.docs[Random().nextInt(snapshot.data!.docs.length)];
                             return GestureDetector(
-                              onTap: () {
-                                goTo(Article(article: firstArtical.data()));
-                              },
+                              onTap: () => goTo(Article(article: firstArtical.data())),
                               child: Row(
                                 children: <Widget>[
                                   Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue), height: 20, width: 20),
                                   const SizedBox(width: 10),
                                   Expanded(child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: firstArtical.get("title"), fontSize: 16, color: white, fontWeight: FontWeight.bold))),
                                   const SizedBox(width: 10),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
-                                    height: 20,
-                                    width: 20,
-                                    child: const Center(child: Icon(FontAwesomeIcons.chevronRight, size: 10, color: white)),
-                                  ),
+                                  Container(padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue), height: 20, width: 20, child: const Center(child: Icon(FontAwesomeIcons.chevronRight, size: 10, color: white))),
                                 ],
                               ),
                             );
                           } else {
-                            return Container(
-                              height: 80,
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)),
-                              child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.noArticles, fontSize: 16, color: white, fontWeight: FontWeight.bold)),
-                            );
+                            return Container(height: 80, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)), child: Center(child: CustomizedText(text: 'noArticles'.tr, fontSize: 16, color: white, fontWeight: FontWeight.bold)));
                           }
                         } else if (snapshot.connectionState == ConnectionState.waiting) {
                           return const ListTileShimmer();

@@ -3,13 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/chat_room.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Chats extends StatefulWidget {
   const Chats({super.key});
@@ -34,9 +34,7 @@ class _ChatsState extends State<Chats> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: darkBlue,
         resizeToAvoidBottomInset: false,
@@ -46,10 +44,10 @@ class _ChatsState extends State<Chats> {
           padding: const EdgeInsets.only(left: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-              Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
-              Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
+              const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
+              const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
               const SizedBox(height: 10),
               Container(
                 height: 50,
@@ -78,30 +76,19 @@ class _ChatsState extends State<Chats> {
                             },
                             controller: _searchController,
                             style: GoogleFonts.roboto(color: white),
-                            decoration: InputDecoration(hintText: AppLocalizations.of(context)!.searchForDoctors, hintStyle: GoogleFonts.roboto(color: grey), border: InputBorder.none),
+                            decoration: InputDecoration(hintText: 'searchForDoctors'.tr, hintStyle: GoogleFonts.roboto(color: grey), border: InputBorder.none),
                           );
                         },
                       ),
                     ),
-                    StatefulBuilder(
-                      key: _deleteTextKey,
-                      builder: (BuildContext context, void Function(void Function()) _) {
-                        return Visibility(
-                          visible: _deleteVisibility,
-                          child: IconButton(
-                            icon: const Icon(Icons.close, color: grey),
-                            onPressed: () => _searchController.clear(),
-                          ),
-                        );
-                      },
-                    ),
+                    StatefulBuilder(key: _deleteTextKey, builder: (BuildContext context, void Function(void Function()) _) => Visibility(visible: _deleteVisibility, child: IconButton(icon: const Icon(Icons.close, color: grey), onPressed: () => _searchController.clear()))),
                   ],
                 ),
               ),
               const SizedBox(height: 10),
               Expanded(
-                child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").snapshots(),
+                child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  future: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").get(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> chatSnapshot) {
                     if (chatSnapshot.hasData) {
                       if (chatSnapshot.data!.docs.isEmpty) {
@@ -112,9 +99,8 @@ class _ChatsState extends State<Chats> {
                           key: _searchKey,
                           builder: (BuildContext context, void Function(void Function()) _) {
                             final List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = chatSnapshot.data!.docs;
-
                             return doctorsList.isEmpty
-                                ? Center(child: CustomizedText(text: AppLocalizations.of(context)!.noChatsUntilNow, fontSize: 20, color: white))
+                                ? Center(child: CustomizedText(text: 'noChatsUntilNow'.tr, fontSize: 20, color: white))
                                 : ListView.builder(
                                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     itemCount: doctorsList.length,
@@ -191,11 +177,7 @@ class _ChatsState extends State<Chats> {
                         );
                       }
                     } else if (chatSnapshot.connectionState == ConnectionState.waiting) {
-                      return ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        itemCount: 20,
-                        itemBuilder: (BuildContext context, int index) => const ListTileShimmer(),
-                      );
+                      return const Center(child: CircularProgressIndicator(color: blue));
                     } else {
                       return ErrorRoom(error: chatSnapshot.error.toString());
                     }

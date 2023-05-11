@@ -138,7 +138,7 @@ Future<String> getChatResponse(String input) async {
   return chatResponse;
 }
 
-String? Function(String?)? validator(String field) {
+String? Function(String?)? articleValidator(String field) {
   if (field == "article_title") {
     return (String? text) {
       if (text!.isEmpty) {

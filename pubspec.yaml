@@ -12,8 +12,6 @@ dependencies:
 
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
 
   fluttertoast: ^8.2.1
   http: ^0.13.5
@@ -37,7 +35,7 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   connectivity_plus: ^3.0.3
   google_sign_in: ^6.0.1
-  intl: ^0.17.0
+  intl: any
   flutter_launcher_icons: ^0.12.0
   cached_network_image: ^3.2.3
   carousel_slider: ^4.2.1
@@ -91,4 +89,4 @@ flutter:
     - assets/lottie/
     - assets/icon/
     - assets/audio/
-    - assets/files/service_account.json
+    - assets/files/

@@ -36,7 +36,7 @@ class _DoctorsPerSpecialityState extends State<DoctorsPerSpeciality> {
   Future<List<Map<String, dynamic>>> _load(BuildContext context) async {
     List<Map<String, dynamic>> specialities = <Map<String, dynamic>>[];
     int counter = 0;
-    for (Map<String, dynamic> speciality in specialityListFunction(context)) {
+    for (Map<String, dynamic> speciality in specialityList) {
       await FirebaseFirestore.instance.collection("users").where("speciality", isEqualTo: speciality["speciality"]).count().get().then((AggregateQuerySnapshot value) {
         specialities.add(<String, dynamic>{"speciality": speciality["speciality"], "count": value.count, "gradients": _colorSchemes[counter]});
         if (_total < value.count) {

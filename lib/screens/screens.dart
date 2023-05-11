@@ -17,16 +17,15 @@ import 'package:smart_care/stuff/classes.dart';
 import '../stuff/globals.dart';
 
 class Screens extends StatefulWidget {
-  const Screens({super.key, required this.firstScreen});
-  final int firstScreen;
+  const Screens({super.key});
 
   @override
   State<Screens> createState() => _ScreensState();
 }
 
 class _ScreensState extends State<Screens> {
-  late final GlobalKey<ScaffoldState> drawerScaffoldKey;
-  late final PageController _screensController;
+  final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
+  final PageController _screensController = PageController();
   final List<Map<String, dynamic>> _screens = <Map<String, dynamic>>[
     {"screen": const patient_home.Home(), "icon": FontAwesomeIcons.house, "role": "patient"},
     {"screen": const doctor_home.Home(), "icon": FontAwesomeIcons.house, "role": "doctor"},
@@ -45,16 +44,6 @@ class _ScreensState extends State<Screens> {
   void dispose() {
     _screensController.dispose();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    drawerScaffoldKey = GlobalKey<ScaffoldState>();
-    _screensController = PageController();
-    if (_screensController.hasClients) {
-      _screensController.jumpToPage(widget.firstScreen);
-    }
-    super.initState();
   }
 
   @override

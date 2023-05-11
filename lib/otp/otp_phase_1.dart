@@ -1,11 +1,10 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/countries.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -13,7 +12,6 @@ import 'package:intl_phone_field/phone_number.dart';
 import 'package:smart_care/otp/opt_phase_2.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:lottie/lottie.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../stuff/classes.dart';
 import '../stuff/globals.dart';
 
@@ -51,11 +49,11 @@ class _OTPViewState extends State<OTPView> {
               children: <Widget>[
                 Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
                 Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), const CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
-                Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
+                const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
                 const SizedBox(height: 40),
-                CustomizedText(text: AppLocalizations.of(context)!.oTPRecovery, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                CustomizedText(text: AppLocalizations.of(context)!.firstPhase, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                CustomizedText(text: AppLocalizations.of(context)!.pleaseenteryourphonenumbertosendOTPcode, fontSize: 16).animate().fadeIn(duration: 500.ms),
+                CustomizedText(text: 'oTPRecovery'.tr, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                CustomizedText(text: 'firstPhase'.tr, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+                CustomizedText(text: 'pleaseenteryourphonenumbertosendOTPcode'.tr, fontSize: 16).animate().fadeIn(duration: 500.ms),
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(right: 8.0),
@@ -72,7 +70,7 @@ class _OTPViewState extends State<OTPView> {
                     ),
                     dropdownTextStyle: GoogleFonts.roboto(fontSize: 16),
                     inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[\d \+]'))],
-                    invalidNumberMessage: AppLocalizations.of(context)!.verifyfieldsplease,
+                    invalidNumberMessage: 'verifyfieldsplease'.tr,
                     dropdownDecoration: const BoxDecoration(),
                     textInputAction: TextInputAction.done,
                     onChanged: (PhoneNumber value) => _fullPhoneNumber = value.completeNumber,
@@ -100,20 +98,20 @@ class _OTPViewState extends State<OTPView> {
                                       setS(() => wait = false);
                                       showToast(text: error.message!, color: red);
                                     },
-                                    timeout: 1.minutes,
+                                    timeout: const Duration(seconds: 1),
                                     forceResendingToken: 1,
                                     codeSent: (String verificationId, int? forceResendingToken) async {
                                       setS(() => wait = false);
-                                      showToast(text: AppLocalizations.of(context)!.sMSSent, color: blue);
+                                      showToast(text: 'sMSSent'.tr, color: blue);
                                       goTo(OTP(verification: verificationId, email: samples.docs.first.get("email")));
                                     },
                                     codeAutoRetrievalTimeout: (String verificationId) {},
                                   );
                                 } else {
-                                  showToast(text: AppLocalizations.of(context)!.nouserlinkedtothisaccountpleasecreateone, color: red);
+                                  showToast(text: 'nouserlinkedtothisaccountpleasecreateone'.tr, color: red);
                                 }
                               } else {
-                                showToast(text: AppLocalizations.of(context)!.verifyfieldsplease, color: red);
+                                showToast(text: 'verifyfieldsplease'.tr, color: red);
                               }
                             } catch (_) {
                               setS(() => wait = false);
@@ -131,7 +129,7 @@ class _OTPViewState extends State<OTPView> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Visibility(visible: !wait, child: const Spacer()),
-                                  CustomizedText(text: wait ? AppLocalizations.of(context)!.sending : AppLocalizations.of(context)!.sendSms, color: black, fontWeight: FontWeight.bold, fontSize: 20),
+                                  CustomizedText(text: wait ? 'sending'.tr : 'sendSms'.tr, color: black, fontWeight: FontWeight.bold, fontSize: 20),
                                   Visibility(visible: !wait, child: const Spacer()),
                                   Visibility(visible: !wait, child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: black)),
                                 ],

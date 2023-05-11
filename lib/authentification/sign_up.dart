@@ -10,15 +10,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_password_strength/flutter_password_strength.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl_phone_field/countries.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:smart_care/authentification/choices_box.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -78,24 +77,17 @@ class _SignUpState extends State<SignUp> {
               children: <Widget>[
                 Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
                 Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), const CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
-                Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
+                const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.signUp, color: blue, fontWeight: FontWeight.bold),
-                          CustomizedText(text: AppLocalizations.of(context)!.form, fontWeight: FontWeight.bold),
-                        ],
-                      ),
+                      Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'signUp'.tr, color: blue, fontWeight: FontWeight.bold), CustomizedText(text: 'form'.tr, fontWeight: FontWeight.bold)]),
                       const Spacer(),
                       GestureDetector(
                         onTap: () {
-                          //el pop up hadha ta3 e taswira ki el user bch yji ya5tar picutre
                           showModalBottomSheet(
                             context: context,
                             builder: (BuildContext context) => SizedBox(
@@ -150,32 +142,13 @@ class _SignUpState extends State<SignUp> {
                             ),
                           );
                         },
-                        child: StatefulBuilder(
-                          key: _profilePictureKey,
-                          builder: (BuildContext context, void Function(void Function()) func) {
-                            return CircleAvatar(
-                              backgroundColor: grey.withOpacity(.2),
-                              radius: 40,
-                              child: _profilePicture == null ? const Icon(FontAwesomeIcons.user, color: grey, size: 35) : CircleAvatar(radius: 40, backgroundColor: Colors.transparent, backgroundImage: FileImage(_profilePicture!)),
-                            );
-                          },
-                        ),
+                        child: StatefulBuilder(key: _profilePictureKey, builder: (BuildContext context, void Function(void Function()) func) => CircleAvatar(backgroundColor: grey.withOpacity(.2), radius: 40, child: _profilePicture == null ? const Icon(FontAwesomeIcons.user, color: grey, size: 35) : CircleAvatar(radius: 40, backgroundColor: Colors.transparent, backgroundImage: FileImage(_profilePicture!)))),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 30),
-                Stack(
-                  children: <Widget>[
-                    Container(margin: const EdgeInsets.only(right: 8.0), width: MediaQuery.of(context).size.width, height: 3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: white.withOpacity(.5))),
-                    StatefulBuilder(
-                      key: _stepsCompletedkey,
-                      builder: (BuildContext context, void Function(void Function()) setS) {
-                        return AnimatedContainer(duration: 500.ms, width: _stepsCompleted, height: 3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue));
-                      },
-                    )
-                  ],
-                ),
+                Stack(children: <Widget>[Container(margin: const EdgeInsets.only(right: 8.0), width: MediaQuery.of(context).size.width, height: 3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: white.withOpacity(.5))), StatefulBuilder(key: _stepsCompletedkey, builder: (BuildContext context, void Function(void Function()) setS) => AnimatedContainer(duration: 500.ms, width: _stepsCompleted, height: 3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue)))]),
                 const SizedBox(height: 40),
                 Flexible(
                   child: PageView(
@@ -187,40 +160,16 @@ class _SignUpState extends State<SignUp> {
                       });
                     },
                     children: <Widget>[
+                      Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'whatisyourname'.tr, color: white, fontSize: 18), const SizedBox(height: 20), CustomTextField(validator: fieldsValidator["username"], controller: _usernameController, hint: 'name'.tr, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name)]),
+                      Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'canyouprovidemewithyouremployeeIDormatricule'.tr, color: white, fontSize: 18), const SizedBox(height: 20), CustomTextField(validator: fieldsValidator["id"], controller: _idController, hint: 'iD'.tr, prefix: FontAwesomeIcons.userSecret)]),
+                      Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'wouldyoumindsharingyouremailaddresswithme'.tr, color: white, fontSize: 18), const SizedBox(height: 20), CustomTextField(validator: fieldsValidator["email"], controller: _emailController, hint: 'email'.tr, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress)]),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.whatisyourname, color: white, fontSize: 18),
+                          CustomizedText(text: 'youwillneedtosetupapasswordforyouraccount'.tr, color: white, fontSize: 18),
                           const SizedBox(height: 20),
-                          CustomTextField(validator: fieldsValidatorsFunction("username", context), controller: _usernameController, hint: AppLocalizations.of(context)!.name, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name),
-                        ],
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.canyouprovidemewithyouremployeeIDormatricule, color: white, fontSize: 18),
-                          const SizedBox(height: 20),
-                          CustomTextField(validator: fieldsValidatorsFunction("id", context), controller: _idController, hint: AppLocalizations.of(context)!.iD, prefix: FontAwesomeIcons.userSecret),
-                        ],
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.wouldyoumindsharingyouremailaddresswithme, color: white, fontSize: 18),
-                          const SizedBox(height: 20),
-                          CustomTextField(validator: fieldsValidatorsFunction("email", context), controller: _emailController, hint: AppLocalizations.of(context)!.email, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
-                        ],
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.youwillneedtosetupapasswordforyouraccount, color: white, fontSize: 18),
-                          const SizedBox(height: 20),
-                          CustomTextField(func: (String text) => _passwordStrenghtKey.currentState!.setState(() {}), validator: fieldsValidatorsFunction("password", context), controller: _passwordController, hint: AppLocalizations.of(context)!.password, prefix: FontAwesomeIcons.lock, obscured: true),
+                          CustomTextField(func: (String text) => _passwordStrenghtKey.currentState!.setState(() {}), validator: fieldsValidator["password"], controller: _passwordController, hint: 'password'.tr, prefix: FontAwesomeIcons.lock, obscured: true),
                           const SizedBox(height: 10),
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
@@ -230,16 +179,19 @@ class _SignUpState extends State<SignUp> {
                                 return FlutterPasswordStrength(
                                   strengthCallback: (double strength) {
                                     Future.delayed(
-                                        300.ms,
-                                        () => _passwordStrenghtTextKey.currentState!.setState(() {
-                                              if (strength >= 0 && strength < .2) {
-                                                _text = AppLocalizations.of(context)!.weak;
-                                              } else if (strength > .2 && strength < .8) {
-                                                _text = AppLocalizations.of(context)!.medium;
-                                              } else {
-                                                _text = AppLocalizations.of(context)!.strong;
-                                              }
-                                            }));
+                                      300.ms,
+                                      () => _passwordStrenghtTextKey.currentState!.setState(
+                                        () {
+                                          if (strength >= 0 && strength < .2) {
+                                            _text = 'weak'.tr;
+                                          } else if (strength > .2 && strength < .8) {
+                                            _text = 'medium'.tr;
+                                          } else {
+                                            _text = 'strong'.tr;
+                                          }
+                                        },
+                                      ),
+                                    );
                                   },
                                   password: _passwordController.text.trim(),
                                 );
@@ -247,12 +199,7 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          StatefulBuilder(
-                            key: _passwordStrenghtTextKey,
-                            builder: (BuildContext context, void Function(void Function()) _) {
-                              return CustomizedText(text: _text, color: white, fontSize: 14, fontWeight: FontWeight.bold);
-                            },
-                          ),
+                          StatefulBuilder(key: _passwordStrenghtTextKey, builder: (BuildContext context, void Function(void Function()) _) => CustomizedText(text: _text, color: white, fontSize: 14, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 10),
                         ],
                       ),
@@ -260,29 +207,19 @@ class _SignUpState extends State<SignUp> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.mayIhaveyourphonenumberplease, color: white, fontSize: 18),
+                          CustomizedText(text: 'mayIhaveyourphonenumberplease'.tr, color: white, fontSize: 18),
                           const SizedBox(height: 20),
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: IntlPhoneField(
                               initialCountryCode: "TN",
                               cursorColor: blue,
-                              decoration: const InputDecoration(
-                                hintText: 'Enter your phone number',
-                                border: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                                disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                                errorBorder: OutlineInputBorder(borderSide: BorderSide(color: red)),
-                              ),
+                              decoration: const InputDecoration(hintText: 'Enter your phone number', border: OutlineInputBorder(borderSide: BorderSide(color: blue)), enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)), disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)), errorBorder: OutlineInputBorder(borderSide: BorderSide(color: red))),
                               dropdownTextStyle: GoogleFonts.roboto(fontSize: 16),
                               inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[\d \+]'))],
-                              invalidNumberMessage: AppLocalizations.of(context)!.verifyfieldsplease,
-                              dropdownDecoration: const BoxDecoration(),
+                              invalidNumberMessage: 'verifyfieldsplease'.tr,
                               textInputAction: TextInputAction.done,
-                              onSubmitted: (String phoneNumber) {},
                               onChanged: (PhoneNumber value) => _completePhoneNumber = value.completeNumber,
-                              onCountryChanged: (Country value) {},
                             ),
                           ),
                         ],
@@ -293,12 +230,12 @@ class _SignUpState extends State<SignUp> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              CustomizedText(text: AppLocalizations.of(context)!.pleaseselectyourrolefromthefollowingoptions, color: white, fontSize: 18),
+                              CustomizedText(text: 'pleaseselectyourrolefromthefollowingoptions'.tr, color: white, fontSize: 18),
                               const SizedBox(height: 40),
                               CheckboxListTile(
                                 activeColor: blue,
                                 value: _rolesList[0],
-                                title: CustomizedText(text: AppLocalizations.of(context)!.doctor, fontSize: 16, color: white),
+                                title: CustomizedText(text: 'doctor'.tr, fontSize: 16, color: white),
                                 onChanged: (bool? value) {
                                   setState(() {
                                     if (!_rolesList[0]) {
@@ -313,7 +250,7 @@ class _SignUpState extends State<SignUp> {
                               CheckboxListTile(
                                 activeColor: blue,
                                 value: _rolesList[1],
-                                title: CustomizedText(text: AppLocalizations.of(context)!.patient, fontSize: 16, color: white),
+                                title: CustomizedText(text: 'patient'.tr, fontSize: 16, color: white),
                                 onChanged: (bool? value) {
                                   setState(() {
                                     if (!_rolesList[1]) {
@@ -342,18 +279,7 @@ class _SignUpState extends State<SignUp> {
                           height: 40,
                           width: MediaQuery.of(context).size.width * .6,
                           decoration: BoxDecoration(color: _next ? blue : white.withOpacity(.5), borderRadius: BorderRadius.circular(5)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                const Spacer(),
-                                CustomizedText(text: _next ? "Continue" : "Sign-In", color: black, fontWeight: FontWeight.bold, fontSize: 20),
-                                const Spacer(),
-                                const Icon(FontAwesomeIcons.chevronRight, size: 15, color: black),
-                              ],
-                            ),
-                          ),
+                          child: Padding(padding: const EdgeInsets.all(8.0), child: Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[const Spacer(), CustomizedText(text: _next ? "Continue" : "Sign-In", color: black, fontWeight: FontWeight.bold, fontSize: 20), const Spacer(), const Icon(FontAwesomeIcons.chevronRight, size: 15, color: black)])),
                         ),
                       );
                     },
@@ -388,18 +314,7 @@ class _SignUpState extends State<SignUp> {
                           height: 40,
                           width: MediaQuery.of(context).size.width * .6,
                           decoration: BoxDecoration(color: _previous ? blue : white.withOpacity(.5), borderRadius: BorderRadius.circular(5)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: black),
-                                const Spacer(),
-                                CustomizedText(text: AppLocalizations.of(context)!.back, color: black, fontWeight: FontWeight.bold, fontSize: 20),
-                                const Spacer(),
-                              ],
-                            ),
-                          ),
+                          child: Padding(padding: const EdgeInsets.all(8.0), child: Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: black), const Spacer(), CustomizedText(text: 'back'.tr, color: black, fontWeight: FontWeight.bold, fontSize: 20), const Spacer()])),
                         ),
                       );
                     },
@@ -423,13 +338,13 @@ class _SignUpState extends State<SignUp> {
         showToast(text: "This phone number already exists");
       } else if (_rolesList.any((bool element) => element == true)) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential userCredential) async {
-          showToast(text: AppLocalizations.of(context)!.accountCreated);
+          showToast(text: 'accountCreated'.tr);
           String profilePictureUrl = noUser;
           if (_profilePicture != null) {
             await FirebaseStorage.instance.ref().child("profile_pictures/${userCredential.user!.uid}").putFile(_profilePicture!).then((TaskSnapshot task) async {
               profilePictureUrl = await task.ref.getDownloadURL();
             });
-            showToast(text: AppLocalizations.of(context)!.pictureUploaded);
+            showToast(text: 'pictureUploaded'.tr);
           }
           await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).set({
             "name": _usernameController.text.trim(),
@@ -455,9 +370,9 @@ class _SignUpState extends State<SignUp> {
             "about": "",
             "token": "",
           }).then((void value) async {
-            showToast(text: AppLocalizations.of(context)!.dataStored);
+            showToast(text: 'dataStored');
             await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
-              showToast(text: AppLocalizations.of(context)!.signedInUsingEmailPassword);
+              showToast(text: 'signedInUsingEmailPassword'.tr);
               await getToken();
               await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"token": userToken}).then((void value) async {
                 await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
@@ -466,7 +381,7 @@ class _SignUpState extends State<SignUp> {
           });
         });
       } else {
-        showToast(text: AppLocalizations.of(context)!.verifyfieldsplease);
+        showToast(text: 'verifyfieldsplease'.tr);
       }
     } catch (_) {
       setS(() => _next = false);

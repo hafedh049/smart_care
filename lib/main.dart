@@ -6,56 +6,41 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/get_started/get_started.dart';
-import 'package:smart_care/l10n/l10n.dart';
+import 'package:smart_care/languages/language_template.dart';
 import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:smart_care/wait/wait_room.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'error/error_room.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseMessaging.onMessage.listen((RemoteMessage event) => AwesomeNotifications().createNotification(content: NotificationContent(id: 10, channelKey: "basic_channel", body: event.notification!.body, title: event.notification!.title, actionType: ActionType.KeepOnTop)));
   Animate.restartOnHotReload = true;
   ErrorWidget.builder = (FlutterErrorDetails details) => ErrorRoom(error: details.exceptionAsString());
-  SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]);
+
   await openDB();
+
   Map<String, dynamic> userData = (await db!.rawQuery("SELECT FIRST_TIME,AUDIO FROM SMART_CARE WHERE ID = 1;")).first;
-  firstTime = userData["FIRST_TIME"] as int;
-  play = userData["AUDIO"] as int?;
+
+  firstTime = userData["FIRST_TIME"];
+  play = userData["AUDIO"];
+
   await AwesomeNotifications().initialize(null, <NotificationChannel>[NotificationChannel(channelKey: "basic_channel", channelName: "Smart Care", channelDescription: "Welcome")]);
-  await AwesomeNotifications().isNotificationAllowed().then((bool value) async {
-    if (!value) {
-      await AwesomeNotifications().requestPermissionToSendNotifications();
-    }
-  });
+  await AwesomeNotifications().isNotificationAllowed().then((bool value) async => !value ? await AwesomeNotifications().requestPermissionToSendNotifications() : null);
 
   runApp(const Main());
 
-  Connectivity().onConnectivityChanged.listen((ConnectivityResult event) async {
-    if (await InternetConnectionChecker().hasConnection) {
-      showToast(text: "Online", color: blue);
-    } else {
-      showToast(text: "Offline", color: red);
-    }
-  });
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: <SystemUiOverlay>[SystemUiOverlay.top]);
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: transparent,
-    statusBarBrightness: Brightness.dark,
-    statusBarIconBrightness: Brightness.light,
-    systemNavigationBarColor: transparent,
-    systemNavigationBarContrastEnforced: false,
-    systemNavigationBarDividerColor: transparent,
-    systemNavigationBarIconBrightness: Brightness.light,
-    systemStatusBarContrastEnforced: false,
-  ));
+  Connectivity().onConnectivityChanged.listen((ConnectivityResult event) async => await InternetConnectionChecker().hasConnection ? showToast(text: "Online".tr, color: blue) : showToast(text: "Offline".tr, color: red));
+
+  await SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]);
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: <SystemUiOverlay>[SystemUiOverlay.top]);
+
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: transparent, statusBarBrightness: Brightness.dark, statusBarIconBrightness: Brightness.light, systemNavigationBarColor: transparent, systemNavigationBarContrastEnforced: false, systemNavigationBarDividerColor: transparent, systemNavigationBarIconBrightness: Brightness.light, systemStatusBarContrastEnforced: false));
 }
 
 class Main extends StatelessWidget {
@@ -63,28 +48,22 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      supportedLocales: L10n.all,
+      translations: LanguageTemplateTranslation(),
+      locale: const Locale("en", "US"),
       theme: ThemeData.dark(useMaterial3: true),
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: const <LocalizationsDelegate>[
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
       home: FutureBuilder<FirebaseApp>(
         future: Firebase.initializeApp(),
         builder: (BuildContext context, AsyncSnapshot<FirebaseApp> snapshot) {
-          if (snapshot.hasError) {
-            return ErrorRoom(error: snapshot.error.toString());
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            if (firstTime == 1) {
-              return const GetStarted();
-            } else {
-              return FirebaseAuth.instance.currentUser == null ? const SignIn() : const Screens(firstScreen: 0);
-            }
-          }
-          return const WaitRoom();
+          return snapshot.hasError
+              ? ErrorRoom(error: snapshot.error.toString())
+              : snapshot.connectionState == ConnectionState.done
+                  ? firstTime == 1
+                      ? const GetStarted()
+                      : FirebaseAuth.instance.currentUser == null
+                          ? const SignIn()
+                          : const Screens()
+                  : const WaitRoom();
         },
       ),
     );

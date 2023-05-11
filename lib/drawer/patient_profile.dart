@@ -3,11 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/patient/historic.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../stuff/functions.dart';
 
@@ -107,7 +107,7 @@ class PatientProfile extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 20),
-                          CustomizedText(text: AppLocalizations.of(context)!.about, fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                          CustomizedText(text: 'about'.tr, fontSize: 16, fontWeight: FontWeight.bold, color: white),
                           const SizedBox(height: 10),
                           Expanded(
                             child: SingleChildScrollView(
@@ -125,7 +125,7 @@ class PatientProfile extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               height: 60,
                               width: MediaQuery.of(context).size.width,
-                              child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.viewyourhistory, color: white, fontSize: 16, fontWeight: FontWeight.bold)),
+                              child: Center(child: CustomizedText(text: 'viewyourhistory'.tr, color: white, fontSize: 16, fontWeight: FontWeight.bold)),
                             ),
                           ),
                           const SizedBox(height: 20),

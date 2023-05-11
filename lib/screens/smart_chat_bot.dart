@@ -8,12 +8,12 @@ import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SmartChatBot extends StatefulWidget {
   const SmartChatBot({super.key});
@@ -83,7 +83,7 @@ class _SmartChatBotState extends State<SmartChatBot> {
                 if (snapshot.hasData) {
                   final List<QueryDocumentSnapshot> messages = snapshot.data!.docs;
                   return messages.isEmpty
-                      ? Expanded(child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.noMessagesYet, color: blue, fontSize: 20, fontWeight: FontWeight.bold)))
+                      ? Expanded(child: Center(child: CustomizedText(text: 'noMessagesYet'.tr, color: blue, fontSize: 20, fontWeight: FontWeight.bold)))
                       : Expanded(
                           child: ListView.builder(
                             controller: _scrollController,

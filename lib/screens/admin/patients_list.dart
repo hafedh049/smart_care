@@ -53,7 +53,7 @@ class _PatientsListState extends State<PatientsList> {
                   const SizedBox(width: 50)
                 ],
               ),
-              Row(children: const <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
+              const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
               const SizedBox(height: 10),
               StatefulBuilder(
                 builder: (BuildContext context, void Function(void Function()) _) {

@@ -11,10 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/stuff/functions.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../stuff/classes.dart';
 import '../stuff/globals.dart';
@@ -48,27 +48,10 @@ class _AccountState extends State<Account> {
             builder: (BuildContext context, void Function(void Function()) setS) {
               return Row(
                 children: <Widget>[
-                  Flexible(
-                    child: Form(
-                      key: _formKey,
-                      child: CustomTextField(
-                        controller: _changerController,
-                        hint: hint,
-                        prefix: prefix,
-                        obscured: password,
-                        type: type,
-                        validator: validator,
-                        func: (String text) => setS(() => color = text.isNotEmpty ? blue : grey),
-                      ),
-                    ),
-                  ),
+                  Flexible(child: Form(key: _formKey, child: CustomTextField(controller: _changerController, hint: hint, prefix: prefix, obscured: password, type: type, validator: validator, func: (String text) => setS(() => color = text.isNotEmpty ? blue : grey)))),
                   const SizedBox(width: 10),
                   GestureDetector(
-                    onTap: () async {
-                      if (_formKey.currentState!.validate()) {
-                        await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{key: _changerController.text.trim()}).then((void value) => Navigator.pop(context));
-                      }
-                    },
+                    onTap: () async => _formKey.currentState!.validate() ? await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{key: _changerController.text.trim()}).then((void value) => Navigator.pop(context)) : null,
                     child: Container(width: 40, height: 40, decoration: BoxDecoration(color: color.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.check, size: 15, color: color)),
                   ),
                 ],
@@ -97,14 +80,9 @@ class _AccountState extends State<Account> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     const SizedBox(height: 20),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.x, size: 15, color: grey)),
-                    ),
+                    GestureDetector(onTap: () => Navigator.pop(context), child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.x, size: 15, color: grey))),
                     const SizedBox(height: 10),
-                    CustomizedText(text: AppLocalizations.of(context)!.account, fontSize: 40, fontWeight: FontWeight.bold, color: white),
+                    CustomizedText(text: 'account'.tr, fontSize: 40, fontWeight: FontWeight.bold, color: white),
                     const SizedBox(height: 60),
                     GestureDetector(
                       onTap: () {
@@ -120,8 +98,8 @@ class _AccountState extends State<Account> {
                                   func: () async {
                                     Navigator.pop(context);
                                     if (snapshot.data!.get("image_url") != noUser) {
-                                      await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"image_url": noUser}).then((void value) => showToast(text: AppLocalizations.of(context)!.pictureUploaded));
-                                      await FirebaseStorage.instance.ref("/profile_pictures/${FirebaseAuth.instance.currentUser!.uid}").delete().then((void value) => showToast(text: AppLocalizations.of(context)!.pictureRemoved));
+                                      await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"image_url": noUser}).then((void value) => showToast(text: 'pictureUploaded'.tr));
+                                      await FirebaseStorage.instance.ref("/profile_pictures/${FirebaseAuth.instance.currentUser!.uid}").delete().then((void value) => showToast(text: 'pictureRemoved'.tr));
                                     }
                                   },
                                   icon: FontAwesomeIcons.x,
@@ -134,11 +112,11 @@ class _AccountState extends State<Account> {
                                       size: 25,
                                       func: () async {
                                         final String path = await takesFromCameraOrGallery(true);
-                                        showToast(text: AppLocalizations.of(context)!.uploadingPicture);
+                                        showToast(text: 'uploadingPicture'.tr);
                                         Navigator.pop(context);
                                         await FirebaseStorage.instance.ref("/profile_pictures/${FirebaseAuth.instance.currentUser!.uid}").putFile(File(path)).then((TaskSnapshot task) async {
                                           await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"image_url": await task.ref.getDownloadURL()});
-                                          showToast(text: AppLocalizations.of(context)!.pictureUploaded);
+                                          showToast(text: 'pictureUploaded'.tr);
                                         });
                                       },
                                       icon: FontAwesomeIcons.camera,
@@ -147,11 +125,11 @@ class _AccountState extends State<Account> {
                                       size: 25,
                                       func: () async {
                                         final String path = await takesFromCameraOrGallery(false);
-                                        showToast(text: AppLocalizations.of(context)!.uploadingPicture);
+                                        showToast(text: 'uploadingPicture'.tr);
                                         Navigator.pop(context);
                                         await FirebaseStorage.instance.ref("/profile_pictures/${FirebaseAuth.instance.currentUser!.uid}").putFile(File(path)).then((TaskSnapshot task) async {
                                           await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"image_url": await task.ref.getDownloadURL()});
-                                          showToast(text: AppLocalizations.of(context)!.pictureUploaded);
+                                          showToast(text: 'pictureUploaded'.tr);
                                         });
                                       },
                                       icon: Icons.image,
@@ -166,7 +144,7 @@ class _AccountState extends State<Account> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.photo, fontSize: 14, color: grey),
+                          CustomizedText(text: 'photo'.tr, fontSize: 14, color: grey),
                           const SizedBox(width: 80),
                           Column(
                             mainAxisSize: MainAxisSize.min,
@@ -183,7 +161,7 @@ class _AccountState extends State<Account> {
                                 },
                               ),
                               const SizedBox(height: 10),
-                              CustomizedText(text: AppLocalizations.of(context)!.uploadPicture, fontSize: 14, color: blue),
+                              CustomizedText(text: 'uploadPicture'.tr, fontSize: 14, color: blue),
                             ],
                           ),
                         ],
@@ -192,11 +170,11 @@ class _AccountState extends State<Account> {
                     const SizedBox(height: 40),
                     GestureDetector(
                       onTap: () {
-                        change(AppLocalizations.of(context)!.name, FontAwesomeIcons.userDoctor, false, TextInputType.text, fieldsValidatorsFunction("username", context), "name");
+                        change('name'.tr, FontAwesomeIcons.userDoctor, false, TextInputType.text, fieldsValidator["username"], "name");
                       },
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.name, fontSize: 14, color: grey),
+                          CustomizedText(text: 'name'.tr, fontSize: 14, color: grey),
                           const SizedBox(width: 80),
                           Expanded(
                             child: Column(
@@ -217,19 +195,15 @@ class _AccountState extends State<Account> {
                     const SizedBox(height: 40),
                     Row(
                       children: <Widget>[
-                        CustomizedText(text: AppLocalizations.of(context)!.gender, fontSize: 14, color: grey),
+                        CustomizedText(text: 'gender'.tr, fontSize: 14, color: grey),
                         const SizedBox(width: 72),
                         GestureDetector(
-                          onTap: () async {
-                            await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "m"});
-                          },
+                          onTap: () async => await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "m"}),
                           child: CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("gender") == "m" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.mars, color: snapshot.data!.get("gender") == "m" ? white : grey, size: 20)),
                         ),
                         const SizedBox(width: 10),
                         GestureDetector(
-                          onTap: () async {
-                            await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "f"});
-                          },
+                          onTap: () async => await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "f"}),
                           child: CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("gender") == "f" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.venus, color: snapshot.data!.get("gender") == "f" ? white : grey, size: 20)),
                         ),
                       ],
@@ -237,7 +211,7 @@ class _AccountState extends State<Account> {
                     const SizedBox(height: 40),
                     GestureDetector(
                       onTap: () async {
-                        await showDatePicker(context: context, initialDate: DateTime(1968), firstDate: DateTime(1968), lastDate: DateTime(1998), helpText: AppLocalizations.of(context)!.pickYourBirthday).then((DateTime? pickedDateOfBirth) async {
+                        await showDatePicker(context: context, initialDate: DateTime(1968), firstDate: DateTime(1968), lastDate: DateTime(1998), helpText: 'pickYourBirthday'.tr).then((DateTime? pickedDateOfBirth) async {
                           if (pickedDateOfBirth != null) {
                             await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"date_of_birth": pickedDateOfBirth}).then((void value) => Navigator.pop(context));
                           }
@@ -245,17 +219,13 @@ class _AccountState extends State<Account> {
                       },
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.age, fontSize: 14, color: grey),
+                          CustomizedText(text: 'age'.tr, fontSize: 14, color: grey),
                           const SizedBox(width: 90),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                CustomizedText(text: "${DateTime.now().difference(snapshot.data!.get('date_of_birth').toDate()).inDays ~/ 365}", fontSize: 16, color: white),
-                                const SizedBox(height: 5),
-                                Container(height: .1, color: white),
-                              ],
+                              children: <Widget>[CustomizedText(text: "${DateTime.now().difference(snapshot.data!.get('date_of_birth').toDate()).inDays ~/ 365}", fontSize: 16, color: white), const SizedBox(height: 5), Container(height: .1, color: white)],
                             ),
                           ),
                           const SizedBox(width: 25),
@@ -268,7 +238,7 @@ class _AccountState extends State<Account> {
                       onTap: null,
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.email, fontSize: 14, color: grey),
+                          CustomizedText(text: 'email'.tr, fontSize: 14, color: grey),
                           const SizedBox(width: 75),
                           Expanded(
                             child: Column(
@@ -291,7 +261,7 @@ class _AccountState extends State<Account> {
                       onTap: null,
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.password, fontSize: 14, color: grey),
+                          CustomizedText(text: 'password'.tr, fontSize: 14, color: grey),
                           const SizedBox(width: 55),
                           Expanded(
                             child: Column(
@@ -313,7 +283,7 @@ class _AccountState extends State<Account> {
                     if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin")
                       GestureDetector(
                         onTap: () {
-                          showToast(text: AppLocalizations.of(context)!.tapifyouwanttoselectotherwiseswipeinanydirection);
+                          showToast(text: 'tapifyouwanttoselectotherwiseswipeinanydirection'.tr);
                           showDialog(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
@@ -326,7 +296,7 @@ class _AccountState extends State<Account> {
                                   duration: 100.ms,
                                   padding: EdgeInsets.zero,
                                   cards: <Widget>[
-                                    for (Map<String, dynamic> speciality in specialityListFunction(context))
+                                    for (Map<String, dynamic> speciality in specialityList)
                                       GestureDetector(
                                         onTap: () async {
                                           await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"speciality": speciality["speciality"]}).then((void value) {
@@ -376,7 +346,7 @@ class _AccountState extends State<Account> {
                         },
                         child: Row(
                           children: <Widget>[
-                            CustomizedText(text: AppLocalizations.of(context)!.speciality, fontSize: 14, color: grey),
+                            CustomizedText(text: 'speciality'.tr, fontSize: 14, color: grey),
                             const SizedBox(width: 55),
                             Expanded(
                               child: Column(
@@ -397,12 +367,10 @@ class _AccountState extends State<Account> {
                     if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin") const SizedBox(height: 40),
                     if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin")
                       GestureDetector(
-                        onTap: () {
-                          change(AppLocalizations.of(context)!.yearsofExperience, FontAwesomeIcons.zero, false, TextInputType.number, fieldsValidatorsFunction("age", context), "years_of_experience");
-                        },
+                        onTap: () => change('yearsofExperience'.tr, FontAwesomeIcons.zero, false, TextInputType.number, fieldsValidator["age"], "years_of_experience"),
                         child: Row(
                           children: <Widget>[
-                            CustomizedText(text: AppLocalizations.of(context)!.yearsofExperience, fontSize: 14, color: grey),
+                            CustomizedText(text: 'yearsofExperience'.tr, fontSize: 14, color: grey),
                             const SizedBox(width: 55),
                             Expanded(
                               child: Column(
@@ -425,14 +393,14 @@ class _AccountState extends State<Account> {
                       GestureDetector(
                         onTap: () async {
                           final List<String> time = <String>["--", "--"];
-                          await showTimePicker(context: context, initialTime: TimeOfDay.now(), helpText: AppLocalizations.of(context)!.selectTime).then((TimeOfDay? start) async {
+                          await showTimePicker(context: context, initialTime: TimeOfDay.now(), helpText: 'selectTime'.tr).then((TimeOfDay? start) async {
                             if (start != null) {
                               time[0] = start.format(context);
                             }
                             await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({
                               "available_time": time,
                             }).then((void value) async {
-                              await showTimePicker(context: context, initialTime: TimeOfDay.now(), helpText: AppLocalizations.of(context)!.selectTime).then((TimeOfDay? finish) async {
+                              await showTimePicker(context: context, initialTime: TimeOfDay.now(), helpText: 'selectTime'.tr).then((TimeOfDay? finish) async {
                                 if (finish != null) {
                                   time[1] = finish.format(context);
                                 }
@@ -445,14 +413,14 @@ class _AccountState extends State<Account> {
                         },
                         child: Row(
                           children: <Widget>[
-                            CustomizedText(text: AppLocalizations.of(context)!.availableTime, fontSize: 14, color: grey),
+                            CustomizedText(text: 'availableTime'.tr, fontSize: 14, color: grey),
                             const SizedBox(width: 55),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  if (snapshot.data!.get("available_time").isEmpty) CustomizedText(text: AppLocalizations.of(context)!.fullTime, fontSize: 16, color: white),
+                                  if (snapshot.data!.get("available_time").isEmpty) CustomizedText(text: 'fullTime'.tr, fontSize: 16, color: white),
                                   if (snapshot.data!.get("available_time").isNotEmpty)
                                     Row(
                                       mainAxisSize: MainAxisSize.min,
@@ -484,12 +452,10 @@ class _AccountState extends State<Account> {
                       ),
                     const SizedBox(height: 40),
                     GestureDetector(
-                      onTap: () {
-                        change(AppLocalizations.of(context)!.about, FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidatorsFunction("about", context), "about");
-                      },
+                      onTap: () => change('about'.tr, FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidator["about"], "about"),
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.about, fontSize: 14, color: grey),
+                          CustomizedText(text: 'about'.tr, fontSize: 14, color: grey),
                           const SizedBox(width: 55),
                           Expanded(
                             child: Column(
@@ -509,12 +475,10 @@ class _AccountState extends State<Account> {
                     ),
                     const SizedBox(height: 40),
                     GestureDetector(
-                      onTap: () {
-                        change(AppLocalizations.of(context)!.location, FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidatorsFunction("job location", context), "location");
-                      },
+                      onTap: () => change('location'.tr, FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidator["job location"], "location"),
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.location, fontSize: 14, color: grey),
+                          CustomizedText(text: 'location'.tr, fontSize: 14, color: grey),
                           const SizedBox(width: 55),
                           Expanded(
                             child: Column(
@@ -537,19 +501,9 @@ class _AccountState extends State<Account> {
                       onTap: null,
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: AppLocalizations.of(context)!.phone, fontSize: 14, color: grey),
+                          CustomizedText(text: 'phone'.tr, fontSize: 14, color: grey),
                           const SizedBox(width: 55),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                CustomizedText(text: snapshot.data!.get("phone_number"), fontSize: 16, color: white),
-                                const SizedBox(height: 5),
-                                Container(height: .1, color: white),
-                              ],
-                            ),
-                          ),
+                          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: <Widget>[CustomizedText(text: snapshot.data!.get("phone_number"), fontSize: 16, color: white), const SizedBox(height: 5), Container(height: .1, color: white)])),
                           const SizedBox(width: 25),
                           Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
                         ],
@@ -558,7 +512,7 @@ class _AccountState extends State<Account> {
                     const SizedBox(height: 40),
                     Row(
                       children: <Widget>[
-                        CustomizedText(text: AppLocalizations.of(context)!.role, fontSize: 14, color: grey),
+                        CustomizedText(text: 'role'.tr, fontSize: 14, color: grey),
                         const SizedBox(width: 60),
                         CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("patient") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.hospitalUser, color: snapshot.data!.get("roles_list").contains("patient") ? white : grey, size: 20)),
                         const SizedBox(width: 10),
@@ -572,11 +526,7 @@ class _AccountState extends State<Account> {
                 ),
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: ListView.builder(padding: EdgeInsets.zero, itemCount: 3, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()),
-              );
+              return SizedBox(height: MediaQuery.of(context).size.height, width: MediaQuery.of(context).size.width, child: ListView.builder(padding: EdgeInsets.zero, itemCount: 3, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()));
             } else {
               return ErrorRoom(error: snapshot.error.toString());
             }

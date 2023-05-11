@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/chat_room.dart';
 import 'package:smart_care/screens/doctor/about_doctor.dart';
 import 'package:smart_care/stuff/globals.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../stuff/classes.dart';
 import '../../stuff/functions.dart';
@@ -46,29 +46,12 @@ class _FilterListState extends State<FilterList> {
       extendBodyBehindAppBar: true,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
           Row(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 8, right: 8),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(FontAwesomeIcons.chevronLeft, size: 20),
-                ),
-              ),
-              Expanded(
-                child: TextField(
-                  focusNode: _filterNode,
-                  controller: _searchController,
-                  onChanged: (String value) {
-                    _xKey.currentState!.setState(() => _filterKey.currentState!.setState(() => _showClearButton = value.isEmpty ? false : true));
-                  },
-                  decoration: const InputDecoration(hintText: 'Search For Doctors', border: InputBorder.none, contentPadding: EdgeInsets.only(left: 8, right: 8)),
-                ),
-              ),
+              Padding(padding: const EdgeInsets.only(left: 8, right: 8), child: GestureDetector(onTap: () => Navigator.pop(context), child: const Icon(FontAwesomeIcons.chevronLeft, size: 20))),
+              Expanded(child: TextField(focusNode: _filterNode, controller: _searchController, onChanged: (String value) => _xKey.currentState!.setState(() => _filterKey.currentState!.setState(() => _showClearButton = value.isEmpty ? false : true)), decoration: const InputDecoration(hintText: 'Search For Doctors', border: InputBorder.none, contentPadding: EdgeInsets.only(left: 8, right: 8)))),
               StatefulBuilder(
                 key: _xKey,
                 builder: (BuildContext context, void Function(void Function()) setS) {
@@ -88,8 +71,8 @@ class _FilterListState extends State<FilterList> {
             ],
           ),
           const SizedBox(height: 10),
-          StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance.collection("users").where("roles_list", arrayContains: "doctor").limit(5).snapshots(),
+          FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            future: FirebaseFirestore.instance.collection("users").where("roles_list", arrayContains: "doctor").limit(5).get(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data!.docs.isNotEmpty) {
@@ -106,23 +89,11 @@ class _FilterListState extends State<FilterList> {
                               padding: const EdgeInsets.only(bottom: 8.0),
                               child: ListTile(
                                 contentPadding: EdgeInsets.zero,
-                                onTap: () {
-                                  goTo(ChatRoom(talkTo: doctorsList[index].data()));
-                                },
+                                onTap: () => goTo(ChatRoom(talkTo: doctorsList[index].data())),
                                 leading: Stack(
                                   alignment: AlignmentDirectional.bottomEnd,
                                   children: <Widget>[
-                                    GestureDetector(
-                                      onTap: () {
-                                        goTo(AboutDoctor(uid: doctorsList[index].get("uid")));
-                                      },
-                                      child: CircleAvatar(
-                                        radius: 25,
-                                        backgroundColor: grey.withOpacity(.2),
-                                        backgroundImage: doctorsList[index].get("image_url") == noUser ? null : CachedNetworkImageProvider(doctorsList[index].get("image_url")),
-                                        child: doctorsList[index].get("image_url") == noUser ? const Icon(FontAwesomeIcons.user, size: 15, color: grey) : null,
-                                      ),
-                                    ),
+                                    GestureDetector(onTap: () => goTo(AboutDoctor(uid: doctorsList[index].get("uid"))), child: CircleAvatar(radius: 25, backgroundColor: grey.withOpacity(.2), backgroundImage: doctorsList[index].get("image_url") == noUser ? null : CachedNetworkImageProvider(doctorsList[index].get("image_url")), child: doctorsList[index].get("image_url") == noUser ? const Icon(FontAwesomeIcons.user, size: 15, color: grey) : null)),
                                     CircleAvatar(radius: 5, backgroundColor: doctorsList[index].get("status") ? green : red),
                                   ],
                                 ),
@@ -131,13 +102,13 @@ class _FilterListState extends State<FilterList> {
                             ),
                           );
                         } else {
-                          return Center(child: CustomizedText(text: AppLocalizations.of(context)!.nodoctormatchesthissearch, color: white, fontSize: 25, fontWeight: FontWeight.bold));
+                          return Center(child: CustomizedText(text: 'nodoctormatchesthissearch'.tr, color: white, fontSize: 25, fontWeight: FontWeight.bold));
                         }
                       },
                     ),
                   );
                 } else {
-                  return Expanded(child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.noDoctorsAvailable, color: white, fontSize: 25, fontWeight: FontWeight.bold)));
+                  return Expanded(child: Center(child: CustomizedText(text: 'noDoctorsAvailable'.tr, color: white, fontSize: 25, fontWeight: FontWeight.bold)));
                 }
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return Expanded(child: ListView.builder(itemCount: 30, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()));

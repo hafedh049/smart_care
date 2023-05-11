@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:smart_care/authentification/choices_box.dart';
@@ -17,8 +18,7 @@ import 'package:smart_care/otp/otp_phase_1.dart';
 import 'package:smart_care/screens/smart_chat_bot.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
-import 'dart:math' as math;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'dart:math' show pi;
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../drawer/profile.dart';
@@ -33,8 +33,8 @@ class HalfCirclePainter extends CustomPainter {
 
     const Offset center = Offset(50, 0);
     const double radius = 30;
-    const double startAngle = -math.pi;
-    const double sweepAngle = 2 * math.pi;
+    const double startAngle = -pi;
+    const double sweepAngle = 2 * pi;
 
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle, sweepAngle, false, paint);
   }
@@ -106,7 +106,7 @@ class GoogleAuth extends StatelessWidget {
               if (googleAccount != null) {
                 List<String> signInMethods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(googleAccount.email);
                 if (signInMethods.isEmpty) {
-                  showToast(text: AppLocalizations.of(context)!.nouserlinkedtothisaccountpleasecreateone);
+                  showToast(text: 'nouserlinkedtothisaccountpleasecreateone'.tr);
                 } else if (signInMethods.contains('google.com')) {
                   await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
                     AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
@@ -116,10 +116,10 @@ class GoogleAuth extends StatelessWidget {
                 } else {
                   final GoogleSignInAuthentication googleAuth = await googleAccount.authentication;
                   final OAuthCredential googleCredential = GoogleAuthProvider.credential(accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-                  showToast(text: AppLocalizations.of(context)!.signedWithGoogle);
+                  showToast(text: 'signedWithGoogle'.tr);
                   await FirebaseAuth.instance.currentUser!.linkWithCredential(googleCredential);
                   await FirebaseAuth.instance.signInWithCredential(googleCredential);
-                  showToast(text: AppLocalizations.of(context)!.accountLinkedWithGoogle);
+                  showToast(text: 'accountLinkedWithGoogle'.tr);
                   await getToken();
                   await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"token": userToken}).then((void value) async {
                     await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
@@ -135,19 +135,8 @@ class GoogleAuth extends StatelessWidget {
           height: 40,
           width: MediaQuery.of(context).size.width * .6,
           padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-            boxShadow: [BoxShadow(blurStyle: BlurStyle.outer, color: white.withOpacity(0.5), spreadRadius: 1, blurRadius: 7, offset: const Offset(0, 2))],
-            color: transparent,
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(color: white.withOpacity(.5)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Image.asset("assets/icon/google.png"),
-              CustomizedText(text: AppLocalizations.of(context)!.cONTINUEWITHGOOGLE, fontSize: 16, fontWeight: FontWeight.bold, color: white),
-            ],
-          ),
+          decoration: BoxDecoration(boxShadow: [BoxShadow(blurStyle: BlurStyle.outer, color: white.withOpacity(0.5), spreadRadius: 1, blurRadius: 7, offset: const Offset(0, 2))], color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: white.withOpacity(.5))),
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[Image.asset("assets/icon/google.png"), CustomizedText(text: 'cONTINUEWITHGOOGLE'.tr, fontSize: 16, fontWeight: FontWeight.bold, color: white)]),
         ),
       ),
     );
@@ -178,7 +167,7 @@ class OTPAuth extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Image.asset("assets/icon/phone.png"),
-              CustomizedText(text: AppLocalizations.of(context)!.cONTINUEWITHPHONE, color: white, fontSize: 16, fontWeight: FontWeight.bold),
+              CustomizedText(text: 'cONTINUEWITHPHONE'.tr, color: white, fontSize: 16, fontWeight: FontWeight.bold),
             ],
           ),
         ),
@@ -195,18 +184,7 @@ class CustomizedText extends StatelessWidget {
   final FontWeight fontWeight;
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: GoogleFonts.roboto(
-        color: color,
-        fontSize: fontSize,
-        fontWeight: fontWeight,
-      ),
-      softWrap: true,
-      overflow: TextOverflow.fade,
-    );
-  }
+  Widget build(BuildContext context) => Text(text, style: GoogleFonts.roboto(color: color, fontSize: fontSize, fontWeight: fontWeight), softWrap: true, overflow: TextOverflow.fade);
 }
 
 class HealthDrawer extends StatelessWidget {
@@ -240,7 +218,7 @@ class HealthDrawer extends StatelessWidget {
                       children: <Widget>[
                         const CustomizedText(text: appTitle, color: white, fontSize: 20, fontWeight: FontWeight.bold),
                         const SizedBox(width: 10),
-                        CustomizedText(text: AppLocalizations.of(context)!.youmakeworldbetter, color: white.withOpacity(.7), fontSize: 16),
+                        CustomizedText(text: 'youmakeworldbetter'.tr, color: white.withOpacity(.7), fontSize: 16),
                       ],
                     ),
                   ],
@@ -263,7 +241,7 @@ class HealthDrawer extends StatelessWidget {
                   const Icon(FontAwesomeIcons.idCard, color: white, size: 20),
                 ],
               ),
-              title: CustomizedText(text: AppLocalizations.of(context)!.profile, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+              title: CustomizedText(text: 'profile'.tr, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
@@ -278,7 +256,7 @@ class HealthDrawer extends StatelessWidget {
                   const Icon(FontAwesomeIcons.gear, color: white, size: 20),
                 ],
               ),
-              title: CustomizedText(text: AppLocalizations.of(context)!.settings, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+              title: CustomizedText(text: 'settings'.tr, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
@@ -293,7 +271,7 @@ class HealthDrawer extends StatelessWidget {
                   const Icon(FontAwesomeIcons.heartPulse, color: white, size: 20),
                 ],
               ),
-              title: CustomizedText(text: AppLocalizations.of(context)!.aboutUs, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+              title: CustomizedText(text: aboutUs, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const Spacer(),
             if (me["role"] == "patient") Container(width: 267, height: .1, color: white),
@@ -333,12 +311,12 @@ class HealthDrawer extends StatelessWidget {
                   const Icon(FontAwesomeIcons.chevronLeft, color: white, size: 20),
                 ],
               ),
-              title: CustomizedText(text: AppLocalizations.of(context)!.signOut, fontSize: 18, fontWeight: FontWeight.bold),
+              title: CustomizedText(text: 'signOut'.tr, fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Container(width: 267, height: .1, color: white),
             const SizedBox(height: 10),
-            CustomizedText(text: "'Smart Care' ${AppLocalizations.of(context)!.isYourAssistant}", fontSize: 14, color: white.withOpacity(.7)),
+            CustomizedText(text: "'Smart Care' ${'isYourAssistant'.tr}", fontSize: 14, color: white.withOpacity(.7)),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -431,7 +409,7 @@ class Or extends StatelessWidget {
       children: <Widget>[
         Container(height: .5, width: MediaQuery.of(context).size.width * .4, decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(25))),
         const SizedBox(width: 10),
-        CustomizedText(text: AppLocalizations.of(context)!.oR, fontSize: 20, fontWeight: FontWeight.bold),
+        CustomizedText(text: 'oR'.tr, fontSize: 20, fontWeight: FontWeight.bold),
         const SizedBox(width: 10),
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
@@ -484,7 +462,7 @@ class ListTileShimmer extends StatelessWidget {
       ),
       horizontalTitleGap: 8.0,
       contentPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-    ).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white, grey]);
+    ).animate(onComplete: (AnimationController controller) => controller.repeat(period: const Duration(seconds: 2))).shimmer(color: grey, colors: <Color>[white, grey]);
   }
 }
 
@@ -493,7 +471,7 @@ class CircleShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CircleAvatar(radius: 15).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white, grey]);
+    return const CircleAvatar(radius: 15).animate(onComplete: (AnimationController controller) => controller.repeat(period: const Duration(seconds: 2))).shimmer(color: grey, colors: <Color>[white, grey]);
   }
 }
 
@@ -510,7 +488,7 @@ class AvatarUsernameLocationShimmer extends StatelessWidget {
         const SizedBox(height: 10),
         Container(width: 170, height: 7, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white)),
       ],
-    ).animate(onComplete: (AnimationController controller) => controller.repeat(period: 2.seconds)).shimmer(color: grey, colors: <Color>[white, grey]);
+    ).animate(onComplete: (AnimationController controller) => controller.repeat(period: const Duration(seconds: 2))).shimmer(color: grey, colors: <Color>[white, grey]);
   }
 }
 

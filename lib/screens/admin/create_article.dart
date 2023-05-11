@@ -89,19 +89,7 @@ class _CreateArticleState extends State<CreateArticle> {
                                         }
                                       });
                                     },
-                                    child: CircleAvatar(
-                                      radius: 28,
-                                      backgroundColor: darkBlue,
-                                      child: _articlePicture == noUser
-                                          ? Icon(FontAwesomeIcons.clipboard, size: 30, color: grey.withOpacity(.8))
-                                          : Stack(
-                                              alignment: AlignmentDirectional.center,
-                                              children: <Widget>[
-                                                Icon(FontAwesomeIcons.certificate, size: 25, color: green.withOpacity(.4)),
-                                                const Icon(FontAwesomeIcons.check, size: 16, color: green),
-                                              ],
-                                            ),
-                                    ),
+                                    child: CircleAvatar(radius: 28, backgroundColor: darkBlue, child: _articlePicture == noUser ? Icon(FontAwesomeIcons.clipboard, size: 30, color: grey.withOpacity(.8)) : Stack(alignment: AlignmentDirectional.center, children: <Widget>[Icon(FontAwesomeIcons.certificate, size: 25, color: green.withOpacity(.4)), const Icon(FontAwesomeIcons.check, size: 16, color: green)])),
                                   ),
                                 );
                               },
@@ -129,23 +117,7 @@ class _CreateArticleState extends State<CreateArticle> {
                                         }
                                       });
                                     },
-                                    child: CircleAvatar(
-                                      radius: 28,
-                                      backgroundColor: darkBlue,
-                                      child: CircleAvatar(
-                                        radius: 28,
-                                        backgroundColor: darkBlue,
-                                        child: _channelLogo == noUser
-                                            ? Icon(FontAwesomeIcons.clipboard, size: 30, color: grey.withOpacity(.8))
-                                            : Stack(
-                                                alignment: AlignmentDirectional.center,
-                                                children: <Widget>[
-                                                  Icon(FontAwesomeIcons.certificate, size: 25, color: green.withOpacity(.4)),
-                                                  const Icon(FontAwesomeIcons.check, size: 16, color: green),
-                                                ],
-                                              ),
-                                      ),
-                                    ),
+                                    child: CircleAvatar(radius: 28, backgroundColor: darkBlue, child: CircleAvatar(radius: 28, backgroundColor: darkBlue, child: _channelLogo == noUser ? Icon(FontAwesomeIcons.clipboard, size: 30, color: grey.withOpacity(.8)) : Stack(alignment: AlignmentDirectional.center, children: <Widget>[Icon(FontAwesomeIcons.certificate, size: 25, color: green.withOpacity(.4)), const Icon(FontAwesomeIcons.check, size: 16, color: green)]))),
                                   ),
                                 );
                               },
@@ -170,13 +142,7 @@ class _CreateArticleState extends State<CreateArticle> {
                                       _(() => _type = type);
                                     }
                                   },
-                                  child: AnimatedContainer(
-                                    duration: 500.ms,
-                                    margin: const EdgeInsets.only(right: 12.0),
-                                    padding: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: _type == type ? blue : grey),
-                                    child: CustomizedText(text: type, color: white, fontSize: 16),
-                                  ),
+                                  child: AnimatedContainer(duration: 500.ms, margin: const EdgeInsets.only(right: 12.0), padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: _type == type ? blue : grey), child: CustomizedText(text: type, color: white, fontSize: 16)),
                                 ),
                             ],
                           );
@@ -184,19 +150,13 @@ class _CreateArticleState extends State<CreateArticle> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    TextFormField(controller: _articleTitleController, maxLines: 2, decoration: const InputDecoration(hintText: "Article Title", border: OutlineInputBorder(borderSide: BorderSide(color: blue, width: .5))), validator: validator("article_title")),
+                    TextFormField(controller: _articleTitleController, maxLines: 2, decoration: const InputDecoration(hintText: "Article Title", border: OutlineInputBorder(borderSide: BorderSide(color: blue, width: .5))), validator: fieldsValidator["article_title"]),
                     const SizedBox(height: 20),
                     StatefulBuilder(
                       builder: (BuildContext context, void Function(void Function()) _) {
                         return GestureDetector(
                           onTap: () {
-                            showDatePicker(
-                              context: context,
-                              firstDate: DateTime.now().subtract(const Duration(days: 15)),
-                              initialDate: DateTime.now(),
-                              lastDate: DateTime.now().add(const Duration(days: 15)),
-                              currentDate: DateTime.now(),
-                            ).then((DateTime? date) {
+                            showDatePicker(context: context, firstDate: DateTime.now().subtract(const Duration(days: 15)), initialDate: DateTime.now(), lastDate: DateTime.now().add(const Duration(days: 15)), currentDate: DateTime.now()).then((DateTime? date) {
                               if (date != null) {
                                 showTimePicker(
                                   context: context,
@@ -212,12 +172,7 @@ class _CreateArticleState extends State<CreateArticle> {
                               }
                             });
                           },
-                          child: AnimatedContainer(
-                            duration: 500.ms,
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), border: Border.all(width: .5, color: grey)),
-                            child: CustomizedText(text: _date == null ? 'Tap to select a date' : 'Selected Date: ${formatDateTime(_date!, _time!)}', fontSize: 16),
-                          ),
+                          child: AnimatedContainer(duration: 500.ms, padding: const EdgeInsets.all(8), decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), border: Border.all(width: .5, color: grey)), child: CustomizedText(text: _date == null ? 'Tap to select a date' : 'Selected Date: ${formatDateTime(_date!, _time!)}', fontSize: 16)),
                         );
                       },
                     ),
@@ -246,13 +201,7 @@ class _CreateArticleState extends State<CreateArticle> {
                                     children: <Widget>[
                                       Icon(FontAwesomeIcons.clipboard, size: 25, color: grey.withOpacity(.8)),
                                       const SizedBox(width: 20),
-                                      Stack(
-                                        alignment: AlignmentDirectional.center,
-                                        children: <Widget>[
-                                          Icon(FontAwesomeIcons.certificate, size: 25, color: green.withOpacity(.4)),
-                                          const Icon(FontAwesomeIcons.check, size: 16, color: green),
-                                        ],
-                                      ),
+                                      Stack(alignment: AlignmentDirectional.center, children: <Widget>[Icon(FontAwesomeIcons.certificate, size: 25, color: green.withOpacity(.4)), const Icon(FontAwesomeIcons.check, size: 16, color: green)]),
                                       const SizedBox(width: 10),
                                       const CustomizedText(text: 'Copied', fontSize: 16),
                                     ],
@@ -262,13 +211,13 @@ class _CreateArticleState extends State<CreateArticle> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    TextFormField(controller: _channelNameController, decoration: const InputDecoration(hintText: "Channel Name", border: OutlineInputBorder(borderSide: BorderSide(color: blue, width: .5))), validator: validator("channel_name")),
+                    TextFormField(controller: _channelNameController, decoration: const InputDecoration(hintText: "Channel Name", border: OutlineInputBorder(borderSide: BorderSide(color: blue, width: .5))), validator: fieldsValidator["channel_name"]),
                     const SizedBox(height: 20),
-                    TextFormField(controller: _authorController, decoration: const InputDecoration(hintText: "Author", border: OutlineInputBorder(borderSide: BorderSide(color: blue, width: .5))), validator: validator("author")),
+                    TextFormField(controller: _authorController, decoration: const InputDecoration(hintText: "Author", border: OutlineInputBorder(borderSide: BorderSide(color: blue, width: .5))), validator: fieldsValidator["author"]),
                     const SizedBox(height: 20),
-                    TextFormField(controller: _descriptionController, maxLines: 6, decoration: const InputDecoration(hintText: "Description", border: OutlineInputBorder(borderSide: BorderSide(color: blue, width: .5))), validator: validator("description")),
+                    TextFormField(controller: _descriptionController, maxLines: 6, decoration: const InputDecoration(hintText: "Description", border: OutlineInputBorder(borderSide: BorderSide(color: blue, width: .5))), validator: fieldsValidator["description"]),
                     const SizedBox(height: 20),
-                    TextFormField(controller: _contentController, maxLines: 6, decoration: const InputDecoration(hintText: "Content", border: OutlineInputBorder(borderSide: BorderSide(color: blue, width: .5))), validator: validator("content")),
+                    TextFormField(controller: _contentController, maxLines: 6, decoration: const InputDecoration(hintText: "Content", border: OutlineInputBorder(borderSide: BorderSide(color: blue, width: .5))), validator: fieldsValidator["content"]),
                     const SizedBox(height: 20),
                     Center(
                       child: GestureDetector(
@@ -288,7 +237,7 @@ class _CreateArticleState extends State<CreateArticle> {
                               "title": _articleTitleController.text.trim(),
                               "topic": _type,
                               "url": _linkOfArticle,
-                              "urlToImage": _articlePicture,
+                              "urlToImage": _articlePicture
                             });
                             showToast(text: "Article added successfully");
                             _authorController.clear();
@@ -300,12 +249,7 @@ class _CreateArticleState extends State<CreateArticle> {
                             Fluttertoast.showToast(msg: "Verify fields");
                           }
                         },
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
-                          width: MediaQuery.of(context).size.width * .7,
-                          child: const Center(child: CustomizedText(text: "Create Article", fontSize: 16)),
-                        ),
+                        child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue), width: MediaQuery.of(context).size.width * .7, child: const Center(child: CustomizedText(text: "Create Article", fontSize: 16))),
                       ),
                     ),
                     const SizedBox(height: 50),

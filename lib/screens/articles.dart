@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/article.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../stuff/classes.dart';
 
@@ -37,9 +37,9 @@ class _ArticlesState extends State<Articles> {
           children: <Widget>[
             GestureDetector(onTap: () => Navigator.pop(context), child: Container(margin: const EdgeInsets.only(top: 36.0), decoration: BoxDecoration(color: dark, borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronLeft, size: 25, color: white))),
             const SizedBox(height: 30),
-            CustomizedText(text: AppLocalizations.of(context)!.discover, color: white, fontSize: 24, fontWeight: FontWeight.bold),
+            CustomizedText(text: 'discover'.tr, color: white, fontSize: 24, fontWeight: FontWeight.bold),
             const SizedBox(height: 10),
-            CustomizedText(text: AppLocalizations.of(context)!.newsfromallarroundtheworld, color: white.withOpacity(.6), fontSize: 14),
+            CustomizedText(text: 'newsfromallarroundtheworld'.tr, color: white.withOpacity(.6), fontSize: 14),
             const SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -97,7 +97,7 @@ class _ArticlesState extends State<Articles> {
                             ),
                           );
                         } else {
-                          return Center(child: CustomizedText(text: AppLocalizations.of(context)!.noArticlesYet, color: white, fontSize: 18, fontWeight: FontWeight.bold));
+                          return Center(child: CustomizedText(text: 'noArticlesYet'.tr, color: white, fontSize: 18, fontWeight: FontWeight.bold));
                         }
                       },
                     );

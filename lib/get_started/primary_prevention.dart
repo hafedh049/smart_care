@@ -1,14 +1,14 @@
-// ignore_for_file: use_build_context_synchronously, invalid_use_of_protected_member
+// ignore_for_file: invalid_use_of_protected_member
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 // ignore: must_be_immutable
@@ -22,9 +22,9 @@ class PrimaryPrevention extends StatelessWidget {
   int _activeIndex = 0;
   final List<Map<String, String>> _preventions = <Map<String, String>>[
     {"image": "1.jfif", "tag": '🟦⬛ Lavage avec eau savonneuse.'},
-    {"image": "2.jfif", "tag": '⬛🟦Trempage / Eau de Javel, Dakin, Bétadine... Pendant 5 minutes.'},
+    {"image": "2.jfif", "tag": '🟦⬛Trempage / Eau de Javel, Dakin, Bétadine... Pendant 5 minutes.'},
     {"image": "3.jfif", "tag": '🟦⬛ Rinçage abondamment à l’eau pendant 10 minutes (en cas de projection sur une muqueuse).'},
-    {"image": "4.jfif", "tag": '⬛🟦 Ne pas re-capuchonner les aiguilles.'},
+    {"image": "4.jfif", "tag": '🟦⬛ Ne pas re-capuchonner les aiguilles.'},
   ];
   @override
   Widget build(BuildContext context) {
@@ -123,19 +123,15 @@ class PrimaryPrevention extends StatelessWidget {
                 GestureDetector(
                   onTap: () async {
                     await db!.update("SMART_CARE", <String, dynamic>{"FIRST_TIME": 0, "AUDIO": 1});
-
-                    if (FirebaseAuth.instance.currentUser != null) {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const Screens(firstScreen: 0)));
-                    } else {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const SignIn()));
-                    }
+                    // ignore: use_build_context_synchronously
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => FirebaseAuth.instance.currentUser != null ? const Screens() : const SignIn()));
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * .6,
                     height: 60,
                     margin: const EdgeInsets.only(right: 8.0),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
-                    child: Center(child: CustomizedText(text: AppLocalizations.of(context)!.getStarted, color: black, fontWeight: FontWeight.bold, fontSize: 25)),
+                    child: Center(child: CustomizedText(text: 'getStarted'.tr, color: black, fontWeight: FontWeight.bold, fontSize: 25)),
                   ),
                 )
               ],
