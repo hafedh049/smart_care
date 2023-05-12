@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "326479825147",
+    "project_id": "smart-care-b4ab6",
+    "storage_bucket": "smart-care-b4ab6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:326479825147:android:ebdb75917f5865afba485e",
+        "android_client_info": {
+          "package_name": "com.example.smartcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "326479825147-vrd6ejh3ftvqp0djr4q667f0uule0cap.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.smartcare",
+            "certificate_hash": "3e5d41ce6c9d2548515efa2ee4962d59df4bf3dc"
+          }
+        },
+        {
+          "client_id": "326479825147-95ce4ngfbcbbr4dctdl54g4qj5oee1av.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWbsPuogjLWkP6qPjDF1pjwDwota94rl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "326479825147-95ce4ngfbcbbr4dctdl54g4qj5oee1av.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "326479825147-vitg7o5el9rbnrrr34fn6i7pm517j0cn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.smartcare"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

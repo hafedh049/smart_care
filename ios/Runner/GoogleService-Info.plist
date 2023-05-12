@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>326479825147-vitg7o5el9rbnrrr34fn6i7pm517j0cn.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.326479825147-vitg7o5el9rbnrrr34fn6i7pm517j0cn</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>326479825147-e64tvv2dkipua4nvqm7odm3d3vve3563.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBpbNybSMl2HWRVDiUPyZWrkbTQMXzmSpo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>326479825147</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.smartcare</string>
+	<key>PROJECT_ID</key>
+	<string>smart-care-b4ab6</string>
+	<key>STORAGE_BUCKET</key>
+	<string>smart-care-b4ab6.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:326479825147:ios:b13547eb44257e27ba485e</string>
+</dict>
+</plist>

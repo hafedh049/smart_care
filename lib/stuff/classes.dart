@@ -291,6 +291,9 @@ class HealthDrawer extends StatelessWidget {
                 await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": false, "token": ""}).then((void value) async {
                   await FirebaseMessaging.instance.deleteToken();
                   await FirebaseAuth.instance.signOut();
+                  if (await GoogleSignIn().isSignedIn()) {
+                    GoogleSignIn().signOut();
+                  }
                 });
               },
               horizontalTitleGap: 0,
