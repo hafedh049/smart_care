@@ -9,7 +9,7 @@ import 'package:lottie/lottie.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
-import 'package:smart_care/authentification/choices_box.dart';
+import 'package:smart_care/screens/screens.dart';
 import '../stuff/classes.dart';
 import '../stuff/globals.dart';
 
@@ -46,7 +46,7 @@ class _OTPState extends State<OTP> {
                 (UserCredential value) async {
                   _buttonBuilder.currentState!.setState(() => wait = false);
 
-                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
                 },
               );
             }

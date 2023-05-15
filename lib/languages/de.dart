@@ -44,7 +44,6 @@ final Map<String, String> german = <String, String>{
   "photo": "Foto",
   "uploadPicture": "Bild hochladen",
   "name": "Name",
-  "gender": "Geschlecht",
   "age": "Alter",
   "email": "Email",
   "password": "Passwort",

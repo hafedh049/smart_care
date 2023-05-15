@@ -74,7 +74,7 @@ class _FilterListState extends State<FilterList> {
             ),
             const SizedBox(height: 10),
             FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              future: FirebaseFirestore.instance.collection("users").where("roles_list", arrayContains: "doctor").limit(5).get(),
+              future: FirebaseFirestore.instance.collection("users").where("role", isEqualTo: "doctor").limit(5).get(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data!.docs.isNotEmpty) {

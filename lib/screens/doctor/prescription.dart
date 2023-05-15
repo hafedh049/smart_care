@@ -278,14 +278,6 @@ class _PrescriptionState extends State<Prescription> {
                                 Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: CustomizedText(text: (DateTime.now().difference(snapshot.data!.get("date_of_birth").toDate()).inDays ~/ 365).toString(), color: grey, fontSize: 16)),
                               ],
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                CustomizedText(text: 'gender'.tr, color: grey, fontSize: 16),
-                                Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: CustomizedText(text: snapshot.data!.get("gender") == "m" ? 'male'.tr : 'female'.tr, color: grey, fontSize: 16)),
-                              ],
-                            ),
                           ],
                         ),
                       ],
@@ -356,7 +348,6 @@ class _PrescriptionState extends State<Prescription> {
                                           "doctorName": me["name"],
                                           "patientName": _patientData["name"],
                                           "dob": _patientData["date_of_birth"],
-                                          "gender": _patientData["gender"],
                                           "doctorSpeciality": me["speciality"],
                                           "listOfDays": _listOfDays,
                                           "frequencies": _frequecies,

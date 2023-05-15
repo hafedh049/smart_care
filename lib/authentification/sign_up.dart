@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,7 +12,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
-import 'package:smart_care/authentification/choices_box.dart';
+import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
@@ -29,10 +27,11 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _matriculeController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
   final PageController _fieldsPageController = PageController();
-  //keys houwa eli y5alouna nrebuildiw el widgets mte3na bl statefulbuilder
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey _profilePictureKey = GlobalKey();
   final GlobalKey _stepsCompletedkey = GlobalKey();
@@ -40,20 +39,20 @@ class _SignUpState extends State<SignUp> {
   final GlobalKey _previousKey = GlobalKey();
   final GlobalKey _passwordStrenghtKey = GlobalKey();
   final GlobalKey _passwordStrenghtTextKey = GlobalKey();
+
   String _text = "Weak";
   bool _next = true;
   bool _previous = false;
   String _completePhoneNumber = "";
   File? _profilePicture;
   double _stepsCompleted = 0;
-  final List<bool> _rolesList = <bool>[false, true];
 
   @override
   void dispose() {
     _fieldsPageController.dispose();
     _emailController.dispose();
     _usernameController.dispose();
-    _idController.dispose();
+    _matriculeController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -94,7 +93,7 @@ class _SignUpState extends State<SignUp> {
                               height: 160,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
+                                children: <Widget>[
                                   CustomIcon(
                                       size: 25,
                                       func: () {
@@ -113,8 +112,9 @@ class _SignUpState extends State<SignUp> {
                                       CustomIcon(
                                           size: 25,
                                           func: () async {
-                                            final String path = await takesFromCameraOrGallery(true);
                                             Navigator.pop(context);
+                                            final String path = await takesFromCameraOrGallery(true);
+
                                             if (path.isNotEmpty) {
                                               _profilePictureKey.currentState!.setState(() {
                                                 _profilePicture = File(path);
@@ -125,8 +125,8 @@ class _SignUpState extends State<SignUp> {
                                       CustomIcon(
                                         size: 25,
                                         func: () async {
-                                          final String path = await takesFromCameraOrGallery(false);
                                           Navigator.pop(context);
+                                          final String path = await takesFromCameraOrGallery(false);
                                           if (path.isNotEmpty) {
                                             _profilePictureKey.currentState!.setState(() {
                                               _profilePicture = File(path);
@@ -161,7 +161,7 @@ class _SignUpState extends State<SignUp> {
                     },
                     children: <Widget>[
                       Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'whatisyourname'.tr, color: white, fontSize: 18), const SizedBox(height: 20), CustomTextField(validator: fieldsValidator["username"], controller: _usernameController, hint: 'name'.tr, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name)]),
-                      Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'canyouprovidemewithyouremployeeIDormatricule'.tr, color: white, fontSize: 18), const SizedBox(height: 20), CustomTextField(validator: fieldsValidator["id"], controller: _idController, hint: 'iD'.tr, prefix: FontAwesomeIcons.userSecret)]),
+                      Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'canyouprovidemewithyouremployeeIDormatricule'.tr, color: white, fontSize: 18), const SizedBox(height: 20), CustomTextField(validator: fieldsValidator["id"], controller: _matriculeController, hint: 'iD'.tr, prefix: FontAwesomeIcons.userSecret)]),
                       Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'wouldyoumindsharingyouremailaddresswithme'.tr, color: white, fontSize: 18), const SizedBox(height: 20), CustomTextField(validator: fieldsValidator["email"], controller: _emailController, hint: 'email'.tr, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress)]),
                       Column(
                         mainAxisSize: MainAxisSize.min,
@@ -223,47 +223,6 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ),
                         ],
-                      ),
-                      StatefulBuilder(
-                        builder: (BuildContext context, void Function(void Function()) setS) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              CustomizedText(text: 'pleaseselectyourrolefromthefollowingoptions'.tr, color: white, fontSize: 18),
-                              const SizedBox(height: 40),
-                              CheckboxListTile(
-                                activeColor: blue,
-                                value: _rolesList[0],
-                                title: CustomizedText(text: 'doctor'.tr, fontSize: 16, color: white),
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    if (!_rolesList[0]) {
-                                      _rolesList[0] = true;
-                                    } else {
-                                      _rolesList[0] = false;
-                                    }
-                                  });
-                                },
-                              ),
-                              const SizedBox(height: 10),
-                              CheckboxListTile(
-                                activeColor: blue,
-                                value: _rolesList[1],
-                                title: CustomizedText(text: 'patient'.tr, fontSize: 16, color: white),
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    if (!_rolesList[1]) {
-                                      _rolesList[1] = true;
-                                    } else {
-                                      _rolesList[1] = false;
-                                    }
-                                  });
-                                },
-                              ),
-                            ],
-                          );
-                        },
                       ),
                     ],
                   ),
@@ -330,13 +289,12 @@ class _SignUpState extends State<SignUp> {
   }
 
   void create(void Function(void Function()) setS) async {
-    //bch nasna3 beha el user w nconnectih
     try {
       bool phoneExists = false;
       await FirebaseFirestore.instance.collection("users").where("phone_number", isEqualTo: _completePhoneNumber).count().get().then((AggregateQuerySnapshot value) => phoneExists = value.count == 0 ? false : true);
       if (phoneExists) {
-        showToast(text: "This phone number already exists");
-      } else if (_rolesList.any((bool element) => element == true)) {
+        showToast(text: "This phone number already exists".tr);
+      } else {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential userCredential) async {
           showToast(text: 'accountCreated'.tr);
           String profilePictureUrl = noUser;
@@ -348,40 +306,30 @@ class _SignUpState extends State<SignUp> {
           }
           await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).set({
             "name": _usernameController.text.trim(),
-            "id": _idController.text.trim(),
-            "role": _rolesList[0] ? "doctor" : "patient",
-            "roles_list": <String>[if (_rolesList[0]) "doctor", if (_rolesList[1]) "patient"],
+            "id": _matriculeController.text.trim(),
+            "role": "patient",
             "uid": FirebaseAuth.instance.currentUser!.uid,
             "image_url": profilePictureUrl,
             "email": _emailController.text.trim(),
-            "password": _passwordController.text.trim(),
             "phone_number": _completePhoneNumber,
             "status": true,
-            "years_of_experience": "20",
-            "patients_checked_list": <Map<String, dynamic>>[],
-            "location": "Monastir, Tunisia",
-            'work_location': "Faculté de Médecine de Monastir",
-            "speciality": "Chiropractors and massage therapists",
-            "rating": "0",
-            "schedules_list": <Map<String, dynamic>>[],
-            "available_time": ["--", "--"],
             "date_of_birth": DateTime(1970),
-            "gender": "m",
-            "about": "",
+            "about": "A Patient",
+            "grade": "",
+            "service": "",
             "token": "",
+            "hospital": "",
           }).then((void value) async {
-            showToast(text: 'dataStored');
+            showToast(text: 'dataStored'.tr);
             await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
               showToast(text: 'signedInUsingEmailPassword'.tr);
               await getToken();
               await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"token": userToken}).then((void value) async {
-                await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
+                await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
               });
             });
           });
         });
-      } else {
-        showToast(text: 'verifyfieldsplease'.tr);
       }
     } catch (_) {
       setS(() => _next = false);
@@ -390,11 +338,10 @@ class _SignUpState extends State<SignUp> {
   }
 
   void navigate() async {
-    //hedhi eli t5alini nit3ada mn page l page
     if (_formKey.currentState!.validate()) {
       await _fieldsPageController.nextPage(duration: 200.ms, curve: Curves.linear);
 
-      if (_fieldsPageController.page!.toInt() >= 5) {
+      if (_fieldsPageController.page!.toInt() >= 4) {
         _nextKey.currentState!.setState(() {
           _next = false;
         });

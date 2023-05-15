@@ -193,22 +193,6 @@ class _AccountState extends State<Account> {
                       ),
                     ),
                     const SizedBox(height: 40),
-                    Row(
-                      children: <Widget>[
-                        CustomizedText(text: 'gender'.tr, fontSize: 14, color: grey),
-                        const SizedBox(width: 72),
-                        GestureDetector(
-                          onTap: () async => await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "m"}),
-                          child: CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("gender") == "m" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.mars, color: snapshot.data!.get("gender") == "m" ? white : grey, size: 20)),
-                        ),
-                        const SizedBox(width: 10),
-                        GestureDetector(
-                          onTap: () async => await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"gender": "f"}),
-                          child: CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("gender") == "f" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.venus, color: snapshot.data!.get("gender") == "f" ? white : grey, size: 20)),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 40),
                     GestureDetector(
                       onTap: () async {
                         await showDatePicker(context: context, initialDate: DateTime(1968), firstDate: DateTime(1968), lastDate: DateTime(1998), helpText: 'pickYourBirthday'.tr).then((DateTime? pickedDateOfBirth) async {
@@ -258,17 +242,57 @@ class _AccountState extends State<Account> {
                     ),
                     const SizedBox(height: 40),
                     GestureDetector(
-                      onTap: null,
+                      onTap: () {
+                        showToast(text: 'tapifyouwanttoselectotherwiseswipeinanydirection'.tr);
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            contentPadding: EdgeInsets.zero,
+                            content: SizedBox(
+                              width: MediaQuery.of(context).size.width * .9,
+                              height: MediaQuery.of(context).size.height * .6,
+                              child: CardSwiper(
+                                isLoop: true,
+                                duration: 100.ms,
+                                padding: EdgeInsets.zero,
+                                cards: <Widget>[
+                                  for (Map<String, dynamic> grade in gradesList)
+                                    GestureDetector(
+                                      onTap: () async {
+                                        await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"grade": grade["grade"]}).then((void value) {
+                                          showToast(text: grade["grade"]);
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8.0),
+                                        decoration: BoxDecoration(color: darkBlue, borderRadius: BorderRadius.circular(15), image: DecorationImage(image: CachedNetworkImageProvider(grade["url"]), fit: BoxFit.cover)),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            CustomizedText(text: grade["grade"], fontSize: 25, color: blue, fontWeight: FontWeight.bold),
+                                            const SizedBox(height: 30),
+                                            Expanded(child: SizedBox(child: AnimatedTextKit(animatedTexts: <AnimatedText>[TypewriterAnimatedText(grade["description"], textStyle: GoogleFonts.roboto(fontSize: 14, color: white))]))),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                       child: Row(
                         children: <Widget>[
-                          CustomizedText(text: 'password'.tr, fontSize: 14, color: grey),
+                          CustomizedText(text: 'grade'.tr, fontSize: 14, color: grey),
                           const SizedBox(width: 55),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("password").split("").map((String char) => "* ").toList().join(""), fontSize: 16, color: white)),
+                                SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("grade"), fontSize: 16, color: white)),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
@@ -279,177 +303,6 @@ class _AccountState extends State<Account> {
                         ],
                       ),
                     ),
-                    if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin") const SizedBox(height: 40),
-                    if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin")
-                      GestureDetector(
-                        onTap: () {
-                          showToast(text: 'tapifyouwanttoselectotherwiseswipeinanydirection'.tr);
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              contentPadding: EdgeInsets.zero,
-                              content: SizedBox(
-                                width: MediaQuery.of(context).size.width * .9,
-                                height: MediaQuery.of(context).size.height * .6,
-                                child: CardSwiper(
-                                  isLoop: true,
-                                  duration: 100.ms,
-                                  padding: EdgeInsets.zero,
-                                  cards: <Widget>[
-                                    for (Map<String, dynamic> speciality in specialityList)
-                                      GestureDetector(
-                                        onTap: () async {
-                                          await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{"speciality": speciality["speciality"]}).then((void value) {
-                                            showToast(text: speciality["speciality"]);
-                                            Navigator.pop(context);
-                                          });
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.all(8.0),
-                                          decoration: BoxDecoration(
-                                            color: darkBlue,
-                                            borderRadius: BorderRadius.circular(15),
-                                            image: DecorationImage(
-                                              image: CachedNetworkImageProvider(speciality["url"]),
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              CustomizedText(text: speciality["speciality"], fontSize: 25, color: blue, fontWeight: FontWeight.bold),
-                                              const SizedBox(height: 30),
-                                              Expanded(
-                                                child: SizedBox(
-                                                  child: AnimatedTextKit(
-                                                    animatedTexts: <AnimatedText>[
-                                                      TypewriterAnimatedText(
-                                                        speciality["description"],
-                                                        textStyle: GoogleFonts.roboto(
-                                                          fontSize: 14,
-                                                          color: speciality["color"],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                        child: Row(
-                          children: <Widget>[
-                            CustomizedText(text: 'speciality'.tr, fontSize: 14, color: grey),
-                            const SizedBox(width: 55),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("speciality"), fontSize: 16, color: white)),
-                                  const SizedBox(height: 5),
-                                  Container(height: .1, color: white),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 25),
-                            Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
-                          ],
-                        ),
-                      ),
-                    if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin") const SizedBox(height: 40),
-                    if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin")
-                      GestureDetector(
-                        onTap: () => change('yearsofExperience'.tr, FontAwesomeIcons.zero, false, TextInputType.number, fieldsValidator["age"], "years_of_experience"),
-                        child: Row(
-                          children: <Widget>[
-                            CustomizedText(text: 'yearsofExperience'.tr, fontSize: 14, color: grey),
-                            const SizedBox(width: 55),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  CustomizedText(text: snapshot.data!.get("years_of_experience"), fontSize: 16, color: white),
-                                  const SizedBox(height: 5),
-                                  Container(height: .1, color: white),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 25),
-                            Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
-                          ],
-                        ),
-                      ),
-                    if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin") const SizedBox(height: 40),
-                    if (snapshot.data!.get("role") != "patient" && snapshot.data!.get("role") != "admin")
-                      GestureDetector(
-                        onTap: () async {
-                          final List<String> time = <String>["--", "--"];
-                          await showTimePicker(context: context, initialTime: TimeOfDay.now(), helpText: 'selectTime'.tr).then((TimeOfDay? start) async {
-                            if (start != null) {
-                              time[0] = start.format(context);
-                            }
-                            await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({
-                              "available_time": time,
-                            }).then((void value) async {
-                              await showTimePicker(context: context, initialTime: TimeOfDay.now(), helpText: 'selectTime'.tr).then((TimeOfDay? finish) async {
-                                if (finish != null) {
-                                  time[1] = finish.format(context);
-                                }
-                                await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({
-                                  "available_time": time,
-                                });
-                              });
-                            });
-                          });
-                        },
-                        child: Row(
-                          children: <Widget>[
-                            CustomizedText(text: 'availableTime'.tr, fontSize: 14, color: grey),
-                            const SizedBox(width: 55),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  if (snapshot.data!.get("available_time").isEmpty) CustomizedText(text: 'fullTime'.tr, fontSize: 16, color: white),
-                                  if (snapshot.data!.get("available_time").isNotEmpty)
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        const Icon(FontAwesomeIcons.clockRotateLeft, color: blue, size: 10),
-                                        const SizedBox(width: 5),
-                                        CustomizedText(text: snapshot.data!.get("available_time")[0], fontSize: 14, color: white),
-                                      ],
-                                    ),
-                                  if (snapshot.data!.get("available_time").isNotEmpty) const SizedBox(height: 5),
-                                  if (snapshot.data!.get("available_time").isNotEmpty)
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        const Icon(FontAwesomeIcons.clockRotateLeft, color: blue, size: 10),
-                                        const SizedBox(width: 5),
-                                        CustomizedText(text: snapshot.data!.get("available_time")[1], fontSize: 14, color: white),
-                                      ],
-                                    ),
-                                  const SizedBox(height: 5),
-                                  Container(height: .1, color: white),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 25),
-                            Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
-                          ],
-                        ),
-                      ),
                     const SizedBox(height: 40),
                     GestureDetector(
                       onTap: () => change('about'.tr, FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidator["about"], "about"),
@@ -463,29 +316,6 @@ class _AccountState extends State<Account> {
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: snapshot.data!.get("about").isEmpty ? "--" : snapshot.data!.get("about"), fontSize: 16, color: white)),
-                                const SizedBox(height: 5),
-                                Container(height: .1, color: white),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 25),
-                          Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: grey)),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    GestureDetector(
-                      onTap: () => change('location'.tr, FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidator["job location"], "location"),
-                      child: Row(
-                        children: <Widget>[
-                          CustomizedText(text: 'location'.tr, fontSize: 14, color: grey),
-                          const SizedBox(width: 55),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                CustomizedText(text: snapshot.data!.get("location").isEmpty ? "--" : snapshot.data!.get("location"), fontSize: 16, color: white),
                                 const SizedBox(height: 5),
                                 Container(height: .1, color: white),
                               ],
@@ -514,11 +344,13 @@ class _AccountState extends State<Account> {
                       children: <Widget>[
                         CustomizedText(text: 'role'.tr, fontSize: 14, color: grey),
                         const SizedBox(width: 60),
-                        CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("patient") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.hospitalUser, color: snapshot.data!.get("roles_list").contains("patient") ? white : grey, size: 20)),
+                        CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("role") == "patient" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.hospitalUser, color: snapshot.data!.get("role") == "patient" ? white : grey, size: 20)),
                         const SizedBox(width: 10),
-                        CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("doctor") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.userDoctor, color: snapshot.data!.get("roles_list").contains("doctor") ? white : grey, size: 20)),
+                        CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("role") == "doctor" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.userDoctor, color: snapshot.data!.get("role") == "doctor" ? white : grey, size: 20)),
                         const SizedBox(width: 10),
-                        CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("roles_list").contains("admin") ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.lock, color: snapshot.data!.get("roles_list").contains("admin") ? white : grey, size: 20)),
+                        CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("role") == "admin" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.lock, color: snapshot.data!.get("role") == "admin" ? white : grey, size: 20)),
+                        const SizedBox(width: 10),
+                        CircleAvatar(radius: 25, backgroundColor: snapshot.data!.get("role") == "laboratory" ? blue : grey.withOpacity(.2), child: Icon(FontAwesomeIcons.flaskVial, color: snapshot.data!.get("role") == "laboratory" ? white : grey, size: 20)),
                       ],
                     ),
                     const SizedBox(height: 40),

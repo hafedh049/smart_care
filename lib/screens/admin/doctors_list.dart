@@ -99,7 +99,7 @@ class _DoctorsListState extends State<DoctorsList> {
               ),
               Expanded(
                 child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  future: FirebaseFirestore.instance.collection("users").where("roles_list", arrayContains: "doctor").get(),
+                  future: FirebaseFirestore.instance.collection("users").where("role", isEqualTo: "doctor").get(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                     if (snapshot.hasData) {
                       final List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data!.docs;

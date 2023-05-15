@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:smart_care/error/error_room.dart';
+import 'package:smart_care/screens/chat_room.dart';
 import 'package:smart_care/screens/patient/book_appointement.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
@@ -27,8 +28,8 @@ class AboutDoctor extends StatelessWidget {
           Column(children: <Widget>[const SizedBox(height: 150), Expanded(child: Container(width: MediaQuery.of(context).size.width, decoration: const BoxDecoration(color: darkBlue, borderRadius: BorderRadius.only(topLeft: Radius.circular(35), topRight: Radius.circular(35)))))]),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              stream: FirebaseFirestore.instance.collection("users").doc(uid.trim()).snapshots(),
+            child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              future: FirebaseFirestore.instance.collection("users").doc(uid.trim()).get(),
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
                 if (snapshot.hasData) {
                   return Column(
@@ -56,27 +57,7 @@ class AboutDoctor extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              width: 80,
-                              padding: const EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue.withOpacity(.3)),
-                              child: Row(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: <Widget>[const Icon(FontAwesomeIcons.phoneVolume, color: blue, size: 15), const SizedBox(width: 5), CustomizedText(text: 'audio'.tr, fontSize: 16, color: blue, fontWeight: FontWeight.bold)]),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              width: 80,
-                              padding: const EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.amber.withOpacity(.3)),
-                              child: Row(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: <Widget>[const Icon(FontAwesomeIcons.video, color: Colors.amber, size: 15), const SizedBox(width: 5), CustomizedText(text: 'video'.tr, fontSize: 16, color: Colors.amber, fontWeight: FontWeight.bold)]),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          GestureDetector(
-                            onTap: () {},
+                            onTap: () => goTo(ChatRoom(talkTo: snapshot.data!.data()!)),
                             child: Container(
                               width: 80,
                               padding: const EdgeInsets.all(8.0),
@@ -91,8 +72,6 @@ class AboutDoctor extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      Row(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: <Widget>[const Icon(FontAwesomeIcons.heartPulse, color: red, size: 15), const SizedBox(width: 5), CustomizedText(text: "${snapshot.data!.get("rating")} Positive Rating", fontSize: 14, color: white)]),
-                      const SizedBox(height: 20),
                       Expanded(
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
@@ -101,14 +80,6 @@ class AboutDoctor extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              const SizedBox(height: 20),
-                              CustomizedText(text: 'information'.tr, color: white, fontSize: 20, fontWeight: FontWeight.bold),
-                              const SizedBox(height: 20),
-                              Row(children: <Widget>[CustomizedText(text: 'yearsofexperience'.tr, color: white, fontSize: 18), const Spacer(), CustomizedText(text: "${snapshot.data!.get('years_of_experience')} Years", color: white, fontSize: 18, fontWeight: FontWeight.bold)]),
-                              const SizedBox(height: 15),
-                              Row(children: <Widget>[CustomizedText(text: 'patientschecked'.tr, color: white, fontSize: 18), const Spacer(), CustomizedText(text: "${snapshot.data!.get('patients_checked_list').length}+", color: white, fontSize: 18, fontWeight: FontWeight.bold)]),
-                              const SizedBox(height: 20),
-                              CustomizedText(text: 'schedules'.tr, color: white, fontSize: 20, fontWeight: FontWeight.bold),
                               const SizedBox(height: 20),
                               SingleChildScrollView(
                                 padding: EdgeInsets.zero,
@@ -152,7 +123,7 @@ class AboutDoctor extends StatelessWidget {
                                 children: <Widget>[
                                   Expanded(
                                     child: GestureDetector(
-                                      onTap: () async => goTo(BookAppointment(id: uid, doctorName: snapshot.data!.get("name"), doctorImageUrl: snapshot.data!.get("image_url"), speciality: snapshot.data!.get("speciality"), workLocation: snapshot.data!.get("work_location"))),
+                                      onTap: () async => goTo(BookAppointment(id: uid, doctorName: snapshot.data!.get("name"), doctorImageUrl: snapshot.data!.get("image_url"), speciality: snapshot.data!.get("grade"))),
                                       child: Container(height: 40, padding: const EdgeInsets.symmetric(vertical: 2.0), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue), child: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[CustomizedText(text: 'bookanAppointment'.tr, color: darkBlue, fontSize: 17, fontWeight: FontWeight.bold)])),
                                     ),
                                   ),

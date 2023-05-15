@@ -103,13 +103,7 @@ class _WorkFlowState extends State<WorkFlow> {
                                         if (workflow[workflow[index]["options"][__]["redirectTo"]].containsKey("end")) {
                                           _conduiteATenir = workflow[workflow[index]["options"][__]["redirectTo"]]["end"];
                                           try {
-                                            await FirebaseFirestore.instance.collection("filled_forms").add({
-                                              "uid": me["uid"],
-                                              "choices": _choices.values,
-                                              "conduite_a_tenir": _conduiteATenir,
-                                              "timestamp": Timestamp.now(),
-                                            });
-
+                                            await FirebaseFirestore.instance.collection("filled_forms").add({"uid": me["uid"], "name": me["name"], "token": me["token"], "choices": _choices.values, "conduite_a_tenir": _conduiteATenir, "timestamp": Timestamp.now()});
                                             showToast(text: "Data saved successfully");
                                           } catch (e) {
                                             showToast(text: e.toString());

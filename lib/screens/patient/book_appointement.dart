@@ -12,12 +12,11 @@ import '../../stuff/functions.dart';
 import '../../stuff/globals.dart';
 
 class BookAppointment extends StatefulWidget {
-  const BookAppointment({super.key, required this.id, required this.doctorImageUrl, required this.doctorName, required this.speciality, required this.workLocation});
+  const BookAppointment({super.key, required this.id, required this.doctorImageUrl, required this.doctorName, required this.speciality});
   final String id;
   final String doctorName;
   final String doctorImageUrl;
   final String speciality;
-  final String workLocation;
 
   @override
   State<BookAppointment> createState() => _BookAppointmentState();
@@ -196,7 +195,6 @@ class _BookAppointmentState extends State<BookAppointment> {
                           'duration': const <String>["5 min", "15 min", "30 min"][_duration - 1],
                           'type': const <String>["Online", "In Person"][_appointmentType - 1],
                           'createdAt': Timestamp.now(),
-                          'workLocation': widget.workLocation
                         }).then((value) async {
                           showToast(text: 'appointmentBooked'.tr);
                           Navigator.pop(context);

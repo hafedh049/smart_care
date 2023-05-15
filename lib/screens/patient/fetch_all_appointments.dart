@@ -158,8 +158,6 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                                                   CustomizedText(text: 'Dr. ${appointmentList[index].get("doctorName")}', fontSize: 16, fontWeight: FontWeight.bold, color: white),
                                                   const SizedBox(height: 5),
                                                   CustomizedText(text: appointmentList[index].get("doctorSpeciality"), fontSize: 14, fontWeight: FontWeight.bold, color: white.withOpacity(.6)),
-                                                  const SizedBox(height: 5),
-                                                  Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(5)), color: blue.withOpacity(.1)), child: Row(children: <Widget>[const Icon(FontAwesomeIcons.mapLocation, size: 15, color: white), const SizedBox(width: 10), SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: appointmentList[index].get("workLocation"), fontSize: 14, color: white.withOpacity(.6)))])),
                                                   const SizedBox(height: 10),
                                                   Row(children: <Widget>[for (int square = 0; square < 5; square++) Transform.rotate(angle: pi / 4, child: Container(margin: const EdgeInsets.only(right: 8.0), width: 6, height: 6, color: blue))]),
                                                 ],

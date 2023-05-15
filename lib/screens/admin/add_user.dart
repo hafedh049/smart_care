@@ -160,35 +160,11 @@ class _AddUserState extends State<AddUser> {
                         children: <Widget>[
                           CustomizedText(text: 'pleaseselectyourrolefromthefollowingoptions'.tr, color: white, fontSize: 18),
                           const SizedBox(height: 20),
-                          CheckboxListTile(
-                            activeColor: blue,
-                            value: _rolesList[0],
-                            title: CustomizedText(text: 'doctor'.tr, fontSize: 16, color: white),
-                            onChanged: (bool? value) {
-                              setState(() {
-                                if (!_rolesList[0]) {
-                                  _rolesList[0] = true;
-                                } else {
-                                  _rolesList[0] = false;
-                                }
-                              });
-                            },
-                          ),
+                          CheckboxListTile(activeColor: blue, value: _rolesList[0], title: CustomizedText(text: 'doctor'.tr, fontSize: 16, color: white), onChanged: (bool? value) => setState(() => _rolesList[0] = (_rolesList[0]) ? false : true)),
                           const SizedBox(height: 10),
-                          CheckboxListTile(
-                            activeColor: blue,
-                            value: _rolesList[1],
-                            title: CustomizedText(text: 'patient'.tr, fontSize: 16, color: white),
-                            onChanged: (bool? value) {
-                              setState(() {
-                                if (!_rolesList[1]) {
-                                  _rolesList[1] = true;
-                                } else {
-                                  _rolesList[1] = false;
-                                }
-                              });
-                            },
-                          ),
+                          CheckboxListTile(activeColor: blue, value: _rolesList[1], title: CustomizedText(text: 'patient'.tr, fontSize: 16, color: white), onChanged: (bool? value) => setState(() => _rolesList[1] = (_rolesList[1]) ? false : true)),
+                          const SizedBox(height: 10),
+                          CheckboxListTile(activeColor: blue, value: _rolesList[2], title: CustomizedText(text: 'laboratory'.tr, fontSize: 16, color: white), onChanged: (bool? value) => setState(() => _rolesList[2] = (_rolesList[2]) ? false : true)),
                         ],
                       );
                     },
@@ -207,23 +183,16 @@ class _AddUserState extends State<AddUser> {
                                     "name": _usernameController.text.trim(),
                                     "id": _idController.text.trim(),
                                     "role": _rolesList[0] ? "doctor" : "patient",
-                                    "roles_list": <String>[if (_rolesList[0]) "doctor", if (_rolesList[1]) "patient"],
                                     "uid": FirebaseAuth.instance.currentUser!.uid,
                                     "image_url": noUser,
                                     "email": _emailController.text.trim(),
                                     "password": _passwordController.text.trim(),
                                     "phone_number": _phoneController.text.trim(),
                                     "status": false,
-                                    "years_of_experience": "20",
-                                    "patients_checked_list": [],
-                                    "location": "",
-                                    'work_location': "Faculté de Médecine de Monastir",
-                                    "speciality": "Chiropractors and massage therapists",
-                                    "rating": "0",
-                                    "available_time": <String>["--", "--"],
                                     "date_of_birth": DateTime(1970),
-                                    "gender": "m",
                                     "about": "",
+                                    "service": "",
+                                    "grade": "",
                                     "token": "",
                                   });
                                 });

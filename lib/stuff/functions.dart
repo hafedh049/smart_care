@@ -23,8 +23,8 @@ Future<void> openDB() async {
     "database.db",
     version: 1,
     onCreate: (Database db, int version) {
-      db.execute("CREATE TABLE SMART_CARE (ID INTEGER PRIMARY KEY , FIRST_TIME INTEGER, AUDIO INTEGER);");
-      db.insert("SMART_CARE", <String, dynamic>{"FIRST_TIME": 1, "ID": 1, "AUDIO": 1});
+      db.execute("CREATE TABLE SMART_CARE (ID INTEGER PRIMARY KEY , FIRST_TIME INTEGER);");
+      db.insert("SMART_CARE", <String, dynamic>{"FIRST_TIME": 1, "ID": 1});
     },
   );
 }
@@ -82,10 +82,9 @@ String formatDateTime(DateTime dateTime, TimeOfDay timeOfDay) {
 }
 
 String getTimeFromDate(DateTime date) {
-  String hours = date.hour.toString().padLeft(2, '0');
-  String minutes = date.minute.toString().padLeft(2, '0');
-  String meridian = date.hour < 12 ? 'AM' : 'PM';
-  hours = (date.hour % 12).toString().padLeft(2, '0');
+  final String minutes = date.minute.toString().padLeft(2, '0');
+  final String meridian = date.hour < 12 ? 'AM' : 'PM';
+  final String hours = (date.hour % 12).toString().padLeft(2, '0');
   return '$hours:$minutes $meridian';
 }
 
@@ -110,13 +109,13 @@ void sendPushNotificationFCM({required String token, required String username, r
   try {
     await post(
       Uri.parse('https://fcm.googleapis.com/fcm/send'),
-      headers: <String, String>{'Content-Type': 'application/json', 'Authorization': 'key=AAAATAO2yPs:APA91bHBc_S-v6MHnfTRxz1PD60a_Lh0yY4cB-q4FJlFSKR4To97gAb8bGXECJTKVjWTHo_1fAzSer5ae8CcwL7zK24N45y0VuXWkFN1n0aHapTNCV2DyRYUvXbqG0nu4OsBMvnbXRTf'},
+      headers: const <String, String>{'Content-Type': 'application/json', 'Authorization': 'key=AAAATAO2yPs:APA91bHBc_S-v6MHnfTRxz1PD60a_Lh0yY4cB-q4FJlFSKR4To97gAb8bGXECJTKVjWTHo_1fAzSer5ae8CcwL7zK24N45y0VuXWkFN1n0aHapTNCV2DyRYUvXbqG0nu4OsBMvnbXRTf'},
       body: jsonEncode(
         <String, dynamic>{
           'notification': <String, dynamic>{'body': message, 'title': username},
           'priority': 'high',
-          'data': <String, dynamic>{'click_action': 'FLUTTER_NOTIFICATION_CLICK', 'id': '1', 'status': "done"},
-          'to': token
+          'data': const <String, dynamic>{'click_action': 'FLUTTER_NOTIFICATION_CLICK', 'id': '1', 'status': "done"},
+          'to': token,
         },
       ),
     );
@@ -130,9 +129,9 @@ Future<void> goTo(Widget place) async {
 }
 
 Future<String> getChatResponse(String input) async {
-  final headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $apiKey'};
+  final headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $gpt3ApiKey'};
   final body = {'prompt': input, 'temperature': .5, 'max_tokens': 50};
-  final response = await post(Uri.parse(apiUrl), headers: headers, body: json.encode(body));
+  final response = await post(Uri.parse(gpt3ApiUrl), headers: headers, body: json.encode(body));
   final data = json.decode(response.body);
   final String chatResponse = data['choices'][0]['text'];
   return chatResponse;

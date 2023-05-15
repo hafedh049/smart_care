@@ -44,7 +44,6 @@ final Map<String, String> french = <String, String>{
   "photo": "Photo",
   "uploadPicture": "Charger une photo",
   "name": "Nom",
-  "gender": "Genre",
   "age": "\u00c2ge",
   "email": "E-mail",
   "password": "Mot de passe",

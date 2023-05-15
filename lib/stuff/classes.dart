@@ -10,11 +10,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:smart_care/authentification/choices_box.dart';
 import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/drawer/about_us.dart';
 import 'package:smart_care/drawer/settings.dart';
 import 'package:smart_care/otp/otp_phase_1.dart';
+import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/screens/smart_chat_bot.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
@@ -111,7 +111,7 @@ class GoogleAuth extends StatelessWidget {
                   await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
                     AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
                     await FirebaseAuth.instance.signInWithCredential(credential);
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
                   });
                 } else {
                   final GoogleSignInAuthentication googleAuth = await googleAccount.authentication;
@@ -122,7 +122,7 @@ class GoogleAuth extends StatelessWidget {
                   showToast(text: 'accountLinkedWithGoogle'.tr);
                   await getToken();
                   await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"token": userToken}).then((void value) async {
-                    await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const ChoicesBox()), (Route route) => false);
+                    await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
                   });
                 }
               }
@@ -207,19 +207,17 @@ class HealthDrawer extends StatelessWidget {
                 const SizedBox(height: 40),
                 Row(
                   children: <Widget>[
-                    const CircleAvatar(
-                      backgroundColor: blue,
-                      radius: 35,
-                      backgroundImage: CachedNetworkImageProvider(appIcon),
-                    ),
+                    const CircleAvatar(backgroundColor: blue, radius: 35, backgroundImage: CachedNetworkImageProvider(appIcon)),
                     const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const CustomizedText(text: appTitle, color: white, fontSize: 20, fontWeight: FontWeight.bold),
-                        const SizedBox(width: 10),
-                        CustomizedText(text: 'youmakeworldbetter'.tr, color: white.withOpacity(.7), fontSize: 16),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const CustomizedText(text: appTitle, color: white, fontSize: 20, fontWeight: FontWeight.bold),
+                          const SizedBox(width: 10),
+                          CustomizedText(text: 'youmakeworldbetter'.tr, color: white.withOpacity(.7), fontSize: 16),
+                        ],
+                      ),
                     ),
                   ],
                 ),

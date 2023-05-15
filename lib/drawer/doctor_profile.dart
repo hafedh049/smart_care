@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:smart_care/error/error_room.dart';
@@ -54,20 +53,7 @@ class DoctorProfile extends StatelessWidget {
                               children: <Widget>[
                                 CustomizedText(text: "Dr. ${snapshot.data!.get("name")}", fontSize: 18, fontWeight: FontWeight.bold, color: white),
                                 const SizedBox(height: 5),
-                                Flexible(child: CustomizedText(text: snapshot.data!.get("speciality"), fontSize: 14, color: white.withOpacity(.8))),
-                                const SizedBox(height: 5),
-                                Row(
-                                  children: <Widget>[
-                                    RatingBarIndicator(
-                                      itemBuilder: (BuildContext context, int index) => const Icon(FontAwesomeIcons.star, color: blue),
-                                      itemSize: 10,
-                                      itemPadding: const EdgeInsets.only(right: 4.0),
-                                      rating: double.parse(snapshot.data!.get("rating")) == 0 ? 1 : double.parse(snapshot.data!.get("rating")),
-                                    ),
-                                    const SizedBox(width: 5),
-                                    CustomizedText(text: '( ${double.parse(snapshot.data!.get('rating')) == 0 ? 1 : snapshot.data!.get('rating')} )', fontSize: 14, color: white.withOpacity(.8)),
-                                  ],
-                                ),
+                                Flexible(child: CustomizedText(text: snapshot.data!.get("grade"), fontSize: 14, color: white.withOpacity(.8))),
                               ],
                             ),
                           ),
@@ -87,40 +73,6 @@ class DoctorProfile extends StatelessWidget {
                               decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: day == DateTime.now().day ? white : transparent),
                               child: day == DateTime.now().day ? Column(children: <Widget>[CustomizedText(text: showWeekDay(day), fontSize: 16, color: darkBlue), const SizedBox(height: 5), CustomizedText(text: "${day < 10 ? '0' : ''}$day", fontSize: 20, fontWeight: FontWeight.bold, color: darkBlue), const SizedBox(height: 5), const CircleAvatar(radius: 4, backgroundColor: blue)]) : Column(children: <Widget>[CustomizedText(text: "${day < 10 ? '0' : ''}$day", fontSize: 20, fontWeight: FontWeight.bold, color: white), const SizedBox(height: 10), CustomizedText(text: showWeekDay(day), fontSize: 16, color: white)]),
                             ),
-                        ],
-                      ),
-                      const SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Container(
-                            width: 150,
-                            padding: const EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: white.withOpacity(.8)),
-                            child: Column(
-                              children: <Widget>[
-                                const Icon(Icons.sick, size: 25, color: Colors.green),
-                                const SizedBox(height: 5),
-                                CustomizedText(text: snapshot.data!.get("patients_checked_list").length.toString(), fontSize: 20, fontWeight: FontWeight.bold, color: darkBlue),
-                                const SizedBox(height: 5),
-                                CustomizedText(text: 'successfulPatients'.tr, fontSize: 16, color: darkBlue),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            width: 150,
-                            padding: const EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: white.withOpacity(.8)),
-                            child: Column(
-                              children: <Widget>[
-                                const Icon(FontAwesomeIcons.yammer, size: 25, color: Colors.brown),
-                                const SizedBox(height: 5),
-                                CustomizedText(text: "${snapshot.data!.get('years_of_experience')} Years", fontSize: 20, fontWeight: FontWeight.bold, color: darkBlue),
-                                const SizedBox(height: 5),
-                                CustomizedText(text: 'experience'.tr, fontSize: 16, color: darkBlue),
-                              ],
-                            ),
-                          ),
                         ],
                       ),
                       const SizedBox(height: 30),

@@ -36,8 +36,8 @@ class Home extends StatelessWidget {
             children: <Widget>[
               Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
               Center(
-                child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                  stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+                child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                  future: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get(),
                   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
                     if (snapshot.hasData) {
                       return Column(
@@ -45,8 +45,6 @@ class Home extends StatelessWidget {
                           GestureDetector(onTap: () => goTo(const Profile()), child: CircleAvatar(radius: 30, backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")), backgroundColor: grey.withOpacity(.2), child: snapshot.data!.get("image_url") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 25))),
                           const SizedBox(height: 15),
                           Row(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: <Widget>[CustomizedText(text: 'hello'.tr, fontSize: 22), CustomizedText(text: snapshot.data!.get("name"), fontSize: 22, fontWeight: FontWeight.bold)]),
-                          const SizedBox(height: 10),
-                          Row(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: <Widget>[const Icon(FontAwesomeIcons.locationPin, size: 15, color: blue), const SizedBox(width: 10), CustomizedText(text: snapshot.data!.get("location").isNotEmpty ? snapshot.data!.get("location") : "Monastir, Tunisie", fontSize: 16, color: grey)]),
                         ],
                       );
                     } else if (snapshot.connectionState == ConnectionState.waiting) {
@@ -93,7 +91,7 @@ class Home extends StatelessWidget {
                                 if (appointments.isEmpty) {
                                   return Container(
                                     height: 180,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius1), fit: BoxFit.cover)),
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius), fit: BoxFit.cover)),
                                     child: Center(child: CustomizedText(text: 'noAppointmentsYet'.tr.toUpperCase(), fontSize: 20, color: white, fontWeight: FontWeight.bold)),
                                   );
                                 } else {
@@ -103,7 +101,7 @@ class Home extends StatelessWidget {
                                     child: Container(
                                       height: 180,
                                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius1), fit: BoxFit.cover)),
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius), fit: BoxFit.cover)),
                                       child: Column(
                                         children: <Widget>[
                                           const SizedBox(height: 20),
@@ -166,7 +164,7 @@ class Home extends StatelessWidget {
                             height: 180,
                             padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 16.0),
                             width: 40,
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius1), fit: BoxFit.cover)),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius), fit: BoxFit.cover)),
                             child: const Center(child: CustomizedText(text: "+", fontSize: 30, color: white, fontWeight: FontWeight.bold)),
                           ),
                         ),

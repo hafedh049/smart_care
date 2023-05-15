@@ -71,7 +71,7 @@ class PatientProfile extends StatelessWidget {
                             children: <Widget>[
                               const Icon(FontAwesomeIcons.tooth, size: 15, color: blue),
                               const SizedBox(width: 10),
-                              Flexible(child: CustomizedText(text: snapshot.data!.get("speciality"), fontSize: 16, color: white.withOpacity(.8))),
+                              Flexible(child: CustomizedText(text: snapshot.data!.get("grade"), fontSize: 16, color: white.withOpacity(.8))),
                             ],
                           ),
                           const SizedBox(height: 10),
@@ -85,9 +85,9 @@ class PatientProfile extends StatelessWidget {
                           const SizedBox(height: 10),
                           Row(
                             children: <Widget>[
-                              const Icon(FontAwesomeIcons.locationPinLock, size: 15, color: blue),
+                              const Icon(Icons.numbers, size: 18, color: blue),
                               const SizedBox(width: 10),
-                              CustomizedText(text: 'Location ( ${snapshot.data!.get("location").isEmpty ? "Monastir, Tunisia" : snapshot.data!.get("location")} )', fontSize: 16, color: white.withOpacity(.8)),
+                              CustomizedText(text: "UID ( ${snapshot.data!.get('uid')} )", fontSize: 16, color: white.withOpacity(.8)),
                             ],
                           ),
                           const SizedBox(height: 10),

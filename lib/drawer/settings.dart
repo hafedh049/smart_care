@@ -83,19 +83,12 @@ class SmartSettings extends StatelessWidget {
                     children: <Widget>[
                       CircleAvatar(radius: 25, backgroundColor: Colors.orange.withOpacity(.2), child: const Icon(FontAwesomeIcons.bell, color: Colors.orange, size: 15)),
                       CustomizedText(text: 'sounds'.tr, fontSize: 18, color: white),
-                      CustomizedText(text: play == 1 ? 'enabled'.tr : 'disabled'.tr, fontSize: 12, color: white.withOpacity(.6)),
+                      CustomizedText(text: 'disabled'.tr, fontSize: 12, color: white.withOpacity(.6)),
                       Switch(
                         activeThumbImage: const AssetImage("assets/icon/play.png"),
                         inactiveThumbImage: const AssetImage("assets/icon/mute.png"),
-                        value: play == 1 ? true : false,
-                        onChanged: (bool value) async {
-                          if (value) {
-                            await db!.execute("UPDATE SMART_CARE SET AUDIO = 1;");
-                          } else {
-                            await db!.execute("UPDATE SMART_CARE SET AUDIO = 0;");
-                          }
-                          _(() => play = value ? 1 : 0);
-                        },
+                        value: false,
+                        onChanged: (bool value) async {},
                         activeTrackColor: blue,
                         activeColor: white,
                         inactiveTrackColor: grey,

@@ -1,5 +1,6 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
@@ -9,6 +10,7 @@ import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/article.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:http/http.dart' as http;
 
 import '../stuff/classes.dart';
 
@@ -20,6 +22,31 @@ class Articles extends StatefulWidget {
 }
 
 class _ArticlesState extends State<Articles> {
+  Future<List<Map<String, dynamic>>> _fetchNews() async {
+    String url = 'https://newsapi.org/v2/everything?q=healthcare&apiKey=$newsApiKey';
+    http.Response response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = json.decode(response.body);
+      List<dynamic> articleData = data['articles'];
+      List<Map<String, dynamic>> articles = [];
+      for (Map<String, dynamic> article in articleData) {
+        Map<String, dynamic> articleMap = {
+          'title': article['title'],
+          'description': article['description'],
+          'url': article['url'],
+          'urlToImage': article['urlToImage'],
+          'content': article['content'],
+          'author': article['author'],
+          'publishedAt': article['publishedAt'],
+        };
+        articles.add(articleMap);
+      }
+      return articles;
+    } else {
+      return Future.error(response.reasonPhrase!);
+    }
+  }
+
   final GlobalKey _typeKey = GlobalKey();
   final List<String> _types = const <String>["All", "Politics", "Sport", "Education", "Health", "World", "Gaming", "Astronomy"];
   String _type = "All";
@@ -59,14 +86,14 @@ class _ArticlesState extends State<Articles> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                future: FirebaseFirestore.instance.collection("articles").orderBy("publishedAt", descending: true).get(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+              child: FutureBuilder<List<Map<String, dynamic>>>(
+                future: _fetchNews(),
+                builder: (BuildContext context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
                   if (snapshot.hasData) {
                     return StatefulBuilder(
                       key: _typeKey,
                       builder: (BuildContext context, void Function(void Function()) _) {
-                        final List<QueryDocumentSnapshot<Map<String, dynamic>>> articles = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> article) => article.get("topic").contains(_type == "All" ? "" : _type)).toList();
+                        final List<Map<String, dynamic>> articles = snapshot.data!;
                         if (articles.isNotEmpty) {
                           return ListView.builder(
                             padding: EdgeInsets.zero,
@@ -74,20 +101,25 @@ class _ArticlesState extends State<Articles> {
                             itemBuilder: (BuildContext context, int index) => Padding(
                               padding: const EdgeInsets.only(bottom: 12.0),
                               child: GestureDetector(
-                                onTap: () => goTo(Article(article: articles[index].data())),
+                                onTap: () => goTo(Article(article: articles[index])),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Container(width: 90, height: 100, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), image: DecorationImage(image: CachedNetworkImageProvider(articles[index].get("urlToImage")), fit: BoxFit.cover))),
+                                    Container(
+                                      width: 90,
+                                      height: 100,
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), image: articles[index]["urlToImage"] != null ? DecorationImage(image: CachedNetworkImageProvider(articles[index]["urlToImage"]), fit: BoxFit.cover) : null),
+                                      child: articles[index]["urlToImage"] == null ? const Center(child: Icon(FontAwesomeIcons.userDoctor, size: 35, color: grey)) : null,
+                                    ),
                                     const SizedBox(width: 10),
                                     Expanded(
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Container(padding: const EdgeInsets.all(4.0), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue.withOpacity(.2)), child: CustomizedText(text: articles[index].get("topic"), color: white, fontSize: 16, fontWeight: FontWeight.bold)),
-                                          CustomizedText(text: articles[index].get("title"), color: white, fontSize: 18, fontWeight: FontWeight.bold),
-                                          CustomizedText(text: getDateRepresentation(DateTime.parse(articles[index].get("publishedAt"))), color: white.withOpacity(.8), fontSize: 14),
+                                          Container(padding: const EdgeInsets.all(4.0), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue.withOpacity(.2)), child: const CustomizedText(text: "Health Care", color: white, fontSize: 16, fontWeight: FontWeight.bold)),
+                                          Flexible(child: CustomizedText(text: articles[index]["title"], color: white, fontSize: 18, fontWeight: FontWeight.bold)),
+                                          CustomizedText(text: getDateRepresentation(DateTime.parse(articles[index]["publishedAt"])), color: white.withOpacity(.8), fontSize: 14),
                                         ],
                                       ),
                                     ),
@@ -108,7 +140,7 @@ class _ArticlesState extends State<Articles> {
                   }
                 },
               ),
-            )
+            ),
           ],
         ),
       ),

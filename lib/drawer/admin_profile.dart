@@ -73,14 +73,6 @@ class AdminProfile extends StatelessWidget {
                           const SizedBox(height: 10),
                           Row(
                             children: <Widget>[
-                              const Icon(FontAwesomeIcons.locationPinLock, size: 15, color: blue),
-                              const SizedBox(width: 10),
-                              CustomizedText(text: 'Location ( ${snapshot.data!.get("location").isEmpty ? "Monastir, Tunisia" : snapshot.data!.get("location")} )', fontSize: 16, color: white.withOpacity(.8)),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: <Widget>[
                               const Icon(FontAwesomeIcons.envelope, size: 15, color: blue),
                               const SizedBox(width: 10),
                               CustomizedText(text: 'E-mail ( ${snapshot.data!.get("email")} )', fontSize: 16, color: white.withOpacity(.8)),

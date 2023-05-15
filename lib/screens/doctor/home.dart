@@ -103,7 +103,7 @@ class _HomeState extends State<Home> {
                                                 child: Center(
                                                   child: CommentTreeWidget<Tree, Tree>(
                                                     Tree(text: data[index].get("patientName"), icon: null),
-                                                    <Tree>[Tree(text: 'filledForms'.tr, icon: FontAwesomeIcons.table), Tree(text: 'prescriptions'.tr, icon: FontAwesomeIcons.folder), Tree(text: 'bloodTests'.tr, icon: FontAwesomeIcons.folder)],
+                                                    <Tree>[Tree(text: 'filledForms'.tr, icon: FontAwesomeIcons.table), Tree(text: 'prescriptions'.tr, icon: FontAwesomeIcons.folder), Tree(text: 'bloodTests'.tr, icon: FontAwesomeIcons.staffSnake)],
                                                     treeThemeData: const TreeThemeData(lineColor: grey, lineWidth: 1),
                                                     avatarRoot: (BuildContext context, Tree _) => PreferredSize(preferredSize: const Size.fromRadius(18), child: CircleAvatar(radius: 20, backgroundImage: data[index].get("patientImageUrl") == noUser ? null : CachedNetworkImageProvider(data[index].get("patientImageUrl")), backgroundColor: grey.withOpacity(.2), child: data[index].get("patientImageUrl") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 15))),
                                                     avatarChild: (BuildContext context, Tree value) => PreferredSize(preferredSize: const Size.fromRadius(18), child: CircleAvatar(radius: 20, backgroundColor: grey.withOpacity(.2), child: Icon(value.icon, color: grey, size: 15))),

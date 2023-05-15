@@ -28,11 +28,20 @@ class PatientFolder extends StatefulWidget {
 }
 
 class _PatientFolderState extends State<PatientFolder> {
+  final TextEditingController _medicalGuideController = TextEditingController();
+
   final Map<String, String> _collections = const <String, String>{
     "Filled Forms": "filled_forms",
     "Blood Tests": "blood_tests",
     "Prescriptions": "prescriptions",
   };
+
+  @override
+  void dispose() {
+    _medicalGuideController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,17 +60,19 @@ class _PatientFolderState extends State<PatientFolder> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-                Row(children: <Widget>[
-                  IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white)),
-                  const Spacer(),
-                  const CircleAvatar(radius: 12, backgroundColor: blue),
-                  const SizedBox(width: 50)
-                ]),
+                Row(
+                  children: <Widget>[
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white)),
+                    const Spacer(),
+                    const CircleAvatar(radius: 12, backgroundColor: blue),
+                    const SizedBox(width: 50)
+                  ],
+                ),
                 const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
                 const SizedBox(height: 10),
                 CommentTreeWidget<String, String>(
@@ -123,6 +134,28 @@ class _PatientFolderState extends State<PatientFolder> {
                                   const SizedBox(height: 10),
                                   for (int index = 0; index < data.length; index++)
                                     GestureDetector(
+                                      onLongPress: () {
+                                        if (widget.collection == "Filled Forms") {
+                                          _medicalGuideController.text = data[index].get("conduite_a_tenir");
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) => AlertDialog(
+                                              title: const CustomizedText(text: 'Modify Medical Guide'),
+                                              content: TextField(controller: _medicalGuideController),
+                                              actions: <Widget>[
+                                                TextButton(child: const CustomizedText(text: 'Cancel', fontSize: 16), onPressed: () => Navigator.of(context).pop()),
+                                                TextButton(
+                                                  child: const CustomizedText(text: 'Confirm', fontSize: 16),
+                                                  onPressed: () async {
+                                                    await data[index].reference.update({"conduite_a_tenir": _medicalGuideController.text.trim()}).then((void value) => Navigator.of(context).pop());
+                                                    sendPushNotificationFCM(token: data[index].get("token"), username: data[index].get("name"), message: "Doctor confirmed your medical guide");
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }
+                                      },
                                       onTap: () async {
                                         try {
                                           final bytes = await get(Uri.parse(data[index].get('prescriptionUrl')));

@@ -25,10 +25,9 @@ Future<void> main() async {
 
   await openDB();
 
-  Map<String, dynamic> userData = (await db!.rawQuery("SELECT FIRST_TIME,AUDIO FROM SMART_CARE WHERE ID = 1;")).first;
+  Map<String, dynamic> userData = (await db!.rawQuery("SELECT FIRST_TIME FROM SMART_CARE WHERE ID = 1;")).first;
 
   firstTime = userData["FIRST_TIME"];
-  play = userData["AUDIO"];
 
   await AwesomeNotifications().initialize(null, <NotificationChannel>[NotificationChannel(channelKey: "basic_channel", channelName: "Smart Care", channelDescription: "Welcome")]);
   await AwesomeNotifications().isNotificationAllowed().then((bool value) async => !value ? await AwesomeNotifications().requestPermissionToSendNotifications() : null);

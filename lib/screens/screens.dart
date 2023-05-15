@@ -9,7 +9,7 @@ import 'package:smart_care/screens/patient/chats.dart' as patient_chat;
 import 'package:smart_care/screens/patient/historic.dart' as patient_historic;
 import 'package:smart_care/screens/patient/home.dart' as patient_home;
 import 'package:smart_care/screens/doctor/home.dart' as doctor_home;
-import 'package:smart_care/screens/patient/upload.dart' as patient_upload;
+import 'package:smart_care/screens/laboratory/home.dart' as laboratory_home;
 import 'package:smart_care/screens/patient/workflow.dart' as patient_workflow;
 import 'package:smart_care/screens/admin/dashboard.dart' as admin_dashboard;
 import 'package:smart_care/stuff/classes.dart';
@@ -26,18 +26,25 @@ class Screens extends StatefulWidget {
 class _ScreensState extends State<Screens> {
   final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
   final PageController _screensController = PageController();
-  final List<Map<String, dynamic>> _screens = <Map<String, dynamic>>[
-    {"screen": const patient_home.Home(), "icon": FontAwesomeIcons.house, "role": "patient"},
-    {"screen": const doctor_home.Home(), "icon": FontAwesomeIcons.house, "role": "doctor"},
-    {"screen": const patient_upload.Upload(), "icon": FontAwesomeIcons.camera, "role": "patient"},
-    {"screen": const patient_workflow.WorkFlow(), "icon": FontAwesomeIcons.sheetPlastic, "role": "patient"},
-    {"screen": const patient_chat.Chats(), "icon": FontAwesomeIcons.solidMessage, "role": "patient"},
-    {"screen": const doctor_chat.Chats(), "icon": FontAwesomeIcons.solidMessage, "role": "doctor"},
-    {"screen": const patient_historic.Historic(), "icon": FontAwesomeIcons.solidFolder, "role": "patient"},
-    {"screen": const admin_dashboard.Dashboard(), "icon": FontAwesomeIcons.chartGantt, "role": "admin"},
+  final List<Map<String, dynamic>> _patientScreens = const <Map<String, dynamic>>[
+    <String, dynamic>{"screen": patient_home.Home(), "icon": FontAwesomeIcons.house},
+    <String, dynamic>{"screen": patient_workflow.WorkFlow(), "icon": FontAwesomeIcons.sheetPlastic},
+    <String, dynamic>{"screen": patient_chat.Chats(), "icon": FontAwesomeIcons.solidMessage},
+    <String, dynamic>{"screen": patient_historic.Historic(), "icon": FontAwesomeIcons.solidFolder},
   ];
-  List<Map<String, dynamic>> _filteredScreens = <Map<String, dynamic>>[];
+  final List<Map<String, dynamic>> _doctorScreens = const <Map<String, dynamic>>[
+    <String, dynamic>{"screen": doctor_home.Home(), "icon": FontAwesomeIcons.house},
+    <String, dynamic>{"screen": doctor_chat.Chats(), "icon": FontAwesomeIcons.solidMessage},
+  ];
+  final List<Map<String, dynamic>> _adminScreens = const <Map<String, dynamic>>[
+    <String, dynamic>{"screen": admin_dashboard.Dashboard(), "icon": FontAwesomeIcons.chartGantt},
+  ];
+  final List<Map<String, dynamic>> _laboratoryScreens = const <Map<String, dynamic>>[
+    <String, dynamic>{"screen": laboratory_home.Home(), "icon": FontAwesomeIcons.house},
+  ];
+
   final GlobalKey _screensKey = GlobalKey();
+
   int _activeIndex = 0;
 
   @override
@@ -49,9 +56,7 @@ class _ScreensState extends State<Screens> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: drawerScaffoldKey,
         drawer: const HealthDrawer(),
@@ -61,26 +66,34 @@ class _ScreensState extends State<Screens> {
             if (snapshot.hasData) {
               me = snapshot.data!.data()!;
               me["token"] = userToken;
-              _filteredScreens = _screens.where((Map<String, dynamic> item) => item["role"] == snapshot.data!.get("role")).toList();
+              final List<Map<String, dynamic>> filteredScreens = me["role"] == "laboratory"
+                  ? _laboratoryScreens
+                  : me["role"] == "patient"
+                      ? _patientScreens
+                      : me["role"] == "doctor"
+                          ? _doctorScreens
+                          : _adminScreens;
               return Stack(
                 alignment: AlignmentDirectional.bottomCenter,
-                children: [
+                children: <Widget>[
                   Column(
                     children: <Widget>[
                       Expanded(
-                        child: StatefulBuilder(builder: (BuildContext context, void Function(void Function()) _) {
-                          return PageView(
-                            physics: _activeIndex == 2 ? const NeverScrollableScrollPhysics() : null,
-                            onPageChanged: (int page) {
-                              _screensKey.currentState!.setState(() => _activeIndex = page);
-                              if (_activeIndex == 2) {
-                                _(() {});
-                              }
-                            },
-                            controller: _screensController,
-                            children: _filteredScreens.map((Map<String, dynamic> page) => page["screen"] as Widget).toList(),
-                          );
-                        }),
+                        child: StatefulBuilder(
+                          builder: (BuildContext context, void Function(void Function()) _) {
+                            return PageView(
+                              physics: _activeIndex == 2 ? const NeverScrollableScrollPhysics() : null,
+                              onPageChanged: (int page) {
+                                _screensKey.currentState!.setState(() => _activeIndex = page);
+                                if (_activeIndex == 2) {
+                                  _(() {});
+                                }
+                              },
+                              controller: _screensController,
+                              children: filteredScreens.map((Map<String, dynamic> page) => page["screen"] as Widget).toList(),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -92,15 +105,8 @@ class _ScreensState extends State<Screens> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
-                          onTap: () {
-                            drawerScaffoldKey.currentState!.openDrawer();
-                          },
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                            child: const Icon(FontAwesomeIcons.ellipsisVertical, size: 15, color: grey),
-                          ),
+                          onTap: () => drawerScaffoldKey.currentState!.openDrawer(),
+                          child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.ellipsisVertical, size: 15, color: grey)),
                         ),
                       ),
                       const Spacer(),
@@ -116,7 +122,7 @@ class _ScreensState extends State<Screens> {
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
-                                  for (int screen = 0; screen < _filteredScreens.length; screen++)
+                                  for (int screen = 0; screen < filteredScreens.length; screen++)
                                     CustomIcon(
                                       clicked: _activeIndex == screen ? true : false,
                                       func: () {
@@ -125,7 +131,7 @@ class _ScreensState extends State<Screens> {
                                           _screensController.jumpToPage(screen);
                                         });
                                       },
-                                      icon: _filteredScreens[screen]["icon"],
+                                      icon: filteredScreens[screen]["icon"],
                                     ),
                                 ],
                               );
@@ -139,9 +145,7 @@ class _ScreensState extends State<Screens> {
                 ],
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(color: blue),
-              );
+              return const Center(child: CircularProgressIndicator(color: blue));
             } else {
               return ErrorRoom(error: snapshot.error.toString());
             }

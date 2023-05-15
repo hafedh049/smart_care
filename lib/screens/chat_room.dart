@@ -42,6 +42,11 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -50,10 +55,6 @@ class _ChatRoomState extends State<ChatRoom> {
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(25))),
           centerTitle: false,
           leading: IconButton(highlightColor: Colors.transparent, splashColor: Colors.transparent, focusColor: Colors.transparent, onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white)),
-          actions: <Widget>[
-            IconButton(highlightColor: Colors.transparent, splashColor: Colors.transparent, focusColor: Colors.transparent, onPressed: () {}, icon: const Icon(FontAwesomeIcons.video, size: 15, color: white)),
-            IconButton(highlightColor: Colors.transparent, splashColor: Colors.transparent, focusColor: Colors.transparent, onPressed: () {}, icon: const Icon(FontAwesomeIcons.phone, size: 15, color: white)),
-          ],
           title: Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -93,6 +94,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 },
               ).toList();
               return Chat(
+                theme: const DarkChatTheme(),
                 scrollPhysics: const BouncingScrollPhysics(),
                 isLastPage: true,
                 useTopSafeAreaInset: true,
@@ -105,7 +107,6 @@ class _ChatRoomState extends State<ChatRoom> {
                 showUserNames: true,
                 user: _user,
                 textMessageOptions: TextMessageOptions(isTextSelectable: true, onLinkPressed: (String link) async => await launchUrlString(link), openOnPreviewImageTap: true, openOnPreviewTitleTap: true),
-                isAttachmentUploading: true,
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator(color: Colors.blue));
@@ -170,7 +171,7 @@ class _ChatRoomState extends State<ChatRoom> {
             {"owner_id": me["uid"], "file_uri": uri, "created_at": now, "file_id": now.toString(), "name": result.files.single.name, "size": bytes.length, "type": "file", "mimeType": lookupMimeType(result.files.single.path!)},
           ).then(
             (void value) async {
-              await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).update({
+              await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set({
                 "last_message": {"message": result.files.single.name, "timestamp": now}
               }).then(
                 (void value) async {
@@ -178,7 +179,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     {"owner_id": me["uid"], "file_uri": uri, "created_at": now, "file_id": now.toString(), "name": result.files.single.name, "size": bytes.length, "type": "file", "mimeType": lookupMimeType(result.files.single.path!)},
                   ).then(
                     (void value) async {
-                      await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).update({
+                      await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).set({
                         "last_message": {"message": result.files.single.name, "timestamp": now}
                       });
                       _addMessage(types.FileMessage(author: _user, uri: uri, name: result.files.single.name, size: bytes.length, id: now.toString(), createdAt: now.toDate().millisecond));
@@ -206,7 +207,7 @@ class _ChatRoomState extends State<ChatRoom> {
             {"owner_id": me["uid"], "image_uri": uri, "created_at": now, "image_id": now.toString(), "name": result.name, "size": bytes.length, "type": "image"},
           ).then(
             (void value) async {
-              await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).update({
+              await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set({
                 "last_message": {"message": result.name, "timestamp": now},
               }).then(
                 (void value) async {
@@ -214,7 +215,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     {"owner_id": me["uid"], "image_uri": uri, "created_at": now, "image_id": now.toString(), "name": result.name, "size": bytes.length, "type": "image"},
                   ).then(
                     (void value) async {
-                      await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).update({
+                      await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).set({
                         "last_message": {"message": result.name, "timestamp": now}
                       });
                       _addMessage(types.ImageMessage(author: _user, uri: uri, name: result.name, size: bytes.length, id: now.toString(), createdAt: now.toDate().millisecond));
@@ -231,18 +232,18 @@ class _ChatRoomState extends State<ChatRoom> {
 
   void _handleSendPressed(types.PartialText message) async {
     final Timestamp now = Timestamp.now();
+    _addMessage(types.TextMessage(author: _user, id: now.toString(), text: message.text));
     await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).collection("content").add({"owner_id": me["uid"], "message_id": now.toString(), "message": message.text, "created_at": now, "type": "text"}).then(
       (void value) async {
-        await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).update({
+        await FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(widget.talkTo["uid"]).set({
           "last_message": {"message": message.text, "timestamp": now}
         }).then(
           (void value) async {
             await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).collection("content").add({"owner_id": me["uid"], "message_id": now.toString(), "message": message.text, "created_at": now, "type": "text"}).then(
               (void value) async {
-                await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).update({
+                await FirebaseFirestore.instance.collection("chats").doc(widget.talkTo["uid"]).collection("messages").doc(me["uid"]).set({
                   "last_message": {"message": message.text, "timestamp": now}
                 });
-                _addMessage(message as types.TextMessage);
                 if (widget.talkTo["token"].isNotEmpty) {
                   sendPushNotificationFCM(token: widget.talkTo["token"], username: me["name"], message: message.text);
                 }
