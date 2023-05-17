@@ -88,7 +88,7 @@ class _ChatsState extends State<Chats> {
               const SizedBox(height: 10),
               Expanded(
                 child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  future: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").get(),
+                  future: FirebaseFirestore.instance.collection("chats").where("participants", arrayContains: me["uid"]).get(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> chatSnapshot) {
                     if (chatSnapshot.hasData) {
                       if (chatSnapshot.data!.docs.isEmpty) {
@@ -98,22 +98,26 @@ class _ChatsState extends State<Chats> {
                         return StatefulBuilder(
                           key: _searchKey,
                           builder: (BuildContext context, void Function(void Function()) _) {
-                            final List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = chatSnapshot.data!.docs;
+                            final List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = chatSnapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) {
+                              final List<dynamic> namesList = element.get("names");
+                              namesList.remove(me["name"]);
+                              return namesList.first.toLowerCase().contains(_searchController.text.toLowerCase().trim());
+                            }).toList();
                             return doctorsList.isEmpty
                                 ? Center(child: CustomizedText(text: 'noChatsUntilNow'.tr, fontSize: 20, color: white))
                                 : ListView.builder(
                                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     itemCount: doctorsList.length,
                                     itemBuilder: (BuildContext context, int index) {
-                                      return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                                        stream: FirebaseFirestore.instance.collection("users").doc(doctorsList[index].id.replaceAll(" ", "")).snapshots(),
+                                      final List<dynamic> uidsList = doctorsList[index].get("participants");
+                                      uidsList.remove(me["uid"]);
+                                      return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                                        future: FirebaseFirestore.instance.collection("users").doc(uidsList.first).get(),
                                         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> tileSnapshot) {
                                           if (tileSnapshot.hasData) {
                                             return ListTile(
                                               contentPadding: EdgeInsets.zero,
-                                              onTap: () {
-                                                goTo(ChatRoom(talkTo: tileSnapshot.data!.data()!));
-                                              },
+                                              onTap: () => goTo(ChatRoom(talkTo: tileSnapshot.data!.data()!)),
                                               leading: Stack(
                                                 alignment: AlignmentDirectional.bottomEnd,
                                                 children: <Widget>[
@@ -127,42 +131,8 @@ class _ChatsState extends State<Chats> {
                                                 ],
                                               ),
                                               title: CustomizedText(text: tileSnapshot.data!.get("name"), fontSize: 16, fontWeight: FontWeight.bold),
-                                              subtitle: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                                                stream: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(doctorsList[index].id).snapshots(),
-                                                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-                                                  return CustomizedText(
-                                                    text: snapshot.hasData
-                                                        ? snapshot.data!.exists
-                                                            ? snapshot.data != null
-                                                                ? snapshot.data!.get("last_message")["message"]
-                                                                : "No messages yet"
-                                                            : "No messages yet"
-                                                        : snapshot.connectionState == ConnectionState.waiting
-                                                            ? "..."
-                                                            : snapshot.error.toString(),
-                                                    fontSize: 14,
-                                                    color: white.withOpacity(.7),
-                                                  );
-                                                },
-                                              ),
-                                              trailing: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                                                stream: FirebaseFirestore.instance.collection("chats").doc(me["uid"]).collection("messages").doc(doctorsList[index].id).snapshots(),
-                                                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-                                                  return CustomizedText(
-                                                    text: snapshot.hasData
-                                                        ? snapshot.data!.exists
-                                                            ? snapshot.data != null
-                                                                ? getTimeFromDate(snapshot.data!.get("last_message")["timestamp"].toDate())
-                                                                : ""
-                                                            : ""
-                                                        : snapshot.connectionState == ConnectionState.waiting
-                                                            ? ""
-                                                            : snapshot.error.toString(),
-                                                    fontSize: 14,
-                                                    color: white.withOpacity(.7),
-                                                  );
-                                                },
-                                              ),
+                                              subtitle: SizedBox(height: 40, child: CustomizedText(text: doctorsList[index].get("last_message")["message"], fontSize: 14, color: white.withOpacity(.7))),
+                                              trailing: CustomizedText(text: getTimeFromDate(doctorsList[index].get("last_message")["timestamp"].toDate()), fontSize: 14, color: white.withOpacity(.7)),
                                             );
                                           } else if (tileSnapshot.connectionState == ConnectionState.waiting) {
                                             return const ListTileShimmer();

@@ -42,8 +42,8 @@ class SmartSettings extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                        stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+                      FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                        future: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get(),
                         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
                           if (snapshot.hasData) {
                             return CustomizedText(text: snapshot.data!.get("name"), fontSize: 18, color: white);
@@ -107,7 +107,7 @@ class SmartSettings extends StatelessWidget {
                   CircleAvatar(radius: 25, backgroundColor: blue.withOpacity(.2), child: const Icon(FontAwesomeIcons.moon, color: blue, size: 15)),
                   CustomizedText(text: 'darkMode'.tr, fontSize: 18, color: white),
                   CustomizedText(text: 'on'.tr, fontSize: 12, color: white.withOpacity(.6)),
-                  Switch(activeThumbImage: const AssetImage("assets/icon/moon.png"), inactiveThumbImage: const AssetImage("assets/icon/sun.png"), value: darkTheme == 1 ? true : false, onChanged: (bool value) => darkTheme = value ? 1 : 0, activeTrackColor: blue, activeColor: white, inactiveTrackColor: grey),
+                  Switch(activeThumbImage: const AssetImage("assets/icon/moon.png"), inactiveThumbImage: const AssetImage("assets/icon/sun.png"), value: true, onChanged: (bool value) {}, activeTrackColor: blue, activeColor: white, inactiveTrackColor: grey),
                 ],
               ),
             ),

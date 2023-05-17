@@ -121,7 +121,10 @@ class GoogleAuth extends StatelessWidget {
                   await FirebaseAuth.instance.signInWithCredential(googleCredential);
                   showToast(text: 'accountLinkedWithGoogle'.tr);
                   await getToken();
-                  await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"token": userToken}).then((void value) async {
+                  await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({
+                    "token": userToken,
+                    "status": true,
+                  }).then((void value) async {
                     await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
                   });
                 }
@@ -150,9 +153,7 @@ class OTPAuth extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
-        onTap: () {
-          goTo(const OTPView());
-        },
+        onTap: () => goTo(const OTPView()),
         child: Container(
           height: 40,
           width: MediaQuery.of(context).size.width * .6,

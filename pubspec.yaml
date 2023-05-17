@@ -51,7 +51,6 @@ dependencies:
   flutter_chat_bubble: ^2.0.2
   flutter_keyboard_visibility: ^5.4.0
   day_night_time_picker: ^1.2.0+2
-  flutter_password_strength: ^0.1.6
   comment_tree: ^0.3.0
   get_time_ago: ^1.1.8
   pdf: ^3.9.0

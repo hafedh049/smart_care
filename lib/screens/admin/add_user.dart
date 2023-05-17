@@ -3,11 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_password_strength/flutter_password_strength.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:smart_care/authentification/pwd_strength.dart';
 
 import '../../stuff/classes.dart';
 import '../../stuff/functions.dart';
@@ -28,10 +28,7 @@ class _AddUserState extends State<AddUser> {
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey _passwordStrenghtKey = GlobalKey();
-  final GlobalKey _passwordStrenghtTextKey = GlobalKey();
-  String _text = "";
-  Color _color = red;
-  final List<bool> _rolesList = <bool>[false, true];
+  final List<bool> _rolesList = <bool>[false, false, false];
 
   @override
   void dispose() {
@@ -93,39 +90,7 @@ class _AddUserState extends State<AddUser> {
                       const SizedBox(height: 10),
                       CustomTextField(func: (String text) => _passwordStrenghtKey.currentState!.setState(() {}), validator: fieldsValidator["password"], controller: _passwordController, hint: 'password'.tr, prefix: FontAwesomeIcons.lock, obscured: true),
                       const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: StatefulBuilder(
-                          key: _passwordStrenghtKey,
-                          builder: (BuildContext context, void Function(void Function()) _) {
-                            return FlutterPasswordStrength(
-                              backgroundColor: transparent,
-                              strengthCallback: (double strength) {
-                                Future.delayed(
-                                  300.ms,
-                                  () => _passwordStrenghtTextKey.currentState!.setState(
-                                    () {
-                                      if (strength >= 0 && strength < .2) {
-                                        _text = 'weak'.tr;
-                                        _color = red;
-                                      } else if (strength > .2 && strength < .8) {
-                                        _text = 'medium'.tr;
-                                        _color = blue;
-                                      } else {
-                                        _text = 'strong'.tr;
-                                        _color = green;
-                                      }
-                                    },
-                                  ),
-                                );
-                              },
-                              password: _passwordController.text.trim(),
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      StatefulBuilder(key: _passwordStrenghtTextKey, builder: (BuildContext context, void Function(void Function()) _) => CustomizedText(text: _text, color: _color, fontSize: 14, fontWeight: FontWeight.bold)),
+                      Padding(padding: const EdgeInsets.only(right: 8.0), child: StatefulBuilder(key: _passwordStrenghtKey, builder: (BuildContext context, void Function(void Function()) _) => PasswordStrength(password: _passwordController.text.trim()))),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -186,7 +151,7 @@ class _AddUserState extends State<AddUser> {
                                     "uid": FirebaseAuth.instance.currentUser!.uid,
                                     "image_url": noUser,
                                     "email": _emailController.text.trim(),
-                                    "password": _passwordController.text.trim(),
+                                    "hospital": "",
                                     "phone_number": _phoneController.text.trim(),
                                     "status": false,
                                     "date_of_birth": DateTime(1970),

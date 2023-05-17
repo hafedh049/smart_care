@@ -6,12 +6,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_password_strength/flutter_password_strength.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
+import 'package:smart_care/authentification/pwd_strength.dart';
 import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
@@ -38,9 +38,7 @@ class _SignUpState extends State<SignUp> {
   final GlobalKey _nextKey = GlobalKey();
   final GlobalKey _previousKey = GlobalKey();
   final GlobalKey _passwordStrenghtKey = GlobalKey();
-  final GlobalKey _passwordStrenghtTextKey = GlobalKey();
 
-  String _text = "Weak";
   bool _next = true;
   bool _previous = false;
   String _completePhoneNumber = "";
@@ -95,16 +93,17 @@ class _SignUpState extends State<SignUp> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   CustomIcon(
-                                      size: 25,
-                                      func: () {
-                                        if (_profilePicture != null) {
-                                          _profilePictureKey.currentState!.setState(() {
-                                            _profilePicture = null;
-                                          });
-                                        }
-                                        Navigator.pop(context);
-                                      },
-                                      icon: FontAwesomeIcons.x),
+                                    size: 25,
+                                    func: () {
+                                      if (_profilePicture != null) {
+                                        _profilePictureKey.currentState!.setState(() {
+                                          _profilePicture = null;
+                                        });
+                                      }
+                                      Navigator.pop(context);
+                                    },
+                                    icon: FontAwesomeIcons.x,
+                                  ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -171,36 +170,7 @@ class _SignUpState extends State<SignUp> {
                           const SizedBox(height: 20),
                           CustomTextField(func: (String text) => _passwordStrenghtKey.currentState!.setState(() {}), validator: fieldsValidator["password"], controller: _passwordController, hint: 'password'.tr, prefix: FontAwesomeIcons.lock, obscured: true),
                           const SizedBox(height: 10),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: StatefulBuilder(
-                              key: _passwordStrenghtKey,
-                              builder: (BuildContext context, void Function(void Function()) _) {
-                                return FlutterPasswordStrength(
-                                  strengthCallback: (double strength) {
-                                    Future.delayed(
-                                      300.ms,
-                                      () => _passwordStrenghtTextKey.currentState!.setState(
-                                        () {
-                                          if (strength >= 0 && strength < .2) {
-                                            _text = 'weak'.tr;
-                                          } else if (strength > .2 && strength < .8) {
-                                            _text = 'medium'.tr;
-                                          } else {
-                                            _text = 'strong'.tr;
-                                          }
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  password: _passwordController.text.trim(),
-                                );
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          StatefulBuilder(key: _passwordStrenghtTextKey, builder: (BuildContext context, void Function(void Function()) _) => CustomizedText(text: _text, color: white, fontSize: 14, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 10),
+                          Flexible(child: Padding(padding: const EdgeInsets.only(right: 8.0), child: StatefulBuilder(key: _passwordStrenghtKey, builder: (BuildContext context, void Function(void Function()) _) => PasswordStrength(password: _passwordController.text.trim())))),
                         ],
                       ),
                       Column(

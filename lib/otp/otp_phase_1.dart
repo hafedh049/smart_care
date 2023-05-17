@@ -6,7 +6,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl_phone_field/countries.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:smart_care/otp/opt_phase_2.dart';
@@ -60,13 +59,13 @@ class _OTPViewState extends State<OTPView> {
                   child: IntlPhoneField(
                     initialCountryCode: "TN",
                     cursorColor: blue,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter your phone number',
-                      border: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                      disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: blue)),
-                      errorBorder: OutlineInputBorder(borderSide: BorderSide(color: red)),
+                    decoration: InputDecoration(
+                      hintText: 'Enter your phone number'.tr,
+                      border: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                      enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                      disabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                      focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
+                      errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: red)),
                     ),
                     dropdownTextStyle: GoogleFonts.roboto(fontSize: 16),
                     inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[\d \+]'))],
@@ -74,7 +73,6 @@ class _OTPViewState extends State<OTPView> {
                     dropdownDecoration: const BoxDecoration(),
                     textInputAction: TextInputAction.done,
                     onChanged: (PhoneNumber value) => _fullPhoneNumber = value.completeNumber,
-                    onCountryChanged: (Country value) {},
                   ),
                 ),
                 const SizedBox(height: 40),

@@ -83,8 +83,8 @@ class Home extends StatelessWidget {
                     Row(
                       children: <Widget>[
                         Expanded(
-                          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                            stream: FirebaseFirestore.instance.collection("appointments").where("patientID", isEqualTo: me["uid"].trim()).limit(1).snapshots(),
+                          child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                            future: FirebaseFirestore.instance.collection("appointments").where("patientID", isEqualTo: me["uid"].trim()).limit(1).get(),
                             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                               if (snapshot.hasData) {
                                 final List<QueryDocumentSnapshot<Map<String, dynamic>>> appointments = snapshot.data!.docs;

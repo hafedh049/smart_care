@@ -40,7 +40,7 @@ Database? db;
 
 //Network Images
 const String chatBot = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/smart_bot.png?alt=media&token=99ba8285-3b29-489a-a473-a81cc228e3d3";
-const String noUser = 'https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/doctor-icon.png?alt=media&token=69e755f5-e674-4064-a97e-708f2ec8c25c';
+const String noUser = 'https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/noUser.png?alt=media&token=476f6c72-ce24-497e-ad28-d4e3e0b3ee6b';
 const String rodeOfAsclepius = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/virus.jpg?alt=media&token=0bdcf248-dab6-4e77-a7f5-ce8a9667fc19";
 const String doctorRod = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/WallpaperDog-5497244-min.jpg?alt=media&token=d66c6ae6-8b28-4c58-8d1f-2d41106f44b3";
 const String appIcon = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/health.png?alt=media&token=5b9a461b-bf46-4dfd-bc83-e8ec9a66f990";
@@ -112,7 +112,7 @@ final Map<String, String? Function(String?)?> fieldsValidator = <String, String?
   "password": (String? text) {
     if (text!.isEmpty) {
       return 'passwordshouldnotbeempty'.tr;
-    } else if (!text.contains(RegExp(r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$'))) {
+    } else if (!text.contains(RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z0-9]{6,}$'))) {
       return 'passwordexpressionshouldbeatleastcharactersmustcontainatleastuppercaseletterlowercaseletterandnumberandcancontainspecialcharacters'.tr;
     }
     return null;
@@ -130,26 +130,6 @@ final Map<String, String? Function(String?)?> fieldsValidator = <String, String?
       return 'iDmustnotbeempty'.tr;
     } else if (!text.contains(RegExp(r'^\d{8}$'))) {
       return 'wrongformatforIDItmuststartwithandcontainsalphanumericcaracters'.tr;
-    }
-    return null;
-  },
-  "age": (String? text) {
-    if (text!.isEmpty) {
-      return 'emptyAge'.tr;
-    } else if (!text.contains(RegExp(r'^\d{1,2}$'))) {
-      return 'ageContainsOnlyDigits'.tr;
-    }
-    return null;
-  },
-  "job location": (String? text) {
-    if (text!.isEmpty) {
-      return 'youmustprovideyourworklocationplease'.tr;
-    }
-    return null;
-  },
-  "speciality": (String? text) {
-    if (text!.isEmpty) {
-      return 'pleasechooseoneofthelistedspecialities'.tr;
     }
     return null;
   },

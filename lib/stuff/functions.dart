@@ -137,53 +137,7 @@ Future<String> getChatResponse(String input) async {
   return chatResponse;
 }
 
-String? Function(String?)? articleValidator(String field) {
-  if (field == "article_title") {
-    return (String? text) {
-      if (text!.isEmpty) {
-        return "You should set the article title";
-      } else if (!text.contains(RegExp(r"^[\w \?\!\,\.\:\<\>]{6,}$"))) {
-        return "Article title contains only alphanumeric characters, spaces and these characters '?,!,.,:,<,>'";
-      }
-      return null;
-    };
-  } else if (field == "content") {
-    return (String? text) {
-      if (text!.isEmpty) {
-        return "Content field is mandatory";
-      } else if (!text.contains(RegExp(r".{10,}"))) {
-        return "write at least 4 or 5 words";
-      }
-      return null;
-    };
-  } else if (field == "channel_name") {
-    return (String? text) {
-      if (text!.isEmpty) {
-        return "You should write the channel name";
-      } else if (!text.contains(RegExp(r"^[\w \,\.]{6,}$"))) {
-        return "Channel name contains only alphabets";
-      }
-      return null;
-    };
-  } else if (field == "author") {
-    return (String? text) {
-      if (text!.isEmpty) {
-        return "Author field should not be empty";
-      } else if (!text.contains(RegExp(r"^[\w \,\.]{6,}$"))) {
-        return "It should be a propre name";
-      }
-      return null;
-    };
-  } else if (field == "description") {
-    return (String? text) {
-      return null;
-    };
-  } else {
-    return (String? text) {
-      if (text!.isEmpty) {
-        return "You should put a description to this article.";
-      }
-      return null;
-    };
-  }
+String getChatId(List<String> ids) {
+  ids.sort();
+  return '${ids[0]}_${ids[1]}';
 }
