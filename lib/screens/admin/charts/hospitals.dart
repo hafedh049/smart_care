@@ -18,13 +18,13 @@ class Hospitals extends StatefulWidget {
 class _HospitalsState extends State<Hospitals> {
   @override
   void initState() async {
-    await SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.landscapeLeft]);
+    SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.landscapeLeft]);
     super.initState();
   }
 
   @override
   void dispose() async {
-    await SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]);
+    SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]);
     super.dispose();
   }
 
@@ -58,12 +58,7 @@ class _HospitalsState extends State<Hospitals> {
                         return BarChart(
                           BarChartData(
                             barTouchData: BarTouchData(enabled: true),
-                            titlesData: FlTitlesData(
-                              show: true,
-                              rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                              bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true)),
-                            ),
+                            titlesData: FlTitlesData(show: true, rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)), topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)), bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true))),
                             borderData: FlBorderData(show: false),
                             barGroups: bars,
                           ),
@@ -86,31 +81,13 @@ class _HospitalsState extends State<Hospitals> {
                       <String, dynamic>{"name": "Mahdia", "color": blue},
                       <String, dynamic>{"name": "Monastir", "color": blue},
                     ])
-                      Container(
-                        margin: const EdgeInsets.only(right: 8.0, bottom: 8.0),
-                        child: Row(
-                          children: <Widget>[
-                            Container(width: 30, height: 30, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: legend["color"])),
-                            const SizedBox(width: 10),
-                            CustomizedText(text: legend["name"], fontSize: 18, fontWeight: FontWeight.bold, color: white),
-                          ],
-                        ),
-                      ),
+                      Container(margin: const EdgeInsets.only(right: 8.0, bottom: 8.0), child: Row(children: <Widget>[Container(width: 30, height: 30, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: legend["color"])), const SizedBox(width: 10), CustomizedText(text: legend["name"], fontSize: 18, fontWeight: FontWeight.bold)])),
                   ],
                 ),
                 const SizedBox(width: 20),
               ],
             ),
-            GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                padding: const EdgeInsets.all(8.0),
-                child: const Center(child: Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white)),
-              ),
-            ),
+            GestureDetector(onTap: () => Navigator.pop(context), child: Container(width: 40, height: 40, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)), padding: const EdgeInsets.all(8.0), child: const Center(child: Icon(FontAwesomeIcons.chevronLeft, size: 15)))),
           ],
         ),
       ),

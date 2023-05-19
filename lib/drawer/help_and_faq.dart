@@ -13,7 +13,7 @@ class HelpAndFAQ extends StatefulWidget {
 }
 
 class _HelpAndFAQState extends State<HelpAndFAQ> {
-  final List<Map<String, String>> _texts = <Map<String, String>>[
+  final List<Map<String, String>> _texts = const <Map<String, String>>[
     <String, String>{"state": "Header", "text": "Welcome to our mobile app! We are here to help you get the most out of our product. Below you'll find some frequently asked questions and answers to help you navigate our app."},
     <String, String>{"state": "Space", "number": "\n\n"},
     <String, String>{"state": "Big Title", "text": "Getting Started"},
@@ -49,7 +49,7 @@ class _HelpAndFAQState extends State<HelpAndFAQ> {
     <String, String>{"state": "Space", "number": "\n\n"},
     <String, String>{"state": "Big Title", "text": "Contact Support"},
     <String, String>{"state": "Space", "number": "\n"},
-    <String, String>{"state": "Footer", "first_half": "If you still have questions or need additional help, please contact our customer support team at ", "link": "support@ourapp.com.", "second_half": " We're always here to help you make the most of our product."},
+    <String, String>{"state": "Footer", "first_half": "If you still have questions or need additional help, please contact our customer support team at ", "link": "www.fmm.tn", "second_half": " We're always here to help you make the most of our product."},
     <String, String>{"state": "Space", "number": "\n"},
     <String, String>{"state": "Normal", "text": 'We hope this help page has been informative and helpful. Thank you for choosing our app!.'},
   ];
@@ -63,16 +63,16 @@ class _HelpAndFAQState extends State<HelpAndFAQ> {
   void _loadTexts() {
     _animatedTextsList.add(
       (_texts[_index]["state"] == "Header")
-          ? TypewriterAnimatedText(_texts[_index]["text"]!, textStyle: GoogleFonts.roboto(fontSize: 18, color: green, fontWeight: FontWeight.bold))
+          ? TypewriterAnimatedText(_texts[_index]["text"]!, textStyle: GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.bold))
           : (_texts[_index]["state"] == "Big Title")
               ? TypewriterAnimatedText(_texts[_index]["text"]!, textStyle: GoogleFonts.roboto(fontSize: 24, color: blue, fontWeight: FontWeight.bold))
               : (_texts[_index]["state"] == "Title")
-                  ? TypewriterAnimatedText("\u25A0 ${_texts[_index]["text"]}", textStyle: GoogleFonts.roboto(fontSize: 16, color: Colors.tealAccent, fontWeight: FontWeight.bold))
+                  ? TypewriterAnimatedText("\u25A0 ${_texts[_index]["text"]}", textStyle: GoogleFonts.roboto(fontSize: 16, color: blue, fontWeight: FontWeight.bold))
                   : (_texts[_index]["state"] == "Footer")
-                      ? TypewriterAnimatedText("${_texts[_index]["first_half"]}${_texts[_index]["link"]}${_texts[_index]["second_half"]}", textStyle: GoogleFonts.roboto(fontSize: 18, color: green, fontWeight: FontWeight.bold))
+                      ? TypewriterAnimatedText("${_texts[_index]["first_half"]}${_texts[_index]["link"]}${_texts[_index]["second_half"]}", textStyle: GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.bold))
                       : (_texts[_index]["state"] == "Normal")
-                          ? TypewriterAnimatedText("    ${_texts[_index]["text"]}", textStyle: GoogleFonts.roboto(fontSize: 14, color: white, fontWeight: FontWeight.bold))
-                          : TypewriterAnimatedText(_texts[_index]["number"]!, textStyle: GoogleFonts.roboto(fontSize: 14, color: white, fontWeight: FontWeight.bold)),
+                          ? TypewriterAnimatedText("    ${_texts[_index]["text"]}", textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.bold))
+                          : TypewriterAnimatedText(_texts[_index]["number"]!, textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.bold)),
     );
   }
 
@@ -92,7 +92,6 @@ class _HelpAndFAQState extends State<HelpAndFAQ> {
       resizeToAvoidBottomInset: false,
       extendBody: true,
       extendBodyBehindAppBar: true,
-      backgroundColor: darkBlue,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -105,6 +104,7 @@ class _HelpAndFAQState extends State<HelpAndFAQ> {
                   const SizedBox(height: 50),
                   for (int index = 0; index < _animatedTextsList.length; index++)
                     AnimatedTextKit(
+                      displayFullTextOnTap: true,
                       animatedTexts: <AnimatedText>[_animatedTextsList[index]],
                       isRepeatingAnimation: false,
                       pause: 500.ms,

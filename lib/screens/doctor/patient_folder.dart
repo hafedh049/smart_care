@@ -45,17 +45,16 @@ class _PatientFolderState extends State<PatientFolder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkBlue,
       resizeToAvoidBottomInset: false,
       extendBody: true,
       extendBodyBehindAppBar: true,
       body: Padding(
-        padding: const EdgeInsets.only(left: 8.0),
+        padding: const EdgeInsets.only(left: 8),
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           padding: EdgeInsets.zero,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -67,7 +66,7 @@ class _PatientFolderState extends State<PatientFolder> {
                           Navigator.pop(context);
                           Navigator.pop(context);
                         },
-                        icon: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white)),
+                        icon: const Icon(FontAwesomeIcons.chevronLeft, size: 15)),
                     const Spacer(),
                     const CircleAvatar(radius: 12, backgroundColor: blue),
                     const SizedBox(width: 50)
@@ -98,7 +97,7 @@ class _PatientFolderState extends State<PatientFolder> {
                     future: FirebaseFirestore.instance.collection("users").doc(widget.patientId).get(),
                     builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
                       if (snapshot.hasData) {
-                        return Container(padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: CustomizedText(text: snapshot.data!.get("name"), fontSize: 16, fontWeight: FontWeight.bold, color: white));
+                        return Container(padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: CustomizedText(text: snapshot.data!.get("name"), fontSize: 16, fontWeight: FontWeight.bold));
                       } else if (snapshot.connectionState == ConnectionState.waiting) {
                         return const ListTileShimmer();
                       } else {
@@ -106,7 +105,7 @@ class _PatientFolderState extends State<PatientFolder> {
                       }
                     },
                   ),
-                  avatarChild: (BuildContext context, String _) => PreferredSize(preferredSize: const Size.fromRadius(20), child: CircleAvatar(backgroundColor: grey.withOpacity(.2), child: Icon(widget.icon, size: 18, color: white))),
+                  avatarChild: (BuildContext context, String _) => PreferredSize(preferredSize: const Size.fromRadius(20), child: CircleAvatar(backgroundColor: grey.withOpacity(.2), child: Icon(widget.icon, size: 18))),
                   contentChild: (BuildContext context, String __) {
                     return AnimatedContainer(
                       duration: 300.ms,
@@ -120,9 +119,9 @@ class _PatientFolderState extends State<PatientFolder> {
                             if (data.isEmpty) {
                               return Row(
                                 children: <Widget>[
-                                  CustomizedText(text: widget.collection, fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                                  CustomizedText(text: widget.collection, fontSize: 16, fontWeight: FontWeight.bold),
                                   const Spacer(),
-                                  CustomizedText(text: "( ${'empty'.tr} )", fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                                  CustomizedText(text: "( ${'empty'.tr} )", fontSize: 16, fontWeight: FontWeight.bold),
                                 ],
                               );
                             } else {
@@ -130,7 +129,7 @@ class _PatientFolderState extends State<PatientFolder> {
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  CustomizedText(text: widget.collection, fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                                  CustomizedText(text: widget.collection, fontSize: 16, fontWeight: FontWeight.bold),
                                   const SizedBox(height: 10),
                                   for (int index = 0; index < data.length; index++)
                                     GestureDetector(
@@ -176,16 +175,16 @@ class _PatientFolderState extends State<PatientFolder> {
                                           children: <Widget>[
                                             Container(decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)), width: 1, height: 60),
                                             const SizedBox(width: 10),
-                                            const Icon(FontAwesomeIcons.filePdf, color: white, size: 35),
+                                            const Icon(FontAwesomeIcons.filePdf, size: 35),
                                             const SizedBox(width: 10),
                                             Expanded(
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: <Widget>[
-                                                  CustomizedText(text: getTimeFromDate(data[index].get("timestamp").toDate()), fontSize: 12, color: white.withOpacity(.8)),
+                                                  CustomizedText(text: getTimeFromDate(data[index].get("timestamp").toDate()), fontSize: 12),
                                                   const SizedBox(height: 5),
-                                                  Flexible(child: CustomizedText(text: "$index", fontSize: 16, fontWeight: FontWeight.bold, color: white)),
+                                                  Flexible(child: CustomizedText(text: "$index", fontSize: 16, fontWeight: FontWeight.bold)),
                                                 ],
                                               ),
                                             ),

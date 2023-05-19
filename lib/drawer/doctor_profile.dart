@@ -15,15 +15,14 @@ class DoctorProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkBlue,
       body: Stack(
         children: <Widget>[
           Column(children: <Widget>[const SizedBox(height: 250), Expanded(child: Container(decoration: const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(35), topRight: Radius.circular(35)), color: blue)))]),
-          Column(children: <Widget>[const SizedBox(height: 550), Expanded(child: Container(decoration: const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(35), topRight: Radius.circular(35)), color: darkBlue)))]),
+          Column(children: <Widget>[const SizedBox(height: 450), Expanded(child: Container(decoration: BoxDecoration(borderRadius: const BorderRadius.only(topLeft: Radius.circular(35), topRight: Radius.circular(35)), color: white.withOpacity(.4))))]),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+            padding: const EdgeInsets.all(8),
+            child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              future: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get(),
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
                 if (snapshot.hasData) {
                   return Column(
@@ -34,7 +33,7 @@ class DoctorProfile extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           GestureDetector(onTap: () => Navigator.pop(context), child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey))),
-                          CustomizedText(text: 'doctorProfile'.tr, fontSize: 18, fontWeight: FontWeight.bold, color: white),
+                          CustomizedText(text: 'doctorProfile'.tr, fontSize: 18, fontWeight: FontWeight.bold),
                           GestureDetector(onTap: () {}, child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.ellipsisVertical, size: 15, color: grey))),
                         ],
                       ),
@@ -51,40 +50,40 @@ class DoctorProfile extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomizedText(text: "Dr. ${snapshot.data!.get("name")}", fontSize: 18, fontWeight: FontWeight.bold, color: white),
+                                CustomizedText(text: "Dr. ${snapshot.data!.get("name")}", fontSize: 18, fontWeight: FontWeight.bold),
                                 const SizedBox(height: 5),
-                                Flexible(child: CustomizedText(text: snapshot.data!.get("grade"), fontSize: 14, color: white.withOpacity(.8))),
+                                Flexible(child: CustomizedText(text: snapshot.data!.get("grade"), fontSize: 14, color: grey.withOpacity(.8))),
                               ],
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 30),
-                      Center(child: Container(width: 30, height: 3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: white))),
+                      Center(child: Container(width: 30, height: 3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)))),
                       const SizedBox(height: 30),
-                      const CustomizedText(text: "Calendar", fontSize: 20, fontWeight: FontWeight.bold, color: white),
+                      const CustomizedText(text: "Calendar", fontSize: 20, fontWeight: FontWeight.bold),
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           for (int day in <int>[DateTime.now().subtract(2.days).day, DateTime.now().subtract(1.days).day, DateTime.now().day, DateTime.now().add(1.days).day, DateTime.now().add(2.days).day])
                             Container(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: day == DateTime.now().day ? white : transparent),
-                              child: day == DateTime.now().day ? Column(children: <Widget>[CustomizedText(text: showWeekDay(day), fontSize: 16, color: darkBlue), const SizedBox(height: 5), CustomizedText(text: "${day < 10 ? '0' : ''}$day", fontSize: 20, fontWeight: FontWeight.bold, color: darkBlue), const SizedBox(height: 5), const CircleAvatar(radius: 4, backgroundColor: blue)]) : Column(children: <Widget>[CustomizedText(text: "${day < 10 ? '0' : ''}$day", fontSize: 20, fontWeight: FontWeight.bold, color: white), const SizedBox(height: 10), CustomizedText(text: showWeekDay(day), fontSize: 16, color: white)]),
+                              child: day == DateTime.now().day ? Column(children: <Widget>[CustomizedText(text: showWeekDay(day), fontSize: 16, color: darkBlue), const SizedBox(height: 5), CustomizedText(text: "${day < 10 ? '0' : ''}$day", fontSize: 20, fontWeight: FontWeight.bold, color: darkBlue), const SizedBox(height: 5), const CircleAvatar(radius: 4, backgroundColor: blue)]) : Column(children: <Widget>[CustomizedText(text: "${day < 10 ? '0' : ''}$day", fontSize: 20, fontWeight: FontWeight.bold), const SizedBox(height: 10), CustomizedText(text: showWeekDay(day), fontSize: 16)]),
                             ),
                         ],
                       ),
                       const SizedBox(height: 30),
-                      Center(child: Container(width: 30, height: 3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: white))),
+                      Center(child: Container(width: 30, height: 3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)))),
                       const SizedBox(height: 30),
-                      CustomizedText(text: 'about'.tr, fontSize: 20, fontWeight: FontWeight.bold, color: white),
+                      CustomizedText(text: 'about'.tr, fontSize: 20, fontWeight: FontWeight.bold),
                       const SizedBox(height: 20),
-                      Expanded(child: SizedBox(child: SingleChildScrollView(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [CustomizedText(text: snapshot.data!.get("about").isEmpty ? "--" : snapshot.data!.get("about"), fontSize: 14, color: white)])))),
+                      Expanded(child: SizedBox(child: SingleChildScrollView(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [CustomizedText(text: snapshot.data!.get("about").isEmpty ? "Not Set" : snapshot.data!.get("about"), fontSize: 14)])))),
                     ],
                   );
                 } else if (snapshot.connectionState == ConnectionState.waiting) {
-                  return ListView.builder(itemCount: 8, itemBuilder: (context, index) => const ListTileShimmer());
+                  return const Center(child: CircularProgressIndicator(color: blue));
                 } else {
                   return ErrorRoom(error: snapshot.error.toString());
                 }

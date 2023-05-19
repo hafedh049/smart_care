@@ -59,20 +59,17 @@ class _PrescriptionState extends State<Prescription> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         extendBody: true,
         extendBodyBehindAppBar: true,
-        backgroundColor: darkBlue,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-            Row(children: <Widget>[IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white)), const Spacer(), const CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
+            Row(children: <Widget>[IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesomeIcons.chevronLeft, size: 15)), const Spacer(), const CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
             const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
             const SizedBox(height: 10),
             Expanded(
@@ -192,8 +189,8 @@ class _PrescriptionState extends State<Prescription> {
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                stream: FirebaseFirestore.instance.collection("users").doc(widget.patientID).snapshots(),
+              child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                future: FirebaseFirestore.instance.collection("users").doc(widget.patientID).get(),
                 builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
                   if (snapshot.hasData) {
                     _patientData = snapshot.data!.data()!;
@@ -214,8 +211,8 @@ class _PrescriptionState extends State<Prescription> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            CustomizedText(text: 'speciality'.tr, color: grey, fontSize: 16),
-                            Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: me["speciality"], color: grey, fontSize: 16))),
+                            CustomizedText(text: 'Grade'.tr, color: grey, fontSize: 16),
+                            Container(padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: CustomizedText(text: me["grade"], color: grey, fontSize: 16)),
                           ],
                         ),
                         const SizedBox(height: 10),
@@ -303,7 +300,7 @@ class _PrescriptionState extends State<Prescription> {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () async => await _pageController.previousPage(duration: 300.ms, curve: Curves.bounceIn),
-                          child: AnimatedContainer(duration: 700.ms, height: 40, width: 100, padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: _page.round() != 0 ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Center(child: CustomizedText(text: 'pREV'.tr, color: white, fontSize: 16))),
+                          child: AnimatedContainer(duration: 700.ms, height: 40, width: 100, padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: _page.round() != 0 ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Center(child: CustomizedText(text: 'pREV'.tr, fontSize: 16))),
                         ),
                         GestureDetector(
                           onTap: () async {
@@ -383,7 +380,7 @@ class _PrescriptionState extends State<Prescription> {
                               }
                             }
                           },
-                          child: AnimatedContainer(duration: 700.ms, height: 40, width: 100, padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: _page.round() < 4 ? blue : green.withOpacity(.7), borderRadius: BorderRadius.circular(5)), child: Center(child: CustomizedText(text: _page.round() < 4 ? 'next'.tr : 'print'.tr, color: white, fontSize: 16))),
+                          child: AnimatedContainer(duration: 700.ms, height: 40, width: 100, padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: _page.round() < 4 ? blue : green.withOpacity(.7), borderRadius: BorderRadius.circular(5)), child: Center(child: CustomizedText(text: _page.round() < 4 ? 'next'.tr : 'print'.tr, fontSize: 16))),
                         ),
                       ],
                     ),

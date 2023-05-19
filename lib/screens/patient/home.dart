@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:smart_care/drawer/profile.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/articles.dart';
@@ -24,12 +25,11 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkBlue,
       resizeToAvoidBottomInset: false,
       extendBody: true,
       extendBodyBehindAppBar: true,
       body: Padding(
-        padding: const EdgeInsets.only(left: 8.0),
+        padding: const EdgeInsets.only(left: 8),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +42,7 @@ class Home extends StatelessWidget {
                     if (snapshot.hasData) {
                       return Column(
                         children: <Widget>[
-                          GestureDetector(onTap: () => goTo(const Profile()), child: CircleAvatar(radius: 30, backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")), backgroundColor: grey.withOpacity(.2), child: snapshot.data!.get("image_url") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 25))),
+                          GestureDetector(onTap: () async => await goTo(const Profile()), child: CircleAvatar(radius: 30, backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")), backgroundColor: grey.withOpacity(.2), child: snapshot.data!.get("image_url") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 25))),
                           const SizedBox(height: 15),
                           Row(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: <Widget>[CustomizedText(text: 'hello'.tr, fontSize: 22), CustomizedText(text: snapshot.data!.get("name"), fontSize: 22, fontWeight: FontWeight.bold)]),
                         ],
@@ -57,7 +57,7 @@ class Home extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               GestureDetector(
-                onTap: () => goTo(const FilterList()),
+                onTap: () async => await goTo(const FilterList()),
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(color: grey.withOpacity(.5), borderRadius: const BorderRadius.only(topRight: Radius.circular(7), bottomRight: Radius.circular(7), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15))),
@@ -75,10 +75,10 @@ class Home extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.only(bottom: 8.0, top: 8.0, right: 8.0),
+                padding: const EdgeInsets.only(bottom: 8, top: 8, right: 8),
                 child: Column(
                   children: <Widget>[
-                    Row(children: <Widget>[CustomizedText(text: 'upcomingAppointment'.tr, fontSize: 16, color: white, fontWeight: FontWeight.bold), const Spacer(), GestureDetector(onTap: () => goTo(const FetchAllAppointments()), child: CustomizedText(text: 'seeAll'.tr, fontSize: 14, color: blue, fontWeight: FontWeight.bold))]),
+                    Row(children: <Widget>[CustomizedText(text: 'upcomingAppointment'.tr, fontSize: 16, fontWeight: FontWeight.bold), const Spacer(), GestureDetector(onTap: () async => await goTo(const FetchAllAppointments()), child: CustomizedText(text: 'seeAll'.tr, fontSize: 14, color: blue, fontWeight: FontWeight.bold))]),
                     const SizedBox(height: 10),
                     Row(
                       children: <Widget>[
@@ -91,63 +91,67 @@ class Home extends StatelessWidget {
                                 if (appointments.isEmpty) {
                                   return Container(
                                     height: 180,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius), fit: BoxFit.cover)),
-                                    child: Center(child: CustomizedText(text: 'noAppointmentsYet'.tr.toUpperCase(), fontSize: 20, color: white, fontWeight: FontWeight.bold)),
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: grey.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius), fit: BoxFit.cover)),
+                                    child: Center(child: CustomizedText(text: 'noAppointmentsYet'.tr.toUpperCase(), fontSize: 20, fontWeight: FontWeight.bold)),
                                   );
                                 } else {
-                                  final QueryDocumentSnapshot<Map<String, dynamic>> firstAppointment = snapshot.data!.docs.first;
-                                  return GestureDetector(
-                                    onTap: () => goTo(Summary(data: firstAppointment.data())),
-                                    child: Container(
-                                      height: 180,
-                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius), fit: BoxFit.cover)),
-                                      child: Column(
-                                        children: <Widget>[
-                                          const SizedBox(height: 20),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              CircleAvatar(radius: 50, backgroundImage: firstAppointment.get("doctorImageUrl") == noUser ? null : CachedNetworkImageProvider(firstAppointment.get("doctorImageUrl")), backgroundColor: grey.withOpacity(.2), child: firstAppointment.get("doctorImageUrl") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 35)),
-                                              const SizedBox(width: 10),
-                                              Flexible(
-                                                child: Container(
-                                                  decoration: BoxDecoration(color: blue.withOpacity(.4), borderRadius: BorderRadius.circular(15)),
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: <Widget>[
-                                                      CustomizedText(text: firstAppointment.get("doctorName"), fontSize: 16, color: white, fontWeight: FontWeight.bold),
-                                                      const SizedBox(height: 5),
-                                                      CustomizedText(text: firstAppointment.get("doctorSpeciality").isEmpty ? "--" : firstAppointment.get("doctorSpeciality"), fontSize: 14, color: white.withOpacity(.8)),
-                                                    ],
+                                  if (snapshot.data!.docs.isNotEmpty) {
+                                    final QueryDocumentSnapshot<Map<String, dynamic>> firstAppointment = snapshot.data!.docs.first;
+                                    return GestureDetector(
+                                      onTap: () async => await goTo(Summary(data: firstAppointment.data())),
+                                      child: Container(
+                                        height: 180,
+                                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: grey.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius), fit: BoxFit.cover)),
+                                        child: Column(
+                                          children: <Widget>[
+                                            const SizedBox(height: 20),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                CircleAvatar(radius: 50, backgroundImage: firstAppointment.get("doctorImageUrl") == noUser ? null : CachedNetworkImageProvider(firstAppointment.get("doctorImageUrl")), backgroundColor: grey.withOpacity(.2), child: firstAppointment.get("doctorImageUrl") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 35)),
+                                                const SizedBox(width: 10),
+                                                Flexible(
+                                                  child: Container(
+                                                    decoration: BoxDecoration(color: blue.withOpacity(.2), borderRadius: BorderRadius.circular(15)),
+                                                    padding: const EdgeInsets.all(8),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: <Widget>[
+                                                        CustomizedText(text: firstAppointment.get("doctorName"), fontSize: 16, fontWeight: FontWeight.bold),
+                                                        const SizedBox(height: 5),
+                                                        CustomizedText(text: firstAppointment.get("doctorSpeciality").isEmpty ? "Not Set Yet." : firstAppointment.get("doctorSpeciality"), fontSize: 14, color: grey.withOpacity(.8)),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          const Spacer(),
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue),
-                                            height: 30,
-                                            child: Row(
-                                              children: <Widget>[
-                                                Icon(FontAwesomeIcons.calendar, size: 12, color: white.withOpacity(.6)),
-                                                const SizedBox(width: 10),
-                                                CustomizedText(text: getDateRepresentation(firstAppointment.get("appointmentDate").toDate()), fontSize: 14, color: white, fontWeight: FontWeight.bold),
-                                                const Spacer(),
-                                                Icon(FontAwesomeIcons.clock, size: 12, color: white.withOpacity(.6)),
-                                                const SizedBox(width: 10),
-                                                CustomizedText(text: "${'at'.tr} ${firstAppointment.get('appointmentTime')}", fontSize: 14, color: white),
                                               ],
                                             ),
-                                          ),
-                                        ],
+                                            const Spacer(),
+                                            Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue),
+                                              height: 30,
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Icon(FontAwesomeIcons.calendar, size: 12, color: grey.withOpacity(.6)),
+                                                  const SizedBox(width: 10),
+                                                  CustomizedText(text: getDateRepresentation(firstAppointment.get("appointmentDate").toDate()), fontSize: 14, fontWeight: FontWeight.bold),
+                                                  const Spacer(),
+                                                  Icon(FontAwesomeIcons.clock, size: 12, color: grey.withOpacity(.6)),
+                                                  const SizedBox(width: 10),
+                                                  CustomizedText(text: "${'at'.tr} ${firstAppointment.get('appointmentTime')}", fontSize: 14),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  } else {
+                                    return Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: <Widget>[LottieBuilder.asset("assets/lottie/notFound.json", height: 300), const SizedBox(height: 20), Center(child: CustomizedText(text: "No Appointments Yet.".tr, fontSize: 18))]));
+                                  }
                                 }
                               } else if (snapshot.connectionState == ConnectionState.waiting) {
                                 return const Center(child: CircularProgressIndicator(color: blue));
@@ -159,13 +163,13 @@ class Home extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         GestureDetector(
-                          onTap: () => goTo(const FilterList()),
+                          onTap: () async => await goTo(const FilterList()),
                           child: Container(
                             height: 180,
-                            padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 16.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
                             width: 40,
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius), fit: BoxFit.cover)),
-                            child: const Center(child: CustomizedText(text: "+", fontSize: 30, color: white, fontWeight: FontWeight.bold)),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: grey.withOpacity(.2), image: const DecorationImage(image: CachedNetworkImageProvider(rodeOfAsclepius), fit: BoxFit.cover)),
+                            child: const Center(child: CustomizedText(text: "+", fontSize: 30, fontWeight: FontWeight.bold)),
                           ),
                         ),
                       ],
@@ -175,31 +179,31 @@ class Home extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.only(bottom: 8.0, top: 8.0, right: 8.0),
+                padding: const EdgeInsets.only(bottom: 8, top: 8, right: 8),
                 child: Column(
                   children: <Widget>[
-                    Row(children: <Widget>[CustomizedText(text: 'articles'.tr, fontSize: 16, color: white, fontWeight: FontWeight.bold), const Spacer(), GestureDetector(onTap: () => goTo(const Articles()), child: CustomizedText(text: 'seeAll'.tr, fontSize: 14, color: blue, fontWeight: FontWeight.bold))]),
+                    Row(children: <Widget>[CustomizedText(text: 'articles'.tr, fontSize: 16, fontWeight: FontWeight.bold), const Spacer(), GestureDetector(onTap: () async => await goTo(const Articles()), child: CustomizedText(text: 'seeAll'.tr, fontSize: 14, color: blue, fontWeight: FontWeight.bold))]),
                     const SizedBox(height: 10),
                     StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                      stream: FirebaseFirestore.instance.collection("articles").limit(3).snapshots(),
+                      stream: FirebaseFirestore.instance.collection("articles").limit(2).snapshots(),
                       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                         if (snapshot.hasData) {
                           if (snapshot.data!.docs.isNotEmpty) {
                             final QueryDocumentSnapshot<Map<String, dynamic>> firstArtical = snapshot.data!.docs[Random().nextInt(snapshot.data!.docs.length)];
                             return GestureDetector(
-                              onTap: () => goTo(Article(article: firstArtical.data())),
+                              onTap: () async => await goTo(Article(article: firstArtical.data())),
                               child: Row(
                                 children: <Widget>[
                                   Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue), height: 20, width: 20),
                                   const SizedBox(width: 10),
-                                  Expanded(child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: firstArtical.get("title"), fontSize: 16, color: white, fontWeight: FontWeight.bold))),
+                                  Expanded(child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomizedText(text: firstArtical.get("title"), fontSize: 16, fontWeight: FontWeight.bold))),
                                   const SizedBox(width: 10),
-                                  Container(padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue), height: 20, width: 20, child: const Center(child: Icon(FontAwesomeIcons.chevronRight, size: 10, color: white))),
+                                  Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue), height: 20, width: 20, child: const Center(child: Icon(FontAwesomeIcons.chevronRight, size: 10))),
                                 ],
                               ),
                             );
                           } else {
-                            return Container(height: 80, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white.withOpacity(.2)), child: Center(child: CustomizedText(text: 'noArticles'.tr, fontSize: 16, color: white, fontWeight: FontWeight.bold)));
+                            return Container(height: 80, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: grey.withOpacity(.2)), child: Center(child: CustomizedText(text: 'noArticles'.tr, fontSize: 16, fontWeight: FontWeight.bold)));
                           }
                         } else if (snapshot.connectionState == ConnectionState.waiting) {
                           return const ListTileShimmer();
@@ -211,7 +215,7 @@ class Home extends StatelessWidget {
                   ],
                 ),
               ),
-              LayoutBuilder(builder: (BuildContext context, BoxConstraints boxConstraints) => SizedBox(height: MediaQuery.of(context).padding.bottom > 0 ? 100 : 80)),
+              SizedBox(height: MediaQuery.of(context).padding.bottom > 0 ? 100 : 80)
             ],
           ),
         ),

@@ -22,7 +22,7 @@ const Color grey = Colors.grey;
 
 //global variables
 int? firstTime;
-int darkTheme = 1;
+int theme = 1;
 String userToken = "";
 const String appTitle = "Smart Care";
 const String aboutUs = "Welcome to our telemedicine platform, built using the Flutter cross-platform framework, designed to provide primary prevention and prompt medical assistance in case of an AES (accident d'explosion du sang). Our platform is not only for patients, but it also caters to healthcare professionals who can monitor their patient's health status in real-time. Our platform's primary objective is to assist people in preventing AES by conducting daily and monthly checkups and sending SMS or notification reminders. In case of an AES event, our platform provides a workflow that patients can follow and get the final results from our laboratory experts. We understand the importance of medical assistance during an AES event; hence, we have provided a direct chat option with doctors. In addition, we have integrated a smart chatbot built on top of ChatGPT 3.5 for faster responses to queries when doctors are unavailable. Our telemedicine platform is fully customizable, with two themes - light and dark, and supports eight languages, making it user-friendly for people from diverse backgrounds. You can also enable gesture and message sounds to personalize your experience.Our platform offers a multitude of benefits for both patients and healthcare professionals. Patients can access medical assistance from the comfort of their homes, while healthcare professionals can monitor their patient's health status and offer timely intervention. We believe that our telemedicine platform can help reduce the incidence of AES and save lives.";
@@ -91,8 +91,8 @@ final List<Map<String, dynamic>> adminCards = <Map<String, dynamic>>[
   <String, dynamic>{"name": 'patientsList'.tr, "widget": const PatientsList(), "color": const Color.fromARGB(255, 246, 206, 206), "icon": FontAwesomeIcons.ellipsis},
   <String, dynamic>{"name": 'doctorsList'.tr, "widget": const DoctorsList(), "color": const Color.fromARGB(255, 195, 227, 255), "icon": FontAwesomeIcons.ellipsisVertical},
   <String, dynamic>{"name": 'Hospitals Chart'.tr, "widget": const Hospitals(), "color": const Color.fromARGB(255, 70, 130, 180), "icon": FontAwesomeIcons.chartBar},
-  <String, dynamic>{"name": 'Grades'.tr, "widget": const Grades(), "color": green, "icon": FontAwesomeIcons.chartLine},
-  <String, dynamic>{"name": 'Services'.tr, "widget": const Services(), "color": const Color.fromARGB(255, 255, 204, 0), "icon": FontAwesomeIcons.chartColumn},
+  <String, dynamic>{"name": 'Grades Chart'.tr, "widget": const Grades(), "color": green, "icon": FontAwesomeIcons.chartLine},
+  <String, dynamic>{"name": 'Services Chart'.tr, "widget": const Services(), "color": const Color.fromARGB(255, 255, 204, 0), "icon": FontAwesomeIcons.chartColumn},
 ];
 
 const List<Transition> animatedTransitions = Transition.values;

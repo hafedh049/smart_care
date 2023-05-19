@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
 
 import 'dart:io';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -30,12 +31,15 @@ class ChatRoom extends StatefulWidget {
 }
 
 class _ChatRoomState extends State<ChatRoom> {
+  final GlobalKey _chatKey = GlobalKey();
+  final GlobalKey _nameKey = GlobalKey();
   List<types.Message> _messages = <types.Message>[];
   late final types.User _user;
   String _user1ID = '';
   String _user2ID = '';
   List<String> _usersIDS = <String>[];
   String _chatId = "";
+  bool _theme = false;
   @override
   void initState() {
     super.initState();
@@ -48,52 +52,80 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(25))),
           centerTitle: false,
-          leading: IconButton(highlightColor: Colors.transparent, splashColor: Colors.transparent, focusColor: Colors.transparent, onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: white)),
+          leading: IconButton(highlightColor: transparent, splashColor: transparent, focusColor: transparent, onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesomeIcons.chevronLeft, size: 15)),
           title: Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               CircleAvatar(radius: 20, backgroundImage: widget.talkTo["image_url"] == noUser ? null : CachedNetworkImageProvider(widget.talkTo["image_url"]), backgroundColor: grey.withOpacity(.2), child: widget.talkTo["image_url"] != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 15)),
               const SizedBox(width: 5),
-              Flexible(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: widget.talkTo["name"], fontSize: 16, fontWeight: FontWeight.bold, color: white), CustomizedText(text: widget.talkTo["status"] ? "Online" : "Offline", fontSize: 14, color: blue)])),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    StatefulBuilder(
+                      key: _nameKey,
+                      builder: (context, snapshot) {
+                        return CustomizedText(text: widget.talkTo["name"], fontSize: 16, fontWeight: FontWeight.bold, color: _theme ? white : black);
+                      },
+                    ),
+                    CustomizedText(text: widget.talkTo["status"] ? "Online" : "Offline", fontSize: 14, color: blue)
+                  ],
+                ),
+              ),
             ],
           ),
-          backgroundColor: const Color(0xff2b2250),
+          actions: <Widget>[
+            StatefulBuilder(
+              builder: (BuildContext context, void Function(void Function()) _) {
+                return IconButton(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    onPressed: () => _(
+                          () {
+                            _chatKey.currentState!.setState(() => _theme = !_theme);
+                            theme = theme == 1 ? 0 : 1;
+                            _nameKey.currentState!.setState(() => _(() => theme == 1 ? AdaptiveTheme.of(context).setDark() : AdaptiveTheme.of(context).setLight()));
+                          },
+                        ),
+                    icon: Icon(!_theme ? FontAwesomeIcons.moon : FontAwesomeIcons.sun, size: 15));
+              },
+            ),
+          ],
         ),
-        backgroundColor: const Color(0xff1f1c38),
         body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: FirebaseFirestore.instance.collection("chats").doc(_chatId).collection("messages").orderBy("createdAt", descending: true).limit(10).snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.hasData) {
               final List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data == null ? <QueryDocumentSnapshot<Map<String, dynamic>>>[] : snapshot.data!.docs;
               _messages = data.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => types.Message.fromJson(e.data())).toList();
-              return Chat(
-                theme: const DarkChatTheme(messageBorderRadius: 10),
-                scrollPhysics: const BouncingScrollPhysics(),
-                isLastPage: true,
-                useTopSafeAreaInset: true,
-                bubbleRtlAlignment: BubbleRtlAlignment.left,
-                messages: _messages,
-                onAttachmentPressed: _handleAttachmentPressed,
-                onMessageTap: _handleMessageTap,
-                onSendPressed: _handleSendPressed,
-                showUserAvatars: true,
-                showUserNames: true,
-                user: _user,
-                textMessageOptions: TextMessageOptions(isTextSelectable: true, onLinkPressed: (String link) async => await launchUrlString(link), openOnPreviewImageTap: true, openOnPreviewTitleTap: true),
-              );
+              return StatefulBuilder(
+                  key: _chatKey,
+                  builder: (BuildContext context, void Function(void Function()) _) {
+                    return Chat(
+                      theme: _theme ? const DarkChatTheme(messageBorderRadius: 10, inputTextDecoration: InputDecoration(fillColor: transparent)) : const DefaultChatTheme(messageBorderRadius: 10, inputTextDecoration: InputDecoration(fillColor: transparent)),
+                      scrollPhysics: const BouncingScrollPhysics(),
+                      isLastPage: true,
+                      useTopSafeAreaInset: true,
+                      bubbleRtlAlignment: BubbleRtlAlignment.left,
+                      messages: _messages,
+                      onAttachmentPressed: _handleAttachmentPressed,
+                      onMessageTap: _handleMessageTap,
+                      onSendPressed: _handleSendPressed,
+                      showUserAvatars: true,
+                      showUserNames: true,
+                      onAvatarTap: (types.User user) => user.metadata!["image_url"] == null ? null : showDialog(context: context, builder: (BuildContext context) => AlertDialog(content: CachedNetworkImage(imageUrl: user.metadata!["image_url"]))),
+                      user: _user,
+                      textMessageOptions: TextMessageOptions(isTextSelectable: true, onLinkPressed: (String link) async => await launchUrlString(link), openOnPreviewImageTap: true, openOnPreviewTitleTap: true),
+                    );
+                  });
             } else if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator(color: Colors.blue));
             } else {
@@ -121,7 +153,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   Navigator.pop(context);
                   _handleImageSelection();
                 },
-                icon: const Icon(FontAwesomeIcons.photoFilm, color: white, size: 20),
+                icon: const Icon(FontAwesomeIcons.photoFilm, size: 20),
               ),
               Container(color: Colors.grey, width: .5, height: 50),
               IconButton(
@@ -129,7 +161,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   Navigator.pop(context);
                   _handleFileSelection();
                 },
-                icon: const Icon(FontAwesomeIcons.fileImport, color: white, size: 20),
+                icon: const Icon(FontAwesomeIcons.fileImport, size: 20),
               ),
             ],
           ),

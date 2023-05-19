@@ -48,9 +48,8 @@ class _AddUserState extends State<AddUser> {
         resizeToAvoidBottomInset: false,
         extendBody: true,
         extendBodyBehindAppBar: true,
-        backgroundColor: darkBlue,
         body: Padding(
-          padding: const EdgeInsets.only(left: 8.0),
+          padding: const EdgeInsets.only(left: 8),
           child: Form(
             key: _formKey,
             child: SingleChildScrollView(
@@ -62,7 +61,7 @@ class _AddUserState extends State<AddUser> {
                   Row(children: <Widget>[CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), const CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
                   const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
                   const SizedBox(height: 20),
-                  const Padding(padding: EdgeInsets.only(right: 8.0), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: "ADD", color: blue, fontWeight: FontWeight.bold), CustomizedText(text: "USER", fontWeight: FontWeight.bold)])),
+                  const Padding(padding: EdgeInsets.only(right: 8), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: "ADD", color: blue, fontWeight: FontWeight.bold), CustomizedText(text: "USER", fontWeight: FontWeight.bold)])),
                   const SizedBox(height: 30),
                   Column(
                     mainAxisSize: MainAxisSize.min,
@@ -90,7 +89,7 @@ class _AddUserState extends State<AddUser> {
                       const SizedBox(height: 10),
                       CustomTextField(func: (String text) => _passwordStrenghtKey.currentState!.setState(() {}), validator: fieldsValidator["password"], controller: _passwordController, hint: 'password'.tr, prefix: FontAwesomeIcons.lock, obscured: true),
                       const SizedBox(height: 10),
-                      Padding(padding: const EdgeInsets.only(right: 8.0), child: StatefulBuilder(key: _passwordStrenghtKey, builder: (BuildContext context, void Function(void Function()) _) => PasswordStrength(password: _passwordController.text.trim()))),
+                      Padding(padding: const EdgeInsets.only(right: 8), child: StatefulBuilder(key: _passwordStrenghtKey, builder: (BuildContext context, void Function(void Function()) _) => PasswordStrength(password: _passwordController.text.trim()))),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -101,7 +100,7 @@ class _AddUserState extends State<AddUser> {
                       CustomizedText(text: 'mayIhaveyourphonenumberplease'.tr, color: white, fontSize: 18),
                       const SizedBox(height: 10),
                       Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
+                        padding: const EdgeInsets.only(right: 8),
                         child: IntlPhoneField(
                           initialCountryCode: "TN",
                           controller: _phoneController,
@@ -152,11 +151,12 @@ class _AddUserState extends State<AddUser> {
                                     "image_url": noUser,
                                     "email": _emailController.text.trim(),
                                     "hospital": "",
+                                    "password": _passwordController.text.trim(),
                                     "phone_number": _phoneController.text.trim(),
                                     "status": false,
                                     "date_of_birth": DateTime(1970),
                                     "about": "",
-                                    "service": "",
+                                    "service": "Expert métier",
                                     "grade": "",
                                     "token": "",
                                   });
@@ -173,7 +173,7 @@ class _AddUserState extends State<AddUser> {
                             height: 40,
                             width: MediaQuery.of(context).size.width * .6,
                             decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)),
-                            child: const Padding(padding: EdgeInsets.all(8.0), child: Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[Spacer(), CustomizedText(text: "ADD", color: black, fontWeight: FontWeight.bold, fontSize: 20), Spacer(), Icon(FontAwesomeIcons.chevronRight, size: 15, color: black)])),
+                            child: const Padding(padding: EdgeInsets.all(8), child: Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[Spacer(), CustomizedText(text: "ADD", color: black, fontWeight: FontWeight.bold, fontSize: 20), Spacer(), Icon(FontAwesomeIcons.chevronRight, size: 15, color: black)])),
                           ),
                         );
                       },

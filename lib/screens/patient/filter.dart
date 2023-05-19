@@ -42,7 +42,6 @@ class _FilterListState extends State<FilterList> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: darkBlue,
         extendBody: true,
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
@@ -85,17 +84,17 @@ class _FilterListState extends State<FilterList> {
                           final List<QueryDocumentSnapshot<Map<String, dynamic>>> doctorsList = snapshot.data!.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get("uid") != me["uid"] && element.get("name").toLowerCase().contains(_searchController.text.trim().toLowerCase())).toList();
                           if (doctorsList.isNotEmpty) {
                             return ListView.builder(
-                              padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 8.0),
+                              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
                               itemCount: doctorsList.length,
                               itemBuilder: (BuildContext context, int index) => Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
+                                padding: const EdgeInsets.only(bottom: 8),
                                 child: ListTile(
                                   contentPadding: EdgeInsets.zero,
-                                  onTap: () => goTo(ChatRoom(talkTo: doctorsList[index].data())),
+                                  onTap: () async => await goTo(ChatRoom(talkTo: doctorsList[index].data())),
                                   leading: Stack(
                                     alignment: AlignmentDirectional.bottomEnd,
                                     children: <Widget>[
-                                      GestureDetector(onTap: () => goTo(AboutDoctor(uid: doctorsList[index].get("uid"))), child: CircleAvatar(radius: 25, backgroundColor: grey.withOpacity(.2), backgroundImage: doctorsList[index].get("image_url") == noUser ? null : CachedNetworkImageProvider(doctorsList[index].get("image_url")), child: doctorsList[index].get("image_url") == noUser ? const Icon(FontAwesomeIcons.user, size: 15, color: grey) : null)),
+                                      GestureDetector(onTap: () async => await goTo(AboutDoctor(uid: doctorsList[index].get("uid"))), child: CircleAvatar(radius: 25, backgroundColor: grey.withOpacity(.2), backgroundImage: doctorsList[index].get("image_url") == noUser ? null : CachedNetworkImageProvider(doctorsList[index].get("image_url")), child: doctorsList[index].get("image_url") == noUser ? const Icon(FontAwesomeIcons.user, size: 15, color: grey) : null)),
                                       CircleAvatar(radius: 5, backgroundColor: doctorsList[index].get("status") ? green : red),
                                     ],
                                   ),
@@ -104,13 +103,13 @@ class _FilterListState extends State<FilterList> {
                               ),
                             );
                           } else {
-                            return Center(child: CustomizedText(text: 'nodoctormatchesthissearch'.tr, color: white, fontSize: 25, fontWeight: FontWeight.bold));
+                            return Center(child: CustomizedText(text: 'nodoctormatchesthissearch'.tr, fontSize: 25, fontWeight: FontWeight.bold));
                           }
                         },
                       ),
                     );
                   } else {
-                    return Expanded(child: Center(child: CustomizedText(text: 'noDoctorsAvailable'.tr, color: white, fontSize: 25, fontWeight: FontWeight.bold)));
+                    return Expanded(child: Center(child: CustomizedText(text: 'noDoctorsAvailable'.tr, fontSize: 25, fontWeight: FontWeight.bold)));
                   }
                 } else if (snapshot.connectionState == ConnectionState.waiting) {
                   return Expanded(child: ListView.builder(itemCount: 30, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()));

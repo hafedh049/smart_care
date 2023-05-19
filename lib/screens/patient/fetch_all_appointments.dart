@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
@@ -44,27 +43,18 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: darkBlue,
         extendBody: true,
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
               Row(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Icon(FontAwesomeIcons.chevronLeft, size: 20),
-                    ),
-                  ),
+                  Padding(padding: const EdgeInsets.only(left: 8, right: 8), child: GestureDetector(onTap: () => Navigator.pop(context), child: const SizedBox(width: 20, height: 20, child: Icon(FontAwesomeIcons.chevronLeft, size: 20)))),
                   Expanded(
                     child: TextField(
                       focusNode: _filterNode,
@@ -105,12 +95,12 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                         if (appointmentList.isNotEmpty) {
                           return Expanded(
                             child: ListView.builder(
-                              padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 8.0),
+                              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
                               itemCount: appointmentList.length,
                               itemBuilder: (BuildContext context, int index) => Container(
                                 margin: const EdgeInsets.only(bottom: 10),
-                                padding: const EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(color: dark, borderRadius: BorderRadius.circular(5)),
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(color: grey.withOpacity(.1), borderRadius: BorderRadius.circular(5)),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -122,24 +112,24 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                                         children: <Widget>[
                                           Row(
                                             children: <Widget>[
-                                              CustomizedText(text: 'appointmentDate'.tr, fontSize: 16, color: white.withOpacity(.6), fontWeight: FontWeight.bold),
+                                              CustomizedText(text: 'appointmentDate'.tr, fontSize: 16, color: grey.withOpacity(.6), fontWeight: FontWeight.bold),
                                               const Spacer(),
-                                              GestureDetector(onTap: () async => await FirebaseFirestore.instance.collection("appointments").doc(appointmentList[index].id.trim()).delete().then((void value) => showToast(text: 'appointmentisCanceled'.tr)), child: const Icon(Icons.delete, size: 20, color: white)),
+                                              GestureDetector(onTap: () async => await FirebaseFirestore.instance.collection("appointments").doc(appointmentList[index].id.trim()).delete().then((void value) => showToast(text: 'appointmentisCanceled'.tr)), child: const Icon(Icons.delete, size: 20)),
                                             ],
                                           ),
                                           const SizedBox(height: 5),
                                           Container(
-                                            padding: const EdgeInsets.all(8.0),
+                                            padding: const EdgeInsets.all(8),
                                             decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(15)), color: blue.withOpacity(.1)),
                                             child: Row(
                                               children: <Widget>[
-                                                const Icon(FontAwesomeIcons.clock, size: 15, color: white),
+                                                const Icon(FontAwesomeIcons.clock, size: 15),
                                                 const SizedBox(width: 10),
-                                                CustomizedText(text: getDateRepresentation(appointmentList[index].get("appointmentDate").toDate()), fontSize: 14, color: white.withOpacity(.6)),
+                                                CustomizedText(text: getDateRepresentation(appointmentList[index].get("appointmentDate").toDate()), fontSize: 14, color: grey.withOpacity(.6)),
                                                 const SizedBox(width: 5),
-                                                CustomizedText(text: appointmentList[index].get("appointmentTime"), fontSize: 14, color: white.withOpacity(.6)),
+                                                CustomizedText(text: appointmentList[index].get("appointmentTime"), fontSize: 14, color: grey.withOpacity(.6)),
                                                 const SizedBox(width: 5),
-                                                CustomizedText(text: appointmentList[index].get("duration"), fontSize: 14, color: white.withOpacity(.6)),
+                                                CustomizedText(text: appointmentList[index].get("duration"), fontSize: 14, color: grey.withOpacity(.6)),
                                               ],
                                             ),
                                           ),
@@ -155,11 +145,11 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: <Widget>[
-                                                  CustomizedText(text: 'Dr. ${appointmentList[index].get("doctorName")}', fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                                                  CustomizedText(text: 'Dr. ${appointmentList[index].get("doctorName")}', fontSize: 16, fontWeight: FontWeight.bold),
                                                   const SizedBox(height: 5),
-                                                  CustomizedText(text: appointmentList[index].get("doctorSpeciality"), fontSize: 14, fontWeight: FontWeight.bold, color: white.withOpacity(.6)),
+                                                  CustomizedText(text: appointmentList[index].get("doctorSpeciality"), fontSize: 14, fontWeight: FontWeight.bold, color: grey.withOpacity(.6)),
                                                   const SizedBox(height: 10),
-                                                  Row(children: <Widget>[for (int square = 0; square < 5; square++) Transform.rotate(angle: pi / 4, child: Container(margin: const EdgeInsets.only(right: 8.0), width: 6, height: 6, color: blue))]),
+                                                  Row(children: <Widget>[for (int square = 0; square < 5; square++) Transform.rotate(angle: pi / 4, child: Container(margin: const EdgeInsets.only(right: 8), width: 6, height: 6, color: blue))]),
                                                 ],
                                               ),
                                             ],
@@ -173,7 +163,7 @@ class _FetchAllAppointmentsState extends State<FetchAllAppointments> {
                             ),
                           );
                         } else {
-                          return Expanded(child: Center(child: CustomizedText(text: 'noAppointmentsYet'.tr, color: white, fontSize: 25, fontWeight: FontWeight.bold)));
+                          return Expanded(child: Center(child: CustomizedText(text: 'noAppointmentsYet'.tr, fontSize: 25, fontWeight: FontWeight.bold)));
                         }
                       } else if (snapshot.connectionState == ConnectionState.waiting) {
                         return Expanded(child: ListView.builder(itemCount: 30, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()));

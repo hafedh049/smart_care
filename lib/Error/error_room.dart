@@ -13,7 +13,6 @@ class ErrorRoom extends StatelessWidget {
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) setS) {
         return Scaffold(
-          backgroundColor: darkBlue,
           body: Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: SingleChildScrollView(

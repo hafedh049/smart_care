@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/error/error_room.dart';
-import 'package:smart_care/screens/doctor/chats.dart' as doctor_chat;
-import 'package:smart_care/screens/patient/chats.dart' as patient_chat;
+import 'package:smart_care/screens/chats_screen.dart';
 import 'package:smart_care/screens/patient/historic.dart' as patient_historic;
 import 'package:smart_care/screens/patient/home.dart' as patient_home;
 import 'package:smart_care/screens/doctor/home.dart' as doctor_home;
@@ -29,12 +28,12 @@ class _ScreensState extends State<Screens> {
   final List<Map<String, dynamic>> _patientScreens = const <Map<String, dynamic>>[
     <String, dynamic>{"screen": patient_home.Home(), "icon": FontAwesomeIcons.house},
     <String, dynamic>{"screen": patient_workflow.WorkFlow(), "icon": FontAwesomeIcons.sheetPlastic},
-    <String, dynamic>{"screen": patient_chat.Chats(), "icon": FontAwesomeIcons.solidMessage},
+    <String, dynamic>{"screen": ChatsScreen(user: "patient"), "icon": FontAwesomeIcons.solidMessage},
     <String, dynamic>{"screen": patient_historic.Historic(), "icon": FontAwesomeIcons.solidFolder},
   ];
   final List<Map<String, dynamic>> _doctorScreens = const <Map<String, dynamic>>[
     <String, dynamic>{"screen": doctor_home.Home(), "icon": FontAwesomeIcons.house},
-    <String, dynamic>{"screen": doctor_chat.Chats(), "icon": FontAwesomeIcons.solidMessage},
+    <String, dynamic>{"screen": ChatsScreen(user: "doctor"), "icon": FontAwesomeIcons.solidMessage},
   ];
   final List<Map<String, dynamic>> _adminScreens = const <Map<String, dynamic>>[
     <String, dynamic>{"screen": admin_dashboard.Dashboard(), "icon": FontAwesomeIcons.chartGantt},
@@ -103,18 +102,21 @@ class _ScreensState extends State<Screens> {
                     children: <Widget>[
                       const SizedBox(height: 30),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8),
                         child: GestureDetector(
-                          onTap: () => drawerScaffoldKey.currentState!.openDrawer(),
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                            drawerScaffoldKey.currentState!.openDrawer();
+                          },
                           child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.ellipsisVertical, size: 15, color: grey)),
                         ),
                       ),
                       const Spacer(),
                       Center(
                         child: Container(
-                          decoration: BoxDecoration(color: const Color.fromARGB(255, 41, 41, 41), borderRadius: BorderRadius.circular(25)),
+                          decoration: BoxDecoration(color: grey.withOpacity(.4), borderRadius: BorderRadius.circular(25)),
                           height: 60,
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8),
                           child: StatefulBuilder(
                             key: _screensKey,
                             builder: (BuildContext context, void Function(void Function()) setS) {

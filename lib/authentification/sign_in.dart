@@ -39,7 +39,6 @@ class _SignInState extends State<SignIn> {
         resizeToAvoidBottomInset: false,
         extendBody: true,
         extendBodyBehindAppBar: true,
-        backgroundColor: darkBlue,
         body: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Form(
@@ -59,7 +58,7 @@ class _SignInState extends State<SignIn> {
                 Row(
                   children: <Widget>[
                     const Spacer(),
-                    GestureDetector(onTap: () => goTo(const Recovery()), child: Container(height: 35, width: 150, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)), child: Padding(padding: const EdgeInsets.all(8.0), child: Center(child: CustomizedText(text: 'recoverAccount'.tr, fontSize: 16, color: black, fontWeight: FontWeight.bold))))),
+                    GestureDetector(onTap: () async => await goTo(const Recovery()), child: Container(height: 35, width: 150, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)), child: Padding(padding: const EdgeInsets.all(8.0), child: Center(child: CustomizedText(text: 'recoverAccount'.tr, fontSize: 16, color: black, fontWeight: FontWeight.bold))))),
                     const SizedBox(width: 10),
                   ],
                 ),
@@ -118,7 +117,7 @@ class _SignInState extends State<SignIn> {
                 const SizedBox(height: 20),
                 Center(
                   child: GestureDetector(
-                    onTap: () => goTo(const SignUp()),
+                    onTap: () async => await goTo(const SignUp()),
                     child: Container(
                       width: MediaQuery.of(context).size.width * .6,
                       padding: const EdgeInsets.all(8.0),
@@ -127,9 +126,9 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
                 const Or(),
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
                 const GoogleAuth(),
                 const SizedBox(height: 10),
                 const OTPAuth(),

@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +14,8 @@ import 'package:smart_care/languages/language_template.dart';
 import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/stuff/themes/dark_theme.dart';
+import 'package:smart_care/stuff/themes/light_theme.dart';
 import 'package:smart_care/wait/wait_room.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'error/error_room.dart';
@@ -45,15 +48,19 @@ class Main extends StatelessWidget {
   const Main({super.key});
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      translations: LanguageTemplateTranslation(),
-      locale: const Locale("en", "US"),
-      theme: ThemeData.dark(useMaterial3: true),
-      debugShowCheckedModeBanner: false,
-      home: FutureBuilder<FirebaseApp>(
-        future: Firebase.initializeApp(),
-        builder: (BuildContext context, AsyncSnapshot<FirebaseApp> snapshot) {
-          return snapshot.hasError
+    return AdaptiveTheme(
+      light: lightTheme_,
+      dark: darkTheme_,
+      initial: AdaptiveThemeMode.light,
+      builder: (ThemeData theme, ThemeData darkTheme) => GetMaterialApp(
+        theme: theme,
+        darkTheme: darkTheme,
+        translations: LanguageTemplateTranslation(),
+        locale: const Locale("en", "US"),
+        debugShowCheckedModeBanner: false,
+        home: FutureBuilder<FirebaseApp>(
+          future: Firebase.initializeApp(),
+          builder: (BuildContext context, AsyncSnapshot<FirebaseApp> snapshot) => snapshot.hasError
               ? ErrorRoom(error: snapshot.error.toString())
               : snapshot.connectionState == ConnectionState.done
                   ? firstTime == 1
@@ -61,8 +68,8 @@ class Main extends StatelessWidget {
                       : FirebaseAuth.instance.currentUser == null
                           ? const SignIn()
                           : const Screens()
-                  : const WaitRoom();
-        },
+                  : const WaitRoom(),
+        ),
       ),
     );
   }

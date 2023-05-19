@@ -42,16 +42,15 @@ class _BookAppointmentState extends State<BookAppointment> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: darkBlue,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 20),
             GestureDetector(onTap: () => Navigator.pop(context), child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey))),
             const SizedBox(height: 10),
-            CustomizedText(text: 'addSchedule'.tr, fontSize: 30, fontWeight: FontWeight.bold, color: white),
+            CustomizedText(text: 'addSchedule'.tr, fontSize: 30, fontWeight: FontWeight.bold),
             const SizedBox(height: 30),
             StatefulBuilder(key: _stepKey, builder: (BuildContext context, void Function(void Function()) _) => CustomizedText(text: "${'step'.tr} $_step : 2", fontSize: 18, color: blue, fontWeight: FontWeight.bold)),
             const SizedBox(height: 40),
@@ -64,9 +63,9 @@ class _BookAppointmentState extends State<BookAppointment> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      CustomizedText(text: 'selectTime'.tr, fontSize: 18, color: white, fontWeight: FontWeight.bold),
+                      CustomizedText(text: 'selectTime'.tr, fontSize: 18, fontWeight: FontWeight.bold),
                       const SizedBox(height: 40),
-                      CustomizedText(text: 'start'.tr, fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                      CustomizedText(text: 'start'.tr, fontSize: 16, fontWeight: FontWeight.bold),
                       const SizedBox(height: 20),
                       StatefulBuilder(
                         builder: (context, void Function(void Function()) _) {
@@ -77,7 +76,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                 Container(
                                   width: 120,
                                   height: 40,
-                                  padding: const EdgeInsets.all(2.0),
+                                  padding: const EdgeInsets.all(2),
                                   decoration: BoxDecoration(color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: blue)),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -90,28 +89,28 @@ class _BookAppointmentState extends State<BookAppointment> {
                                   ),
                                 ),
                                 const SizedBox(width: 20),
-                                AnimatedContainer(duration: 700.ms, width: 50, height: 40, padding: const EdgeInsets.all(2.0), decoration: BoxDecoration(color: _time.period.name.toLowerCase() == "am" ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Center(child: CustomizedText(text: "AM", fontWeight: FontWeight.bold, fontSize: 16, color: white))),
+                                AnimatedContainer(duration: 700.ms, width: 50, height: 40, padding: const EdgeInsets.all(2), decoration: BoxDecoration(color: _time.period.name.toLowerCase() == "am" ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Center(child: CustomizedText(text: "AM", fontWeight: FontWeight.bold, fontSize: 16))),
                                 const SizedBox(width: 20),
-                                AnimatedContainer(duration: 700.ms, width: 50, height: 40, padding: const EdgeInsets.all(2.0), decoration: BoxDecoration(color: _time.period.name.toLowerCase() == "pm" ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Center(child: CustomizedText(text: "PM", fontWeight: FontWeight.bold, fontSize: 16, color: white))),
+                                AnimatedContainer(duration: 700.ms, width: 50, height: 40, padding: const EdgeInsets.all(2), decoration: BoxDecoration(color: _time.period.name.toLowerCase() == "pm" ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Center(child: CustomizedText(text: "PM", fontWeight: FontWeight.bold, fontSize: 16))),
                                 const SizedBox(width: 10),
-                                Container(height: 40, width: 40, padding: const EdgeInsets.all(2.0), decoration: BoxDecoration(color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: blue)), child: const Center(child: Icon(FontAwesomeIcons.pen, size: 15, color: white))),
+                                Container(height: 40, width: 40, padding: const EdgeInsets.all(2), decoration: BoxDecoration(color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: blue)), child: const Center(child: Icon(FontAwesomeIcons.pen, size: 15))),
                               ],
                             ),
                           );
                         },
                       ),
                       const SizedBox(height: 20),
-                      CustomizedText(text: 'duration'.tr, fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                      CustomizedText(text: 'duration'.tr, fontSize: 16, fontWeight: FontWeight.bold),
                       const SizedBox(height: 20),
                       StatefulBuilder(
                         builder: (context, void Function(void Function()) _) {
                           return Row(
                             children: <Widget>[
-                              GestureDetector(onTap: () => _(() => _duration = 1), child: AnimatedContainer(duration: 700.ms, width: 80, height: 40, padding: const EdgeInsets.all(2.0), decoration: BoxDecoration(color: _duration == 1 ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Center(child: CustomizedText(text: "5 min", fontWeight: FontWeight.bold, fontSize: 16, color: white)))),
+                              GestureDetector(onTap: () => _(() => _duration = 1), child: AnimatedContainer(duration: 700.ms, width: 80, height: 40, padding: const EdgeInsets.all(2), decoration: BoxDecoration(color: _duration == 1 ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Center(child: CustomizedText(text: "5 min", fontWeight: FontWeight.bold, fontSize: 16)))),
                               const SizedBox(width: 20),
-                              GestureDetector(onTap: () => _(() => _duration = 2), child: AnimatedContainer(duration: 700.ms, width: 80, height: 40, padding: const EdgeInsets.all(2.0), decoration: BoxDecoration(color: _duration == 2 ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Center(child: CustomizedText(text: "15 min", fontWeight: FontWeight.bold, fontSize: 16, color: white)))),
+                              GestureDetector(onTap: () => _(() => _duration = 2), child: AnimatedContainer(duration: 700.ms, width: 80, height: 40, padding: const EdgeInsets.all(2), decoration: BoxDecoration(color: _duration == 2 ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Center(child: CustomizedText(text: "15 min", fontWeight: FontWeight.bold, fontSize: 16)))),
                               const SizedBox(width: 20),
-                              GestureDetector(onTap: () => _(() => _duration = 3), child: AnimatedContainer(duration: 700.ms, width: 80, height: 40, padding: const EdgeInsets.all(2.0), decoration: BoxDecoration(color: _duration == 3 ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Center(child: CustomizedText(text: "30 min", fontWeight: FontWeight.bold, fontSize: 16, color: white)))),
+                              GestureDetector(onTap: () => _(() => _duration = 3), child: AnimatedContainer(duration: 700.ms, width: 80, height: 40, padding: const EdgeInsets.all(2), decoration: BoxDecoration(color: _duration == 3 ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Center(child: CustomizedText(text: "30 min", fontWeight: FontWeight.bold, fontSize: 16)))),
                             ],
                           );
                         },
@@ -121,7 +120,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      CustomizedText(text: 'selectDate'.tr, fontSize: 18, color: white, fontWeight: FontWeight.bold),
+                      CustomizedText(text: 'selectDate'.tr, fontSize: 18, fontWeight: FontWeight.bold),
                       const SizedBox(height: 40),
                       StatefulBuilder(
                         builder: (context, void Function(void Function()) _) {
@@ -129,28 +128,28 @@ class _BookAppointmentState extends State<BookAppointment> {
                             onTap: () => showDatePicker(context: context, initialDate: _date, firstDate: _date, lastDate: DateTime(_date.year, _date.month + 7)).then((DateTime? value) => _(() => _date = value!)),
                             child: Row(
                               children: <Widget>[
-                                Container(height: 40, width: 80, padding: const EdgeInsets.all(2.0), decoration: BoxDecoration(color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: blue)), child: Center(child: CustomizedText(text: _date.year.toString(), fontWeight: FontWeight.bold, fontSize: 16, color: blue))),
+                                Container(height: 40, width: 80, padding: const EdgeInsets.all(2), decoration: BoxDecoration(color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: blue)), child: Center(child: CustomizedText(text: _date.year.toString(), fontWeight: FontWeight.bold, fontSize: 16, color: blue))),
                                 const SizedBox(width: 10),
-                                Container(height: 40, width: 80, padding: const EdgeInsets.all(2.0), decoration: BoxDecoration(color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: blue)), child: Center(child: CustomizedText(text: _date.month.toString().length == 1 ? "0${_date.month.toString()}" : _date.month.toString(), fontWeight: FontWeight.bold, fontSize: 16, color: blue))),
+                                Container(height: 40, width: 80, padding: const EdgeInsets.all(2), decoration: BoxDecoration(color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: blue)), child: Center(child: CustomizedText(text: _date.month.toString().length == 1 ? "0${_date.month.toString()}" : _date.month.toString(), fontWeight: FontWeight.bold, fontSize: 16, color: blue))),
                                 const SizedBox(width: 10),
-                                Container(height: 40, width: 80, padding: const EdgeInsets.all(2.0), decoration: BoxDecoration(color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: blue)), child: Center(child: CustomizedText(text: _date.day.toString().length == 1 ? "0${_date.day.toString()}" : _date.day.toString(), fontWeight: FontWeight.bold, fontSize: 16, color: blue))),
+                                Container(height: 40, width: 80, padding: const EdgeInsets.all(2), decoration: BoxDecoration(color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: blue)), child: Center(child: CustomizedText(text: _date.day.toString().length == 1 ? "0${_date.day.toString()}" : _date.day.toString(), fontWeight: FontWeight.bold, fontSize: 16, color: blue))),
                                 const SizedBox(width: 10),
-                                Container(height: 40, width: 40, padding: const EdgeInsets.all(2.0), decoration: BoxDecoration(color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: blue)), child: const Center(child: Icon(FontAwesomeIcons.pen, size: 15, color: white))),
+                                Container(height: 40, width: 40, padding: const EdgeInsets.all(2), decoration: BoxDecoration(color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: blue)), child: const Center(child: Icon(FontAwesomeIcons.pen, size: 15))),
                               ],
                             ),
                           );
                         },
                       ),
                       const SizedBox(height: 60),
-                      CustomizedText(text: 'appointmentType'.tr, fontSize: 16, color: white, fontWeight: FontWeight.bold),
+                      CustomizedText(text: 'appointmentType'.tr, fontSize: 16, fontWeight: FontWeight.bold),
                       const SizedBox(height: 40),
                       StatefulBuilder(
                         builder: (context, void Function(void Function()) _) {
                           return Row(
                             children: <Widget>[
-                              GestureDetector(onTap: () => _(() => _appointmentType = 1), child: AnimatedContainer(duration: 700.ms, height: 40, padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: _appointmentType == 1 ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Center(child: CustomizedText(text: 'online'.tr, fontWeight: FontWeight.bold, fontSize: 16, color: white)))),
+                              GestureDetector(onTap: () => _(() => _appointmentType = 1), child: AnimatedContainer(duration: 700.ms, height: 40, padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: _appointmentType == 1 ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Center(child: CustomizedText(text: 'online'.tr, fontWeight: FontWeight.bold, fontSize: 16)))),
                               const SizedBox(width: 20),
-                              GestureDetector(onTap: () => _(() => _appointmentType = 2), child: AnimatedContainer(duration: 700.ms, height: 40, padding: const EdgeInsets.all(8.0), decoration: BoxDecoration(color: _appointmentType == 2 ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Center(child: CustomizedText(text: 'inPerson'.tr, fontWeight: FontWeight.bold, fontSize: 16, color: white)))),
+                              GestureDetector(onTap: () => _(() => _appointmentType = 2), child: AnimatedContainer(duration: 700.ms, height: 40, padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: _appointmentType == 2 ? blue : grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Center(child: CustomizedText(text: 'inPerson'.tr, fontWeight: FontWeight.bold, fontSize: 16)))),
                             ],
                           );
                         },
@@ -203,7 +202,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                         });
                       }
                     },
-                    child: Container(height: 40, padding: const EdgeInsets.symmetric(vertical: 2.0), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue), child: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[StatefulBuilder(key: _navigationKey, builder: (BuildContext context, void Function(void Function()) _) => CustomizedText(text: _step == 1 ? 'next'.tr : 'bookanAppointment'.tr, color: darkBlue, fontSize: 17, fontWeight: FontWeight.bold))])),
+                    child: Container(height: 40, padding: const EdgeInsets.symmetric(vertical: 2), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue), child: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[StatefulBuilder(key: _navigationKey, builder: (BuildContext context, void Function(void Function()) _) => CustomizedText(text: _step == 1 ? 'next'.tr : 'bookanAppointment'.tr, color: darkBlue, fontSize: 17, fontWeight: FontWeight.bold))])),
                   ),
                 ),
               ],

@@ -63,7 +63,6 @@ class _SignUpState extends State<SignUp> {
         resizeToAvoidBottomInset: false,
         extendBody: true,
         extendBodyBehindAppBar: true,
-        backgroundColor: darkBlue,
         body: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Form(
@@ -141,7 +140,7 @@ class _SignUpState extends State<SignUp> {
                             ),
                           );
                         },
-                        child: StatefulBuilder(key: _profilePictureKey, builder: (BuildContext context, void Function(void Function()) func) => CircleAvatar(backgroundColor: grey.withOpacity(.2), radius: 40, child: _profilePicture == null ? const Icon(FontAwesomeIcons.user, color: grey, size: 35) : CircleAvatar(radius: 40, backgroundColor: Colors.transparent, backgroundImage: FileImage(_profilePicture!)))),
+                        child: StatefulBuilder(key: _profilePictureKey, builder: (BuildContext context, void Function(void Function()) func) => CircleAvatar(backgroundColor: grey.withOpacity(.2), radius: 40, child: _profilePicture == null ? const Icon(FontAwesomeIcons.user, color: grey, size: 35) : CircleAvatar(radius: 40, backgroundColor: transparent, backgroundImage: FileImage(_profilePicture!)))),
                       ),
                     ],
                   ),
@@ -159,14 +158,14 @@ class _SignUpState extends State<SignUp> {
                       });
                     },
                     children: <Widget>[
-                      Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'whatisyourname'.tr, color: white, fontSize: 18), const SizedBox(height: 20), CustomTextField(validator: fieldsValidator["username"], controller: _usernameController, hint: 'name'.tr, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name)]),
-                      Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'canyouprovidemewithyouremployeeIDormatricule'.tr, color: white, fontSize: 18), const SizedBox(height: 20), CustomTextField(validator: fieldsValidator["id"], controller: _matriculeController, hint: 'iD'.tr, prefix: FontAwesomeIcons.userSecret)]),
-                      Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'wouldyoumindsharingyouremailaddresswithme'.tr, color: white, fontSize: 18), const SizedBox(height: 20), CustomTextField(validator: fieldsValidator["email"], controller: _emailController, hint: 'email'.tr, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress)]),
+                      Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'whatisyourname'.tr, fontSize: 18), const SizedBox(height: 20), CustomTextField(validator: fieldsValidator["username"], controller: _usernameController, hint: 'name'.tr, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name)]),
+                      Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'canyouprovidemewithyouremployeeIDormatricule'.tr, fontSize: 18), const SizedBox(height: 20), CustomTextField(validator: fieldsValidator["id"], controller: _matriculeController, hint: 'iD'.tr, prefix: FontAwesomeIcons.userSecret)]),
+                      Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'wouldyoumindsharingyouremailaddresswithme'.tr, fontSize: 18), const SizedBox(height: 20), CustomTextField(validator: fieldsValidator["email"], controller: _emailController, hint: 'email'.tr, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress)]),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          CustomizedText(text: 'youwillneedtosetupapasswordforyouraccount'.tr, color: white, fontSize: 18),
+                          CustomizedText(text: 'youwillneedtosetupapasswordforyouraccount'.tr, fontSize: 18),
                           const SizedBox(height: 20),
                           CustomTextField(func: (String text) => _passwordStrenghtKey.currentState!.setState(() {}), validator: fieldsValidator["password"], controller: _passwordController, hint: 'password'.tr, prefix: FontAwesomeIcons.lock, obscured: true),
                           const SizedBox(height: 10),
@@ -177,7 +176,7 @@ class _SignUpState extends State<SignUp> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          CustomizedText(text: 'mayIhaveyourphonenumberplease'.tr, color: white, fontSize: 18),
+                          CustomizedText(text: 'mayIhaveyourphonenumberplease'.tr, fontSize: 18),
                           const SizedBox(height: 20),
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
@@ -207,7 +206,7 @@ class _SignUpState extends State<SignUp> {
                           duration: 500.ms,
                           height: 40,
                           width: MediaQuery.of(context).size.width * .6,
-                          decoration: BoxDecoration(color: _next ? blue : white.withOpacity(.5), borderRadius: BorderRadius.circular(5)),
+                          decoration: BoxDecoration(color: _next ? blue : grey.withOpacity(.5), borderRadius: BorderRadius.circular(5)),
                           child: Padding(padding: const EdgeInsets.all(8.0), child: Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[const Spacer(), CustomizedText(text: _next ? "Continue" : "Sign-In", color: black, fontWeight: FontWeight.bold, fontSize: 20), const Spacer(), const Icon(FontAwesomeIcons.chevronRight, size: 15, color: black)])),
                         ),
                       );
@@ -281,12 +280,13 @@ class _SignUpState extends State<SignUp> {
             "uid": FirebaseAuth.instance.currentUser!.uid,
             "image_url": profilePictureUrl,
             "email": _emailController.text.trim(),
+            "password": _passwordController.text.trim(),
             "phone_number": _completePhoneNumber,
             "status": true,
             "date_of_birth": DateTime(1970),
             "about": "A Patient",
             "grade": "",
-            "service": "",
+            "service": "Expert métier",
             "token": "",
             "hospital": "",
           }).then((void value) async {

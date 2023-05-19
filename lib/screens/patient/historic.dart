@@ -34,7 +34,6 @@ class _HistoricState extends State<Historic> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkBlue,
       resizeToAvoidBottomInset: false,
       extendBody: true,
       extendBodyBehindAppBar: true,
@@ -42,7 +41,7 @@ class _HistoricState extends State<Historic> {
         physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.zero,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,23 +67,23 @@ class _HistoricState extends State<Historic> {
                   ),
                 ),
                 contentRoot: (BuildContext context, String contentRoot) => Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
                   decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                  child: Center(child: CustomizedText(text: me["name"], fontSize: 14, fontWeight: FontWeight.bold, color: white)),
+                  child: Center(child: CustomizedText(text: me["name"], fontSize: 14, fontWeight: FontWeight.bold)),
                 ),
                 avatarChild: (BuildContext context, Map<String, dynamic> avatarChild) => PreferredSize(
                   preferredSize: const Size.fromRadius(20),
-                  child: CircleAvatar(backgroundColor: grey.withOpacity(.2), child: Icon(avatarChild["avatar"]!, size: 18, color: white)),
+                  child: CircleAvatar(backgroundColor: grey.withOpacity(.2), child: Icon(avatarChild["avatar"]!, size: 18)),
                 ),
                 contentChild: (BuildContext context, Map<String, dynamic> contentChild) {
                   bool expanded = false;
-                  return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                    stream: FirebaseFirestore.instance.collection(_collections[contentChild["child"]!]!).where("uid", isEqualTo: me["uid"]).snapshots(),
+                  return FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    future: FirebaseFirestore.instance.collection(_collections[contentChild["child"]!]!).where("uid", isEqualTo: me["uid"]).get(),
                     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                       if (!snapshot.hasData) {
                         return Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: CustomizedText(text: contentChild["child"]!, fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                          padding: const EdgeInsets.only(top: 8),
+                          child: CustomizedText(text: contentChild["child"]!, fontSize: 16, fontWeight: FontWeight.bold),
                         );
                       } else if (snapshot.hasData) {
                         final List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data!.docs;
@@ -96,16 +95,16 @@ class _HistoricState extends State<Historic> {
                               child: AnimatedContainer(
                                 duration: 300.ms,
                                 decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Row(
                                       children: <Widget>[
-                                        CustomizedText(text: contentChild["child"]!, fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                                        CustomizedText(text: contentChild["child"]!, fontSize: 16, fontWeight: FontWeight.bold),
                                         const Spacer(),
-                                        Icon(expanded ? FontAwesomeIcons.chevronDown : FontAwesomeIcons.chevronLeft, size: 15, color: white),
+                                        Icon(expanded ? FontAwesomeIcons.chevronDown : FontAwesomeIcons.chevronLeft, size: 15),
                                       ],
                                     ),
                                     Visibility(
@@ -145,30 +144,31 @@ class _HistoricState extends State<Historic> {
                                                 }
                                               },
                                               child: Container(
-                                                padding: const EdgeInsets.all(8.0),
-                                                margin: const EdgeInsets.only(bottom: 8.0),
+                                                padding: const EdgeInsets.all(8),
+                                                margin: const EdgeInsets.only(bottom: 8),
                                                 decoration: BoxDecoration(color: grey.withOpacity(.1), borderRadius: BorderRadius.circular(5)),
                                                 child: Row(
                                                   children: <Widget>[
                                                     Container(decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)), width: 1, height: 60),
                                                     const SizedBox(width: 10),
                                                     Icon(
-                                                        contentChild["child"] == "Blood Tests"
-                                                            ? FontAwesomeIcons.filePdf
-                                                            : contentChild["child"] == "Filled Forms"
-                                                                ? FontAwesomeIcons.f
-                                                                : FontAwesomeIcons.slack,
-                                                        color: white,
-                                                        size: 35),
+                                                      contentChild["child"] == "Blood Tests"
+                                                          ? FontAwesomeIcons.filePdf
+                                                          : contentChild["child"] == "Filled Forms"
+                                                              ? FontAwesomeIcons.f
+                                                              : FontAwesomeIcons.slack,
+                                                      color: white,
+                                                      size: 35,
+                                                    ),
                                                     const SizedBox(width: 10),
                                                     Expanded(
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisSize: MainAxisSize.min,
                                                         children: <Widget>[
-                                                          CustomizedText(text: "${contentChild["child"]!.substring(0, contentChild["child"]!.length - 1)} ${index + 1}", fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                                                          CustomizedText(text: "${contentChild["child"]!.substring(0, contentChild["child"]!.length - 1)} ${index + 1}", fontSize: 16, fontWeight: FontWeight.bold),
                                                           const SizedBox(height: 5),
-                                                          CustomizedText(text: getTimeFromDate(data[index].get("timestamp").toDate()), fontSize: 12, color: white.withOpacity(.8)),
+                                                          CustomizedText(text: getTimeFromDate(data[index].get("timestamp").toDate()), fontSize: 12, color: grey.withOpacity(.8)),
                                                         ],
                                                       ),
                                                     ),

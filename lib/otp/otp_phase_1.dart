@@ -35,7 +35,6 @@ class _OTPViewState extends State<OTPView> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: darkBlue,
         resizeToAvoidBottomInset: false,
         extendBody: true,
         extendBodyBehindAppBar: true,
@@ -55,7 +54,7 @@ class _OTPViewState extends State<OTPView> {
                 CustomizedText(text: 'pleaseenteryourphonenumbertosendOTPcode'.tr, fontSize: 16).animate().fadeIn(duration: 500.ms),
                 const SizedBox(height: 20),
                 Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
+                  padding: const EdgeInsets.only(right: 8),
                   child: IntlPhoneField(
                     initialCountryCode: "TN",
                     cursorColor: blue,
@@ -101,7 +100,7 @@ class _OTPViewState extends State<OTPView> {
                                     codeSent: (String verificationId, int? forceResendingToken) async {
                                       setS(() => wait = false);
                                       showToast(text: 'sMSSent'.tr, color: blue);
-                                      goTo(OTP(verification: verificationId, email: samples.docs.first.get("email")));
+                                      await goTo(OTP(verification: verificationId, email: samples.docs.first.get("email")));
                                     },
                                     codeAutoRetrievalTimeout: (String verificationId) {},
                                   );

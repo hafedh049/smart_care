@@ -18,18 +18,17 @@ class PatientProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: darkBlue,
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+        child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          future: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get(),
           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.hasData) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   const SizedBox(height: 40),
-                  Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft)]),
+                  GestureDetector(onTap: () => Navigator.pop(context), child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey))),
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: snapshot.data!.get("image_url") == noUser
@@ -41,11 +40,7 @@ class PatientProfile extends StatelessWidget {
                                 contentPadding: EdgeInsets.zero,
                                 content: Container(
                                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                                  child: InteractiveViewer(
-                                      child: CachedNetworkImage(
-                                    imageUrl: snapshot.data!.get("image_url"),
-                                    placeholder: (BuildContext context, String url) => const Center(child: Icon(FontAwesomeIcons.user, color: grey, size: 80)),
-                                  )),
+                                  child: InteractiveViewer(child: CachedNetworkImage(imageUrl: snapshot.data!.get("image_url"), placeholder: (BuildContext context, String url) => const Center(child: Icon(FontAwesomeIcons.user, color: grey, size: 80)))),
                                 ),
                               ),
                             );
@@ -61,71 +56,33 @@ class PatientProfile extends StatelessWidget {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          CustomizedText(text: snapshot.data!.get("name"), fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                          CustomizedText(text: snapshot.data!.get("name"), fontSize: 16, fontWeight: FontWeight.bold),
                           const SizedBox(height: 10),
-                          Row(
-                            children: <Widget>[
-                              const Icon(FontAwesomeIcons.tooth, size: 15, color: blue),
-                              const SizedBox(width: 10),
-                              Flexible(child: CustomizedText(text: snapshot.data!.get("grade"), fontSize: 16, color: white.withOpacity(.8))),
-                            ],
-                          ),
+                          Container(padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue.withOpacity(.3)), child: Row(children: <Widget>[const Icon(Icons.numbers, size: 18, color: blue), const SizedBox(width: 10), CustomizedText(text: "Age ( ${DateTime.now().difference(snapshot.data!.get('date_of_birth').toDate()).inDays ~/ 365} )", fontSize: 16)])),
                           const SizedBox(height: 10),
-                          Row(
-                            children: <Widget>[
-                              const Icon(Icons.numbers, size: 18, color: blue),
-                              const SizedBox(width: 10),
-                              CustomizedText(text: "Age ( ${DateTime.now().difference(snapshot.data!.get('date_of_birth').toDate()).inDays ~/ 365} )", fontSize: 16, color: white.withOpacity(.8)),
-                            ],
-                          ),
+                          Container(padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue.withOpacity(.3)), child: Row(children: <Widget>[const Icon(Icons.numbers, size: 18, color: blue), const SizedBox(width: 10), CustomizedText(text: "ID ( ${snapshot.data!.get('id')} )", fontSize: 16)])),
                           const SizedBox(height: 10),
-                          Row(
-                            children: <Widget>[
-                              const Icon(Icons.numbers, size: 18, color: blue),
-                              const SizedBox(width: 10),
-                              CustomizedText(text: "UID ( ${snapshot.data!.get('uid')} )", fontSize: 16, color: white.withOpacity(.8)),
-                            ],
-                          ),
+                          Container(padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue.withOpacity(.3)), child: Row(children: <Widget>[const Icon(FontAwesomeIcons.envelope, size: 15, color: blue), const SizedBox(width: 10), CustomizedText(text: 'E-mail ( ${snapshot.data!.get("email")} )', fontSize: 16)])),
                           const SizedBox(height: 10),
-                          Row(
-                            children: <Widget>[
-                              const Icon(FontAwesomeIcons.envelope, size: 15, color: blue),
-                              const SizedBox(width: 10),
-                              CustomizedText(text: 'E-mail ( ${snapshot.data!.get("email")} )', fontSize: 16, color: white.withOpacity(.8)),
-                            ],
-                          ),
+                          Container(padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue.withOpacity(.3)), child: Row(children: <Widget>[const Icon(Icons.phone, size: 14, color: blue), const SizedBox(width: 10), CustomizedText(text: 'Phone ( ${snapshot.data!.get("phone_number")} )', fontSize: 16)])),
                           const SizedBox(height: 10),
-                          Row(
-                            children: <Widget>[
-                              const Icon(Icons.phone, size: 14, color: blue),
-                              const SizedBox(width: 10),
-                              CustomizedText(text: 'Phone ( ${snapshot.data!.get("phone_number")} )', fontSize: 16, color: white.withOpacity(.8)),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          CustomizedText(text: 'about'.tr, fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                          Container(padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue.withOpacity(.3)), child: Row(children: <Widget>[const Icon(FontAwesomeIcons.database, size: 14, color: blue), const SizedBox(width: 10), CustomizedText(text: 'UID ( ${snapshot.data!.get("uid")} )', fontSize: 16)])),
                           const SizedBox(height: 10),
-                          Expanded(
-                            child: SingleChildScrollView(
-                              child: CustomizedText(text: snapshot.data!.get("about").isEmpty ? "--" : snapshot.data!.get("about"), fontSize: 16, color: white),
-                            ),
-                          ),
+                          Container(padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue.withOpacity(.3)), child: const Row(children: <Widget>[Icon(FontAwesomeIcons.graduationCap, size: 14, color: blue), SizedBox(width: 10), CustomizedText(text: 'Role ( Patient )', fontSize: 16)])),
                           const SizedBox(height: 20),
                           GestureDetector(
-                            onTap: () {
-                              goTo(const Historic());
-                            },
+                            onTap: () async => await goTo(const Historic()),
                             child: Container(
                               decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue),
-                              margin: const EdgeInsets.all(8.0),
-                              padding: const EdgeInsets.all(8.0),
+                              margin: const EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               height: 60,
                               width: MediaQuery.of(context).size.width,
-                              child: Center(child: CustomizedText(text: 'viewyourhistory'.tr, color: white, fontSize: 16, fontWeight: FontWeight.bold)),
+                              child: Center(child: CustomizedText(text: 'viewyourhistory'.tr, fontSize: 16, fontWeight: FontWeight.bold)),
                             ),
                           ),
                           const SizedBox(height: 20),

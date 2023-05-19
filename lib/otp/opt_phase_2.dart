@@ -71,73 +71,68 @@ class _OTPState extends State<OTP> {
 
   @override
   Widget build(BuildContext context) {
-    return StatefulBuilder(
-      builder: (BuildContext context, void Function(void Function()) setS) {
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          extendBody: true,
-          extendBodyBehindAppBar: true,
-          backgroundColor: darkBlue,
-          body: Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(height: 20),
-                Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-                const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
-                const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
-                const SizedBox(height: 40),
-                CustomizedText(text: 'waitFor'.tr, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                CustomizedText(text: 'sMSNotification'.tr, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
-                CustomizedText(text: 'thepinfieldswillautomaticallybefilledwhensmsisintercepted'.tr, fontSize: 16).animate().fadeIn(duration: 500.ms),
-                const SizedBox(height: 40),
-                OTPTextField(
-                  length: 6,
-                  outlineBorderRadius: 5,
-                  controller: _otpFieldController,
-                  width: MediaQuery.of(context).size.width,
-                  fieldWidth: 40,
-                  style: GoogleFonts.abel(fontSize: 17),
-                  textFieldAlignment: MainAxisAlignment.spaceAround,
-                  fieldStyle: FieldStyle.box,
-                  otpFieldStyle: OtpFieldStyle(backgroundColor: darkBlue, borderColor: white, disabledBorderColor: Colors.white.withOpacity(.5), enabledBorderColor: white, errorBorderColor: Colors.red, focusBorderColor: blue),
-                ),
-                const SizedBox(height: 30),
-                Center(
-                  child: StatefulBuilder(
-                    key: _buttonBuilder,
-                    builder: (BuildContext context, void Function(void Function()) setS) {
-                      return IgnorePointer(
-                        ignoring: true,
-                        child: AnimatedContainer(
-                          duration: 500.ms,
-                          height: 40,
-                          width: wait ? MediaQuery.of(context).size.width * .35 : MediaQuery.of(context).size.width * .6,
-                          decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Visibility(visible: !wait, child: const Spacer()),
-                                CustomizedText(text: wait ? "Signing-In ..." : "Sign-In", color: black, fontWeight: FontWeight.bold, fontSize: 20),
-                                Visibility(visible: !wait, child: const Spacer()),
-                                Visibility(visible: !wait, child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: black)),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Center(child: LottieBuilder.asset("assets/lottie/shield.json")),
-              ],
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      extendBody: true,
+      extendBodyBehindAppBar: true,
+      body: Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const SizedBox(height: 20),
+            Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
+            const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
+            const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
+            const SizedBox(height: 40),
+            CustomizedText(text: 'waitFor'.tr, color: blue, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+            CustomizedText(text: 'sMSNotification'.tr, fontWeight: FontWeight.bold).animate().fadeIn(duration: 500.ms),
+            CustomizedText(text: 'thepinfieldswillautomaticallybefilledwhensmsisintercepted'.tr, fontSize: 16).animate().fadeIn(duration: 500.ms),
+            const SizedBox(height: 40),
+            OTPTextField(
+              length: 6,
+              outlineBorderRadius: 5,
+              controller: _otpFieldController,
+              width: MediaQuery.of(context).size.width,
+              fieldWidth: 40,
+              style: GoogleFonts.abel(fontSize: 17),
+              textFieldAlignment: MainAxisAlignment.spaceAround,
+              fieldStyle: FieldStyle.box,
+              otpFieldStyle: OtpFieldStyle(backgroundColor: darkBlue, borderColor: white, disabledBorderColor: white.withOpacity(.5), enabledBorderColor: white, errorBorderColor: Colors.red, focusBorderColor: blue),
             ),
-          ),
-        );
-      },
+            const SizedBox(height: 30),
+            Center(
+              child: StatefulBuilder(
+                key: _buttonBuilder,
+                builder: (BuildContext context, void Function(void Function()) setS) {
+                  return IgnorePointer(
+                    ignoring: true,
+                    child: AnimatedContainer(
+                      duration: 500.ms,
+                      height: 40,
+                      width: wait ? MediaQuery.of(context).size.width * .35 : MediaQuery.of(context).size.width * .6,
+                      decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Visibility(visible: !wait, child: const Spacer()),
+                            CustomizedText(text: wait ? "Signing-In ..." : "Sign-In", color: black, fontWeight: FontWeight.bold, fontSize: 20),
+                            Visibility(visible: !wait, child: const Spacer()),
+                            Visibility(visible: !wait, child: const Icon(FontAwesomeIcons.chevronRight, size: 15, color: black)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            Center(child: LottieBuilder.asset("assets/lottie/shield.json")),
+          ],
+        ),
+      ),
     );
   }
 }

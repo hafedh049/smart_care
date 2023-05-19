@@ -34,7 +34,6 @@ class _DoctorsListState extends State<DoctorsList> {
         resizeToAvoidBottomInset: false,
         extendBody: true,
         extendBodyBehindAppBar: true,
-        backgroundColor: darkBlue,
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -42,34 +41,17 @@ class _DoctorsListState extends State<DoctorsList> {
             children: <Widget>[
               const SizedBox(height: 30),
               Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-              Row(children: <Widget>[
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey)),
-                ),
-                const Spacer(),
-                const CircleAvatar(radius: 12, backgroundColor: blue),
-                const SizedBox(width: 50)
-              ]),
+              Row(children: <Widget>[GestureDetector(onTap: () => Navigator.pop(context), child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey))), const Spacer(), const CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
               const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
               const SizedBox(height: 10),
               StatefulBuilder(
                 builder: (BuildContext context, void Function(void Function()) _) {
                   return TextField(
                     controller: _searchController,
-                    onChanged: (String text) {
-                      _doctorsKey.currentState!.setState(() {});
-                    },
+                    onChanged: (String text) => _doctorsKey.currentState!.setState(() {}),
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search, color: grey),
-                      suffixIcon: _searchController.text.isEmpty
-                          ? null
-                          : IconButton(
-                              icon: const Icon(Icons.clear, color: grey),
-                              onPressed: () {
-                                _(() => _searchController.clear());
-                              },
-                            ),
+                      suffixIcon: _searchController.text.isEmpty ? null : IconButton(icon: const Icon(Icons.clear, color: grey), onPressed: () => _(() => _searchController.clear())),
                       hintText: 'Search',
                       hintStyle: const TextStyle(color: grey),
                       filled: true,
@@ -83,10 +65,7 @@ class _DoctorsListState extends State<DoctorsList> {
               const SizedBox(height: 20),
               Row(
                 children: <Widget>[
-                  PreferredSize(
-                    preferredSize: const Size.fromRadius(20),
-                    child: CircleAvatar(backgroundColor: grey.withOpacity(.2), child: const Icon(FontAwesomeIcons.userDoctor, color: grey, size: 18)),
-                  ),
+                  PreferredSize(preferredSize: const Size.fromRadius(20), child: CircleAvatar(backgroundColor: grey.withOpacity(.2), child: const Icon(FontAwesomeIcons.userDoctor, color: grey, size: 18))),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Container(
@@ -141,7 +120,7 @@ class _DoctorsListState extends State<DoctorsList> {
                                       children: <Widget>[
                                         CircleAvatar(radius: 20, backgroundColor: grey.withOpacity(.3), child: Icon(FontAwesomeIcons.user, size: 15, color: white.withOpacity(.3))),
                                         const SizedBox(width: 10),
-                                        CustomizedText(text: users[index]["name"], color: white, fontSize: 18),
+                                        CustomizedText(text: users[index]["name"], fontSize: 18),
                                       ],
                                     ),
                                   ),
@@ -149,17 +128,7 @@ class _DoctorsListState extends State<DoctorsList> {
                               },
                             );
                           } else {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  LottieBuilder.asset("assets/lottie/notFound.json"),
-                                  const SizedBox(height: 20),
-                                  const Center(child: CustomizedText(text: "No users yet.", fontSize: 16)),
-                                ],
-                              ),
-                            );
+                            return Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: <Widget>[LottieBuilder.asset("assets/lottie/notFound.json"), const SizedBox(height: 20), const Center(child: CustomizedText(text: "No users yet.", fontSize: 18))]));
                           }
                         },
                       );

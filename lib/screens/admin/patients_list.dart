@@ -34,9 +34,8 @@ class _PatientsListState extends State<PatientsList> {
         resizeToAvoidBottomInset: false,
         extendBody: true,
         extendBodyBehindAppBar: true,
-        backgroundColor: darkBlue,
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -59,19 +58,10 @@ class _PatientsListState extends State<PatientsList> {
                 builder: (BuildContext context, void Function(void Function()) _) {
                   return TextField(
                     controller: _searchController,
-                    onChanged: (String text) {
-                      _patientsKey.currentState!.setState(() {});
-                    },
+                    onChanged: (String text) => _patientsKey.currentState!.setState(() {}),
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search, color: grey),
-                      suffixIcon: _searchController.text.isEmpty
-                          ? null
-                          : IconButton(
-                              icon: const Icon(Icons.clear, color: grey),
-                              onPressed: () {
-                                _(() => _searchController.clear());
-                              },
-                            ),
+                      suffixIcon: _searchController.text.isEmpty ? null : IconButton(icon: const Icon(Icons.clear, color: grey), onPressed: () => _(() => _searchController.clear())),
                       hintText: 'Search',
                       hintStyle: const TextStyle(color: grey),
                       filled: true,
@@ -92,7 +82,7 @@ class _PatientsListState extends State<PatientsList> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
                       decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
                       child: const Center(child: CustomizedText(text: "Patients", fontSize: 14, fontWeight: FontWeight.bold, color: white)),
                     ),
@@ -151,17 +141,7 @@ class _PatientsListState extends State<PatientsList> {
                               },
                             );
                           } else {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  LottieBuilder.asset("assets/lottie/notFound.json"),
-                                  const SizedBox(height: 20),
-                                  const Center(child: CustomizedText(text: "No users yet.", fontSize: 16)),
-                                ],
-                              ),
-                            );
+                            return Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: <Widget>[LottieBuilder.asset("assets/lottie/notFound.json"), const Center(child: CustomizedText(text: "No users yet.", fontSize: 18))]));
                           }
                         },
                       );

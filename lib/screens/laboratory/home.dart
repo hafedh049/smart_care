@@ -53,7 +53,6 @@ class _HomeState extends State<Home> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: darkBlue,
         extendBody: true,
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
@@ -74,24 +73,27 @@ class _HomeState extends State<Home> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       TextFormField(
-                          controller: _patientIdController,
-                          decoration: InputDecoration(
-                              labelText: 'Patient ID',
-                              suffixIcon: IconButton(
-                                  onPressed: () async {
-                                    await Clipboard.getData(Clipboard.kTextPlain).then(
-                                      (ClipboardData? value) {
-                                        if (value != null) {
-                                          _patientIdController.text = value.text!;
-                                          showToast(text: "ID pasted from clipboard");
-                                        } else {
-                                          showToast(text: "There is nothing to paste");
-                                        }
-                                      },
-                                    );
-                                  },
-                                  icon: const Icon(FontAwesomeIcons.clipboard, size: 20, color: grey))),
-                          validator: (String? value) => value!.isEmpty ? 'Please enter a patient ID' : null),
+                        controller: _patientIdController,
+                        decoration: InputDecoration(
+                          labelText: 'Patient ID',
+                          suffixIcon: IconButton(
+                            onPressed: () async {
+                              await Clipboard.getData(Clipboard.kTextPlain).then(
+                                (ClipboardData? value) {
+                                  if (value != null) {
+                                    _patientIdController.text = value.text!;
+                                    showToast(text: "ID pasted from clipboard");
+                                  } else {
+                                    showToast(text: "There is nothing to paste");
+                                  }
+                                },
+                              );
+                            },
+                            icon: const Icon(FontAwesomeIcons.clipboard, size: 20, color: grey),
+                          ),
+                        ),
+                        validator: (String? value) => value!.isEmpty ? 'Please enter a patient ID' : null,
+                      ),
                       const SizedBox(height: 10),
                       TextFormField(controller: _labNameController, decoration: const InputDecoration(labelText: 'Laboratory Name'), validator: (String? value) => value!.isEmpty ? 'Please enter the laboratory name' : null),
                       const SizedBox(height: 10),

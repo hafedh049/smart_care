@@ -60,7 +60,7 @@ class CustomTextField extends StatelessWidget {
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) _) {
         return Padding(
-          padding: const EdgeInsets.only(right: 8.0),
+          padding: const EdgeInsets.only(right: 8),
           child: TextFormField(
             validator: validator,
             style: GoogleFonts.abel(fontSize: 16),
@@ -78,7 +78,7 @@ class CustomTextField extends StatelessWidget {
             decoration: InputDecoration(
               labelText: hint,
               labelStyle: GoogleFonts.abel(color: blue, fontSize: 16, fontWeight: FontWeight.bold),
-              prefix: Padding(padding: const EdgeInsets.only(right: 8.0), child: Icon(prefix, size: 15, color: blue)),
+              prefix: Padding(padding: const EdgeInsets.only(right: 8), child: Icon(prefix, size: 15, color: blue)),
               suffixIcon: obscured ? IconButton(splashColor: blue.withOpacity(.3), highlightColor: blue.withOpacity(.3), focusColor: blue.withOpacity(.3), onPressed: () => _(() => obscure = !obscure), icon: Icon(!obscure ? Icons.visibility_off : Icons.visibility, color: blue, size: 15)) : null,
               enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
               disabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: blue)),
@@ -121,10 +121,7 @@ class GoogleAuth extends StatelessWidget {
                   await FirebaseAuth.instance.signInWithCredential(googleCredential);
                   showToast(text: 'accountLinkedWithGoogle'.tr);
                   await getToken();
-                  await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({
-                    "token": userToken,
-                    "status": true,
-                  }).then((void value) async {
+                  await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"token": userToken, "status": true}).then((void value) async {
                     await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
                   });
                 }
@@ -137,9 +134,9 @@ class GoogleAuth extends StatelessWidget {
         child: Container(
           height: 40,
           width: MediaQuery.of(context).size.width * .6,
-          padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(boxShadow: [BoxShadow(blurStyle: BlurStyle.outer, color: white.withOpacity(0.5), spreadRadius: 1, blurRadius: 7, offset: const Offset(0, 2))], color: transparent, borderRadius: BorderRadius.circular(5), border: Border.all(color: white.withOpacity(.5))),
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[Image.asset("assets/icon/google.png"), CustomizedText(text: 'cONTINUEWITHGOOGLE'.tr, fontSize: 16, fontWeight: FontWeight.bold, color: white)]),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: grey.withOpacity(.5))),
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[Image.asset("assets/icon/google.png"), CustomizedText(text: 'cONTINUEWITHGOOGLE'.tr, fontSize: 16, fontWeight: FontWeight.bold)]),
         ),
       ),
     );
@@ -153,22 +150,17 @@ class OTPAuth extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
-        onTap: () => goTo(const OTPView()),
+        onTap: () async => await goTo(const OTPView()),
         child: Container(
           height: 40,
           width: MediaQuery.of(context).size.width * .6,
-          padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-            boxShadow: [BoxShadow(blurStyle: BlurStyle.outer, color: white.withOpacity(0.5), spreadRadius: 1, blurRadius: 7, offset: const Offset(0, 2))],
-            color: transparent,
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(color: white.withOpacity(.5)),
-          ),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: grey.withOpacity(.5))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Image.asset("assets/icon/phone.png"),
-              CustomizedText(text: 'cONTINUEWITHPHONE'.tr, color: white, fontSize: 16, fontWeight: FontWeight.bold),
+              CustomizedText(text: 'cONTINUEWITHPHONE'.tr, fontSize: 16, fontWeight: FontWeight.bold),
             ],
           ),
         ),
@@ -178,14 +170,14 @@ class OTPAuth extends StatelessWidget {
 }
 
 class CustomizedText extends StatelessWidget {
-  const CustomizedText({super.key, required this.text, this.color = Colors.white, this.fontSize = 35, this.fontWeight = FontWeight.normal});
+  const CustomizedText({super.key, required this.text, this.color, this.fontSize = 35, this.fontWeight = FontWeight.normal});
   final String text;
   final double fontSize;
-  final Color color;
+  final Color? color;
   final FontWeight fontWeight;
 
   @override
-  Widget build(BuildContext context) => Text(text, style: GoogleFonts.roboto(color: color, fontSize: fontSize, fontWeight: fontWeight), softWrap: true, overflow: TextOverflow.fade);
+  Widget build(BuildContext context) => Text(text, style: TextStyle(color: color, fontSize: fontSize, fontWeight: fontWeight), softWrap: true, overflow: TextOverflow.fade);
 }
 
 class HealthDrawer extends StatelessWidget {
@@ -197,7 +189,7 @@ class HealthDrawer extends StatelessWidget {
       width: 275,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25))),
       child: Padding(
-        padding: const EdgeInsets.only(left: 8.0),
+        padding: const EdgeInsets.only(left: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
@@ -214,9 +206,9 @@ class HealthDrawer extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          const CustomizedText(text: appTitle, color: white, fontSize: 20, fontWeight: FontWeight.bold),
+                          const CustomizedText(text: appTitle, fontSize: 20, fontWeight: FontWeight.bold),
                           const SizedBox(width: 10),
-                          CustomizedText(text: 'youmakeworldbetter'.tr, color: white.withOpacity(.7), fontSize: 16),
+                          CustomizedText(text: 'youmakeworldbetter'.tr, color: grey.withOpacity(.7), fontSize: 16),
                         ],
                       ),
                     ),
@@ -225,92 +217,86 @@ class HealthDrawer extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-            Container(width: 267, height: .1, color: white),
+            Container(width: 267, height: .1, color: grey),
             const SizedBox(height: 10),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Profile()));
-              },
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Profile())),
               leading: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
                   const SizedBox(width: 5),
-                  const Icon(FontAwesomeIcons.idCard, color: white, size: 20),
+                  const Icon(FontAwesomeIcons.idCard, size: 20),
                 ],
               ),
-              title: CustomizedText(text: 'profile'.tr, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+              title: CustomizedText(text: 'profile'.tr, fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartSettings()));
-              },
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartSettings())),
               leading: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
                   const SizedBox(width: 5),
-                  const Icon(FontAwesomeIcons.gear, color: white, size: 20),
+                  const Icon(FontAwesomeIcons.gear, size: 20),
                 ],
               ),
-              title: CustomizedText(text: 'settings'.tr, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+              title: CustomizedText(text: 'settings'.tr, fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const AboutUs()));
-              },
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const AboutUs())),
               leading: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))),
                   const SizedBox(width: 5),
-                  const Icon(FontAwesomeIcons.heartPulse, color: white, size: 20),
+                  const Icon(FontAwesomeIcons.heartPulse, size: 20),
                 ],
               ),
-              title: CustomizedText(text: 'aboutUs'.tr, color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+              title: CustomizedText(text: 'aboutUs'.tr, fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const Spacer(),
-            if (me["role"] == "patient") Container(width: 267, height: .1, color: white),
+            if (me["role"] == "patient") Container(width: 267, height: .1, color: grey),
             if (me["role"] == "patient")
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartChatBot())),
-                leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))), const SizedBox(width: 5), const Icon(FontAwesomeIcons.bots, color: white, size: 20)]),
-                title: CustomizedText(text: "Quark", color: white.withOpacity(.7), fontSize: 18, fontWeight: FontWeight.bold),
+                leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))), const SizedBox(width: 5), const Icon(FontAwesomeIcons.bots, color: grey, size: 20)]),
+                title: const CustomizedText(text: "Quark", fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            Container(width: 267, height: .1, color: white),
+            Container(width: 267, height: .1, color: grey),
             const SizedBox(height: 10),
             ListTile(
               contentPadding: EdgeInsets.zero,
               onTap: () async {
                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => false);
-                await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": false, "token": ""}).then((void value) async {
-                  await FirebaseMessaging.instance.deleteToken();
-                  await FirebaseAuth.instance.signOut();
-                  if (await GoogleSignIn().isSignedIn()) {
-                    GoogleSignIn().signOut();
-                  }
-                });
+                await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": false, "token": ""}).then(
+                  (void value) async {
+                    await FirebaseMessaging.instance.deleteToken();
+                    await FirebaseAuth.instance.signOut();
+                    if (await GoogleSignIn().isSignedIn()) {
+                      await GoogleSignIn().signOut();
+                    }
+                  },
+                );
               },
               horizontalTitleGap: 0,
-              leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))), const SizedBox(width: 5), const Icon(FontAwesomeIcons.chevronLeft, color: white, size: 20)]),
+              leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))), const SizedBox(width: 5), const Icon(FontAwesomeIcons.chevronLeft, size: 20)]),
               title: CustomizedText(text: 'signOut'.tr, fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Container(width: 267, height: .1, color: white),
             const SizedBox(height: 10),
-            CustomizedText(text: "'Smart Care' ${'isYourAssistant'.tr}", fontSize: 14, color: white.withOpacity(.7)),
+            CustomizedText(text: "'Smart Care' ${'isYourAssistant'.tr}", fontSize: 14, color: grey.withOpacity(.7)),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {
-                    launchUrlString("https://www.instagram.com/explore/tags/telemedecine/");
-                  },
+                  onTap: () async => await launchUrlString("https://www.instagram.com/explore/tags/telemedecine/"),
                   child: const CircleAvatar(
                     radius: 22,
                     backgroundColor: white,
@@ -318,9 +304,7 @@ class HealthDrawer extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    launchUrlString("https://www.facebook.com/groups/telemedecinec");
-                  },
+                  onTap: () async => await launchUrlString("https://www.facebook.com/groups/telemedecinec"),
                   child: const CircleAvatar(
                     radius: 22,
                     backgroundColor: white,
@@ -328,9 +312,7 @@ class HealthDrawer extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    launchUrlString("https://twitter.com/tlm360?lang=ar");
-                  },
+                  onTap: () async => await launchUrlString("https://twitter.com/tlm360?lang=ar"),
                   child: const CircleAvatar(
                     radius: 22,
                     backgroundColor: white,
@@ -371,10 +353,7 @@ class CustomIcon extends StatelessWidget {
                 duration: 500.ms,
                 width: clicked ? 30 : 0,
                 height: clicked ? 1 : 0,
-                decoration: BoxDecoration(
-                  color: blue,
-                  borderRadius: BorderRadius.circular(5),
-                ),
+                decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)),
               )
             ],
           ),
@@ -393,14 +372,11 @@ class Or extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Container(height: .5, width: MediaQuery.of(context).size.width * .4, decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(25))),
+        Container(height: .5, width: MediaQuery.of(context).size.width * .4, decoration: BoxDecoration(color: grey, borderRadius: BorderRadius.circular(25))),
         const SizedBox(width: 10),
         CustomizedText(text: 'oR'.tr, fontSize: 20, fontWeight: FontWeight.bold),
         const SizedBox(width: 10),
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: Container(height: .5, width: MediaQuery.of(context).size.width * .4, decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(25))),
-        ),
+        Padding(padding: const EdgeInsets.only(right: 8), child: Container(height: .5, width: MediaQuery.of(context).size.width * .4, decoration: BoxDecoration(color: grey, borderRadius: BorderRadius.circular(25)))),
       ],
     );
   }
@@ -412,42 +388,19 @@ class ListTileShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Container(
-        width: 48.0,
-        height: 48.0,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
-      ),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            height: 8.0,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
-          ),
-          const SizedBox(height: 10),
-        ],
-      ),
+      leading: Container(width: 48, height: 48, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: grey)),
+      title: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: double.infinity, height: 8, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: grey)), const SizedBox(height: 10)]),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Container(
-            width: double.infinity,
-            height: 8.0,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
-          ),
+          Container(width: double.infinity, height: 8, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: grey)),
           const SizedBox(height: 10),
-          Container(
-            width: 40.0,
-            height: 8.0,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),
-          ),
+          Container(width: 40, height: 8, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: grey)),
         ],
       ),
-      horizontalTitleGap: 8.0,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+      horizontalTitleGap: 8,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
     ).animate(onComplete: (AnimationController controller) => controller.repeat(period: const Duration(seconds: 2))).shimmer(color: grey, colors: <Color>[white, grey]);
   }
 }
@@ -470,9 +423,9 @@ class AvatarUsernameLocationShimmer extends StatelessWidget {
       children: <Widget>[
         const CircleAvatar(radius: 25),
         const SizedBox(height: 15),
-        Container(width: 120, height: 9, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white)),
+        Container(width: 120, height: 9, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white)),
         const SizedBox(height: 10),
-        Container(width: 170, height: 7, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white)),
+        Container(width: 170, height: 7, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white)),
       ],
     ).animate(onComplete: (AnimationController controller) => controller.repeat(period: const Duration(seconds: 2))).shimmer(color: grey, colors: <Color>[white, grey]);
   }

@@ -72,6 +72,7 @@ final Map<String, String> english = <String, String>{
   "connecting___": "Connecting ...",
   "signIn": "Sign-In",
   "on": "On",
+  "off": "Off",
   "help": "Help",
   "virtual": "Virtual",
   "ecosystem": "Ecosystem",

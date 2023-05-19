@@ -29,46 +29,30 @@ class PrimaryPrevention extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkBlue,
       resizeToAvoidBottomInset: false,
       extendBody: true,
       extendBodyBehindAppBar: true,
       body: Stack(
         alignment: AlignmentDirectional.bottomCenter,
-        children: [
+        children: <Widget>[
           Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               StatefulBuilder(
                 key: _carousselKey,
-                builder: (BuildContext context, void Function(void Function()) setS) {
-                  return CarouselSlider.builder(
-                    itemCount: _preventions.length,
-                    itemBuilder: (BuildContext context, int index, int realIndex) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(image: AssetImage("assets/primaly_prevention/${_preventions[index]['image']}"), fit: BoxFit.cover),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      );
-                    },
-                    carouselController: _carouselController,
-                    options: CarouselOptions(
-                      autoPlayAnimationDuration: 200.ms,
-                      autoPlay: true,
-                      viewportFraction: 1,
-                      onPageChanged: (int index, CarouselPageChangedReason reason) {
-                        _smoothKey.currentState!.setState(() {
-                          _textKey.currentState!.setState(() {
-                            _activeIndex = index;
-                          });
-                        });
-                      },
-                      height: MediaQuery.of(context).size.height,
-                      pauseAutoPlayInFiniteScroll: true,
-                    ),
-                  );
-                },
+                builder: (BuildContext context, void Function(void Function()) setS) => CarouselSlider.builder(
+                  itemCount: _preventions.length,
+                  itemBuilder: (BuildContext context, int index, int realIndex) => Container(decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/primaly_prevention/${_preventions[index]['image']}"), fit: BoxFit.cover), borderRadius: BorderRadius.circular(5))),
+                  carouselController: _carouselController,
+                  options: CarouselOptions(
+                    autoPlayAnimationDuration: 200.ms,
+                    autoPlay: true,
+                    viewportFraction: 1,
+                    onPageChanged: (int index, CarouselPageChangedReason reason) => _smoothKey.currentState!.setState(() => _textKey.currentState!.setState(() => _activeIndex = index)),
+                    height: MediaQuery.of(context).size.height,
+                    pauseAutoPlayInFiniteScroll: true,
+                  ),
+                ),
               ),
             ],
           ),
@@ -76,28 +60,12 @@ class PrimaryPrevention extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             height: 220,
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: darkBlue.withOpacity(.8),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(35),
-                topRight: Radius.circular(35),
-              ),
-            ),
+            decoration: BoxDecoration(color: darkBlue.withOpacity(.8), borderRadius: const BorderRadius.only(topLeft: Radius.circular(35), topRight: Radius.circular(35))),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 const SizedBox(height: 20),
-                StatefulBuilder(
-                  key: _textKey,
-                  builder: (BuildContext context, void Function(void Function()) setS) {
-                    return CustomizedText(
-                      text: _preventions[_activeIndex]["tag"]!,
-                      color: white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    );
-                  },
-                ),
+                StatefulBuilder(key: _textKey, builder: (BuildContext context, void Function(void Function()) setS) => CustomizedText(text: _preventions[_activeIndex]["tag"]!, color: white, fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 30),
                 StatefulBuilder(
                   key: _smoothKey,
@@ -105,24 +73,15 @@ class PrimaryPrevention extends StatelessWidget {
                     return AnimatedSmoothIndicator(
                       activeIndex: _activeIndex,
                       count: _preventions.length,
-                      onDotClicked: (int index) {
-                        _carouselController.animateToPage(index);
-                      },
-                      effect: const ExpandingDotsEffect(
-                        activeDotColor: blue,
-                        dotColor: white,
-                        dotHeight: 10,
-                        dotWidth: 10,
-                        radius: 15,
-                        strokeWidth: 2,
-                      ),
+                      onDotClicked: (int index) => _carouselController.animateToPage(index),
+                      effect: const ExpandingDotsEffect(activeDotColor: blue, dotColor: white, dotHeight: 10, dotWidth: 10, radius: 15, strokeWidth: 2),
                     );
                   },
                 ),
                 const SizedBox(height: 30),
                 GestureDetector(
                   onTap: () async {
-                    await db!.update("SMART_CARE", <String, dynamic>{"FIRST_TIME": 0, "AUDIO": 1});
+                    await db!.update("SMART_CARE", <String, dynamic>{"FIRST_TIME": 0});
                     // ignore: use_build_context_synchronously
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => FirebaseAuth.instance.currentUser != null ? const Screens() : const SignIn()));
                   },

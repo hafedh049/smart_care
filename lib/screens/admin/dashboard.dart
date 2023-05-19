@@ -15,7 +15,6 @@ class Dashboard extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       extendBody: true,
       extendBodyBehindAppBar: true,
-      backgroundColor: darkBlue,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -26,7 +25,7 @@ class Dashboard extends StatelessWidget {
             const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
             const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
             const SizedBox(height: 20),
-            CustomizedText(text: 'dashboard'.tr, fontSize: 35, fontWeight: FontWeight.bold, color: white),
+            CustomizedText(text: 'dashboard'.tr, fontSize: 35, fontWeight: FontWeight.bold),
             const SizedBox(height: 20),
             Expanded(
               child: GridView.count(
@@ -39,7 +38,7 @@ class Dashboard extends StatelessWidget {
                 children: adminCards
                     .map(
                       (Map<String, dynamic> card) => GestureDetector(
-                        onTap: () async => goTo(card["widget"]),
+                        onTap: () async => await goTo(card["widget"]),
                         child: Container(
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: card["color"]),
                           height: 200,

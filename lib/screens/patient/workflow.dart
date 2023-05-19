@@ -32,12 +32,11 @@ class _WorkFlowState extends State<WorkFlow> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkBlue,
       resizeToAvoidBottomInset: false,
       extendBody: true,
       extendBodyBehindAppBar: true,
       body: Padding(
-        padding: const EdgeInsets.only(left: 16.0),
+        padding: const EdgeInsets.only(left: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -74,17 +73,13 @@ class _WorkFlowState extends State<WorkFlow> {
               child: PageView.builder(
                 itemCount: workflow.length,
                 physics: const NeverScrollableScrollPhysics(),
-                onPageChanged: (int page) {
-                  _nextPrevKey.currentState!.setState(() {
-                    _left = page > 0 ? true : false;
-                  });
-                },
+                onPageChanged: (int page) => _nextPrevKey.currentState!.setState(() => _left = page > 0 ? true : false),
                 controller: _flowController,
                 itemBuilder: (BuildContext context, int index) {
                   return StatefulBuilder(
                     builder: (BuildContext context, void Function(void Function()) _) {
                       return !workflow[index].containsKey("title")
-                          ? Center(child: CustomizedText(text: workflow[index]["end"], fontSize: 18, color: white, fontWeight: FontWeight.bold))
+                          ? Center(child: CustomizedText(text: workflow[index]["end"], fontSize: 18, fontWeight: FontWeight.bold))
                           : Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
@@ -112,7 +107,7 @@ class _WorkFlowState extends State<WorkFlow> {
                                       });
                                     },
                                     child: Padding(
-                                      padding: const EdgeInsets.only(bottom: 8.0),
+                                      padding: const EdgeInsets.only(bottom: 8),
                                       child: Row(
                                         children: <Widget>[
                                           Radio<String>(
@@ -132,7 +127,7 @@ class _WorkFlowState extends State<WorkFlow> {
                                             activeColor: blue,
                                           ),
                                           const SizedBox(width: 20),
-                                          Flexible(child: CustomizedText(text: workflow[index]["options"][__]["content"], fontSize: 18, color: white, fontWeight: FontWeight.bold)),
+                                          Flexible(child: CustomizedText(text: workflow[index]["options"][__]["content"], fontSize: 18, fontWeight: FontWeight.bold)),
                                         ],
                                       ).animate().slideX(begin: 1, end: 0, duration: 200.ms, delay: (30 * __).ms),
                                     ),
@@ -144,7 +139,6 @@ class _WorkFlowState extends State<WorkFlow> {
                 },
               ),
             ),
-            LayoutBuilder(builder: (BuildContext __, BoxConstraints _) => AnimatedContainer(duration: 500.ms, height: MediaQuery.of(context).padding.bottom > 0 ? 100 : 80)),
           ],
         ),
       ),
