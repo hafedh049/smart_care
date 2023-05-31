@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/chat_room.dart';
 import 'package:smart_care/stuff/classes.dart';
@@ -91,7 +92,15 @@ class _ChatsScreenState extends State<ChatsScreen> {
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> chatSnapshot) {
                     if (chatSnapshot.hasData) {
                       if (chatSnapshot.data!.docs.isEmpty) {
-                        return Center(child: CustomizedText(text: widget.user == "doctor" ? "No doctors available now." : "No patients available now.", color: blue, fontSize: 20));
+                        return Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              LottieBuilder.asset("assets/lottie/notFound.json"),
+                              CustomizedText(text: widget.user == "doctor" ? "No doctors available now." : "No patients available now.", color: blue, fontSize: 20, fontWeight: FontWeight.bold),
+                            ],
+                          ),
+                        );
                       } else {
                         Future.delayed(500.ms, () => _textFieldKey.currentState!.setState(() => _disabled = false));
                         return StatefulBuilder(
@@ -103,7 +112,15 @@ class _ChatsScreenState extends State<ChatsScreen> {
                               return namesList.first.toLowerCase().contains(_searchController.text.toLowerCase().trim());
                             }).toList();
                             return usersList.isEmpty
-                                ? Center(child: CustomizedText(text: 'noChatsUntilNow'.tr, fontSize: 20))
+                                ? Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        LottieBuilder.asset("assets/lottie/notFound.json"),
+                                        CustomizedText(text: 'noChatsUntilNow'.tr, color: blue, fontSize: 20, fontWeight: FontWeight.bold),
+                                      ],
+                                    ),
+                                  )
                                 : ListView.builder(
                                     padding: const EdgeInsets.symmetric(horizontal: 8),
                                     itemCount: usersList.length,

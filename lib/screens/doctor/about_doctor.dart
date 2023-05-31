@@ -56,18 +56,36 @@ class AboutDoctor extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          GestureDetector(
-                            onTap: () async => await goTo(ChatRoom(talkTo: snapshot.data!.data()!)),
-                            child: Container(
-                              width: 80,
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.purple.shade900.withOpacity(.3)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[const Icon(FontAwesomeIcons.message, color: Color.fromARGB(255, 217, 0, 255), size: 15), const SizedBox(width: 5), CustomizedText(text: 'chat'.tr, fontSize: 16, color: const Color.fromARGB(255, 217, 0, 255), fontWeight: FontWeight.bold)],
-                              ),
-                            ),
+                          FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                            future: FirebaseFirestore.instance.collection("appointments").where("doctorID", isEqualTo: uid.trim()).get(),
+                            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snap) {
+                              return snap.hasError
+                                  ? ErrorRoom(error: snap.error.toString())
+                                  : GestureDetector(
+                                      onTap: () async {
+                                        if (snap.hasData) {
+                                          bool thereIs = false;
+                                          for (QueryDocumentSnapshot<Map<String, dynamic>> appointment in snap.data!.docs) {
+                                            if (appointment.get("patientID") == me["uid"]) {
+                                              thereIs = true;
+                                              break;
+                                            }
+                                          }
+                                          thereIs ? await goTo(ChatRoom(talkTo: snapshot.data!.data()!)) : showToast(text: "You can't talk with a doctor unless you have at least a single appointment!".tr, color: red);
+                                        }
+                                      },
+                                      child: Container(
+                                        width: 80,
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.purple.shade900.withOpacity(.3)),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[const Icon(FontAwesomeIcons.message, color: Color.fromARGB(255, 217, 0, 255), size: 15), const SizedBox(width: 5), CustomizedText(text: 'chat'.tr, fontSize: 16, color: const Color.fromARGB(255, 217, 0, 255), fontWeight: FontWeight.bold)],
+                                        ),
+                                      ),
+                                    );
+                            },
                           ),
                         ],
                       ),
@@ -75,7 +93,7 @@ class AboutDoctor extends StatelessWidget {
                       Expanded(
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                          decoration: BoxDecoration(color: white, borderRadius: BorderRadius.circular(15), gradient: LinearGradient(begin: AlignmentDirectional.topStart, end: AlignmentDirectional.bottomEnd, colors: <Color>[blue.withOpacity(.2), white.withOpacity(.1)], stops: const <double>[.5, .7])),
+                          decoration: BoxDecoration(color: white, borderRadius: BorderRadius.circular(15), gradient: LinearGradient(begin: AlignmentDirectional.topStart, end: AlignmentDirectional.bottomEnd, colors: <Color>[grey.withOpacity(.2), white.withOpacity(.1)], stops: const <double>[.5, .7])),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,

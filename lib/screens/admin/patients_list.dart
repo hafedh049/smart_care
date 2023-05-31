@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smart_care/error/error_room.dart';
-import 'package:smart_care/stuff/functions.dart';
+import 'package:smart_care/screens/admin/deletion_dialog.dart';
 
 import '../../stuff/classes.dart';
 import '../../stuff/globals.dart';
@@ -41,17 +40,7 @@ class _PatientsListState extends State<PatientsList> {
             children: <Widget>[
               const SizedBox(height: 30),
               Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-              Row(
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: grey)),
-                  ),
-                  const Spacer(),
-                  const CircleAvatar(radius: 12, backgroundColor: blue),
-                  const SizedBox(width: 50)
-                ],
-              ),
+              const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
               const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
               const SizedBox(height: 10),
               StatefulBuilder(
@@ -61,13 +50,13 @@ class _PatientsListState extends State<PatientsList> {
                     onChanged: (String text) => _patientsKey.currentState!.setState(() {}),
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search, color: grey),
-                      suffixIcon: _searchController.text.isEmpty ? null : IconButton(icon: const Icon(Icons.clear, color: grey), onPressed: () => _(() => _searchController.clear())),
+                      suffixIcon: _searchController.text.isEmpty ? null : IconButton(icon: const Icon(Icons.clear), onPressed: () => _(() => _searchController.clear())),
                       hintText: 'Search',
                       hintStyle: const TextStyle(color: grey),
                       filled: true,
                       fillColor: white.withOpacity(.2),
-                      enabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20.0)), borderSide: BorderSide(color: white, width: 2)),
-                      focusedBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20.0)), borderSide: BorderSide(color: white, width: 2)),
+                      enabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20.0)), borderSide: BorderSide(width: 2)),
+                      focusedBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20.0)), borderSide: BorderSide(width: 2)),
                     ),
                   );
                 },
@@ -75,23 +64,21 @@ class _PatientsListState extends State<PatientsList> {
               const SizedBox(height: 20),
               Row(
                 children: <Widget>[
-                  PreferredSize(
-                    preferredSize: const Size.fromRadius(20),
-                    child: CircleAvatar(backgroundColor: grey.withOpacity(.2), child: const Icon(FontAwesomeIcons.userInjured, color: grey, size: 18)),
-                  ),
+                  PreferredSize(preferredSize: const Size.fromRadius(20), child: CircleAvatar(backgroundColor: grey.withOpacity(.2), child: const Icon(FontAwesomeIcons.userInjured, size: 18))),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)),
-                      child: const Center(child: CustomizedText(text: "Patients", fontSize: 14, fontWeight: FontWeight.bold, color: white)),
+                      child: const Center(child: CustomizedText(text: "Patients", fontSize: 14, fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ],
               ),
+              const SizedBox(height: 10),
               Expanded(
-                child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  future: FirebaseFirestore.instance.collection("users").where("role", arrayContains: "patient").get(),
+                child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: FirebaseFirestore.instance.collection("users").where("role", arrayContains: "patient").snapshots(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                     if (snapshot.hasData) {
                       final List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data!.docs;
@@ -105,37 +92,11 @@ class _PatientsListState extends State<PatientsList> {
                               padding: EdgeInsets.zero,
                               itemCount: users.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return Dismissible(
-                                  key: ValueKey<String>(users[index]["uid"]),
-                                  confirmDismiss: (DismissDirection direction) async => direction == DismissDirection.startToEnd ? true : false,
-                                  onDismissed: (DismissDirection direction) async {
-                                    if (direction == DismissDirection.startToEnd) {
-                                      await FirebaseFirestore.instance.collection("users").doc(users[index]["uid"]).delete().then((void value) async {
-                                        await FirebaseStorage.instance.ref().child("/profile_pictures/${users[index]["uid"]}").delete().then((void value) async {
-                                          await FirebaseStorage.instance.ref().child("/prescriptions/${users[index]["uid"]}/").delete().then((void value) async {
-                                            await FirebaseStorage.instance.ref().child("/blood_tests/${users[index]["uid"]}/").delete().then((void value) {
-                                              data.removeAt(index);
-                                              showToast(text: "User Deleted");
-                                              if (data.isEmpty) {
-                                                _(() {});
-                                              }
-                                            });
-                                          });
-                                        });
-                                      });
-                                    }
-                                  },
-                                  secondaryBackground: Container(color: green, child: const Icon(FontAwesomeIcons.idBadge)),
-                                  background: Container(color: red, child: const Icon(FontAwesomeIcons.trash)),
+                                return GestureDetector(
+                                  onTap: () async => showDialog(context: context, builder: (BuildContext context) => Delete(userData: users[index])),
                                   child: Container(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: <Widget>[
-                                        CircleAvatar(radius: 20, backgroundColor: grey.withOpacity(.3), child: Icon(FontAwesomeIcons.user, size: 15, color: white.withOpacity(.3))),
-                                        const SizedBox(width: 10),
-                                        CustomizedText(text: users[index]["name"], color: white, fontSize: 18),
-                                      ],
-                                    ),
+                                    child: Row(children: <Widget>[CircleAvatar(radius: 20, backgroundColor: grey.withOpacity(.3), child: const Icon(FontAwesomeIcons.user, size: 15)), const SizedBox(width: 10), CustomizedText(text: users[index]["name"], fontSize: 18)]),
                                   ),
                                 );
                               },

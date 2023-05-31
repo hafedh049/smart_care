@@ -131,7 +131,12 @@ class _HomeState extends State<Home> {
                                     "lab_name": _labNameController.text,
                                     "uploader_name": _uploadNameController.text,
                                     "uid": me["uid"],
-                                  }).then((void value) => showToast(text: 'bloodstestlinkstoredsuccessfully'.tr));
+                                  }).then((void value) {
+                                    showToast(text: 'bloodstestlinkstoredsuccessfully'.tr);
+                                    _patientIdController.clear();
+                                    _labNameController.clear();
+                                    _uploadNameController.clear();
+                                  });
                                 });
                               }
                             }

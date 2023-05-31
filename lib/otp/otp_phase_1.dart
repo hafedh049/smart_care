@@ -25,8 +25,10 @@ class _OTPViewState extends State<OTPView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool wait = false;
   String _fullPhoneNumber = "";
+  final TextEditingController _phoneController = TextEditingController();
   @override
   void dispose() {
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -58,6 +60,7 @@ class _OTPViewState extends State<OTPView> {
                   child: IntlPhoneField(
                     initialCountryCode: "TN",
                     cursorColor: blue,
+                    controller: _phoneController,
                     decoration: InputDecoration(
                       hintText: 'Enter your phone number'.tr,
                       border: const OutlineInputBorder(borderSide: BorderSide(color: blue)),

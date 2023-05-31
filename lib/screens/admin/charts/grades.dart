@@ -17,13 +17,13 @@ class Grades extends StatefulWidget {
 
 class _GradesState extends State<Grades> {
   @override
-  void initState() async {
+  void initState() {
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.landscapeLeft]);
     super.initState();
   }
 
   @override
-  void dispose() async {
+  void dispose() {
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]);
     super.dispose();
   }
@@ -51,7 +51,7 @@ class _GradesState extends State<Grades> {
                             gradeCounts[grade] = gradeCounts[grade]! + 1;
                           }
                         }
-                        const Map<int, Color> colors = <int, Color>{16: blue, 12: Colors.tealAccent, 10: red};
+                        const Map<int, Color> colors = <int, Color>{16: blue, 12: Colors.teal, 10: red};
                         gradeCounts.forEach((String grade, int count) {
                           bars.add(BarChartGroupData(x: grade.length, barRods: <BarChartRodData>[BarChartRodData(toY: count.toDouble(), color: colors[grade.length])]));
                         });
@@ -79,7 +79,7 @@ class _GradesState extends State<Grades> {
                     for (final Map<String, dynamic> legend in const <Map<String, dynamic>>[
                       <String, dynamic>{"name": "Assistant(e) HU", "color": blue},
                       <String, dynamic>{"name": "Prof. Agrégé", "color": Colors.teal},
-                      <String, dynamic>{"name": "Professeur", "color": red}
+                      <String, dynamic>{"name": "Professeur", "color": red},
                     ])
                       Container(margin: const EdgeInsets.only(right: 8.0, bottom: 8.0), child: Row(children: <Widget>[Container(width: 30, height: 30, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: legend["color"])), const SizedBox(width: 10), CustomizedText(text: legend["name"], fontSize: 18, fontWeight: FontWeight.bold)])),
                   ],

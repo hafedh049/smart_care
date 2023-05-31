@@ -16,13 +16,13 @@ class Services extends StatefulWidget {
 
 class _ServicesState extends State<Services> {
   @override
-  void initState() async {
+  void initState() {
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.landscapeLeft]);
     super.initState();
   }
 
   @override
-  void dispose() async {
+  void dispose() {
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]);
     super.dispose();
   }

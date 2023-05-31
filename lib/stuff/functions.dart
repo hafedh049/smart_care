@@ -23,8 +23,8 @@ Future<void> openDB() async {
     "database.db",
     version: 1,
     onCreate: (Database db, int version) {
-      db.execute("CREATE TABLE SMART_CARE (ID INTEGER PRIMARY KEY , FIRST_TIME INTEGER);");
-      db.insert("SMART_CARE", <String, dynamic>{"FIRST_TIME": 1, "ID": 1});
+      db.execute("CREATE TABLE SMART_CARE (ID INTEGER PRIMARY KEY , FIRST_TIME INTEGER, THEME_MODE INTEGER);");
+      db.insert("SMART_CARE", <String, dynamic>{"FIRST_TIME": 1, "ID": 1, "THEME_MODE": 0});
     },
   );
 }

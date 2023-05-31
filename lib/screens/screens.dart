@@ -11,6 +11,10 @@ import 'package:smart_care/screens/doctor/home.dart' as doctor_home;
 import 'package:smart_care/screens/laboratory/home.dart' as laboratory_home;
 import 'package:smart_care/screens/patient/workflow.dart' as patient_workflow;
 import 'package:smart_care/screens/admin/dashboard.dart' as admin_dashboard;
+import 'package:smart_care/screens/admin/add_user.dart' as admin_add_user;
+import 'package:smart_care/screens/admin/patients_list.dart' as admin_patients_list;
+import 'package:smart_care/screens/admin/doctors_list.dart' as admin_doctors_list;
+import 'package:smart_care/screens/super_admin/home.dart' as super_admin_home;
 import 'package:smart_care/stuff/classes.dart';
 
 import '../stuff/globals.dart';
@@ -37,9 +41,15 @@ class _ScreensState extends State<Screens> {
   ];
   final List<Map<String, dynamic>> _adminScreens = const <Map<String, dynamic>>[
     <String, dynamic>{"screen": admin_dashboard.Dashboard(), "icon": FontAwesomeIcons.chartGantt},
+    <String, dynamic>{"screen": admin_add_user.AddUser(), "icon": FontAwesomeIcons.userPlus},
+    <String, dynamic>{"screen": admin_patients_list.PatientsList(), "icon": FontAwesomeIcons.userInjured},
+    <String, dynamic>{"screen": admin_doctors_list.DoctorsList(), "icon": FontAwesomeIcons.userDoctor},
   ];
   final List<Map<String, dynamic>> _laboratoryScreens = const <Map<String, dynamic>>[
     <String, dynamic>{"screen": laboratory_home.Home(), "icon": FontAwesomeIcons.house},
+  ];
+  final List<Map<String, dynamic>> _superAdminScreens = const <Map<String, dynamic>>[
+    <String, dynamic>{"screen": super_admin_home.Home(), "icon": FontAwesomeIcons.house},
   ];
 
   final GlobalKey _screensKey = GlobalKey();
@@ -71,7 +81,9 @@ class _ScreensState extends State<Screens> {
                       ? _patientScreens
                       : me["role"] == "doctor"
                           ? _doctorScreens
-                          : _adminScreens;
+                          : me["role"] == "super_admin"
+                              ? _superAdminScreens
+                              : _adminScreens;
               return Stack(
                 alignment: AlignmentDirectional.bottomCenter,
                 children: <Widget>[

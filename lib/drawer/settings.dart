@@ -99,32 +99,30 @@ class SmartSettings extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40),
-            GestureDetector(
-              onTap: () {},
-              child: StatefulBuilder(
-                builder: (BuildContext context, void Function(void Function()) _) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      CircleAvatar(radius: 25, backgroundColor: blue.withOpacity(.2), child: const Icon(FontAwesomeIcons.moon, color: blue, size: 15)),
-                      CustomizedText(text: 'darkMode'.tr, fontSize: 18),
-                      CustomizedText(text: theme == 1 ? 'on'.tr : 'off'.tr, fontSize: 12, color: grey.withOpacity(.6)),
-                      Switch(
-                        activeThumbImage: const AssetImage("assets/icon/moon.png"),
-                        inactiveThumbImage: const AssetImage("assets/icon/sun.png"),
-                        value: theme == 1 ? true : false,
-                        onChanged: (bool value) {
-                          theme = theme == 1 ? 0 : 1;
-                          _(() => value ? AdaptiveTheme.of(context).setDark() : AdaptiveTheme.of(context).setLight());
-                        },
-                        activeTrackColor: blue,
-                        activeColor: white,
-                        inactiveTrackColor: grey,
-                      ),
-                    ],
-                  );
-                },
-              ),
+            StatefulBuilder(
+              builder: (BuildContext context, void Function(void Function()) _) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    CircleAvatar(radius: 25, backgroundColor: blue.withOpacity(.2), child: const Icon(FontAwesomeIcons.moon, color: blue, size: 15)),
+                    CustomizedText(text: 'darkMode'.tr, fontSize: 18),
+                    CustomizedText(text: themeMode == 1 ? 'on'.tr : 'off'.tr, fontSize: 12, color: grey.withOpacity(.6)),
+                    Switch(
+                      activeThumbImage: const AssetImage("assets/icon/moon.png"),
+                      inactiveThumbImage: const AssetImage("assets/icon/sun.png"),
+                      value: themeMode == 1 ? true : false,
+                      onChanged: (bool value) async {
+                        themeMode = themeMode == 1 ? 0 : 1;
+                        await db!.execute("UPDATE SMART_CARE SET THEME_MODE = $themeMode WHERE ID = 1;");
+                        _(() => value ? AdaptiveTheme.of(context).setDark() : AdaptiveTheme.of(context).setLight());
+                      },
+                      activeTrackColor: blue,
+                      activeColor: white,
+                      inactiveTrackColor: grey,
+                    ),
+                  ],
+                );
+              },
             ),
             const SizedBox(height: 40),
             GestureDetector(

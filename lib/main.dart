@@ -28,9 +28,11 @@ Future<void> main() async {
 
   await openDB();
 
-  Map<String, dynamic> userData = (await db!.rawQuery("SELECT FIRST_TIME FROM SMART_CARE WHERE ID = 1;")).first;
+  //COALESCE(field,default_value) => if field does not exists it returns the default passed value
+  Map<String, dynamic> userData = (await db!.rawQuery("SELECT THEME_MODE, FIRST_TIME FROM SMART_CARE WHERE ID = 1;")).first;
 
   firstTime = userData["FIRST_TIME"];
+  themeMode = userData["THEME_MODE"];
 
   await AwesomeNotifications().initialize(null, <NotificationChannel>[NotificationChannel(channelKey: "basic_channel", channelName: "Smart Care", channelDescription: "Welcome")]);
   await AwesomeNotifications().isNotificationAllowed().then((bool value) async => !value ? await AwesomeNotifications().requestPermissionToSendNotifications() : null);
@@ -38,7 +40,6 @@ Future<void> main() async {
 
   Connectivity().onConnectivityChanged.listen((ConnectivityResult event) async => await InternetConnectionChecker().hasConnection ? showToast(text: "Online".tr, color: blue) : showToast(text: "Offline".tr, color: red));
 
-  await SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]);
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: <SystemUiOverlay>[SystemUiOverlay.top]);
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: transparent, statusBarBrightness: Brightness.dark, statusBarIconBrightness: Brightness.light, systemNavigationBarColor: transparent, systemNavigationBarContrastEnforced: false, systemNavigationBarDividerColor: transparent, systemNavigationBarIconBrightness: Brightness.light, systemStatusBarContrastEnforced: false));
@@ -47,30 +48,28 @@ Future<void> main() async {
 class Main extends StatelessWidget {
   const Main({super.key});
   @override
-  Widget build(BuildContext context) {
-    return AdaptiveTheme(
-      light: lightTheme_,
-      dark: darkTheme_,
-      initial: AdaptiveThemeMode.light,
-      builder: (ThemeData theme, ThemeData darkTheme) => GetMaterialApp(
-        theme: theme,
-        darkTheme: darkTheme,
-        translations: LanguageTemplateTranslation(),
-        locale: const Locale("en", "US"),
-        debugShowCheckedModeBanner: false,
-        home: FutureBuilder<FirebaseApp>(
-          future: Firebase.initializeApp(),
-          builder: (BuildContext context, AsyncSnapshot<FirebaseApp> snapshot) => snapshot.hasError
-              ? ErrorRoom(error: snapshot.error.toString())
-              : snapshot.connectionState == ConnectionState.done
-                  ? firstTime == 1
-                      ? const GetStarted()
-                      : FirebaseAuth.instance.currentUser == null
-                          ? const SignIn()
-                          : const Screens()
-                  : const WaitRoom(),
+  Widget build(BuildContext context) => AdaptiveTheme(
+        light: lightTheme_,
+        dark: darkTheme_,
+        initial: themeMode == 1 ? AdaptiveThemeMode.dark : AdaptiveThemeMode.light,
+        builder: (ThemeData theme, ThemeData darkTheme) => GetMaterialApp(
+          theme: theme,
+          darkTheme: darkTheme,
+          translations: LanguageTemplateTranslation(),
+          locale: const Locale("en", "US"),
+          debugShowCheckedModeBanner: false,
+          home: FutureBuilder<FirebaseApp>(
+            future: Firebase.initializeApp(),
+            builder: (BuildContext context, AsyncSnapshot<FirebaseApp> snapshot) => snapshot.hasError
+                ? ErrorRoom(error: snapshot.error.toString())
+                : snapshot.connectionState == ConnectionState.done
+                    ? firstTime == 1
+                        ? const GetStarted()
+                        : FirebaseAuth.instance.currentUser == null
+                            ? const SignIn()
+                            : const Screens()
+                    : const WaitRoom(),
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

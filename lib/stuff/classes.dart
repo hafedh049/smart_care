@@ -14,6 +14,7 @@ import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/drawer/about_us.dart';
 import 'package:smart_care/drawer/settings.dart';
 import 'package:smart_care/otp/otp_phase_1.dart';
+import 'package:smart_care/screens/patient/heart_rate/mesure.dart';
 import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/screens/smart_chat_bot.dart';
 import 'package:smart_care/stuff/functions.dart';
@@ -107,6 +108,7 @@ class GoogleAuth extends StatelessWidget {
                 List<String> signInMethods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(googleAccount.email);
                 if (signInMethods.isEmpty) {
                   showToast(text: 'nouserlinkedtothisaccountpleasecreateone'.tr);
+                  await GoogleSignIn().signOut();
                 } else if (signInMethods.contains('google.com')) {
                   await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
                     AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
@@ -263,8 +265,16 @@ class HealthDrawer extends StatelessWidget {
             if (me["role"] == "patient")
               ListTile(
                 contentPadding: EdgeInsets.zero,
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Mesure())),
+                leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))), const SizedBox(width: 5), const Icon(FontAwesomeIcons.heartCircleBolt, size: 20)]),
+                title: CustomizedText(text: "Heart Rate".tr, fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            if (me["role"] == "patient") Container(width: 267, height: .1, color: grey),
+            if (me["role"] == "patient")
+              ListTile(
+                contentPadding: EdgeInsets.zero,
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartChatBot())),
-                leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))), const SizedBox(width: 5), const Icon(FontAwesomeIcons.bots, color: grey, size: 20)]),
+                leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))), const SizedBox(width: 5), const Icon(FontAwesomeIcons.bots, size: 20)]),
                 title: const CustomizedText(text: "Quark", fontSize: 18, fontWeight: FontWeight.bold),
               ),
             Container(width: 267, height: .1, color: grey),

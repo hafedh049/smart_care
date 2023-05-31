@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:smart_care/error/error_room.dart';
-import 'package:smart_care/screens/chat_room.dart';
 import 'package:smart_care/screens/doctor/about_doctor.dart';
 import 'package:smart_care/stuff/globals.dart';
 
@@ -90,11 +90,11 @@ class _FilterListState extends State<FilterList> {
                                 padding: const EdgeInsets.only(bottom: 8),
                                 child: ListTile(
                                   contentPadding: EdgeInsets.zero,
-                                  onTap: () async => await goTo(ChatRoom(talkTo: doctorsList[index].data())),
+                                  onTap: () async => await goTo(AboutDoctor(uid: doctorsList[index].get("uid"))),
                                   leading: Stack(
                                     alignment: AlignmentDirectional.bottomEnd,
                                     children: <Widget>[
-                                      GestureDetector(onTap: () async => await goTo(AboutDoctor(uid: doctorsList[index].get("uid"))), child: CircleAvatar(radius: 25, backgroundColor: grey.withOpacity(.2), backgroundImage: doctorsList[index].get("image_url") == noUser ? null : CachedNetworkImageProvider(doctorsList[index].get("image_url")), child: doctorsList[index].get("image_url") == noUser ? const Icon(FontAwesomeIcons.user, size: 15, color: grey) : null)),
+                                      CircleAvatar(radius: 25, backgroundColor: grey.withOpacity(.2), backgroundImage: doctorsList[index].get("image_url") == noUser ? null : CachedNetworkImageProvider(doctorsList[index].get("image_url")), child: doctorsList[index].get("image_url") == noUser ? const Icon(FontAwesomeIcons.user, size: 15, color: grey) : null),
                                       CircleAvatar(radius: 5, backgroundColor: doctorsList[index].get("status") ? green : red),
                                     ],
                                   ),
@@ -103,13 +103,31 @@ class _FilterListState extends State<FilterList> {
                               ),
                             );
                           } else {
-                            return Center(child: CustomizedText(text: 'nodoctormatchesthissearch'.tr, fontSize: 25, fontWeight: FontWeight.bold));
+                            return Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  LottieBuilder.asset("assets/lottie/notFound.json"),
+                                  CustomizedText(text: 'nodoctormatchesthissearch'.tr, color: blue, fontSize: 20, fontWeight: FontWeight.bold),
+                                ],
+                              ),
+                            );
                           }
                         },
                       ),
                     );
                   } else {
-                    return Expanded(child: Center(child: CustomizedText(text: 'noDoctorsAvailable'.tr, fontSize: 25, fontWeight: FontWeight.bold)));
+                    return Expanded(
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            LottieBuilder.asset("assets/lottie/notFound.json"),
+                            CustomizedText(text: 'noDoctorsAvailable'.tr, color: blue, fontSize: 20, fontWeight: FontWeight.bold),
+                          ],
+                        ),
+                      ),
+                    );
                   }
                 } else if (snapshot.connectionState == ConnectionState.waiting) {
                   return Expanded(child: ListView.builder(itemCount: 30, itemBuilder: (BuildContext context, int index) => const ListTileShimmer()));

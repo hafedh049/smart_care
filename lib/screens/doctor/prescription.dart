@@ -345,7 +345,7 @@ class _PrescriptionState extends State<Prescription> {
                                           "doctorName": me["name"],
                                           "patientName": _patientData["name"],
                                           "dob": _patientData["date_of_birth"],
-                                          "doctorSpeciality": me["speciality"],
+                                          "doctorSpeciality": me["grade"],
                                           "listOfDays": _listOfDays,
                                           "frequencies": _frequecies,
                                           "perDay": _perDay ? "Day" : "Week",

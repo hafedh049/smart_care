@@ -63,7 +63,7 @@ class _HistoricState extends State<Historic> {
                   child: CircleAvatar(
                     backgroundColor: grey.withOpacity(.2),
                     backgroundImage: me["image_url"] == noUser ? null : CachedNetworkImageProvider(me["image_url"]),
-                    child: me["image_url"] != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 18),
+                    child: me["image_url"] != noUser ? null : const Icon(FontAwesomeIcons.user, size: 18),
                   ),
                 ),
                 contentRoot: (BuildContext context, String contentRoot) => Container(
@@ -73,7 +73,7 @@ class _HistoricState extends State<Historic> {
                 ),
                 avatarChild: (BuildContext context, Map<String, dynamic> avatarChild) => PreferredSize(
                   preferredSize: const Size.fromRadius(20),
-                  child: CircleAvatar(backgroundColor: grey.withOpacity(.2), child: Icon(avatarChild["avatar"]!, size: 18)),
+                  child: CircleAvatar(backgroundColor: grey.withOpacity(.2), child: Icon(avatarChild["avatar"]!, size: 18, color: blue)),
                 ),
                 contentChild: (BuildContext context, Map<String, dynamic> contentChild) {
                   bool expanded = false;
@@ -157,8 +157,8 @@ class _HistoricState extends State<Historic> {
                                                           : contentChild["child"] == "Filled Forms"
                                                               ? FontAwesomeIcons.f
                                                               : FontAwesomeIcons.slack,
-                                                      color: white,
                                                       size: 35,
+                                                      color: blue,
                                                     ),
                                                     const SizedBox(width: 10),
                                                     Expanded(
@@ -168,7 +168,7 @@ class _HistoricState extends State<Historic> {
                                                         children: <Widget>[
                                                           CustomizedText(text: "${contentChild["child"]!.substring(0, contentChild["child"]!.length - 1)} ${index + 1}", fontSize: 16, fontWeight: FontWeight.bold),
                                                           const SizedBox(height: 5),
-                                                          CustomizedText(text: getTimeFromDate(data[index].get("timestamp").toDate()), fontSize: 12, color: grey.withOpacity(.8)),
+                                                          CustomizedText(text: getTimeFromDate(data[index].get("timestamp").toDate()), fontSize: 12, color: Theme.of(context).textTheme.bodySmall!.color!.withOpacity(.8)),
                                                         ],
                                                       ),
                                                     ),

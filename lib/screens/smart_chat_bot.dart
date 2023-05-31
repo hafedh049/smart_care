@@ -103,15 +103,7 @@ class _SmartChatBotState extends State<SmartChatBot> {
                           ),
                         );
                 } else if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      itemCount: 10,
-                      itemBuilder: (BuildContext context, int index) {
-                        return const ListTileShimmer();
-                      },
-                    ),
-                  );
+                  return const Center(child: ListTileShimmer());
                 } else {
                   return ErrorRoom(error: snapshot.error.toString());
                 }
@@ -185,15 +177,15 @@ class MessageTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
       clipper: ChatBubbleClipper1(type: me ? BubbleType.sendBubble : BubbleType.receiverBubble),
       margin: const EdgeInsets.only(top: 20),
-      backGroundColor: me ? dark : dark,
+      backGroundColor: blue,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          if (!me) const CustomizedText(text: "Quark", fontSize: 16, color: blue, fontWeight: FontWeight.bold),
+          if (!me) const CustomizedText(text: "Quark", fontSize: 16, fontWeight: FontWeight.bold),
           rewrite && !me ? AnimatedTextKit(repeatForever: false, totalRepeatCount: 1, animatedTexts: <AnimatedText>[TypewriterAnimatedText(message, speed: 50.ms, textStyle: GoogleFonts.roboto(fontSize: 13))]) : CustomizedText(text: message, fontSize: 16),
           const SizedBox(height: 5),
-          Row(children: <Widget>[const Spacer(), CustomizedText(text: getTimeFromDate(date), fontSize: 12, color: blue)])
+          Row(children: <Widget>[const Spacer(), CustomizedText(text: getTimeFromDate(date), fontSize: 12)])
         ],
       ),
     );
@@ -212,9 +204,9 @@ class DancingDots extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          CircleAvatar(radius: 2, backgroundColor: white.withOpacity(.7)).animate(target: 1, onComplete: (AnimationController controller) => controller.repeat(reverse: true)).moveY(duration: 600.ms, begin: 0, end: -3),
-          CircleAvatar(radius: 2, backgroundColor: white.withOpacity(.7)).animate(target: 1, onComplete: (AnimationController controller) => controller.repeat(reverse: true)).moveY(duration: 600.ms, begin: 0, end: -3, delay: 200.ms),
-          CircleAvatar(radius: 2, backgroundColor: white.withOpacity(.7)).animate(target: 1, onComplete: (AnimationController controller) => controller.repeat(reverse: true)).moveY(duration: 600.ms, begin: 0, end: -3, delay: 400.ms),
+          CircleAvatar(radius: 2, backgroundColor: grey.withOpacity(.7)).animate(target: 1, onComplete: (AnimationController controller) => controller.repeat(reverse: true)).moveY(duration: 600.ms, begin: 0, end: -3),
+          CircleAvatar(radius: 2, backgroundColor: grey.withOpacity(.7)).animate(target: 1, onComplete: (AnimationController controller) => controller.repeat(reverse: true)).moveY(duration: 600.ms, begin: 0, end: -3, delay: 200.ms),
+          CircleAvatar(radius: 2, backgroundColor: grey.withOpacity(.7)).animate(target: 1, onComplete: (AnimationController controller) => controller.repeat(reverse: true)).moveY(duration: 600.ms, begin: 0, end: -3, delay: 400.ms),
         ],
       ),
     );

@@ -47,14 +47,14 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
             const SizedBox(height: 10),
-            StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              stream: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+            FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              future: FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get(),
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
                 if (snapshot.hasData) {
                   return ListTile(
                     leading: CircleAvatar(radius: 50, backgroundImage: snapshot.data!.get("image_url") == noUser ? null : CachedNetworkImageProvider(snapshot.data!.get("image_url")), backgroundColor: grey.withOpacity(.2), child: snapshot.data!.get("image_url") != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 35)),
                     title: CustomizedText(text: 'welcome'.tr, color: grey.withOpacity(.7), fontSize: 14),
-                    subtitle: CustomizedText(text: snapshot.data!.get("name"), fontSize: 18),
+                    subtitle: CustomizedText(text: "Dr. ${snapshot.data!.get("name")}", fontSize: 18),
                   );
                 } else if (snapshot.connectionState == ConnectionState.waiting) {
                   return const ListTileShimmer();

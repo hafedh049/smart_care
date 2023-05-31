@@ -72,7 +72,7 @@ class _SignUpState extends State<SignUp> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-                Row(children: <Widget>[const SizedBox(width: 10), CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), const CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
+                GestureDetector(onTap: () => Navigator.pop(context), child: Container(width: 40, height: 40, decoration: BoxDecoration(color: grey.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: const Icon(FontAwesomeIcons.chevronLeft, size: 15))),
                 const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
                 const SizedBox(height: 20),
                 Padding(
@@ -83,8 +83,8 @@ class _SignUpState extends State<SignUp> {
                       Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: 'signUp'.tr, color: blue, fontWeight: FontWeight.bold), CustomizedText(text: 'form'.tr, fontWeight: FontWeight.bold)]),
                       const Spacer(),
                       GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
+                        onTap: () async {
+                          await showModalBottomSheet(
                             context: context,
                             builder: (BuildContext context) => SizedBox(
                               height: 160,
@@ -273,7 +273,7 @@ class _SignUpState extends State<SignUp> {
             });
             showToast(text: 'pictureUploaded'.tr);
           }
-          await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).set({
+          await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).set(<String, dynamic>{
             "name": _usernameController.text.trim(),
             "id": _matriculeController.text.trim(),
             "role": "patient",

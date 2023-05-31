@@ -58,7 +58,7 @@ class _AddUserState extends State<AddUser> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Row(children: <Widget>[const Spacer(), CustomPaint(painter: HalfCirclePainter(), child: const SizedBox(width: 60, height: 60))]),
-                  Row(children: <Widget>[CustomIcon(func: () => Navigator.pop(context), icon: FontAwesomeIcons.chevronLeft), const Spacer(), const CircleAvatar(radius: 12, backgroundColor: blue), const SizedBox(width: 50)]),
+                  const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 12, backgroundColor: blue), SizedBox(width: 50)]),
                   const Row(children: <Widget>[Spacer(), CircleAvatar(radius: 4, backgroundColor: blue), SizedBox(width: 30)]),
                   const SizedBox(height: 20),
                   const Padding(padding: EdgeInsets.only(right: 8), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: "ADD", color: blue, fontWeight: FontWeight.bold), CustomizedText(text: "USER", fontWeight: FontWeight.bold)])),
@@ -66,26 +66,26 @@ class _AddUserState extends State<AddUser> {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[CustomizedText(text: 'whatisyourname'.tr, color: white, fontSize: 18), const SizedBox(height: 10), CustomTextField(validator: fieldsValidator["username"], controller: _usernameController, hint: 'name'.tr, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name)],
+                    children: <Widget>[CustomizedText(text: 'whatisyourname'.tr, fontSize: 18), const SizedBox(height: 10), CustomTextField(validator: fieldsValidator["username"], controller: _usernameController, hint: 'name'.tr, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name)],
                   ),
                   const SizedBox(height: 20),
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[CustomizedText(text: 'canyouprovidemewithyouremployeeIDormatricule'.tr, color: white, fontSize: 18), const SizedBox(height: 10), CustomTextField(validator: fieldsValidator["id"], controller: _idController, hint: 'iD'.tr, prefix: FontAwesomeIcons.userSecret)],
+                    children: <Widget>[CustomizedText(text: 'canyouprovidemewithyouremployeeIDormatricule'.tr, fontSize: 18), const SizedBox(height: 10), CustomTextField(validator: fieldsValidator["id"], controller: _idController, hint: 'iD'.tr, prefix: FontAwesomeIcons.userSecret)],
                   ),
                   const SizedBox(height: 20),
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[CustomizedText(text: 'wouldyoumindsharingyouremailaddresswithme'.tr, color: white, fontSize: 18), const SizedBox(height: 10), CustomTextField(validator: fieldsValidator["email"], controller: _emailController, hint: 'email'.tr, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress)],
+                    children: <Widget>[CustomizedText(text: 'wouldyoumindsharingyouremailaddresswithme'.tr, fontSize: 18), const SizedBox(height: 10), CustomTextField(validator: fieldsValidator["email"], controller: _emailController, hint: 'email'.tr, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress)],
                   ),
                   const SizedBox(height: 20),
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      CustomizedText(text: 'youwillneedtosetupapasswordforyouraccount'.tr, color: white, fontSize: 18),
+                      CustomizedText(text: 'youwillneedtosetupapasswordforyouraccount'.tr, fontSize: 18),
                       const SizedBox(height: 10),
                       CustomTextField(func: (String text) => _passwordStrenghtKey.currentState!.setState(() {}), validator: fieldsValidator["password"], controller: _passwordController, hint: 'password'.tr, prefix: FontAwesomeIcons.lock, obscured: true),
                       const SizedBox(height: 10),
@@ -97,7 +97,7 @@ class _AddUserState extends State<AddUser> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      CustomizedText(text: 'mayIhaveyourphonenumberplease'.tr, color: white, fontSize: 18),
+                      CustomizedText(text: 'mayIhaveyourphonenumberplease'.tr, fontSize: 18),
                       const SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.only(right: 8),
@@ -122,13 +122,13 @@ class _AddUserState extends State<AddUser> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          CustomizedText(text: 'pleaseselectyourrolefromthefollowingoptions'.tr, color: white, fontSize: 18),
+                          CustomizedText(text: 'pleaseselectyourrolefromthefollowingoptions'.tr, fontSize: 18),
                           const SizedBox(height: 20),
-                          CheckboxListTile(activeColor: blue, value: _rolesList[0], title: CustomizedText(text: 'doctor'.tr, fontSize: 16, color: white), onChanged: (bool? value) => setState(() => _rolesList[0] = (_rolesList[0]) ? false : true)),
+                          CheckboxListTile(activeColor: blue, value: _rolesList[0], title: CustomizedText(text: 'doctor'.tr, fontSize: 16), onChanged: (bool? value) => setState(() => _rolesList[0] = (_rolesList[0]) ? false : true)),
                           const SizedBox(height: 10),
-                          CheckboxListTile(activeColor: blue, value: _rolesList[1], title: CustomizedText(text: 'patient'.tr, fontSize: 16, color: white), onChanged: (bool? value) => setState(() => _rolesList[1] = (_rolesList[1]) ? false : true)),
+                          CheckboxListTile(activeColor: blue, value: _rolesList[1], title: CustomizedText(text: 'patient'.tr, fontSize: 16), onChanged: (bool? value) => setState(() => _rolesList[1] = (_rolesList[1]) ? false : true)),
                           const SizedBox(height: 10),
-                          CheckboxListTile(activeColor: blue, value: _rolesList[2], title: CustomizedText(text: 'laboratory'.tr, fontSize: 16, color: white), onChanged: (bool? value) => setState(() => _rolesList[2] = (_rolesList[2]) ? false : true)),
+                          CheckboxListTile(activeColor: blue, value: _rolesList[2], title: CustomizedText(text: 'Laboratory'.tr, fontSize: 16), onChanged: (bool? value) => setState(() => _rolesList[2] = (_rolesList[2]) ? false : true)),
                         ],
                       );
                     },
@@ -179,7 +179,7 @@ class _AddUserState extends State<AddUser> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 120),
                 ],
               ),
             ),

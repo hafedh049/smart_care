@@ -1,7 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
 
 import 'dart:io';
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -32,14 +31,12 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   final GlobalKey _chatKey = GlobalKey();
-  final GlobalKey _nameKey = GlobalKey();
   List<types.Message> _messages = <types.Message>[];
   late final types.User _user;
   String _user1ID = '';
   String _user2ID = '';
   List<String> _usersIDS = <String>[];
   String _chatId = "";
-  bool _theme = false;
   @override
   void initState() {
     super.initState();
@@ -65,40 +62,9 @@ class _ChatRoomState extends State<ChatRoom> {
             children: <Widget>[
               CircleAvatar(radius: 20, backgroundImage: widget.talkTo["image_url"] == noUser ? null : CachedNetworkImageProvider(widget.talkTo["image_url"]), backgroundColor: grey.withOpacity(.2), child: widget.talkTo["image_url"] != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 15)),
               const SizedBox(width: 5),
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    StatefulBuilder(
-                      key: _nameKey,
-                      builder: (context, snapshot) {
-                        return CustomizedText(text: widget.talkTo["name"], fontSize: 16, fontWeight: FontWeight.bold, color: _theme ? white : black);
-                      },
-                    ),
-                    CustomizedText(text: widget.talkTo["status"] ? "Online" : "Offline", fontSize: 14, color: blue)
-                  ],
-                ),
-              ),
+              Flexible(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: widget.talkTo["name"], fontSize: 16, fontWeight: FontWeight.bold, color: themeMode == 1 ? white : black), CustomizedText(text: widget.talkTo["status"] ? "Online" : "Offline", fontSize: 14, color: blue)])),
             ],
           ),
-          actions: <Widget>[
-            StatefulBuilder(
-              builder: (BuildContext context, void Function(void Function()) _) {
-                return IconButton(
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    onPressed: () => _(
-                          () {
-                            _chatKey.currentState!.setState(() => _theme = !_theme);
-                            theme = theme == 1 ? 0 : 1;
-                            _nameKey.currentState!.setState(() => _(() => theme == 1 ? AdaptiveTheme.of(context).setDark() : AdaptiveTheme.of(context).setLight()));
-                          },
-                        ),
-                    icon: Icon(!_theme ? FontAwesomeIcons.moon : FontAwesomeIcons.sun, size: 15));
-              },
-            ),
-          ],
         ),
         body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: FirebaseFirestore.instance.collection("chats").doc(_chatId).collection("messages").orderBy("createdAt", descending: true).limit(10).snapshots(),
@@ -110,7 +76,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   key: _chatKey,
                   builder: (BuildContext context, void Function(void Function()) _) {
                     return Chat(
-                      theme: _theme ? const DarkChatTheme(messageBorderRadius: 10, inputTextDecoration: InputDecoration(fillColor: transparent)) : const DefaultChatTheme(messageBorderRadius: 10, inputTextDecoration: InputDecoration(fillColor: transparent)),
+                      theme: themeMode == 1 ? const DarkChatTheme(messageBorderRadius: 10, inputTextDecoration: InputDecoration(fillColor: transparent)) : const DefaultChatTheme(messageBorderRadius: 10, inputTextDecoration: InputDecoration(fillColor: transparent)),
                       scrollPhysics: const BouncingScrollPhysics(),
                       isLastPage: true,
                       useTopSafeAreaInset: true,
