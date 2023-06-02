@@ -14,6 +14,7 @@ import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/drawer/about_us.dart';
 import 'package:smart_care/drawer/settings.dart';
 import 'package:smart_care/otp/otp_phase_1.dart';
+import 'package:smart_care/screens/calendar/calendar.dart';
 import 'package:smart_care/screens/patient/heart_rate/mesure.dart';
 import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/screens/smart_chat_bot.dart';
@@ -276,6 +277,14 @@ class HealthDrawer extends StatelessWidget {
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SmartChatBot())),
                 leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))), const SizedBox(width: 5), const Icon(FontAwesomeIcons.bots, size: 20)]),
                 title: const CustomizedText(text: "Quark", fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            if (me["role"] == "patient" || me["role"] == "doctor") Container(width: 267, height: .1, color: grey),
+            if (me["role"] == "patient" || me["role"] == "doctor")
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const CalendarV())),
+                leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))), const SizedBox(width: 5), const Icon(FontAwesomeIcons.calendar, size: 20)]),
+                title: CustomizedText(text: "Calendar".tr, fontSize: 18, fontWeight: FontWeight.bold),
               ),
             Container(width: 267, height: .1, color: grey),
             const SizedBox(height: 10),

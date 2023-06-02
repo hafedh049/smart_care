@@ -61,6 +61,7 @@ dependencies:
   intl: ^0.17.0
   adaptive_theme: ^3.2.1
   camera: ^0.10.5
+  syncfusion_flutter_calendar: ^21.2.3
 
 dev_dependencies:
   flutter_test:

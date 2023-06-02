@@ -32,7 +32,7 @@ class _GradesState extends State<Grades> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(right: 32.0, top: 32.0, bottom: 16.0),
+        padding: const EdgeInsets.only(right: 32, top: 32, bottom: 16),
         child: Stack(
           children: <Widget>[
             Row(
@@ -81,13 +81,13 @@ class _GradesState extends State<Grades> {
                       <String, dynamic>{"name": "Prof. Agrégé", "color": Colors.teal},
                       <String, dynamic>{"name": "Professeur", "color": red},
                     ])
-                      Container(margin: const EdgeInsets.only(right: 8.0, bottom: 8.0), child: Row(children: <Widget>[Container(width: 30, height: 30, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: legend["color"])), const SizedBox(width: 10), CustomizedText(text: legend["name"], fontSize: 18, fontWeight: FontWeight.bold)])),
+                      Container(margin: const EdgeInsets.only(right: 8, bottom: 8), child: Row(children: <Widget>[Container(width: 30, height: 30, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: legend["color"])), const SizedBox(width: 10), CustomizedText(text: legend["name"], fontSize: 18, fontWeight: FontWeight.bold)])),
                   ],
                 ),
                 const SizedBox(width: 20),
               ],
             ),
-            GestureDetector(onTap: () => Navigator.pop(context), child: Container(width: 40, height: 40, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)), padding: const EdgeInsets.all(8.0), child: const Center(child: Icon(FontAwesomeIcons.chevronLeft, size: 15)))),
+            GestureDetector(onTap: () => Navigator.pop(context), child: Container(width: 40, height: 40, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)), padding: const EdgeInsets.all(8), child: const Center(child: Icon(FontAwesomeIcons.chevronLeft, size: 15)))),
           ],
         ),
       ),

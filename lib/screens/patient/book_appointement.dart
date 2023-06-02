@@ -182,6 +182,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                         _pageController.animateToPage(1, duration: 400.ms, curve: Curves.linear);
                       } else {
                         await FirebaseFirestore.instance.collection("appointments").add(<String, dynamic>{
+                          "confirmed": false,
                           'patientName': me["name"],
                           'doctorName': widget.doctorName,
                           'patientID': me["uid"].trim(),

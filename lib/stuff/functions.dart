@@ -13,6 +13,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 void showToast({required String text, Color? color}) {
   Fluttertoast.showToast(msg: text.replaceAll(RegExp(r'\[.+\] '), ''), backgroundColor: color ?? blue.withOpacity(.3), fontSize: 14, gravity: ToastGravity.TOP, toastLength: Toast.LENGTH_LONG, textColor: white, timeInSecForIosWeb: 3);
@@ -140,4 +141,20 @@ Future<String> getChatResponse(String input) async {
 String getChatId(List<String> ids) {
   ids.sort();
   return '${ids[0]}_${ids[1]}';
+}
+
+Future<List<Appointment>> generateAppointments() async {
+  final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("appointments").where(me["role"] == "doctor" ? "doctorID" : "patientID", isEqualTo: me["uid"]).get();
+
+  return snapshot.docs
+      .map(
+        (QueryDocumentSnapshot<Map<String, dynamic>> item) => Appointment(
+          startTime: item.get("appointmentDate").toDate(),
+          endTime: item.get("appointmentDate").toDate().add(const Duration(minutes: 60 /*int.parse(item.get("duration").split(" ")[0])*/)),
+          color: blue,
+          subject: "Appointment",
+          notes: me["role"] == "doctor" ? item["patientName"] : item["doctorName"],
+        ),
+      )
+      .toList();
 }
