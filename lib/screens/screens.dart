@@ -14,7 +14,10 @@ import 'package:smart_care/screens/admin/dashboard.dart' as admin_dashboard;
 import 'package:smart_care/screens/admin/add_user.dart' as admin_add_user;
 import 'package:smart_care/screens/admin/patients_list.dart' as admin_patients_list;
 import 'package:smart_care/screens/admin/doctors_list.dart' as admin_doctors_list;
-import 'package:smart_care/screens/super_admin/home.dart' as super_admin_home;
+import 'package:smart_care/screens/super_admin/plan.dart' as super_admin_plan;
+import 'package:smart_care/screens/super_admin/user.dart' as super_admin_user;
+import 'package:smart_care/screens/super_admin/dashboard.dart' as super_admin_dashboard;
+
 import 'package:smart_care/stuff/classes.dart';
 
 import '../stuff/globals.dart';
@@ -49,7 +52,9 @@ class _ScreensState extends State<Screens> {
     <String, dynamic>{"screen": laboratory_home.Home(), "icon": FontAwesomeIcons.house},
   ];
   final List<Map<String, dynamic>> _superAdminScreens = const <Map<String, dynamic>>[
-    <String, dynamic>{"screen": super_admin_home.Home(), "icon": FontAwesomeIcons.house},
+    <String, dynamic>{"screen": super_admin_plan.Plan(), "icon": FontAwesomeIcons.moneyBill},
+    <String, dynamic>{"screen": super_admin_user.ManageUser(), "icon": FontAwesomeIcons.users},
+    <String, dynamic>{"screen": super_admin_dashboard.Dashboard(), "icon": FontAwesomeIcons.dashcube},
   ];
 
   final GlobalKey _screensKey = GlobalKey();

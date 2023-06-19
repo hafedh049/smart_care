@@ -22,7 +22,6 @@ class LView extends StatelessWidget {
               showNavigationArrow: true,
               showDatePickerButton: true,
               dataSource: FetchData(snapshot.data!),
-              scheduleViewSettings: ScheduleViewSettings(),
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

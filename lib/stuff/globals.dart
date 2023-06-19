@@ -41,6 +41,7 @@ const String noUser = 'https://firebasestorage.googleapis.com/v0/b/smart-care-b4
 const String rodeOfAsclepius = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/virus.jpg?alt=media&token=0bdcf248-dab6-4e77-a7f5-ce8a9667fc19";
 const String doctorRod = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/WallpaperDog-5497244-min.jpg?alt=media&token=d66c6ae6-8b28-4c58-8d1f-2d41106f44b3";
 const String appIcon = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/health.png?alt=media&token=5b9a461b-bf46-4dfd-bc83-e8ec9a66f990";
+const String avuRL = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/av.png?alt=media&token=f6f072a1-c011-4c35-aaa4-946f100ba206&_gl=1*y63jnt*_ga*MTE5NDk5NjQ4MS4xNjgyOTgwODQx*_ga_CW55HF8NVT*MTY4NTc1MTk2OC41Ny4xLjE2ODU3NTIwMDcuMC4wLjA.";
 
 //Data Structures
 final List<Map<String, dynamic>> gradesList = <Map<String, dynamic>>[

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:smart_care/stuff/classes.dart';
+import 'package:smart_care/stuff/globals.dart';
 
 class PasswordStrength extends StatelessWidget {
   final String password;
@@ -28,6 +30,10 @@ class PasswordStrength extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
+        Row(children: <Widget>[
+          for (String key in criteria.keys) ...<Widget>[Expanded(child: AnimatedContainer(duration: 1500.ms, height: 3, color: criteria[key]! ? blue : grey)), const SizedBox(width: 5)]
+        ]),
+        const SizedBox(height: 10),
         Row(
           children: <Widget>[
             Icon(criteria['contains_uppercase']! ? Icons.check_circle : Icons.cancel_outlined, color: criteria['contains_uppercase']! ? Colors.green : Colors.red),
