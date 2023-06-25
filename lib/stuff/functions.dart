@@ -130,8 +130,8 @@ Future<void> goTo(Widget place) async {
 }
 
 Future<String> getChatResponse(String input) async {
-  final headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $gpt3ApiKey'};
-  final body = {'prompt': input, 'temperature': .5, 'max_tokens': 50};
+  final Map<String, String> headers = <String, String>{'Content-Type': 'application/json', 'Authorization': 'Bearer $gpt3ApiKey'};
+  final Map<String, dynamic> body = <String, dynamic>{'prompt': input, 'temperature': .5, 'max_tokens': 128};
   final response = await post(Uri.parse(gpt3ApiUrl), headers: headers, body: json.encode(body));
   final data = json.decode(response.body);
   final String chatResponse = data['choices'][0]['text'];

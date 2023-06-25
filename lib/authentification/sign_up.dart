@@ -12,10 +12,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:smart_care/authentification/pwd_strength.dart';
-import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
+
+import '../screens/screens.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -41,9 +42,9 @@ class _SignUpState extends State<SignUp> {
 
   bool _next = true;
   bool _previous = false;
-  String _completePhoneNumber = "";
   File? _profilePicture;
   double _stepsCompleted = 0;
+  String _completePhoneNumber = "";
 
   @override
   void dispose() {
@@ -108,18 +109,19 @@ class _SignUpState extends State<SignUp> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: <Widget>[
                                       CustomIcon(
-                                          size: 25,
-                                          func: () async {
-                                            Navigator.pop(context);
-                                            final String path = await takesFromCameraOrGallery(true);
+                                        size: 25,
+                                        func: () async {
+                                          Navigator.pop(context);
+                                          final String path = await takesFromCameraOrGallery(true);
 
-                                            if (path.isNotEmpty) {
-                                              _profilePictureKey.currentState!.setState(() {
-                                                _profilePicture = File(path);
-                                              });
-                                            }
-                                          },
-                                          icon: FontAwesomeIcons.camera),
+                                          if (path.isNotEmpty) {
+                                            _profilePictureKey.currentState!.setState(() {
+                                              _profilePicture = File(path);
+                                            });
+                                          }
+                                        },
+                                        icon: FontAwesomeIcons.camera,
+                                      ),
                                       CustomIcon(
                                         size: 25,
                                         func: () async {
@@ -169,7 +171,7 @@ class _SignUpState extends State<SignUp> {
                           const SizedBox(height: 20),
                           CustomTextField(func: (String text) => _passwordStrenghtKey.currentState!.setState(() {}), validator: fieldsValidator["password"], controller: _passwordController, hint: 'password'.tr, prefix: FontAwesomeIcons.lock, obscured: true),
                           const SizedBox(height: 10),
-                          Flexible(child: Padding(padding: const EdgeInsets.only(right: 8.0), child: StatefulBuilder(key: _passwordStrenghtKey, builder: (BuildContext context, void Function(void Function()) _) => PasswordStrength(password: _passwordController.text.trim())))),
+                          Flexible(child: Padding(padding: const EdgeInsets.only(right: 8), child: StatefulBuilder(key: _passwordStrenghtKey, builder: (BuildContext context, void Function(void Function()) _) => PasswordStrength(password: _passwordController.text.trim())))),
                         ],
                       ),
                       Column(
@@ -201,7 +203,7 @@ class _SignUpState extends State<SignUp> {
                     key: _nextKey,
                     builder: (BuildContext context, void Function(void Function()) setS) {
                       return GestureDetector(
-                        onTap: _next ? navigate : () => create(setS),
+                        onTap: _next ? navigate : () => create(context, () => setS(() => _next = false)),
                         child: AnimatedContainer(
                           duration: 500.ms,
                           height: 40,
@@ -221,7 +223,6 @@ class _SignUpState extends State<SignUp> {
                       return GestureDetector(
                         onTap: _previous
                             ? () async {
-                                //rjou3 bitweli
                                 await _fieldsPageController.previousPage(duration: 200.ms, curve: Curves.linear);
                                 if (_fieldsPageController.page!.toInt() == _fieldsPageController.initialPage) {
                                   _previousKey.currentState!.setState(() {
@@ -242,7 +243,7 @@ class _SignUpState extends State<SignUp> {
                           height: 40,
                           width: MediaQuery.of(context).size.width * .6,
                           decoration: BoxDecoration(color: _previous ? blue : white.withOpacity(.5), borderRadius: BorderRadius.circular(5)),
-                          child: Padding(padding: const EdgeInsets.all(8.0), child: Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: black), const Spacer(), CustomizedText(text: 'back'.tr, color: black, fontWeight: FontWeight.bold, fontSize: 20), const Spacer()])),
+                          child: Padding(padding: const EdgeInsets.all(8), child: Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[const Icon(FontAwesomeIcons.chevronLeft, size: 15, color: black), const Spacer(), CustomizedText(text: 'back'.tr, color: black, fontWeight: FontWeight.bold, fontSize: 20), const Spacer()])),
                         ),
                       );
                     },
@@ -257,7 +258,7 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  void create(void Function(void Function()) setS) async {
+  void create(BuildContext context, void Function() func) async {
     try {
       bool phoneExists = false;
       await FirebaseFirestore.instance.collection("users").where("phone_number", isEqualTo: _completePhoneNumber).count().get().then((AggregateQuerySnapshot value) => phoneExists = value.count == 0 ? false : true);
@@ -266,19 +267,18 @@ class _SignUpState extends State<SignUp> {
       } else {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential userCredential) async {
           showToast(text: 'accountCreated'.tr);
-          String profilePictureUrl = noUser;
+          String imageUrl = noUser;
           if (_profilePicture != null) {
-            await FirebaseStorage.instance.ref().child("profile_pictures/${userCredential.user!.uid}").putFile(_profilePicture!).then((TaskSnapshot task) async {
-              profilePictureUrl = await task.ref.getDownloadURL();
-            });
+            await FirebaseStorage.instance.ref().child("profile_pictures/${userCredential.user!.uid}").putFile(_profilePicture!).then((TaskSnapshot task) async => imageUrl = await task.ref.getDownloadURL());
             showToast(text: 'pictureUploaded'.tr);
           }
+          await getToken();
           await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).set(<String, dynamic>{
             "name": _usernameController.text.trim(),
             "id": _matriculeController.text.trim(),
             "role": "patient",
             "uid": FirebaseAuth.instance.currentUser!.uid,
-            "image_url": profilePictureUrl,
+            "image_url": imageUrl,
             "email": _emailController.text.trim(),
             "password": _passwordController.text.trim(),
             "phone_number": _completePhoneNumber,
@@ -287,22 +287,19 @@ class _SignUpState extends State<SignUp> {
             "about": "A Patient",
             "grade": "",
             "service": "Expert métier",
-            "token": "",
+            "token": userToken,
             "hospital": "",
           }).then((void value) async {
             showToast(text: 'dataStored'.tr);
             await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
               showToast(text: 'signedInUsingEmailPassword'.tr);
-              await getToken();
-              await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"token": userToken}).then((void value) async {
-                await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
-              });
+              await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
             });
           });
         });
       }
     } catch (_) {
-      setS(() => _next = false);
+      func();
       showToast(text: _.toString());
     }
   }
