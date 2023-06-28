@@ -114,6 +114,8 @@ class GoogleAuth extends StatelessWidget {
                   await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
                     AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
                     await FirebaseAuth.instance.signInWithCredential(credential);
+                    await getToken();
+                    await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true, "token": userToken});
                     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
                   });
                 } else {

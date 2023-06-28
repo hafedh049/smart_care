@@ -98,7 +98,7 @@ class _OTPViewState extends State<OTPView> {
                                       setS(() => wait = false);
                                       showToast(text: error.message!, color: red);
                                     },
-                                    timeout: const Duration(seconds: 1),
+                                    timeout: const Duration(minutes: 2),
                                     forceResendingToken: 1,
                                     codeSent: (String verificationId, int? forceResendingToken) async {
                                       setS(() => wait = false);

@@ -11,21 +11,23 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smart_care/stuff/functions.dart';
+import 'package:smart_care/viewmodels/charger_bilan._viewmodel.dart';
 
 import '../../stuff/classes.dart';
 import '../../stuff/globals.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class BloodTestView extends StatefulWidget {
+  const BloodTestView({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<BloodTestView> createState() => _BloodTestViewState();
 }
 
-class _HomeState extends State<Home> {
+class _BloodTestViewState extends State<BloodTestView> {
+  final BloodTestViewModel _viewModel = Get.put(BloodTestViewModel());
+
   final _formKey = GlobalKey<FormState>();
   final _patientIdController = TextEditingController();
-  final _doctorIdController = TextEditingController();
   final _labNameController = TextEditingController();
   final _uploadNameController = TextEditingController();
   final _dateController = TextEditingController();
@@ -36,13 +38,12 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    _dateController.text = DateFormat('dd/MM/yyyy').format(DateTime.now()).toString();
     super.initState();
+    _dateController.text = DateFormat('dd/MM/yyyy').format(DateTime.now()).toString();
   }
 
   @override
   void dispose() {
-    _doctorIdController.dispose();
     _patientIdController.dispose();
     _labNameController.dispose();
     _uploadNameController.dispose();
@@ -77,7 +78,7 @@ class _HomeState extends State<Home> {
                       TextFormField(
                         controller: _patientIdController,
                         decoration: InputDecoration(
-                          labelText: 'Patient ID',
+                          labelText: _viewModel.bloodTest!.patientId,
                           suffixIcon: IconButton(
                             onPressed: () async {
                               await Clipboard.getData(Clipboard.kTextPlain).then(
@@ -95,29 +96,6 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         validator: (String? value) => value!.isEmpty ? 'Please enter a patient ID' : null,
-                      ),
-                      const SizedBox(height: 10),
-                      TextFormField(
-                        controller: _doctorIdController,
-                        decoration: InputDecoration(
-                          labelText: 'Doctor ID',
-                          suffixIcon: IconButton(
-                            onPressed: () async {
-                              await Clipboard.getData(Clipboard.kTextPlain).then(
-                                (ClipboardData? value) {
-                                  if (value != null) {
-                                    _patientIdController.text = value.text!;
-                                    showToast(text: "ID pasted from clipboard");
-                                  } else {
-                                    showToast(text: "There is nothing to paste");
-                                  }
-                                },
-                              );
-                            },
-                            icon: const Icon(FontAwesomeIcons.clipboard, size: 20, color: grey),
-                          ),
-                        ),
-                        validator: (String? value) => value!.isEmpty ? 'Please enter a doctor ID' : null,
                       ),
                       const SizedBox(height: 10),
                       TextFormField(controller: _labNameController, decoration: const InputDecoration(labelText: 'Laboratory Name'), validator: (String? value) => value!.isEmpty ? 'Please enter the laboratory name' : null),
@@ -156,16 +134,11 @@ class _HomeState extends State<Home> {
                                     "lab_name": _labNameController.text,
                                     "uploader_name": _uploadNameController.text,
                                     "uid": me["uid"],
-                                  }).then((void value) async {
+                                  }).then((void value) {
                                     showToast(text: 'bloodstestlinkstoredsuccessfully'.tr);
                                     _patientIdController.clear();
                                     _labNameController.clear();
                                     _uploadNameController.clear();
-                                    result = null;
-                                    final DocumentSnapshot<Map<String, dynamic>> doctorData = await FirebaseFirestore.instance.collection("users").doc(_doctorIdController.text.trim()).get();
-                                    final DocumentSnapshot<Map<String, dynamic>> patientData = await FirebaseFirestore.instance.collection("users").doc(_doctorIdController.text.trim()).get();
-                                    sendPushNotificationFCM(token: doctorData.get("token"), username: doctorData.get("username"), message: "Blood test uploaded".tr);
-                                    sendPushNotificationFCM(token: patientData.get("token"), username: patientData.get("username"), message: "Blood test uploaded".tr);
                                   });
                                 });
                               }

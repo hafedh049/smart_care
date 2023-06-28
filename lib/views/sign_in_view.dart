@@ -10,15 +10,18 @@ import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/globals.dart';
 import '../stuff/functions.dart';
+import '../viewmodels/sign_in_viewmodel.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+class SignInView extends StatefulWidget {
+  const SignInView({super.key});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<SignInView> createState() => _SignInViewState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInViewState extends State<SignInView> {
+  final SignInViewModel _viewModel = Get.put(SignInViewModel());
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -63,9 +66,9 @@ class _SignInState extends State<SignIn> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                CustomTextField(validator: fieldsValidator["email"], controller: _emailController, hint: 'email'.tr, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
+                CustomTextField(validator: fieldsValidator["email"], controller: _emailController, hint: _viewModel.user.email, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
                 const SizedBox(height: 10),
-                CustomTextField(validator: fieldsValidator["password"], controller: _passwordController, hint: 'password'.tr, obscured: true, prefix: FontAwesomeIcons.lock),
+                CustomTextField(validator: fieldsValidator["password"], controller: _passwordController, hint: _viewModel.user.password, obscured: true, prefix: FontAwesomeIcons.lock),
                 const SizedBox(height: 20),
                 Center(
                   child: StatefulBuilder(

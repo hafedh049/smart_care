@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,9 +14,11 @@ class SignInViewModel extends GetxController {
 
   bool get isLoading => _isLoading.value;
 
+  String otp = List.generate(6, (index) => Random().nextInt(10).toString()).join();
+
   UserModel user = UserModel(phoneNumber: "", role: "", username: "", email: "", password: "");
 
-  void signInWithEmailAndPassword(String email, String password) async {
+  void signInEmPass(String email, String password) async {
     try {
       setLoading(true);
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -55,6 +59,10 @@ class SignInViewModel extends GetxController {
     } finally {
       setLoading(false);
     }
+  }
+
+  bool verifyOTP(String userOTP) {
+    return userOTP == otp;
   }
 
   void showError(String errorMessage) {

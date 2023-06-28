@@ -7,7 +7,7 @@ _app = Flask(__name__)
 @_app.route("/delete_user",methods=['POST'])
 def delete_user():
     print(json.loads(request.data.decode()))
-    return jsonify({"message":"mriguel wsol sahbi"})
+    return jsonify({"message":"success"})
 
 
 if __name__ == '__main__':
