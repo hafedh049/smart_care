@@ -11,12 +11,11 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
+import 'package:smart_care/authentification/email_verification.dart';
 import 'package:smart_care/authentification/pwd_strength.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
-
-import '../screens/screens.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -262,8 +261,8 @@ class _SignUpState extends State<SignUp> {
     try {
       bool phoneExists = false;
       await FirebaseFirestore.instance.collection("users").where("phone_number", isEqualTo: _completePhoneNumber).count().get().then((AggregateQuerySnapshot value) => phoneExists = value.count == 0 ? false : true);
-      if (phoneExists) {
-        showToast(text: "This phone number already exists".tr);
+      if (_completePhoneNumber.length != 12 || phoneExists) {
+        showToast(text: "This phone number already exists or you should verify your number please".tr);
       } else {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential userCredential) async {
           showToast(text: 'accountCreated'.tr);
@@ -272,6 +271,7 @@ class _SignUpState extends State<SignUp> {
             await FirebaseStorage.instance.ref().child("profile_pictures/${userCredential.user!.uid}").putFile(_profilePicture!).then((TaskSnapshot task) async => imageUrl = await task.ref.getDownloadURL());
             showToast(text: 'pictureUploaded'.tr);
           }
+          await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim());
           await getToken();
           await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).set(<String, dynamic>{
             "name": _usernameController.text.trim(),
@@ -290,11 +290,7 @@ class _SignUpState extends State<SignUp> {
             "token": userToken,
             "hospital": "",
           }).then((void value) async {
-            showToast(text: 'dataStored'.tr);
-            await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
-              showToast(text: 'signedInUsingEmailPassword'.tr);
-              await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
-            });
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const EmailVerificationScreen()), (Route route) => false);
           });
         });
       }

@@ -101,7 +101,10 @@ Future<void> getToken() async {
   if (userToken.isEmpty) {
     await FirebaseMessaging.instance.getToken().then((String? value) async {
       userToken = value!;
-      await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, String>{'token': userToken});
+      final DocumentSnapshot<Map<String, dynamic>> reference = await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get();
+      if (reference.exists) {
+        await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, String>{'token': userToken});
+      }
     });
   }
 }

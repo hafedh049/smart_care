@@ -302,7 +302,6 @@ class HealthDrawer extends StatelessWidget {
                   },
                 );
               },
-              horizontalTitleGap: 0,
               leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))), const SizedBox(width: 5), const Icon(FontAwesomeIcons.chevronLeft, size: 20)]),
               title: CustomizedText(text: 'signOut'.tr, fontSize: 18, fontWeight: FontWeight.bold),
             ),

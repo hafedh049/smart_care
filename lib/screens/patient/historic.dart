@@ -63,7 +63,7 @@ class _HistoricState extends State<Historic> {
                   child: CircleAvatar(
                     backgroundColor: grey.withOpacity(.2),
                     backgroundImage: me["image_url"] == noUser ? null : CachedNetworkImageProvider(me["image_url"]),
-                    child: me["image_url"] != noUser ? null : const Icon(FontAwesomeIcons.user, size: 18),
+                    child: me["image_url"] != noUser ? null : const Icon(FontAwesomeIcons.user, size: 18, color: blue),
                   ),
                 ),
                 contentRoot: (BuildContext context, String contentRoot) => Container(
