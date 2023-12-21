@@ -54,13 +54,10 @@
     <ul>
       <li>Hafedh Gunichi</li>
     </ul>
-    <video width="320" height="240" controls>
-  <source src="[assets/e12d1d1d-1b11-4764-866a-b67e39b8553b.mp4](https://github.com/hafedh049/smart_care/assets/120606876/70130cb0-8a44-4697-b987-00faa7fe39ce)https://github.com/hafedh049/smart_care/assets/120606876/70130cb0-8a44-4697-b987-00faa7fe39ce" type="video/mp4">
 
 
+https://github.com/hafedh049/smart_care/assets/120606876/64105c0a-c805-4e1f-af4a-e1e57dd7291a
 
 
-  Your browser does not support the video tag.
-</video>
 </body>
 </html>
