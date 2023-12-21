@@ -55,7 +55,7 @@
       <li>Hafedh Gunichi</li>
     </ul>
     <video width="320" height="240" controls>
-  <source src="assets/video.mp4" type="video/mp4">
+  <source src="assets/e12d1d1d-1b11-4764-866a-b67e39b8553b.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 </body>
