@@ -54,7 +54,6 @@
     <ul>
       <li>Hafedh Gunichi</li>
     </ul>
-    <h2>License</h2>
-    <p>SmartCare is licensed under the MIT license. See <a href="LICENSE">LICENSE</a> for more information.</p>
+    <video src="assets/video.mp4"></video>video
 </body>
 </html>
