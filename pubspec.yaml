@@ -3,10 +3,10 @@ description: this application will help patients to consult any near or availabl
 
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 2.0.0
 
 environment:
-  sdk: '>=2.19.2 <3.0.0'
+  sdk: '>=3.1.3 <4.0.0'
 
 dependencies:
 

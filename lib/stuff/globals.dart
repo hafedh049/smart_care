@@ -25,7 +25,7 @@ const String appTitle = "Smart Care";
 const String aboutUs = "Welcome to our telemedicine platform, built using the Flutter cross-platform framework, designed to provide primary prevention and prompt medical assistance in case of an AES (accident d'explosion du sang). Our platform is not only for patients, but it also caters to healthcare professionals who can monitor their patient's health status in real-time. Our platform's primary objective is to assist people in preventing AES by conducting daily and monthly checkups and sending SMS or notification reminders. In case of an AES event, our platform provides a workflow that patients can follow and get the final results from our laboratory experts. We understand the importance of medical assistance during an AES event; hence, we have provided a direct chat option with doctors. In addition, we have integrated a smart chatbot built on top of ChatGPT 3.5 for faster responses to queries when doctors are unavailable. Our telemedicine platform is fully customizable, with two themes - light and dark, and supports eight languages, making it user-friendly for people from diverse backgrounds. You can also enable gesture and message sounds to personalize your experience.Our platform offers a multitude of benefits for both patients and healthcare professionals. Patients can access medical assistance from the comfort of their homes, while healthcare professionals can monitor their patient's health status and offer timely intervention. We believe that our telemedicine platform can help reduce the incidence of AES and save lives.";
 
 //API-Keys
-const String gpt3ApiKey = "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";
+const String gpt3ApiKey = "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";
 const String gpt3ApiUrl = 'https://api.openai.com/v1/engines/davinci/completions'; //https://api.openai.com/v1/completions
 const String newsApiKey = "4ab974b0133747658c75513590257f4e";
 
@@ -129,11 +129,10 @@ final Map<String, String? Function(String?)?> fieldsValidator = <String, String?
     return null;
   },
 };
-
 final List<Map<String, dynamic>> workflow = <Map<String, dynamic>>[
   <String, dynamic>{
     'index': 0,
-    "title": "Description De La Lésion",
+    "title": "Description de La lésion",
     "options": <Map<String, dynamic>>[
       <String, dynamic>{"content": "Superficielle", "redirectTo": 1},
       <String, dynamic>{"content": "Profond", "redirectTo": 1},
@@ -145,7 +144,7 @@ final List<Map<String, dynamic>> workflow = <Map<String, dynamic>>[
     "options": <Map<String, dynamic>>[
       <String, dynamic>{"content": "Piqûre par une aiguille pleine", "redirectTo": 2},
       <String, dynamic>{"content": "Piqûre par une aiguille creuse", "redirectTo": 2},
-      <String, dynamic>{"content": "Piqûre Non précisée", "redirectTo": 2},
+      <String, dynamic>{"content": "Piqûre non précisée", "redirectTo": 2},
       <String, dynamic>{"content": "Coupure", "redirectTo": 2},
       <String, dynamic>{"content": "Projection de sang", "redirectTo": 2},
       <String, dynamic>{"content": "Projection du liquide biologique", "redirectTo": 2},
@@ -186,8 +185,8 @@ final List<Map<String, dynamic>> workflow = <Map<String, dynamic>>[
       <String, dynamic>{"content": "Patient source AgHBS -", "redirectTo": 8},
     ],
   },
-  <String, dynamic>{'index': 7, "end": "vous devez prendre une injection d'immunoglobuline dans un délai de 72 heures"},
-  <String, dynamic>{'index': 8, "end": ""},
+  <String, dynamic>{'index': 7, "end": "Il est recommandé de recevoir une injection d'immunoglobuline dans un délai de 72 heures et prendre une dose de vaccin et consulter un gastro-entérologue"},
+  <String, dynamic>{'index': 8, "end": "Il est recommandé de recevoir une injection de vaccin Dose_0"},
   <String, dynamic>{
     'index': 9,
     "title": "VHC",
@@ -196,8 +195,8 @@ final List<Map<String, dynamic>> workflow = <Map<String, dynamic>>[
       <String, dynamic>{"content": "Patient Source negative (-)", "redirectTo": 10},
     ],
   },
-  <String, dynamic>{'index': 10, "end": "Pas De Profelaxie"},
-  <String, dynamic>{'index': 11, "end": "Pas De Profelaxie"},
+  <String, dynamic>{'index': 10, "end": "Il est recommandé de maintenir une surveillance médicale, comprenant des analyses de transaminases et des sérologies pour le virus de l'hépatite C (VHC), à effectuer tous les 3 mois"},
+  <String, dynamic>{'index': 11, "end": "Il n'est pas nécessaire de suivre une prophylaxie spécifique dans ce cas"},
   <String, dynamic>{
     'index': 12,
     "title": "HIV",
@@ -207,7 +206,7 @@ final List<Map<String, dynamic>> workflow = <Map<String, dynamic>>[
       <String, dynamic>{"content": "Patient source positive : Virus de l'Immunodéficience Humaine (VIH) inconnu.", "redirectTo": 15},
     ],
   },
-  <String, dynamic>{'index': 13, "end": ""},
-  <String, dynamic>{'index': 14, "end": "Pas De Profelaxie"},
-  <String, dynamic>{'index': 15, "end": ""},
+  <String, dynamic>{'index': 13, "end": " commencer une trithérapie dans les 4 heures suivantes et de rester sous surveillance médicale et réaliser des tests de sérologie pour le VIH chaque 3 mois "},
+  <String, dynamic>{'index': 14, "end": "Pas de prophylaxie"},
+  <String, dynamic>{'index': 15, "end": "rester sous surveillance médicale et réaliser des tests de sérologie pour le VIH chaque 3 mois."},
 ];

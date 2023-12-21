@@ -72,7 +72,7 @@ class _RecoveryState extends State<Recovery> {
                               }
                             } catch (_) {
                               setS(() => wait = false);
-                              showToast(text: _.toString(), color: red);
+                              showToast(text: _.toString());
                             }
                           },
                           child: AnimatedContainer(

@@ -73,7 +73,7 @@ class _OTPState extends State<OTP> {
                     }
                   } catch (e) {
                     _buttonBuilder.currentState!.setState(() => _wait = false);
-                    showToast(text: e.toString(), color: red);
+                    showToast(text: e.toString());
                     await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
                   }
                 },

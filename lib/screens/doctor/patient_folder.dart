@@ -164,7 +164,7 @@ class _PatientFolderState extends State<PatientFolder> {
                                           });
                                           await OpenFilex.open(path);
                                         } catch (e) {
-                                          showToast(text: 'Error opening PDF: $e', color: red);
+                                          showToast(text: 'Error opening PDF: $e');
                                         }
                                       },
                                       child: Container(

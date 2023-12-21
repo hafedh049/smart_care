@@ -47,7 +47,7 @@ class _ArticlesState extends State<Articles> {
   }
 
   final GlobalKey _typeKey = GlobalKey();
-  final List<String> _types = const <String>["All", "Politics", "Sport", "Education", "Health", "World", "Gaming", "Astronomy"];
+  final List<String> _types = const <String>["All", "Health"];
   String _type = "All";
   @override
   Widget build(BuildContext context) {

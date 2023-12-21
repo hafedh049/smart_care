@@ -1,11 +1,9 @@
-import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
-import 'package:smart_care/stuff/globals.dart';
 
 class Delete extends StatelessWidget {
   const Delete({super.key, required this.userData});
@@ -75,7 +73,7 @@ class Delete extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 showToast(text: "Wait".tr);
-                /*await FirebaseFirestore.instance.collection("users").doc(userData['uid']).delete();
+                await FirebaseFirestore.instance.collection("users").doc(userData['uid']).delete();
                 await FirebaseStorage.instance.ref().child("/profile_pictures/${userData['uid']}").delete();
                 await FirebaseStorage.instance.ref().child("/prescriptions/${userData['uid']}/").delete();
                 await FirebaseStorage.instance.ref().child("/blood_tests/${userData['uid']}/").delete();
@@ -92,8 +90,8 @@ class Delete extends StatelessWidget {
                 for (QueryDocumentSnapshot<Map<String, dynamic>> doc in [...bloodTestsSnapshot.docs, ...doctorPrenscriptionsSnapshot.docs, ...doctorAppointmentSnapshot.docs, ...filledFormsSnapshot.docs]) {
                   deleteFutures.add(doc.reference.delete());
                 }
-                await Future.wait(deleteFutures);*/
-                final http.Response response = await http.post(
+                await Future.wait(deleteFutures);
+                /*final http.Response response = await http.post(
                   Uri.parse("http://192.168.1.13:80/delete_user"),
                   headers: const <String, String>{'Content-Type': 'application/json'},
                   body: json.encode(<String, dynamic>{"id": me["uid"]}),
@@ -105,7 +103,7 @@ class Delete extends StatelessWidget {
                 } else {
                   showToast(text: 'Request failed with status: ${response.statusCode}');
                   debugPrint('Request failed with status: ${response.statusCode}');
-                }
+                }*/
 
                 showToast(text: "User Deleted".tr);
                 // ignore: use_build_context_synchronously

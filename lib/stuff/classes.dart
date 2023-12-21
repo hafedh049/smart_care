@@ -122,8 +122,8 @@ class GoogleAuth extends StatelessWidget {
                   final GoogleSignInAuthentication googleAuth = await googleAccount.authentication;
                   final OAuthCredential googleCredential = GoogleAuthProvider.credential(accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
                   showToast(text: 'signedWithGoogle'.tr);
-                  await FirebaseAuth.instance.currentUser!.linkWithCredential(googleCredential);
                   await FirebaseAuth.instance.signInWithCredential(googleCredential);
+                  await FirebaseAuth.instance.currentUser!.linkWithCredential(googleCredential);
                   showToast(text: 'accountLinkedWithGoogle'.tr);
                   await getToken();
                   await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"token": userToken, "status": true}).then((void value) async {
@@ -133,7 +133,7 @@ class GoogleAuth extends StatelessWidget {
               }
             });
           } catch (_) {
-            showToast(text: _.toString(), color: red);
+            showToast(text: _.toString());
           }
         },
         child: Container(

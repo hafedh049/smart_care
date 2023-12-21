@@ -375,7 +375,7 @@ class _PrescriptionState extends State<Prescription> {
                                   });
                                   showToast(text: 'printing'.tr);
                                 } catch (_) {
-                                  showToast(text: _.toString(), color: red);
+                                  showToast(text: _.toString());
                                 }
                               }
                             }

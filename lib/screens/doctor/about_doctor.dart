@@ -81,12 +81,38 @@ class AboutDoctor extends StatelessWidget {
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[const Icon(FontAwesomeIcons.message, color: Color.fromARGB(255, 217, 0, 255), size: 15), const SizedBox(width: 5), CustomizedText(text: 'chat'.tr, fontSize: 16, color: const Color.fromARGB(255, 217, 0, 255), fontWeight: FontWeight.bold)],
+                                          children: <Widget>[const Icon(FontAwesomeIcons.message, color: green, size: 15), const SizedBox(width: 5), CustomizedText(text: 'chat'.tr, fontSize: 16, fontWeight: FontWeight.bold)],
                                         ),
                                       ),
                                     );
                             },
                           ),
+                          const SizedBox(width: 10),
+                          GestureDetector(
+                            child: Container(
+                              width: 80,
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: blue),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[const Icon(FontAwesomeIcons.video, color: green, size: 15), const SizedBox(width: 5), CustomizedText(text: 'Video'.tr, fontSize: 16, fontWeight: FontWeight.bold)],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          GestureDetector(
+                            child: Container(
+                              width: 80,
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: const Color.fromARGB(255, 217, 0, 255)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[const Icon(FontAwesomeIcons.phone, color: green, size: 15), const SizedBox(width: 5), CustomizedText(text: 'Audio'.tr, fontSize: 16, fontWeight: FontWeight.bold)],
+                              ),
+                            ),
+                          )
                         ],
                       ),
                       const SizedBox(height: 20),

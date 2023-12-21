@@ -87,7 +87,7 @@ class _HistoricState extends State<Historic> {
                         );
                       } else if (snapshot.hasData) {
                         final List<QueryDocumentSnapshot<Map<String, dynamic>>> data = snapshot.data!.docs;
-                        data.sort((QueryDocumentSnapshot<Map<String, dynamic>> a, QueryDocumentSnapshot<Map<String, dynamic>> b) => a.get("timestamp") > b.get("timestamp"));
+                        data.sort((QueryDocumentSnapshot<Map<String, dynamic>> a, QueryDocumentSnapshot<Map<String, dynamic>> b) => a.get("timestamp").toDate().millisecondsSinceEpoch > b.get("timestamp").toDate().millisecondsSinceEpoch ? 1 : -1);
                         return StatefulBuilder(
                           builder: (BuildContext context, void Function(void Function()) _) {
                             return GestureDetector(
@@ -128,7 +128,7 @@ class _HistoricState extends State<Historic> {
                                                     });
                                                     await OpenFilex.open(path);
                                                   } catch (e) {
-                                                    showToast(text: 'Error opening PDF: $e', color: red);
+                                                    showToast(text: 'Error opening PDF: $e');
                                                   }
                                                 } else {
                                                   try {
@@ -139,7 +139,7 @@ class _HistoricState extends State<Historic> {
                                                     });
                                                     await OpenFilex.open(path, type: bytes.headers['content-type']);
                                                   } catch (e) {
-                                                    showToast(text: 'Error opening PDF: $e', color: red);
+                                                    showToast(text: 'Error opening PDF: $e');
                                                   }
                                                 }
                                               },

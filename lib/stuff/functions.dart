@@ -38,7 +38,7 @@ Future<String> takesFromCameraOrGallery(bool camera) async {
     }
     return "";
   } catch (_) {
-    showToast(text: _.toString(), color: red);
+    showToast(text: _.toString());
     return "";
   }
 }
@@ -51,7 +51,7 @@ Future<String> cropImage(String imagePath) async {
     }
     return "";
   } catch (_) {
-    showToast(text: _.toString(), color: red);
+    showToast(text: _.toString());
     return "";
   }
 }

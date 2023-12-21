@@ -88,7 +88,7 @@ class _SignInState extends State<SignIn> {
                               }
                             } catch (_) {
                               setS(() => wait = false);
-                              showToast(text: _.toString(), color: red);
+                              showToast(text: _.toString());
                             }
                           },
                           child: AnimatedContainer(
