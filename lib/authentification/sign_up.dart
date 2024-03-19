@@ -11,8 +11,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
-import 'package:smart_care/authentification/email_verification.dart';
 import 'package:smart_care/authentification/pwd_strength.dart';
+import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/stuff/classes.dart';
 import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
@@ -289,7 +289,7 @@ class _SignUpState extends State<SignUp> {
             "token": userToken,
             "hospital": "",
           }).then((void value) async {
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const EmailVerificationScreen()), (Route route) => false);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
           });
         });
       }
