@@ -1,24 +1,17 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/drawer/about_us.dart';
 import 'package:smart_care/drawer/settings.dart';
-import 'package:smart_care/otp/otp_phase_1.dart';
 import 'package:smart_care/screens/calendar/calendar.dart';
 import 'package:smart_care/screens/patient/heart_rate/mesure.dart';
-import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/screens/smart_chat_bot.dart';
-import 'package:smart_care/stuff/functions.dart';
 import 'package:smart_care/stuff/globals.dart';
 import 'dart:math' show pi;
 import 'package:url_launcher/url_launcher_string.dart';
@@ -91,85 +84,6 @@ class CustomTextField extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class GoogleAuth extends StatelessWidget {
-  const GoogleAuth({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: GestureDetector(
-        onTap: () async {
-          try {
-            await GoogleSignIn().signIn().then((GoogleSignInAccount? googleAccount) async {
-              if (googleAccount != null) {
-                List<String> signInMethods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(googleAccount.email);
-                if (signInMethods.isEmpty) {
-                  showToast(text: 'nouserlinkedtothisaccountpleasecreateone'.tr);
-                  await GoogleSignIn().signOut();
-                } else if (signInMethods.contains('google.com')) {
-                  await googleAccount.authentication.then((GoogleSignInAuthentication authentication) async {
-                    AuthCredential credential = GoogleAuthProvider.credential(idToken: authentication.idToken, accessToken: authentication.accessToken);
-                    await FirebaseAuth.instance.signInWithCredential(credential);
-                    await getToken();
-                    await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true, "token": userToken});
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
-                  });
-                } else {
-                  final GoogleSignInAuthentication googleAuth = await googleAccount.authentication;
-                  final OAuthCredential googleCredential = GoogleAuthProvider.credential(accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-                  showToast(text: 'signedWithGoogle'.tr);
-                  await FirebaseAuth.instance.signInWithCredential(googleCredential);
-                  await FirebaseAuth.instance.currentUser!.linkWithCredential(googleCredential);
-                  showToast(text: 'accountLinkedWithGoogle'.tr);
-                  await getToken();
-                  await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"token": userToken, "status": true}).then((void value) async {
-                    await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
-                  });
-                }
-              }
-            });
-          } catch (_) {
-            showToast(text: _.toString());
-          }
-        },
-        child: Container(
-          height: 40,
-          width: MediaQuery.of(context).size.width * .6,
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: grey.withOpacity(.5))),
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[Image.asset("assets/icon/google.png"), CustomizedText(text: 'cONTINUEWITHGOOGLE'.tr, fontSize: 16, fontWeight: FontWeight.bold)]),
-        ),
-      ),
-    );
-  }
-}
-
-class OTPAuth extends StatelessWidget {
-  const OTPAuth({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: GestureDetector(
-        onTap: () async => await goTo(const OTPView()),
-        child: Container(
-          height: 40,
-          width: MediaQuery.of(context).size.width * .6,
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: grey.withOpacity(.5))),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Image.asset("assets/icon/phone.png"),
-              CustomizedText(text: 'cONTINUEWITHPHONE'.tr, fontSize: 16, fontWeight: FontWeight.bold),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
@@ -294,15 +208,6 @@ class HealthDrawer extends StatelessWidget {
               contentPadding: EdgeInsets.zero,
               onTap: () async {
                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => false);
-                await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": false, "token": ""}).then(
-                  (void value) async {
-                    await FirebaseMessaging.instance.deleteToken();
-                    await FirebaseAuth.instance.signOut();
-                    if (await GoogleSignIn().isSignedIn()) {
-                      await GoogleSignIn().signOut();
-                    }
-                  },
-                );
               },
               leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))), const SizedBox(width: 5), const Icon(FontAwesomeIcons.chevronLeft, size: 20)]),
               title: CustomizedText(text: 'signOut'.tr, fontSize: 18, fontWeight: FontWeight.bold),

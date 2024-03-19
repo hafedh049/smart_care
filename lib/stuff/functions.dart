@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -95,18 +93,6 @@ String getDateRepresentation(DateTime date) {
 
 String showWeekDay(int day) {
   return weekDayPredictor[DateTime(DateTime.now().year, DateTime.now().month, day).weekday]!;
-}
-
-Future<void> getToken() async {
-  if (userToken.isEmpty) {
-    await FirebaseMessaging.instance.getToken().then((String? value) async {
-      userToken = value!;
-      final DocumentSnapshot<Map<String, dynamic>> reference = await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get();
-      if (reference.exists) {
-        await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, String>{'token': userToken});
-      }
-    });
-  }
 }
 
 void sendPushNotificationFCM({required String token, required String username, required String message}) async {

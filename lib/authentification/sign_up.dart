@@ -272,7 +272,6 @@ class _SignUpState extends State<SignUp> {
             showToast(text: 'pictureUploaded'.tr);
           }
           await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim());
-          await getToken();
           await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).set(<String, dynamic>{
             "name": _usernameController.text.trim(),
             "id": _matriculeController.text.trim(),

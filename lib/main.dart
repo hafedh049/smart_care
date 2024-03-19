@@ -1,9 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -22,7 +20,6 @@ import 'error/error_room.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FirebaseMessaging.onMessage.listen((RemoteMessage event) => AwesomeNotifications().createNotification(content: NotificationContent(id: 10, channelKey: "basic_channel", body: event.notification!.body, title: event.notification!.title, actionType: ActionType.KeepOnTop)));
   Animate.restartOnHotReload = true;
   ErrorWidget.builder = (FlutterErrorDetails details) => ErrorRoom(error: details.exceptionAsString());
 
@@ -33,8 +30,6 @@ Future<void> main() async {
   firstTime = userData["FIRST_TIME"];
   themeMode = userData["THEME_MODE"];
 
-  await AwesomeNotifications().initialize(null, <NotificationChannel>[NotificationChannel(channelKey: "basic_channel", channelName: "Smart Care", channelDescription: "Welcome")]);
-  await AwesomeNotifications().isNotificationAllowed().then((bool value) async => !value ? await AwesomeNotifications().requestPermissionToSendNotifications() : null);
   runApp(const Main());
 
   Connectivity().onConnectivityChanged.listen((ConnectivityResult event) async => await InternetConnectionChecker().hasConnection ? showToast(text: "Online".tr, color: blue) : showToast(text: "Offline".tr, color: red));

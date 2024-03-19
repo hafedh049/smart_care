@@ -1,15 +1,14 @@
 name: smart_care
 description: this application will help patients to consult any near or available doctor, analyze their state, etc...
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 2.0.0
 
 environment:
-  sdk: '>=3.1.3 <4.0.0'
+  sdk: ">=3.1.3 <4.0.0"
 
 dependencies:
-
   flutter:
     sdk: flutter
 
@@ -55,8 +54,6 @@ dependencies:
   get_time_ago: ^1.1.8
   pdf: ^3.9.0
   path_provider: ^2.0.14
-  firebase_messaging: ^14.4.0
-  awesome_notifications: ^0.7.4+1
   intl_phone_field: ^3.1.0
   intl: ^0.17.0
   adaptive_theme: ^3.2.1
@@ -87,8 +84,7 @@ flutter:
 
   assets:
     - assets/
-    - assets/primaly_prevention/
-    - assets/lottie/
-    - assets/icon/
-    - assets/audio/
-    - assets/files/
+    - assets/primaly_preventions/
+    - assets/lotties/
+    - assets/icons/
+    - assets/configs/

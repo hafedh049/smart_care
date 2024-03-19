@@ -78,7 +78,6 @@ class _SignInState extends State<SignIn> {
                               if (_formKey.currentState!.validate()) {
                                 setS(() => wait = true);
                                 await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
-                                  await getToken();
                                   await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true, "token": userToken}).then((void value) async {
                                     await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
                                   });
@@ -127,11 +126,6 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                const Or(),
-                const SizedBox(height: 30),
-                const GoogleAuth(),
-                const SizedBox(height: 10),
-                const OTPAuth(),
               ],
             ),
           ),
