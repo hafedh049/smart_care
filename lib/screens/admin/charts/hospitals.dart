@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/globals.dart';
 
 import '../../../error/error_room.dart';
 

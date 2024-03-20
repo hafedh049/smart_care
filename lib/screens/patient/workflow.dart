@@ -4,10 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:smart_care/stuff/functions.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/callbacks.dart';
+import 'package:smart_care/utils/globals.dart';
 
-import '../../stuff/classes.dart';
+import '../../utils/classes.dart';
 
 class WorkFlow extends StatefulWidget {
   const WorkFlow({super.key});

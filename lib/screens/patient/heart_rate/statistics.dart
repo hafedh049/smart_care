@@ -5,10 +5,10 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smart_care/screens/patient/heart_rate/sensor_value.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/globals.dart';
 
-import '../../../stuff/functions.dart';
+import '../../../utils/callbacks.dart';
 
 class Statistics extends StatefulWidget {
   const Statistics({super.key});
@@ -175,7 +175,7 @@ class _StatisticsState extends State<Statistics> {
                     ],
                   ),
                   const Spacer(),
-                  LottieBuilder.asset("assets/lottie/stat_rate.json", height: 100, fit: BoxFit.cover),
+                  LottieBuilder.asset("assets/lotties/stat_rate.json", height: 100, fit: BoxFit.cover),
                 ],
               ),
             ),

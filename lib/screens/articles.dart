@@ -7,11 +7,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/article.dart';
-import 'package:smart_care/stuff/functions.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/callbacks.dart';
+import 'package:smart_care/utils/globals.dart';
 import 'package:http/http.dart' as http;
 
-import '../stuff/classes.dart';
+import '../utils/classes.dart';
 
 class Articles extends StatefulWidget {
   const Articles({super.key});

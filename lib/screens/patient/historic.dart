@@ -11,9 +11,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:smart_care/error/error_room.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/functions.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/callbacks.dart';
+import 'package:smart_care/utils/globals.dart';
 import 'package:http/http.dart';
 
 import 'filled_form_template.dart';

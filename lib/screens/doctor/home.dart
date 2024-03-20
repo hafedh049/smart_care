@@ -11,9 +11,9 @@ import 'package:lottie/lottie.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/doctor/patient_folder.dart';
 import 'package:smart_care/screens/doctor/prescription.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/functions.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/callbacks.dart';
+import 'package:smart_care/utils/globals.dart';
 
 import '../articles.dart';
 

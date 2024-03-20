@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/globals.dart';
 
 class PasswordStrength extends StatelessWidget {
   final String password;

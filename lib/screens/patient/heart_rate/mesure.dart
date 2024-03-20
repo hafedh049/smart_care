@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smart_care/screens/patient/heart_rate/statistics.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/functions.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/callbacks.dart';
 
 class Mesure extends StatefulWidget {
   const Mesure({super.key});
@@ -18,7 +18,7 @@ class _MesureState extends State<Mesure> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          Column(children: <Widget>[const Spacer(), Center(child: LottieBuilder.asset("assets/lottie/wave.json", height: 200))]),
+          Column(children: <Widget>[const Spacer(), Center(child: LottieBuilder.asset("assets/lotties/wave.json", height: 200))]),
           Column(
             children: <Widget>[
               const SizedBox(height: 60),
@@ -26,8 +26,8 @@ class _MesureState extends State<Mesure> {
                 child: Stack(
                   alignment: AlignmentDirectional.center,
                   children: <Widget>[
-                    LottieBuilder.asset("assets/lottie/rate_placeholder.json", width: 200, height: 200, fit: BoxFit.cover),
-                    LottieBuilder.asset("assets/lottie/heart.json", width: 100, fit: BoxFit.cover),
+                    LottieBuilder.asset("assets/lotties/rate_placeholder.json", width: 200, height: 200, fit: BoxFit.cover),
+                    LottieBuilder.asset("assets/lotties/heart.json", width: 100, fit: BoxFit.cover),
                   ],
                 ),
               ),
@@ -37,7 +37,7 @@ class _MesureState extends State<Mesure> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Center(child: LottieBuilder.asset("assets/lottie/fingerprint.json", width: 80, height: 80)),
+                    Center(child: LottieBuilder.asset("assets/lotties/fingerprint.json", width: 80, height: 80)),
                     CustomizedText(text: "Start Mesurements".tr, fontSize: 16),
                   ],
                 ),

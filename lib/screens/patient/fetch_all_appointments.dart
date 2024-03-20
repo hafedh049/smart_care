@@ -8,9 +8,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../error/error_room.dart';
-import '../../stuff/classes.dart';
-import '../../stuff/functions.dart';
-import '../../stuff/globals.dart';
+import '../../utils/classes.dart';
+import '../../utils/callbacks.dart';
+import '../../utils/globals.dart';
 
 class FetchAllAppointments extends StatefulWidget {
   const FetchAllAppointments({super.key});

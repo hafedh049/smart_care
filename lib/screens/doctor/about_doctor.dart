@@ -6,10 +6,10 @@ import 'package:get/get.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/chat_room.dart';
 import 'package:smart_care/screens/patient/book_appointement.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/functions.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/callbacks.dart';
 
-import '../../stuff/globals.dart';
+import '../../utils/globals.dart';
 
 class AboutDoctor extends StatelessWidget {
   const AboutDoctor({super.key, required this.uid});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/screens/calendar/list_view.dart';
 import 'package:smart_care/screens/calendar/schedule_view.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/globals.dart';
 
 class CalendarV extends StatefulWidget {
   const CalendarV({super.key});

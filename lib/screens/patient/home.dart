@@ -13,10 +13,10 @@ import 'package:smart_care/screens/articles.dart';
 import 'package:smart_care/screens/patient/fetch_all_appointments.dart';
 import 'package:smart_care/screens/patient/filter.dart';
 import 'package:smart_care/screens/patient/summary.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/globals.dart';
 
-import '../../stuff/functions.dart';
+import '../../utils/callbacks.dart';
 import '../article.dart';
 
 class Home extends StatelessWidget {

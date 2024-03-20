@@ -8,9 +8,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/chat_room.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/functions.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/callbacks.dart';
+import 'package:smart_care/utils/globals.dart';
 
 class ChatsScreen extends StatefulWidget {
   const ChatsScreen({super.key, required this.user});
@@ -96,7 +96,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              LottieBuilder.asset("assets/lottie/notFound.json"),
+                              LottieBuilder.asset("assets/lotties/notFound.json"),
                               CustomizedText(text: widget.user == "doctor" ? "No doctors available now." : "No patients available now.", color: blue, fontSize: 20, fontWeight: FontWeight.bold),
                             ],
                           ),
@@ -116,7 +116,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        LottieBuilder.asset("assets/lottie/notFound.json"),
+                                        LottieBuilder.asset("assets/lotties/notFound.json"),
                                         CustomizedText(text: 'noChatsUntilNow'.tr, color: blue, fontSize: 20, fontWeight: FontWeight.bold),
                                       ],
                                     ),

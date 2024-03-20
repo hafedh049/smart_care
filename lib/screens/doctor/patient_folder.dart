@@ -11,11 +11,11 @@ import 'package:get/get.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/globals.dart';
 
 import '../../error/error_room.dart';
-import '../../stuff/classes.dart';
-import '../../stuff/functions.dart';
+import '../../utils/classes.dart';
+import '../../utils/callbacks.dart';
 
 class PatientFolder extends StatefulWidget {
   const PatientFolder({super.key, required this.collection, required this.patientId, required this.icon});
@@ -147,7 +147,6 @@ class _PatientFolderState extends State<PatientFolder> {
                                                   child: const CustomizedText(text: 'Confirm', fontSize: 16),
                                                   onPressed: () async {
                                                     await data[index].reference.update({"conduite_a_tenir": _medicalGuideController.text.trim()}).then((void value) => Navigator.of(context).pop());
-                                                    sendPushNotificationFCM(token: data[index].get("token"), username: data[index].get("name"), message: "Doctor confirmed your medical guide");
                                                   },
                                                 ),
                                               ],

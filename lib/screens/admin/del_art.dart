@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:smart_care/stuff/functions.dart';
+import 'package:smart_care/utils/callbacks.dart';
 
 class ArticlesPage extends StatelessWidget {
   const ArticlesPage({super.key});

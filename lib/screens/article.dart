@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_time_ago/get_time_ago.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/globals.dart';
 
-import '../stuff/classes.dart';
+import '../utils/classes.dart';
 
 class Article extends StatelessWidget {
   const Article({super.key, required this.article});

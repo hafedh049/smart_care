@@ -7,7 +7,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:smart_care/error/error_room.dart';
-import 'package:smart_care/stuff/functions.dart';
+import 'package:smart_care/utils/callbacks.dart';
 import 'dart:io';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
@@ -15,8 +15,8 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:smart_care/screens/doctor/generate_prescription_template.dart';
 
-import '../../stuff/classes.dart';
-import '../../stuff/globals.dart';
+import '../../utils/classes.dart';
+import '../../utils/globals.dart';
 
 class Prescription extends StatefulWidget {
   const Prescription({super.key, required this.patientID});

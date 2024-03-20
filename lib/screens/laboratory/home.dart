@@ -10,10 +10,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-import 'package:smart_care/stuff/functions.dart';
+import 'package:smart_care/utils/callbacks.dart';
 
-import '../../stuff/classes.dart';
-import '../../stuff/globals.dart';
+import '../../utils/classes.dart';
+import '../../utils/globals.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -147,27 +147,29 @@ class _HomeState extends State<Home> {
                                 showToast(text: 'bilanLoaded'.tr);
                                 final DateTime now = DateTime.now();
                                 String url = "";
-                                FirebaseStorage.instance.ref().child("blood_tests/${FirebaseAuth.instance.currentUser!.uid}/$now").putFile(pdf).then((TaskSnapshot taskSnapshot) async {
-                                  url = await taskSnapshot.ref.getDownloadURL();
-                                  showToast(text: 'bilanUploaded'.tr);
-                                  await FirebaseFirestore.instance.collection("blood_tests").add({
-                                    "url": url,
-                                    "timestamp": now,
-                                    "lab_name": _labNameController.text,
-                                    "uploader_name": _uploadNameController.text,
-                                    "uid": me["uid"],
-                                  }).then((void value) async {
-                                    showToast(text: 'bloodstestlinkstoredsuccessfully'.tr);
-                                    _patientIdController.clear();
-                                    _labNameController.clear();
-                                    _uploadNameController.clear();
-                                    result = null;
-                                    final DocumentSnapshot<Map<String, dynamic>> doctorData = await FirebaseFirestore.instance.collection("users").doc(_doctorIdController.text.trim()).get();
-                                    final DocumentSnapshot<Map<String, dynamic>> patientData = await FirebaseFirestore.instance.collection("users").doc(_doctorIdController.text.trim()).get();
-                                    sendPushNotificationFCM(token: doctorData.get("token"), username: doctorData.get("username"), message: "Blood test uploaded".tr);
-                                    sendPushNotificationFCM(token: patientData.get("token"), username: patientData.get("username"), message: "Blood test uploaded".tr);
-                                  });
-                                });
+                                FirebaseStorage.instance.ref().child("blood_tests/${FirebaseAuth.instance.currentUser!.uid}/$now").putFile(pdf).then(
+                                  (TaskSnapshot taskSnapshot) async {
+                                    url = await taskSnapshot.ref.getDownloadURL();
+                                    showToast(text: 'bilanUploaded'.tr);
+                                    await FirebaseFirestore.instance.collection("blood_tests").add(
+                                      <String, dynamic>{
+                                        "url": url,
+                                        "timestamp": now,
+                                        "lab_name": _labNameController.text,
+                                        "uploader_name": _uploadNameController.text,
+                                        "uid": me["uid"],
+                                      },
+                                    ).then(
+                                      (void value) async {
+                                        showToast(text: 'bloodstestlinkstoredsuccessfully'.tr);
+                                        _patientIdController.clear();
+                                        _labNameController.clear();
+                                        _uploadNameController.clear();
+                                        result = null;
+                                      },
+                                    );
+                                  },
+                                );
                               }
                             }
                           },

@@ -12,9 +12,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smart_care/error/error_room.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/functions.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/callbacks.dart';
+import 'package:smart_care/utils/globals.dart';
 
 class SmartChatBot extends StatefulWidget {
   const SmartChatBot({super.key});
@@ -65,7 +65,7 @@ class _SmartChatBotState extends State<SmartChatBot> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                LottieBuilder.asset("assets/lottie/notFound.json"),
+                                LottieBuilder.asset("assets/lotties/notFound.json"),
                                 CustomizedText(text: 'noMessagesYet'.tr, color: blue, fontSize: 20, fontWeight: FontWeight.bold),
                               ],
                             ),

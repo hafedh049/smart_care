@@ -6,8 +6,8 @@ import 'package:lottie/lottie.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/admin/deletion_dialog.dart';
 
-import '../../stuff/classes.dart';
-import '../../stuff/globals.dart';
+import '../../utils/classes.dart';
+import '../../utils/globals.dart';
 
 class DoctorsList extends StatefulWidget {
   const DoctorsList({super.key});

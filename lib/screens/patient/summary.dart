@@ -4,10 +4,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/globals.dart';
 
-import '../../stuff/classes.dart';
-import '../../stuff/functions.dart';
+import '../../utils/classes.dart';
+import '../../utils/callbacks.dart';
 
 class Summary extends StatelessWidget {
   const Summary({super.key, required this.data});

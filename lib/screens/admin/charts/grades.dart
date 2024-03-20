@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/error/error_room.dart';
 
-import '../../../stuff/classes.dart';
-import '../../../stuff/globals.dart';
+import '../../../utils/classes.dart';
+import '../../../utils/globals.dart';
 
 class Grades extends StatefulWidget {
   const Grades({super.key});

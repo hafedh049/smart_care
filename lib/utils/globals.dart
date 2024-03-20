@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:hive/hive.dart';
 
 import '../screens/admin/charts/grades.dart';
 import '../screens/admin/charts/hospitals.dart';
@@ -18,9 +18,7 @@ const Color green = Colors.lightGreenAccent;
 const Color grey = Colors.grey;
 
 //global variables
-int? firstTime;
-int themeMode = 0;
-String userToken = "";
+Box? userData;
 const String appTitle = "Smart Care";
 const String aboutUs = "Welcome to our telemedicine platform, built using the Flutter cross-platform framework, designed to provide primary prevention and prompt medical assistance in case of an AES (accident d'explosion du sang). Our platform is not only for patients, but it also caters to healthcare professionals who can monitor their patient's health status in real-time. Our platform's primary objective is to assist people in preventing AES by conducting daily and monthly checkups and sending SMS or notification reminders. In case of an AES event, our platform provides a workflow that patients can follow and get the final results from our laboratory experts. We understand the importance of medical assistance during an AES event; hence, we have provided a direct chat option with doctors. In addition, we have integrated a smart chatbot built on top of ChatGPT 3.5 for faster responses to queries when doctors are unavailable. Our telemedicine platform is fully customizable, with two themes - light and dark, and supports eight languages, making it user-friendly for people from diverse backgrounds. You can also enable gesture and message sounds to personalize your experience.Our platform offers a multitude of benefits for both patients and healthcare professionals. Patients can access medical assistance from the comfort of their homes, while healthcare professionals can monitor their patient's health status and offer timely intervention. We believe that our telemedicine platform can help reduce the incidence of AES and save lives.";
 
@@ -31,9 +29,6 @@ const String newsApiKey = "4ab974b0133747658c75513590257f4e";
 
 //User Data
 Map<String, dynamic> me = <String, dynamic>{};
-
-//Database Reference
-Database? db;
 
 //Network Images
 const String chatBot = "https://firebasestorage.googleapis.com/v0/b/smart-care-b4ab6.appspot.com/o/smart_bot.png?alt=media&token=99ba8285-3b29-489a-a473-a81cc228e3d3";
@@ -92,43 +87,6 @@ final List<Map<String, dynamic>> charts = <Map<String, dynamic>>[
 
 const List<Transition> animatedTransitions = Transition.values;
 
-final Map<String, String? Function(String?)?> fieldsValidator = <String, String? Function(String?)?>{
-  "about": (String? text) {
-    return null;
-  },
-  "email": (String? text) {
-    if (text!.isEmpty) {
-      return 'emailismandatory'.tr;
-    } else if (!text.contains(RegExp(r'^[\w\.-]+@[\w\.-]+\.\w{2,4}$'))) {
-      return 'pleaseverifyyourEmail'.tr;
-    }
-    return null;
-  },
-  "password": (String? text) {
-    if (text!.isEmpty) {
-      return 'passwordshouldnotbeempty'.tr;
-    } else if (!text.contains(RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z0-9]{6,}$'))) {
-      return 'passwordexpressionshouldbeatleastcharactersmustcontainatleastuppercaseletterlowercaseletterandnumberandcancontainspecialcharacters'.tr;
-    }
-    return null;
-  },
-  "username": (String? text) {
-    if (text!.isEmpty) {
-      return 'namefieldisempty'.tr;
-    } else if (!text.contains(RegExp(r'^[a-zA-Z][\w ]+$'))) {
-      return 'thisfieldmuststartwithanalphabeticcharacter'.tr;
-    }
-    return null;
-  },
-  "id": (String? text) {
-    if (text!.isEmpty) {
-      return 'iDmustnotbeempty'.tr;
-    } else if (!text.contains(RegExp(r'^\d{8}$'))) {
-      return 'wrongformatforIDItmuststartwithandcontainsalphanumericcaracters'.tr;
-    }
-    return null;
-  },
-};
 final List<Map<String, dynamic>> workflow = <Map<String, dynamic>>[
   <String, dynamic>{
     'index': 0,

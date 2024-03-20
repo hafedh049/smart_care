@@ -8,10 +8,10 @@ import 'package:get/get.dart';
 import 'package:smart_care/drawer/account.dart';
 import 'package:smart_care/drawer/help_and_faq.dart';
 import 'package:smart_care/error/error_room.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/globals.dart';
 
-import '../stuff/classes.dart';
-import '../stuff/functions.dart';
+import '../utils/classes.dart';
+import '../utils/callbacks.dart';
 
 class SmartSettings extends StatelessWidget {
   const SmartSettings({super.key});
@@ -106,14 +106,13 @@ class SmartSettings extends StatelessWidget {
                   children: <Widget>[
                     CircleAvatar(radius: 25, backgroundColor: blue.withOpacity(.2), child: const Icon(FontAwesomeIcons.moon, color: blue, size: 15)),
                     CustomizedText(text: 'darkMode'.tr, fontSize: 18),
-                    CustomizedText(text: themeMode == 1 ? 'on'.tr : 'off'.tr, fontSize: 12, color: grey.withOpacity(.6)),
+                    CustomizedText(text: userData!.get("dark_theme") ? 'on'.tr : 'off'.tr, fontSize: 12, color: grey.withOpacity(.6)),
                     Switch(
                       activeThumbImage: const AssetImage("assets/icon/moon.png"),
                       inactiveThumbImage: const AssetImage("assets/icon/sun.png"),
-                      value: themeMode == 1 ? true : false,
+                      value: userData!.get("dark_theme"),
                       onChanged: (bool value) async {
-                        themeMode = themeMode == 1 ? 0 : 1;
-                        await db!.execute("UPDATE SMART_CARE SET THEME_MODE = $themeMode WHERE ID = 1;");
+                        userData!.put("dark_theme", value);
                         _(() => value ? AdaptiveTheme.of(context).setDark() : AdaptiveTheme.of(context).setLight());
                       },
                       activeTrackColor: blue,

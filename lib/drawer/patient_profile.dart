@@ -6,10 +6,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/patient/historic.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/globals.dart';
 
-import '../stuff/functions.dart';
+import '../utils/callbacks.dart';
 
 class PatientProfile extends StatelessWidget {
   const PatientProfile({super.key});

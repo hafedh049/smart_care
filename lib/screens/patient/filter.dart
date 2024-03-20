@@ -6,10 +6,10 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smart_care/error/error_room.dart';
 import 'package:smart_care/screens/doctor/about_doctor.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/globals.dart';
 
-import '../../stuff/classes.dart';
-import '../../stuff/functions.dart';
+import '../../utils/classes.dart';
+import '../../utils/callbacks.dart';
 
 class FilterList extends StatefulWidget {
   const FilterList({super.key});

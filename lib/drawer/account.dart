@@ -14,10 +14,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_care/error/error_room.dart';
-import 'package:smart_care/stuff/functions.dart';
+import 'package:smart_care/utils/callbacks.dart';
 
-import '../stuff/classes.dart';
-import '../stuff/globals.dart';
+import '../utils/classes.dart';
+import '../utils/globals.dart';
 
 class Account extends StatefulWidget {
   const Account({super.key});
@@ -28,7 +28,6 @@ class Account extends StatefulWidget {
 
 class _AccountState extends State<Account> {
   final TextEditingController _changerController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey _profilePictureKey = GlobalKey();
 
   @override
@@ -37,7 +36,7 @@ class _AccountState extends State<Account> {
     super.dispose();
   }
 
-  void change(String hint, IconData prefix, bool password, TextInputType type, String? Function(String?)? validator, String key) {
+  void change(String hint, IconData prefix, bool password, TextInputType type, String key) {
     Color color = grey;
     showDialog(
       context: context,
@@ -48,10 +47,10 @@ class _AccountState extends State<Account> {
             builder: (BuildContext context, void Function(void Function()) setS) {
               return Row(
                 children: <Widget>[
-                  Flexible(child: Form(key: _formKey, child: CustomTextField(controller: _changerController, hint: hint, prefix: prefix, obscured: password, type: type, validator: validator, func: (String text) => setS(() => color = text.isNotEmpty ? blue : grey)))),
+                  Flexible(child: CustomTextField(controller: _changerController, hint: hint, prefix: prefix, obscured: password, type: type, func: (String text) => setS(() => color = text.isNotEmpty ? blue : grey))),
                   const SizedBox(width: 10),
                   GestureDetector(
-                    onTap: () async => _formKey.currentState!.validate() ? await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{key: _changerController.text.trim()}).then((void value) => Navigator.pop(context)) : null,
+                    onTap: () async => await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(<String, dynamic>{key: _changerController.text.trim()}).then((void value) => Navigator.pop(context)),
                     child: Container(width: 40, height: 40, decoration: BoxDecoration(color: color.withOpacity(.2), borderRadius: BorderRadius.circular(5)), child: Icon(FontAwesomeIcons.check, size: 15, color: color)),
                   ),
                 ],
@@ -168,7 +167,7 @@ class _AccountState extends State<Account> {
                     ),
                     const SizedBox(height: 40),
                     GestureDetector(
-                      onTap: () => change('name'.tr, FontAwesomeIcons.userDoctor, false, TextInputType.text, fieldsValidator["username"], "name"),
+                      onTap: () => change('name'.tr, FontAwesomeIcons.userDoctor, false, TextInputType.text, "name"),
                       child: Row(
                         children: <Widget>[
                           CustomizedText(text: 'name'.tr, fontSize: 14, color: grey),
@@ -289,7 +288,7 @@ class _AccountState extends State<Account> {
                       ),
                     const SizedBox(height: 40),
                     GestureDetector(
-                      onTap: () => change('about'.tr, FontAwesomeIcons.stubber, false, TextInputType.text, fieldsValidator["about"], "about"),
+                      onTap: () => change('about'.tr, FontAwesomeIcons.stubber, false, TextInputType.text, "about"),
                       child: Row(
                         children: <Widget>[
                           CustomizedText(text: 'about'.tr, fontSize: 14, color: grey),
@@ -313,7 +312,7 @@ class _AccountState extends State<Account> {
                     if (snapshot.data!.get("role") == "doctor") const SizedBox(height: 40),
                     if (snapshot.data!.get("role") == "doctor")
                       GestureDetector(
-                        onTap: () => change('Service'.tr, FontAwesomeIcons.servicestack, false, TextInputType.text, fieldsValidator["about"], "service"),
+                        onTap: () => change('Service'.tr, FontAwesomeIcons.servicestack, false, TextInputType.text, "service"),
                         child: Row(
                           children: <Widget>[
                             CustomizedText(text: 'Service'.tr, fontSize: 14, color: grey),
@@ -337,7 +336,7 @@ class _AccountState extends State<Account> {
                     if (snapshot.data!.get("role") == "doctor") const SizedBox(height: 40),
                     if (snapshot.data!.get("role") == "doctor")
                       GestureDetector(
-                        onTap: () => change('Hospital'.tr, FontAwesomeIcons.servicestack, false, TextInputType.text, fieldsValidator["about"], "hospital"),
+                        onTap: () => change('Hospital'.tr, FontAwesomeIcons.servicestack, false, TextInputType.text, "hospital"),
                         child: Row(
                           children: <Widget>[
                             CustomizedText(text: 'Hospital'.tr, fontSize: 14, color: grey),

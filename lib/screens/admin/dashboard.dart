@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/globals.dart';
 
-import '../../stuff/classes.dart';
-import '../../stuff/functions.dart';
+import '../../utils/classes.dart';
+import '../../utils/callbacks.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});

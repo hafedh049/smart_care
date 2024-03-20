@@ -7,8 +7,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/screens/screens.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/globals.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 // ignore: must_be_immutable
@@ -42,7 +42,7 @@ class PrimaryPrevention extends StatelessWidget {
                 key: _carousselKey,
                 builder: (BuildContext context, void Function(void Function()) setS) => CarouselSlider.builder(
                   itemCount: _preventions.length,
-                  itemBuilder: (BuildContext context, int index, int realIndex) => Container(decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/primaly_prevention/${_preventions[index]['image']}"), fit: BoxFit.cover), borderRadius: BorderRadius.circular(5))),
+                  itemBuilder: (BuildContext context, int index, int realIndex) => Container(decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/primaly_preventions/${_preventions[index]['image']}"), fit: BoxFit.cover), borderRadius: BorderRadius.circular(5))),
                   carouselController: _carouselController,
                   options: CarouselOptions(
                     autoPlayAnimationDuration: 200.ms,
@@ -81,7 +81,7 @@ class PrimaryPrevention extends StatelessWidget {
                 const SizedBox(height: 30),
                 GestureDetector(
                   onTap: () async {
-                    await db!.update("SMART_CARE", <String, dynamic>{"FIRST_TIME": 0});
+                    userData!.put("first_time", false);
                     // ignore: use_build_context_synchronously
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => FirebaseAuth.instance.currentUser != null ? const Screens() : const SignIn()));
                   },

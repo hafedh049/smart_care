@@ -7,7 +7,7 @@ import 'package:smart_care/drawer/laboratory_profile.dart';
 import 'package:smart_care/drawer/patient_profile.dart';
 import 'package:smart_care/drawer/super_admin_profile.dart';
 import 'package:smart_care/error/error_room.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/globals.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});

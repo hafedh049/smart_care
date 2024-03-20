@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../stuff/globals.dart';
+import '../utils/globals.dart';
 
 class HelpAndFAQ extends StatefulWidget {
   const HelpAndFAQ({super.key});

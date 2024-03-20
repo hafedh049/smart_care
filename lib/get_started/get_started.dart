@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_care/get_started/primary_prevention.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/globals.dart';
 
 class GetStarted extends StatelessWidget {
   const GetStarted({super.key});
@@ -13,7 +13,7 @@ class GetStarted extends StatelessWidget {
       extendBody: true,
       extendBodyBehindAppBar: true,
       body: Container(
-        decoration: const BoxDecoration(image: DecorationImage(image: AssetImage("assets/primaly_prevention/doctor.jfif"), fit: BoxFit.cover)),
+        decoration: const BoxDecoration(image: DecorationImage(image: AssetImage("assets/primaly_preventions/doctor.jfif"), fit: BoxFit.cover)),
         child: Padding(
           padding: const EdgeInsets.only(left: 8),
           child: Column(

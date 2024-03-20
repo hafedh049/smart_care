@@ -16,11 +16,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:smart_care/error/error_room.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/globals.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../stuff/functions.dart';
+import '../utils/callbacks.dart';
 
 class ChatRoom extends StatefulWidget {
   const ChatRoom({super.key, required this.talkTo});
@@ -62,7 +62,7 @@ class _ChatRoomState extends State<ChatRoom> {
             children: <Widget>[
               CircleAvatar(radius: 20, backgroundImage: widget.talkTo["image_url"] == noUser ? null : CachedNetworkImageProvider(widget.talkTo["image_url"]), backgroundColor: grey.withOpacity(.2), child: widget.talkTo["image_url"] != noUser ? null : const Icon(FontAwesomeIcons.user, color: grey, size: 15)),
               const SizedBox(width: 5),
-              Flexible(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: widget.talkTo["name"], fontSize: 16, fontWeight: FontWeight.bold, color: themeMode == 1 ? white : black), CustomizedText(text: widget.talkTo["status"] ? "Online" : "Offline", fontSize: 14, color: blue)])),
+              Flexible(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[CustomizedText(text: widget.talkTo["name"], fontSize: 16, fontWeight: FontWeight.bold, color: userData!.get("dark_theme") ? white : black), CustomizedText(text: widget.talkTo["status"] ? "Online" : "Offline", fontSize: 14, color: blue)])),
             ],
           ),
         ),
@@ -76,7 +76,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   key: _chatKey,
                   builder: (BuildContext context, void Function(void Function()) _) {
                     return Chat(
-                      theme: themeMode == 1 ? const DarkChatTheme(messageBorderRadius: 10, inputTextDecoration: InputDecoration(fillColor: transparent)) : const DefaultChatTheme(messageBorderRadius: 10, inputTextDecoration: InputDecoration(fillColor: transparent)),
+                      theme: userData!.get("dark_theme") ? const DarkChatTheme(messageBorderRadius: 10, inputTextDecoration: InputDecoration(fillColor: transparent)) : const DefaultChatTheme(messageBorderRadius: 10, inputTextDecoration: InputDecoration(fillColor: transparent)),
                       scrollPhysics: const BouncingScrollPhysics(),
                       isLastPage: true,
                       useTopSafeAreaInset: true,
@@ -152,9 +152,6 @@ class _ChatRoomState extends State<ChatRoom> {
             "participants": <String>[_user1ID, _user2ID],
             "names": <String>[me["name"], widget.talkTo["name"]],
           });
-          if (widget.talkTo["token"].isNotEmpty) {
-            sendPushNotificationFCM(token: widget.talkTo["token"], username: me["name"], message: "An image was sent");
-          }
         },
       );
     }
@@ -175,9 +172,6 @@ class _ChatRoomState extends State<ChatRoom> {
             "participants": <String>[_user1ID, _user2ID],
             "names": <String>[me["name"], widget.talkTo["name"]],
           });
-          if (widget.talkTo["token"].isNotEmpty) {
-            sendPushNotificationFCM(token: widget.talkTo["token"], username: me["name"], message: "An image was sent");
-          }
         },
       );
     }
@@ -191,9 +185,6 @@ class _ChatRoomState extends State<ChatRoom> {
       "participants": _usersIDS,
       "names": <String>[me["name"], widget.talkTo["name"]],
     });
-    if (widget.talkTo["token"].isNotEmpty) {
-      sendPushNotificationFCM(token: widget.talkTo["token"], username: me["name"], message: message.text);
-    }
   }
 
   void _handleMessageTap(BuildContext _, types.Message message) async {

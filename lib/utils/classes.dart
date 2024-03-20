@@ -12,7 +12,7 @@ import 'package:smart_care/drawer/settings.dart';
 import 'package:smart_care/screens/calendar/calendar.dart';
 import 'package:smart_care/screens/patient/heart_rate/mesure.dart';
 import 'package:smart_care/screens/smart_chat_bot.dart';
-import 'package:smart_care/stuff/globals.dart';
+import 'package:smart_care/utils/globals.dart';
 import 'dart:math' show pi;
 import 'package:url_launcher/url_launcher_string.dart';
 

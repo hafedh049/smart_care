@@ -10,10 +10,10 @@ import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/get_started/get_started.dart';
 import 'package:smart_care/languages/language_template.dart';
 import 'package:smart_care/screens/screens.dart';
-import 'package:smart_care/stuff/functions.dart';
-import 'package:smart_care/stuff/globals.dart';
-import 'package:smart_care/stuff/themes/dark_theme.dart';
-import 'package:smart_care/stuff/themes/light_theme.dart';
+import 'package:smart_care/utils/callbacks.dart';
+import 'package:smart_care/utils/globals.dart';
+import 'package:smart_care/utils/themes/dark_theme.dart';
+import 'package:smart_care/utils/themes/light_theme.dart';
 import 'package:smart_care/wait/wait_room.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'error/error_room.dart';
@@ -21,14 +21,9 @@ import 'error/error_room.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Animate.restartOnHotReload = true;
-  ErrorWidget.builder = (FlutterErrorDetails details) => ErrorRoom(error: details.exceptionAsString());
+  ErrorWidget.builder = (FlutterErrorDetails details) => ErrorRoom(error: details.toString());
 
-  await openDB();
-
-  Map<String, dynamic> userData = (await db!.rawQuery("SELECT THEME_MODE, FIRST_TIME FROM SMART_CARE WHERE ID = 1;")).first;
-
-  firstTime = userData["FIRST_TIME"];
-  themeMode = userData["THEME_MODE"];
+  await init();
 
   runApp(const Main());
 
@@ -45,7 +40,7 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) => AdaptiveTheme(
         light: lightTheme_,
         dark: darkTheme_,
-        initial: themeMode == 1 ? AdaptiveThemeMode.dark : AdaptiveThemeMode.light,
+        initial: userData!.get("dark_theme") ? AdaptiveThemeMode.dark : AdaptiveThemeMode.light,
         builder: (ThemeData theme, ThemeData darkTheme) => GetMaterialApp(
           theme: theme,
           darkTheme: darkTheme,
@@ -53,11 +48,18 @@ class Main extends StatelessWidget {
           locale: const Locale("en", "US"),
           debugShowCheckedModeBanner: false,
           home: FutureBuilder<FirebaseApp>(
-            future: Firebase.initializeApp(),
+            future: Firebase.initializeApp(
+              options: const FirebaseOptions(
+                apiKey: "AIzaSyAWbsPuogjLWkP6qPjDF1pjwDwota94rl8",
+                appId: "1:326479825147:android:ebdb75917f5865afba485e",
+                messagingSenderId: "326479825147",
+                projectId: "smart-care-b4ab6",
+              ),
+            ),
             builder: (BuildContext context, AsyncSnapshot<FirebaseApp> snapshot) => snapshot.hasError
                 ? ErrorRoom(error: snapshot.error.toString())
-                : snapshot.connectionState == ConnectionState.done
-                    ? firstTime == 1
+                : snapshot.hasData
+                    ? userData!.get("first_time")
                         ? const GetStarted()
                         : FirebaseAuth.instance.currentUser == null
                             ? const SignIn()

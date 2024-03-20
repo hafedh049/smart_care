@@ -7,9 +7,9 @@ import 'package:get/get.dart';
 import 'package:smart_care/authentification/recovery.dart';
 import 'package:smart_care/authentification/sign_up.dart';
 import 'package:smart_care/screens/screens.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/globals.dart';
-import '../stuff/functions.dart';
+import 'package:smart_care/utils/classes.dart';
+import 'package:smart_care/utils/globals.dart';
+import '../utils/callbacks.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -63,9 +63,9 @@ class _SignInState extends State<SignIn> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                CustomTextField(validator: fieldsValidator["email"], controller: _emailController, hint: 'email'.tr, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
+                CustomTextField(controller: _emailController, hint: 'email'.tr, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress),
                 const SizedBox(height: 10),
-                CustomTextField(validator: fieldsValidator["password"], controller: _passwordController, hint: 'password'.tr, obscured: true, prefix: FontAwesomeIcons.lock),
+                CustomTextField(controller: _passwordController, hint: 'password'.tr, obscured: true, prefix: FontAwesomeIcons.lock),
                 const SizedBox(height: 20),
                 Center(
                   child: StatefulBuilder(
@@ -78,7 +78,7 @@ class _SignInState extends State<SignIn> {
                               if (_formKey.currentState!.validate()) {
                                 setS(() => wait = true);
                                 await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim()).then((UserCredential value) async {
-                                  await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true, "token": userToken}).then((void value) async {
+                                  await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"status": true}).then((void value) async {
                                     await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
                                   });
                                 });

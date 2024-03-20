@@ -9,9 +9,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:smart_care/authentification/pwd_strength.dart';
 
-import '../../stuff/classes.dart';
-import '../../stuff/functions.dart';
-import '../../stuff/globals.dart';
+import '../../utils/classes.dart';
+import '../../utils/callbacks.dart';
+import '../../utils/globals.dart';
 
 class AddUser extends StatefulWidget {
   const AddUser({super.key});
@@ -66,19 +66,19 @@ class _AddUserState extends State<AddUser> {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[CustomizedText(text: 'whatisyourname'.tr, fontSize: 18), const SizedBox(height: 10), CustomTextField(validator: fieldsValidator["username"], controller: _usernameController, hint: 'name'.tr, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name)],
+                    children: <Widget>[CustomizedText(text: 'whatisyourname'.tr, fontSize: 18), const SizedBox(height: 10), CustomTextField(controller: _usernameController, hint: 'name'.tr, prefix: FontAwesomeIcons.userDoctor, type: TextInputType.name)],
                   ),
                   const SizedBox(height: 20),
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[CustomizedText(text: 'canyouprovidemewithyouremployeeIDormatricule'.tr, fontSize: 18), const SizedBox(height: 10), CustomTextField(validator: fieldsValidator["id"], controller: _idController, hint: 'iD'.tr, prefix: FontAwesomeIcons.userSecret)],
+                    children: <Widget>[CustomizedText(text: 'canyouprovidemewithyouremployeeIDormatricule'.tr, fontSize: 18), const SizedBox(height: 10), CustomTextField(controller: _idController, hint: 'iD'.tr, prefix: FontAwesomeIcons.userSecret)],
                   ),
                   const SizedBox(height: 20),
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[CustomizedText(text: 'wouldyoumindsharingyouremailaddresswithme'.tr, fontSize: 18), const SizedBox(height: 10), CustomTextField(validator: fieldsValidator["email"], controller: _emailController, hint: 'email'.tr, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress)],
+                    children: <Widget>[CustomizedText(text: 'wouldyoumindsharingyouremailaddresswithme'.tr, fontSize: 18), const SizedBox(height: 10), CustomTextField(controller: _emailController, hint: 'email'.tr, prefix: FontAwesomeIcons.envelope, type: TextInputType.emailAddress)],
                   ),
                   const SizedBox(height: 20),
                   Column(
@@ -87,7 +87,7 @@ class _AddUserState extends State<AddUser> {
                     children: <Widget>[
                       CustomizedText(text: 'youwillneedtosetupapasswordforyouraccount'.tr, fontSize: 18),
                       const SizedBox(height: 10),
-                      CustomTextField(func: (String text) => _passwordStrenghtKey.currentState!.setState(() {}), validator: fieldsValidator["password"], controller: _passwordController, hint: 'password'.tr, prefix: FontAwesomeIcons.lock, obscured: true),
+                      CustomTextField(func: (String text) => _passwordStrenghtKey.currentState!.setState(() {}), controller: _passwordController, hint: 'password'.tr, prefix: FontAwesomeIcons.lock, obscured: true),
                       const SizedBox(height: 10),
                       Padding(padding: const EdgeInsets.only(right: 8), child: StatefulBuilder(key: _passwordStrenghtKey, builder: (BuildContext context, void Function(void Function()) _) => PasswordStrength(password: _passwordController.text.trim()))),
                     ],

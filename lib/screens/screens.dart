@@ -20,9 +20,9 @@ import 'package:smart_care/screens/super_admin/plan.dart' as super_admin_plan;
 import 'package:smart_care/screens/super_admin/user.dart' as super_admin_user;
 import 'package:smart_care/screens/super_admin/dashboard.dart' as super_admin_dashboard;
 
-import 'package:smart_care/stuff/classes.dart';
+import 'package:smart_care/utils/classes.dart';
 
-import '../stuff/globals.dart';
+import '../utils/globals.dart';
 
 class Screens extends StatefulWidget {
   const Screens({super.key});
@@ -46,7 +46,7 @@ class _ScreensState extends State<Screens> {
   ];
   final List<Map<String, dynamic>> _adminScreens = <Map<String, dynamic>>[
     <String, dynamic>{"screen": admin_add_art.CreateArticlePage(), "icon": FontAwesomeIcons.a},
-    <String, dynamic>{"screen": admin_del_art.ArticlesPage(), "icon": FontAwesomeIcons.d},
+    <String, dynamic>{"screen": const admin_del_art.ArticlesPage(), "icon": FontAwesomeIcons.d},
     <String, dynamic>{"screen": const admin_dashboard.Dashboard(), "icon": FontAwesomeIcons.chartGantt},
     <String, dynamic>{"screen": const admin_add_user.AddUser(), "icon": FontAwesomeIcons.userPlus},
     <String, dynamic>{"screen": const admin_patients_list.PatientsList(), "icon": FontAwesomeIcons.userInjured},
@@ -83,7 +83,6 @@ class _ScreensState extends State<Screens> {
           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.hasData) {
               me = snapshot.data!.data()!;
-              me["token"] = userToken;
               final List<Map<String, dynamic>> filteredScreens = me["role"] == "laboratory"
                   ? _laboratoryScreens
                   : me["role"] == "patient"

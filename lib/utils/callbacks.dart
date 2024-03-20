@@ -6,26 +6,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smart_care/stuff/globals.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:smart_care/utils/globals.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 void showToast({required String text, Color? color}) {
   Fluttertoast.showToast(msg: text.replaceAll(RegExp(r'\[.+\] '), ''), backgroundColor: color ?? blue.withOpacity(.3), fontSize: 14, gravity: ToastGravity.TOP, toastLength: Toast.LENGTH_LONG, textColor: white, timeInSecForIosWeb: 3);
 }
 
-Future<void> openDB() async {
-  db = await openDatabase(
-    "database.db",
-    version: 1,
-    onCreate: (Database db, int version) {
-      db.execute("CREATE TABLE SMART_CARE (ID INTEGER PRIMARY KEY , FIRST_TIME INTEGER, THEME_MODE INTEGER);");
-      db.insert("SMART_CARE", <String, dynamic>{"FIRST_TIME": 1, "ID": 1, "THEME_MODE": 0});
-    },
-  );
+Future<void> init() async {
+  Hive.init((await getApplicationDocumentsDirectory()).path);
+  userData = await Hive.openBox('userData');
+  if (!userData!.containsKey("dark_theme")) {
+    userData!.put("dark_theme", false);
+  }
+  if (!userData!.containsKey("first_time")) {
+    userData!.put("first_time", true);
+  }
 }
 
 Future<String> takesFromCameraOrGallery(bool camera) async {
@@ -52,17 +53,6 @@ Future<String> cropImage(String imagePath) async {
     showToast(text: _.toString());
     return "";
   }
-}
-
-bool isImageUrl(String url) {
-  final List<String> imageExtensions = <String>['jpg', 'jpeg', 'png', 'gif', 'bmp'];
-  final RegExp imageRegex = RegExp('.*(${imageExtensions.join('|')})', caseSensitive: false);
-
-  if (!Uri.parse(url).isAbsolute) {
-    return false;
-  }
-
-  return imageRegex.hasMatch(url);
 }
 
 String formatDateTime(DateTime dateTime, TimeOfDay timeOfDay) {
@@ -93,25 +83,6 @@ String getDateRepresentation(DateTime date) {
 
 String showWeekDay(int day) {
   return weekDayPredictor[DateTime(DateTime.now().year, DateTime.now().month, day).weekday]!;
-}
-
-void sendPushNotificationFCM({required String token, required String username, required String message}) async {
-  try {
-    await post(
-      Uri.parse('https://fcm.googleapis.com/fcm/send'),
-      headers: const <String, String>{'Content-Type': 'application/json', 'Authorization': 'key=AAAATAO2yPs:APA91bHBc_S-v6MHnfTRxz1PD60a_Lh0yY4cB-q4FJlFSKR4To97gAb8bGXECJTKVjWTHo_1fAzSer5ae8CcwL7zK24N45y0VuXWkFN1n0aHapTNCV2DyRYUvXbqG0nu4OsBMvnbXRTf'},
-      body: jsonEncode(
-        <String, dynamic>{
-          'notification': <String, dynamic>{'body': message, 'title': username},
-          'priority': 'high',
-          'data': const <String, dynamic>{'click_action': 'FLUTTER_NOTIFICATION_CLICK', 'id': '1', 'status': "done"},
-          'to': token,
-        },
-      ),
-    );
-  } catch (e) {
-    showToast(text: e.toString());
-  }
 }
 
 Future<void> goTo(Widget place) async {

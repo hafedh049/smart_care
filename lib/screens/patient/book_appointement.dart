@@ -7,9 +7,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../stuff/classes.dart';
-import '../../stuff/functions.dart';
-import '../../stuff/globals.dart';
+import '../../utils/classes.dart';
+import '../../utils/callbacks.dart';
+import '../../utils/globals.dart';
 
 class BookAppointment extends StatefulWidget {
   const BookAppointment({super.key, required this.id, required this.doctorImageUrl, required this.doctorName, required this.speciality});
