@@ -58,6 +58,9 @@ dependencies:
   camera: ^0.10.5
   syncfusion_flutter_calendar: ^21.2.3
   hive: ^2.2.3
+  google_sign_in: ^6.2.1
+  sqflite: ^2.3.3+1
+  firebase_messaging: ^14.9.4
 
 dev_dependencies:
   flutter_test:
@@ -86,4 +89,3 @@ flutter:
     - assets/primaly_preventions/
     - assets/lotties/
     - assets/icons/
-    - assets/configs/
