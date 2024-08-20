@@ -1,6 +1,6 @@
 // ignore_for_file: invalid_use_of_protected_member
 
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart' as cs;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -15,7 +15,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 class PrimaryPrevention extends StatelessWidget {
   PrimaryPrevention({super.key});
 
-  final CarouselController _carouselController = CarouselController();
+  final cs.CarouselController _carouselController = cs.CarouselController();
   final GlobalKey _carousselKey = GlobalKey();
   final GlobalKey _smoothKey = GlobalKey();
   final GlobalKey _textKey = GlobalKey();
@@ -40,15 +40,15 @@ class PrimaryPrevention extends StatelessWidget {
             children: <Widget>[
               StatefulBuilder(
                 key: _carousselKey,
-                builder: (BuildContext context, void Function(void Function()) setS) => CarouselSlider.builder(
+                builder: (BuildContext context, void Function(void Function()) setS) => cs.CarouselSlider.builder(
                   itemCount: _preventions.length,
                   itemBuilder: (BuildContext context, int index, int realIndex) => Container(decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/primaly_preventions/${_preventions[index]['image']}"), fit: BoxFit.cover), borderRadius: BorderRadius.circular(5))),
                   carouselController: _carouselController,
-                  options: CarouselOptions(
+                  options: cs.CarouselOptions(
                     autoPlayAnimationDuration: 200.ms,
                     autoPlay: true,
                     viewportFraction: 1,
-                    onPageChanged: (int index, CarouselPageChangedReason reason) => _smoothKey.currentState!.setState(() => _textKey.currentState!.setState(() => _activeIndex = index)),
+                    onPageChanged: (int index, cs.CarouselPageChangedReason reason) => _smoothKey.currentState!.setState(() => _textKey.currentState!.setState(() => _activeIndex = index)),
                     height: MediaQuery.of(context).size.height,
                     pauseAutoPlayInFiniteScroll: true,
                   ),
