@@ -1,21 +1,21 @@
 // ignore_for_file: invalid_use_of_protected_member
 
-import 'package:carousel_slider/carousel_slider.dart' as cs;
+//import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+//import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/screens/screens.dart';
 import 'package:smart_care/utils/classes.dart';
 import 'package:smart_care/utils/globals.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+//import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 // ignore: must_be_immutable
 class PrimaryPrevention extends StatelessWidget {
   PrimaryPrevention({super.key});
 
-  final cs.CarouselController _carouselController = cs.CarouselController();
+  //final CarouselController _carouselController = CarouselController();
   final GlobalKey _carousselKey = GlobalKey();
   final GlobalKey _smoothKey = GlobalKey();
   final GlobalKey _textKey = GlobalKey();
@@ -38,22 +38,22 @@ class PrimaryPrevention extends StatelessWidget {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              StatefulBuilder(
+              /*StatefulBuilder(
                 key: _carousselKey,
-                builder: (BuildContext context, void Function(void Function()) setS) => cs.CarouselSlider.builder(
+                builder: (BuildContext context, void Function(void Function()) setS) => CarouselSlider.builder(
                   itemCount: _preventions.length,
                   itemBuilder: (BuildContext context, int index, int realIndex) => Container(decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/primaly_preventions/${_preventions[index]['image']}"), fit: BoxFit.cover), borderRadius: BorderRadius.circular(5))),
                   carouselController: _carouselController,
-                  options: cs.CarouselOptions(
+                  options: CarouselOptions(
                     autoPlayAnimationDuration: 200.ms,
                     autoPlay: true,
                     viewportFraction: 1,
-                    onPageChanged: (int index, cs.CarouselPageChangedReason reason) => _smoothKey.currentState!.setState(() => _textKey.currentState!.setState(() => _activeIndex = index)),
+                    onPageChanged: (int index, CarouselPageChangedReason reason) => _smoothKey.currentState!.setState(() => _textKey.currentState!.setState(() => _activeIndex = index)),
                     height: MediaQuery.of(context).size.height,
                     pauseAutoPlayInFiniteScroll: true,
                   ),
                 ),
-              ),
+              ),*/
             ],
           ),
           Container(
@@ -67,7 +67,7 @@ class PrimaryPrevention extends StatelessWidget {
                 const SizedBox(height: 20),
                 StatefulBuilder(key: _textKey, builder: (BuildContext context, void Function(void Function()) setS) => CustomizedText(text: _preventions[_activeIndex]["tag"]!, color: white, fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 30),
-                StatefulBuilder(
+                /* StatefulBuilder(
                   key: _smoothKey,
                   builder: (BuildContext context, void Function(void Function()) setS) {
                     return AnimatedSmoothIndicator(
@@ -77,7 +77,7 @@ class PrimaryPrevention extends StatelessWidget {
                       effect: const ExpandingDotsEffect(activeDotColor: blue, dotColor: white, dotHeight: 10, dotWidth: 10, radius: 15, strokeWidth: 2),
                     );
                   },
-                ),
+                ),*/
                 const SizedBox(height: 30),
                 GestureDetector(
                   onTap: () async {

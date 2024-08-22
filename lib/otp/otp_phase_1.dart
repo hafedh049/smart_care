@@ -9,10 +9,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:smart_care/otp/opt_phase_2.dart';
-import 'package:smart_care/stuff/functions.dart';
 import 'package:lottie/lottie.dart';
-import '../stuff/classes.dart';
-import '../stuff/globals.dart';
+
+import '../utils/callbacks.dart';
+import '../utils/classes.dart';
+import '../utils/globals.dart';
 
 class OTPView extends StatefulWidget {
   const OTPView({super.key});

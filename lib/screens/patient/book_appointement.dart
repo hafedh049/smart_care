@@ -1,8 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_map/flutter_map.dart';
+//import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
@@ -155,7 +157,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                         },
                       ),
                       const SizedBox(height: 20),
-                      Flexible(
+                      /*  Flexible(
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
                           child: FlutterMap(
@@ -166,7 +168,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                             ],
                           ),
                         ),
-                      ),
+                      ),*/
                     ],
                   )
                 ],

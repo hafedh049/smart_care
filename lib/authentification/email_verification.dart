@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:smart_care/screens/screens.dart';
-import 'package:smart_care/stuff/classes.dart';
-import 'package:smart_care/stuff/functions.dart';
+
+import '../utils/callbacks.dart';
+import '../utils/classes.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({super.key});

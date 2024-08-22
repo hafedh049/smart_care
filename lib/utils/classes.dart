@@ -10,7 +10,6 @@ import 'package:smart_care/authentification/sign_in.dart';
 import 'package:smart_care/drawer/about_us.dart';
 import 'package:smart_care/drawer/settings.dart';
 import 'package:smart_care/screens/calendar/calendar.dart';
-import 'package:smart_care/screens/patient/heart_rate/mesure.dart';
 import 'package:smart_care/screens/smart_chat_bot.dart';
 import 'package:smart_care/utils/globals.dart';
 import 'dart:math' show pi;
@@ -178,14 +177,6 @@ class HealthDrawer extends StatelessWidget {
               title: CustomizedText(text: 'aboutUs'.tr, fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const Spacer(),
-            if (me["role"] == "patient") Container(width: 267, height: .1, color: grey),
-            if (me["role"] == "patient")
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Mesure())),
-                leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Container(width: 2, height: 20, decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5))), const SizedBox(width: 5), const Icon(FontAwesomeIcons.heartCircleBolt, size: 20)]),
-                title: CustomizedText(text: "Heart Rate".tr, fontSize: 18, fontWeight: FontWeight.bold),
-              ),
             if (me["role"] == "patient") Container(width: 267, height: .1, color: grey),
             if (me["role"] == "patient")
               ListTile(

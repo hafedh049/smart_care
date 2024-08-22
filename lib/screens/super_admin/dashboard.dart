@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:fl_chart/fl_chart.dart';
+//import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care/utils/classes.dart';
@@ -72,7 +72,7 @@ class _DashboardState extends State<Dashboard> {
             const SizedBox(height: 20),
             const CustomizedText(text: "Recent Order", fontSize: 24, fontWeight: FontWeight.bold),
             const SizedBox(height: 20),
-            Expanded(
+            /*Expanded(
               child: LineChart(
                 LineChartData(
                   borderData: FlBorderData(show: false),
@@ -93,7 +93,7 @@ class _DashboardState extends State<Dashboard> {
                   maxY: 7,
                 ),
               ),
-            ),
+            ),*/
           ],
         ),
       ),

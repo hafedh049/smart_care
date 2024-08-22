@@ -1,4 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -10,9 +11,10 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:smart_care/screens/screens.dart';
-import '../stuff/classes.dart';
-import '../stuff/functions.dart';
-import '../stuff/globals.dart';
+
+import '../utils/callbacks.dart';
+import '../utils/classes.dart';
+import '../utils/globals.dart';
 
 class OTP extends StatefulWidget {
   const OTP({super.key, required this.verification, required this.email});
@@ -64,10 +66,8 @@ class _OTPState extends State<OTP> {
                       await FirebaseAuth.instance.signInWithCredential(credential).then(
                         (UserCredential value) async {
                           _buttonBuilder.currentState!.setState(() => _wait = false);
-                          await getToken();
-                          await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({"token": userToken, "status": true}).then((void value) async {
-                            await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
-                          });
+
+                          await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Screens()), (Route route) => false);
                         },
                       );
                     }

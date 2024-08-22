@@ -12,8 +12,6 @@ import 'package:smart_care/screens/laboratory/home.dart' as laboratory_home;
 import 'package:smart_care/screens/patient/workflow.dart' as patient_workflow;
 import 'package:smart_care/screens/admin/dashboard.dart' as admin_dashboard;
 import 'package:smart_care/screens/admin/add_user.dart' as admin_add_user;
-import 'package:smart_care/screens/admin/del_art.dart' as admin_del_art;
-import 'package:smart_care/screens/admin/add_art.dart' as admin_add_art;
 import 'package:smart_care/screens/admin/patients_list.dart' as admin_patients_list;
 import 'package:smart_care/screens/admin/doctors_list.dart' as admin_doctors_list;
 import 'package:smart_care/screens/super_admin/plan.dart' as super_admin_plan;
@@ -45,8 +43,6 @@ class _ScreensState extends State<Screens> {
     <String, dynamic>{"screen": ChatsScreen(user: "doctor"), "icon": FontAwesomeIcons.solidMessage},
   ];
   final List<Map<String, dynamic>> _adminScreens = <Map<String, dynamic>>[
-    <String, dynamic>{"screen": admin_add_art.CreateArticlePage(), "icon": FontAwesomeIcons.a},
-    <String, dynamic>{"screen": const admin_del_art.ArticlesPage(), "icon": FontAwesomeIcons.d},
     <String, dynamic>{"screen": const admin_dashboard.Dashboard(), "icon": FontAwesomeIcons.chartGantt},
     <String, dynamic>{"screen": const admin_add_user.AddUser(), "icon": FontAwesomeIcons.userPlus},
     <String, dynamic>{"screen": const admin_patients_list.PatientsList(), "icon": FontAwesomeIcons.userInjured},

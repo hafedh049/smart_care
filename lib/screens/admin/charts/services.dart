@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fl_chart/fl_chart.dart';
+//import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -37,7 +37,7 @@ class _ServicesState extends State<Services> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Expanded(
+                /*  Expanded(
                   child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
                     future: FirebaseFirestore.instance.collection('users').limit(10).get(),
                     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -69,7 +69,7 @@ class _ServicesState extends State<Services> {
                       }
                     },
                   ),
-                ),
+                ),*/
                 const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
